@@ -20,7 +20,7 @@
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); margin: 0; padding: 0; direction: rtl; color: var(--dark); }
 
-        /* شريط التنبيهات العلوي المتحرك */
+        /* شريط التنبيهات العلوي (للإدارة والمعاونين فقط) */
         .ticker-wrap {
             width: 100%;
             background: var(--dark);
@@ -48,7 +48,7 @@
 
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; position: relative; }
 
-        /* زر الإدارة في أعلى اليمين */
+        /* زر الإدارة الخاص في أعلى اليمين */
         .admin-trigger-btn {
             position: absolute;
             top: 0;
@@ -76,7 +76,7 @@
             margin-bottom: 30px;
             position: relative;
         }
-        header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; }
+        header h1 { margin: 0; font-size: 2.2rem; font-weight: 800; }
         header p { margin: 10px 0 0 0; font-size: 1.1rem; opacity: 0.9; }
 
         /* اللوحات */
@@ -93,7 +93,6 @@
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 1rem;
-            transition: all 0.3s ease;
             background: #f8fafc;
         }
         input:focus, select:focus, textarea:focus {
@@ -103,73 +102,67 @@
             box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
         }
 
-        /* أزرار احترافية */
+        /* الأزرار */
         .btn-modern {
             background: var(--secondary-gradient);
             color: var(--white);
             border: none;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.05rem;
+            font-size: 1rem;
             width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
             text-align: center;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
         }
-        .btn-modern:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
-        }
-        .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 8px 16px; width: auto; font-size: 0.9rem; border-radius: 8px; color: white; border: none; cursor: pointer; }
-        .btn-success { background: linear-gradient(135deg, #059669 0%, #10b981 100%); padding: 8px 16px; width: auto; font-size: 0.9rem; border-radius: 8px; color: white; border: none; cursor: pointer; }
+        .btn-danger { background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; }
+        .btn-success { background: #10b981; color: white; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; }
 
-        /* جدول وشؤون الطلبة */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.03); }
+        /* محاكاة محادثة واتساب */
+        .whatsapp-chat-box { background: #efeae2; border-radius: 12px; padding: 15px; height: 350px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; border: 1px solid #cbd5e1; }
+        .chat-msg { background: #ffffff; padding: 10px 14px; border-radius: 8px; max-width: 75%; box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; }
+        .chat-msg.self { background: #dcf8c6; margin-right: auto; }
+        .chat-msg.other { background: #ffffff; margin-left: auto; }
+
+        /* الجداول والكروت */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 10px; overflow: hidden; }
         th, td { padding: 14px; text-align: center; border-bottom: 1px solid #edf2f7; }
-        th { background: #1e3b8a; color: var(--white); font-weight: 600; }
-        tr:hover { background-color: #f8fafc; }
+        th { background: #1e3b8a; color: var(--white); }
         .badge { display: inline-block; padding: 5px 12px; background: #e0f2fe; color: #0284c7; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
 
-        /* نافذة منبثقة (Modal) لدخول المدير */
+        /* نافذة منبثقة لدخول المدير */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
-    <!-- شريط التنبيهات العلوي المتحرك -->
+    <!-- شريط التنبيهات العلوي (للإدارة والمعاونين فقط) -->
     <div class="ticker-wrap">
         <div class="ticker" id="tickerContent">
-            <div class="ticker-item">🌟 أهلاً بكم في المنصة التعليمية الرقمية الشاملة - يرجى متابعة التبليغات الرسمية.</div>
+            <div class="ticker-item">🌟 أهلاً بكم في المنصة التعليمية الرقمية الشاملة - يرجى متابعة التبليغات الرسمية للأخبار.</div>
         </div>
     </div>
 
     <div class="container">
-        <!-- زر الإدارة في أعلى اليمين -->
+        <!-- زر دخول المدير الخفي في أعلى اليمين -->
         <button class="admin-trigger-btn" onclick="openAdminModal()">🔑 دخول المدير</button>
 
         <header>
             <h1>المنصة التعليمية الرقمية الشاملة</h1>
             <p>النظام الإداري والأكاديمي المتطور لخدمة الإدارة، المعاونين، الأساتذة، والطلبة</p>
             <div style="margin-top: 15px;">
-                <button class="btn-success" onclick="requestNotificationPermission()" style="padding: 10px 20px; font-size:0.95rem;">🔔 تفعيل الإشعارات الفورية</button>
+                <button class="btn-success" onclick="requestNotificationPermission()" style="padding: 10px 20px; width: auto;">🔔 تفعيل الإشعارات الفورية</button>
             </div>
         </header>
 
-        <!-- نافذة منبثقة لدخول المدير السرّي -->
+        <!-- نافذة دخول المدير -->
         <div id="adminModal" class="modal-overlay">
             <div class="modal-content">
                 <h3 style="color: #1e3b8a; margin-top: 0; text-align: center;">دخول الإدارة الخاصة</h3>
-                <div class="form-group">
-                    <label>اسم المستخدم:</label>
-                    <input type="text" id="modalAdminUser" placeholder="أدخل اسم المستخدم...">
-                </div>
-                <div class="form-group">
-                    <label>رمز المرور (الكود السري):</label>
-                    <input type="password" id="modalAdminPass" placeholder="أدخل الكود السري...">
-                </div>
+                <div class="form-group"><label>اسم المستخدم:</label><input type="text" id="modalAdminUser" placeholder="أدخل اسم المستخدم..."></div>
+                <div class="form-group"><label>رمز المرور:</label><input type="password" id="modalAdminPass" placeholder="الكود السري..."></div>
                 <div style="display: flex; gap: 10px; margin-top: 20px;">
                     <button class="btn-modern" onclick="handleAdminModalLogin()">دخول</button>
                     <button class="btn-danger" onclick="closeAdminModal()">إلغاء</button>
@@ -177,58 +170,181 @@
             </div>
         </div>
 
-        <!-- ================= الواجهة الرئيسية للعامة ================= -->
-        <div id="public-home-panel" class="panel active" style="text-align: center; padding: 50px;">
-            <h2 style="color: #1e3b8a;">مرحباً بكم في المنصة التعليمية الرسمية</h2>
-            <p style="color: #64748b; font-size: 1.1rem; margin-bottom: 30px;">اختر قسمك للمتابعة والدخول:</p>
-            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                <button class="btn-modern" style="max-width: 250px;" onclick="showSection('student-auth')">بوابة الطلاب 🎓</button>
-                <button class="btn-modern" style="max-width: 250px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);" onclick="showSection('teacher-auth')">بوابة الأساتذة 👨‍🏫</button>
+        <!-- ================= الواجهة الرئيسية (بوابة عامة / تسجيل دخول الطلبة والأساتذة) ================= -->
+        <div id="public-home-panel" class="panel active" style="text-align: center; padding: 40px;">
+            <h2 style="color: #1e3b8a;">مرحباً بكم في المنصة التعليمية</h2>
+            <p style="color: #64748b; margin-bottom: 30px;">يرجى اختيار البوابة المناسبة لك أو تقديم طلب انضمام:</p>
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;">
+                <button class="btn-modern" style="max-width: 220px;" onclick="showAuthView('studentLogin')">تسجيل دخول طالب 🎓</button>
+                <button class="btn-modern" style="max-width: 220px; background: #0284c7;" onclick="showAuthView('teacherLogin')">تسجيل دخول أستاذ 👨‍🏫</button>
+                <button class="btn-modern" style="max-width: 220px; background: #f59e0b;" onclick="showAuthView('studentRegister')">طلب انضمام طالب جديد 📝</button>
             </div>
         </div>
 
-        <div id="student-auth-panel" class="panel auth-box" style="max-width: 450px; margin: 0 auto;">
-            <h3 style="text-align: center; color: #1e3b8a;">دخول الطلاب</h3>
-            <div class="form-group"><label>اليوزر:</label><input type="text" id="stuUser" placeholder="اسم المستخدم..."></div>
-            <div class="form-group"><label>الكود السري:</label><input type="password" id="stuPass" placeholder="الكود السري..."></div>
-            <button class="btn-modern" onclick="loginStudent()">دخول للطالب</button>
-            <button class="btn-danger" style="margin-top:10px; width:100%;" onclick="showSection('public-home-panel')">رجوع</button>
+        <!-- نافذة تسجيل دخول الطالب -->
+        <div id="student-login-view" class="panel" style="max-width: 450px; margin: 0 auto;">
+            <h3 style="color: #1e3b8a; text-align: center;">دخول الطالب</h3>
+            <div class="form-group"><label>اسم المستخدم (اليوزر):</label><input type="text" id="stuLogUser"></div>
+            <div class="form-group"><label>الكود السري:</label><input type="password" id="stuLogPass"></div>
+            <button class="btn-modern" onclick="loginStudent()">دخول للبوابة</button>
+            <button class="btn-danger" style="margin-top: 10px; width:100%;" onclick="showAuthView('home')">رجوع</button>
         </div>
 
-        <div id="teacher-auth-panel" class="panel auth-box" style="max-width: 450px; margin: 0 auto;">
-            <h3 style="text-align: center; color: #1e3b8a;">دخول الأساتذة</h3>
-            <div class="form-group"><label>اليوزر:</label><input type="text" id="tchUser" placeholder="اسم المستخدم..."></div>
-            <div class="form-group"><label>الكود السري:</label><input type="password" id="tchPass" placeholder="الكود السري..."></div>
-            <button class="btn-modern" onclick="loginTeacher()">دخول للأستاذ</button>
-            <button class="btn-danger" style="margin-top:10px; width:100%;" onclick="showSection('public-home-panel')">رجوع</button>
+        <!-- نافذة تسجيل طالب جديد واختيار الصف -->
+        <div id="student-reg-view" class="panel" style="max-width: 450px; margin: 0 auto;">
+            <h3 style="color: #1e3b8a; text-align: center;">طلب انضمام طالب جديد</h3>
+            <div class="form-group"><label>الاسم الثلاثي:</label><input type="text" id="regName"></div>
+            <div class="form-group">
+                <label>اختر الصف الدراسي:</label>
+                <select id="regClass">
+                    <option value="الأول">الأول</option>
+                    <option value="الثاني">الثاني</option>
+                    <option value="الثالث">الثالث</option>
+                    <option value="الرابع">الرابع</option>
+                    <option value="الخامس">الخامس</option>
+                    <option value="السادس">السادس</option>
+                </select>
+            </div>
+            <div class="form-group"><label>اسم المستخدم:</label><input type="text" id="regUser"></div>
+            <div class="form-group"><label>الكود السري:</label><input type="password" id="regPass"></div>
+            <button class="btn-modern" onclick="submitStudentRegistration()">إرسال الطلب (ليسجل في قسم الصف)</button>
+            <button class="btn-danger" style="margin-top: 10px; width:100%;" onclick="showAuthView('home')">رجوع</button>
+        </div>
+
+        <!-- نافذة دخول الأستاذ -->
+        <div id="teacher-login-view" class="panel" style="max-width: 450px; margin: 0 auto;">
+            <h3 style="color: #1e3b8a; text-align: center;">دخول الأستاذ</h3>
+            <div class="form-group"><label>اسم المستخدم:</label><input type="text" id="tchLogUser"></div>
+            <div class="form-group"><label>الكود السري:</label><input type="password" id="tchLogPass"></div>
+            <button class="btn-modern" onclick="loginTeacher()">دخول لقسم الأساتذة</button>
+            <button class="btn-danger" style="margin-top: 10px; width:100%;" onclick="showAuthView('home')">رجوع</button>
+        </div>
+
+        <!-- ================= قسم الطالب (بعد الدخول) ================= -->
+        <div id="panel-student" class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 id="stuWelcomeTitle" style="color: #1e3b8a; margin:0;">بوابة الطالب</h3>
+                <button class="btn-danger" onclick="logout()">تسجيل الخروج</button>
+            </div>
+            <hr style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="btn-modern" onclick="switchStuTab('chat')">قسم التواصل (محادثة الأستاذ)</button>
+                <button class="btn-modern" onclick="switchStuTab('lectures')">قسم المحاضرات</button>
+                <button class="btn-modern" onclick="switchStuTab('qa')">قسم الأسئلة والأجوبة</button>
+            </div>
+            <div id="stu-tab-chat" class="stu-sub">
+                <h4>محادثة واتساب مع الأستاذ (تدعم الصور والبصمات، التعديل والحذف):</h4>
+                <div class="whatsapp-chat-box" id="studentChatBox"></div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <input type="text" id="studentChatInput" placeholder="اكتب رسالة..." style="flex:1;">
+                    <input type="file" id="studentChatFile" accept="image/*,audio/*" style="width: 170px;">
+                    <button class="btn-modern" style="width: 100px;" onclick="sendStudentMsg()">إرسال</button>
+                </div>
+            </div>
+            <div id="stu-tab-lectures" class="stu-sub" style="display:none;">
+                <h4>المحاضرات الدراسية:</h4>
+                <div id="studentLecturesList"><p style="color:#64748b;">لا توجد محاضرات حالياً.</p></div>
+            </div>
+            <div id="stu-tab-qa" class="stu-sub" style="display:none;">
+                <h4>الأسئلة والأجوبة:</h4>
+                <div id="studentQAList"><p style="color:#64748b;">لا توجد أسئلة حالياً.</p></div>
+            </div>
+        </div>
+
+        <!-- ================= قسم الأساتذة (غرف المواد والصفوف من 1 إلى 6) ================= -->
+        <div id="panel-teacher" class="panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 id="tchWelcomeTitle" style="color: #1e3b8a; margin:0;">قسم الأساتذة وغرف المواد</h3>
+                <button class="btn-danger" onclick="logout()">تسجيل الخروج</button>
+            </div>
+            
+            <div style="background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <h4 style="color: #1e3b8a; margin-top:0;">إنشاء غرفة خاصة للمادة الدراسية:</h4>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="newRoomSubject" placeholder="اسم المادة (مثال: رياضيات، حاسوب)..." style="flex:1;">
+                    <button class="btn-modern" style="width: 150px;" onclick="createTeacherRoom()">إنشاء الغرفة</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>اختر غرفتك:</label>
+                <select id="teacherRoomSelect" onchange="renderTeacherWorkspace()"></select>
+            </div>
+
+            <div id="teacherWorkspace" style="display:none; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
+                <h4 style="color: #059669;">أقسام الغرفة حسب الصفوف (من الأول إلى السادس):</h4>
+                <div class="form-group">
+                    <label>اختر الصف المستهدف:</label>
+                    <select id="teacherTargetClass">
+                        <option value="الأول">الأول</option>
+                        <option value="الثاني">الثاني</option>
+                        <option value="الثالث">الثالث</option>
+                        <option value="الرابع">الرابع</option>
+                        <option value="الخامس">الخامس</option>
+                        <option value="السادس">السادس</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <button class="btn-modern" onclick="switchTchTab('chat')">قسم التواصل (محادثة واتساب)</button>
+                    <button class="btn-modern" onclick="switchTchTab('lectures')">قسم المحاضرات</button>
+                    <button class="btn-modern" onclick="switchTchTab('qa')">قسم الأسئلة والأجوبة</button>
+                </div>
+
+                <div id="tch-tab-chat" class="tch-sub">
+                    <h5>محادثة الواتساب مع الصف (تعديل، حذف، صور، بصمات):</h5>
+                    <div class="whatsapp-chat-box" id="teacherChatBox"></div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <input type="text" id="teacherChatInput" placeholder="اكتب رسالة كأستاذ..." style="flex:1;">
+                        <input type="file" id="teacherChatFile" accept="image/*,audio/*" style="width: 170px;">
+                        <button class="btn-modern" style="width: 100px;" onclick="sendTeacherMsg()">إرسال</button>
+                    </div>
+                </div>
+
+                <div id="tch-tab-lectures" class="tch-sub" style="display:none;">
+                    <h5>نشر محاضرة جديدة:</h5>
+                    <input type="text" id="tchLecTitle" placeholder="عنوان المحاضرة..." style="margin-bottom:10px;">
+                    <textarea id="tchLecDesc" placeholder="تفاصيل المحاضرة..." rows="2" style="margin-bottom:10px;"></textarea>
+                    <button class="btn-modern" onclick="publishLecture()">نشر المحاضرة</button>
+                </div>
+
+                <div id="tch-tab-qa" class="tch-sub" style="display:none;">
+                    <h5>نشر سؤال وجواب:</h5>
+                    <input type="text" id="tchQATitle" placeholder="السؤال..." style="margin-bottom:10px;">
+                    <textarea id="tchQAAns" placeholder="الجواب..." rows="2" style="margin-bottom:10px;"></textarea>
+                    <button class="btn-modern" onclick="publishQA()">نشر السؤال</button>
+                </div>
+            </div>
         </div>
 
         <!-- ================= لوحة تحكم الإدارة (الخاصة بك) ================= -->
         <div id="panel-management" class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h3 id="managementWelcomeTitle" style="margin: 0; color: #1e3b8a; font-size: 1.5rem;">لوحة إدارة المدرسة (الإدارة العليا)</h3>
+                <h3 style="margin: 0; color: #1e3b8a;">لوحة إدارة المدرسة (الأستاذ وليد)</h3>
                 <button class="btn-danger" onclick="logout()">تسجيل الخروج</button>
             </div>
 
+            <!-- تبليغات الإدارة والمعاونين -->
             <div style="background: #fffbeb; padding: 20px; border-radius: 12px; border: 1px solid #fef3c7; margin-bottom: 25px;">
-                <h4 style="color: #b45309; margin-top:0;">نشر تبليغ عاجل في شريط التنبيهات وإرسال إشعار فوري للجهاز:</h4>
+                <h4 style="color: #b45309; margin-top:0;">نشر تبليغ عاجل (يظهر في شريط الإعلانات العلوي):</h4>
                 <div style="display: flex; gap: 15px;">
                     <input type="text" id="adminNoticeInput" placeholder="اكتب التبليغ الرسمي هنا...">
-                    <button class="btn-modern" style="width: 180px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" onclick="sendAdminNotice()">نشر وإرسال إشعار</button>
+                    <button class="btn-modern" style="width: 180px; background: #f59e0b;" onclick="sendAdminNotice()">نشر التبليغ</button>
                 </div>
             </div>
 
+            <!-- قسم شؤون الطلبة (مقسّم حسب الصفوف من الأول إلى السادس) -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 25px;">
-                <h4 style="color: #1e3b8a; margin-top:0;">قسم شؤون الطلبة (حسب الصفوف من الأول إلى السادس):</h4>
+                <h4 style="color: #1e3b8a; margin-top:0;">قسم الطلبة (حسب الصفوف من الأول إلى السادس):</h4>
                 <div class="form-group">
                     <label>اختر الصف لعرض الطلبة المسجلين فيه:</label>
                     <select id="mgmtViewClass" onchange="renderStudentsByClass()">
-                        <option value="الأول متوسط">الأول متوسط</option>
-                        <option value="الثاني متوسط">الثاني متوسط</option>
-                        <option value="الثالث متوسط">الثالث متوسط</option>
-                        <option value="الرابع الإعدادي">الرابع الإعدادي</option>
-                        <option value="الخامس الإعدادي">الخامس الإعدادي</option>
-                        <option value="السادس الإعدادي">السادس الإعدادي</option>
+                        <option value="الأول">الأول</option>
+                        <option value="الثاني">الثاني</option>
+                        <option value="الثالث">الثالث</option>
+                        <option value="الرابع">الرابع</option>
+                        <option value="الخامس">الخامس</option>
+                        <option value="السادس">السادس</option>
                     </select>
                 </div>
                 <table>
@@ -245,77 +361,121 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- قسم الأرشفة والملفات والتواصل بين المدرسين والإدارة -->
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 25px;">
+                <div style="flex:1; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
+                    <h4 style="color: #1e3b8a; margin-top:0;">قسم الأرشفة:</h4>
+                    <div id="archiveList" style="background:white; padding:10px; border-radius:8px; border:1px solid #ddd; max-height:100px; overflow-y:auto; font-size:0.9rem;">
+                        <span>تم أرشفة النظام بنجاح.</span>
+                    </div>
+                </div>
+                <div style="flex:1; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0;">
+                    <h4 style="color: #1e3b8a; margin-top:0;">قسم الملفات الإدارية:</h4>
+                    <input type="file" id="adminFileUp" style="margin-bottom:10px;">
+                    <button class="btn-modern" onclick="uploadAdminFile()">رفع وتخزين الملف</button>
+                    <div id="adminFilesList" style="margin-top:10px; font-size:0.85rem; color:#0284c7;"></div>
+                </div>
+            </div>
+
+            <!-- قسم التواصل بين المدرسين والإدارة (قابل للتكبير والتواصل المباشر) -->
+            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <h4 style="color: #1e3b8a; margin-top:0;">قسم التواصل بين المدرسين والإدارة (مراسلة واتساب مطورة):</h4>
+                <div class="whatsapp-chat-box" id="adminTeacherChatBox" style="height: 350px;"></div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <input type="text" id="adminTeacherChatInput" placeholder="اكتب رسالة موجهة للإدارة أو المدرسين..." style="flex:1;">
+                    <input type="file" id="adminTeacherChatFile" accept="image/*,audio/*" style="width: 170px;">
+                    <button class="btn-modern" style="width: 120px;" onclick="sendAdminTeacherMsg()">إرسال</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         let db = {
             users: [
-                { fullName: "المدير العام", username: "waleed", password: "WA1992wa", role: "admin", sClass: "" }
+                { fullName: "الأستاذ وليد", username: "waleed", password: "WA1992wa", role: "admin", sClass: "" },
+                { fullName: "أحمد محمد (أستاذ)", username: "teacher1", password: "123", role: "teacher", sClass: "" }
             ],
             pendingStudents: [],
+            rooms: [],
+            lectures: [],
+            qaList: [],
+            chatMessages: [],
+            adminTeacherChat: [],
+            adminFiles: [],
+            archive: ["أرشيف المنصة الرقمية - جاهز."],
             notices: ["🌟 أهلاً بكم في المنصة التعليمية الرقمية الشاملة - يرجى متابعة التبليغات الرسمية."]
         };
 
         let currentUser = null;
 
-        function openAdminModal() {
-            document.getElementById('adminModal').style.display = 'flex';
-        }
-
-        function closeAdminModal() {
-            document.getElementById('adminModal').style.display = 'none';
-        }
+        function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
 
         function handleAdminModalLogin() {
             const u = document.getElementById('modalAdminUser').value.trim();
             const p = document.getElementById('modalAdminPass').value.trim();
-
             if(u === 'waleed' && p === 'WA1992wa') {
                 closeAdminModal();
                 currentUser = db.users[0];
                 document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
                 document.getElementById('panel-management').classList.add('active');
                 renderStudentsByClass();
+                renderAdminTeacherChat();
                 alert("أهلاً بك يا أستاذ وليد في لوحة التحكم الإدارية.");
             } else {
-                alert("بيانات المدير غير صحيحة! يرجى التأكد من كتابة اليوزر waleed والكود WA1992wa بشكل صحيح.");
+                alert("بيانات المدير غير صحيحة!");
             }
         }
 
-        function showSection(sectionId) {
+        function showAuthView(viewName) {
             document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
-            if(sectionId === 'student-auth') document.getElementById('student-auth-panel').classList.add('active');
-            else if(sectionId === 'teacher-auth') document.getElementById('teacher-auth-panel').classList.add('active');
-            else document.getElementById('public-home-panel').classList.add('active');
+            if(viewName === 'home') document.getElementById('public-home-panel').classList.add('active');
+            else if(viewName === 'studentLogin') document.getElementById('student-login-view').classList.add('active');
+            else if(viewName === 'teacherLogin') document.getElementById('teacher-login-view').classList.add('active');
+            else if(viewName === 'studentRegister') document.getElementById('student-reg-view').classList.add('active');
         }
 
-        function requestNotificationPermission() {
-            if (!("Notification" in window)) {
-                alert("متصفحك لا يدعم إشعارات سطح المكتب.");
-                return;
+        function submitStudentRegistration() {
+            const fullName = document.getElementById('regName').value.trim();
+            const sClass = document.getElementById('regClass').value;
+            const username = document.getElementById('regUser').value.trim();
+            const password = document.getElementById('regPass').value.trim();
+            if(!fullName || !username || !password) return alert("يرجى ملء جميع الحقول");
+            db.pendingStudents.push({ fullName, sClass, username, password, role: 'student' });
+            alert("تم إرسال طلب انضمامك بنجاح وسيتم إدراج اسمك في قسم الصف المطلوب بعد موافقة الإدارة.");
+            showAuthView('home');
+        }
+
+        function loginStudent() {
+            const u = document.getElementById('stuLogUser').value.trim();
+            const p = document.getElementById('stuLogPass').value.trim();
+            const user = db.users.find(x => x.username === u && x.password === p && x.role === 'student');
+            if(user) {
+                currentUser = user;
+                document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+                document.getElementById('panel-student').classList.add('active');
+                document.getElementById('stuWelcomeTitle').innerText = `بوابة الطالب: ${user.fullName} (${user.sClass})`;
+                renderStudentWorkspace();
+            } else {
+                alert("بيانات الطالب غير صحيحة أو لم تتم الموافقة عليه بعد من قبل الإدارة.");
             }
-            Notification.requestPermission().then(function (permission) {
-                if (permission === "granted") {
-                    alert("✅ تم تفعيل الإشعارات بنجاح!");
-                }
-            });
         }
 
-        function triggerPushNotification(title, bodyText) {
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(title, { body: bodyText, icon: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" });
+        function loginTeacher() {
+            const u = document.getElementById('tchLogUser').value.trim();
+            const p = document.getElementById('tchLogPass').value.trim();
+            const user = db.users.find(x => x.username === u && x.password === p && x.role === 'teacher');
+            if(user) {
+                currentUser = user;
+                document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+                document.getElementById('panel-teacher').classList.add('active');
+                document.getElementById('tchWelcomeTitle').innerText = `قسم الأساتذة: ${user.fullName}`;
+                renderTeacherRooms();
+            } else {
+                alert("بيانات الأستاذ غير صحيحة.");
             }
-        }
-
-        function sendAdminNotice() {
-            const notice = document.getElementById('adminNoticeInput').value.trim();
-            if(!notice) return;
-            db.notices.unshift(`⚠️ إعلان إداري رسمي: ${notice}`);
-            document.getElementById('tickerContent').innerHTML = db.notices.map(n => `<div class="ticker-item">${n}</div>`).join('');
-            triggerPushNotification("تبليغ إداري جديد", notice);
-            document.getElementById('adminNoticeInput').value = '';
-            alert("تم نشر التبليغ وإرسال إشعار فوري للجهاز!");
         }
 
         function logout() {
@@ -324,20 +484,229 @@
             document.getElementById('public-home-panel').classList.add('active');
         }
 
+        // --- شؤون الطلبة للإدارة ---
         function renderStudentsByClass() {
             const sClass = document.getElementById('mgmtViewClass').value;
             const tbody = document.getElementById('mgmtStudentsTable');
+            const pending = db.pendingStudents.filter(s => s.sClass === sClass);
             const approved = db.users.filter(u => u.role === 'student' && u.sClass === sClass);
             let html = '';
             approved.forEach(s => {
-                html += `<tr><td>${s.fullName}</td><td>${s.username}</td><td><span class="badge" style="background:#dcfce7; color:#15803d;">مسجل</span></td><td>-</td></tr>`;
+                html += `<tr><td>${s.fullName}</td><td>${s.username}</td><td><span class="badge" style="background:#dcfce7; color:#15803d;">مسجل ومعتمد</span></td><td>-</td></tr>`;
             });
-            if(!html) html = `<tr><td colspan="4" style="color:#64748b;">لا توجد سجلات.</td></tr>`;
+            pending.forEach((s, idx) => {
+                html += `<tr><td>${s.fullName}</td><td>${s.username}</td><td><span class="badge" style="background:#fef3c7; color:#b45309;">بانتظار الموافقة</span></td><td><button class="btn-success" onclick="approveStudent('${s.username}')">موافقة وإضافة للقسم</button></td></tr>`;
+            });
+            if(!html) html = `<tr><td colspan="4" style="color:#64748b;">لا توجد سجلات في هذا الصف.</td></tr>`;
             tbody.innerHTML = html;
         }
 
-        function loginStudent() { alert("خاصية دخول الطلاب مفعلة."); }
-        function loginTeacher() { alert("خاصية دخول الأساتذة مفعلة."); }
+        function approveStudent(username) {
+            const idx = db.pendingStudents.findIndex(s => s.username === username);
+            if(idx !== -1) {
+                const s = db.pendingStudents.splice(idx, 1)[0];
+                db.users.push(s);
+                db.archive.push(`تمت الموافقة على انضمام الطالب ${s.fullName} إلى صف ${s.sClass}`);
+                alert("تمت الموافقة بنجاح وأضيف اسم الطالب في قسم الصف المطلوب!");
+                renderStudentsByClass();
+            }
+        }
+
+        // --- غرف الأستاذ وأقسام الصفوف من 1 إلى 6 ---
+        function createTeacherRoom() {
+            const subject = document.getElementById('newRoomSubject').value.trim();
+            if(!subject) return alert("يرجى كتابة اسم المادة");
+            db.rooms.push({ id: Date.now(), subject, teacher: currentUser.fullName });
+            document.getElementById('newRoomSubject').value = '';
+            renderTeacherRooms();
+            alert("تم إنشاء الغرفة الخاصة بك بنجاح وتحتوي على كافة أقسام الصفوف!");
+        }
+
+        function renderTeacherRooms() {
+            const sel = document.getElementById('teacherRoomSelect');
+            if(!sel) return;
+            sel.innerHTML = db.rooms.map(r => `<option value="${r.id}">${r.subject} (الأستاذ: ${r.teacher})</option>`).join('');
+            renderTeacherWorkspace();
+        }
+
+        function renderTeacherWorkspace() {
+            const ws = document.getElementById('teacherWorkspace');
+            if(db.rooms.length > 0) ws.style.display = 'block';
+            else ws.style.display = 'none';
+            renderTeacherChat();
+        }
+
+        function switchTchTab(tab) {
+            document.querySelectorAll('.tch-sub').forEach(el => el.style.display = 'none');
+            if(tab === 'chat') document.getElementById('tch-tab-chat').style.display = 'block';
+            if(tab === 'lectures') document.getElementById('tch-tab-lectures').style.display = 'block';
+            if(tab === 'qa') document.getElementById('tch-tab-qa').style.display = 'block';
+        }
+
+        function publishLecture() {
+            const title = document.getElementById('tchLecTitle').value.trim();
+            const desc = document.getElementById('tchLecDesc').value.trim();
+            const targetClass = document.getElementById('teacherTargetClass').value;
+            if(!title) return alert("أدخل عنوان المحاضرة");
+            db.lectures.push({ title, desc, targetClass, teacher: currentUser.fullName });
+            alert("تم نشر المحاضرة بنجاح في قسم الصف المطلوب!");
+            document.getElementById('tchLecTitle').value = '';
+            document.getElementById('tchLecDesc').value = '';
+        }
+
+        function publishQA() {
+            const title = document.getElementById('tchQATitle').value.trim();
+            const answer = document.getElementById('tchQAAns').value.trim();
+            const targetClass = document.getElementById('teacherTargetClass').value;
+            if(!title) return alert("أدخل السؤال");
+            db.qaList.push({ title, answer, targetClass, teacher: currentUser.fullName });
+            alert("تم نشر السؤال والجواب بنجاح!");
+            document.getElementById('tchQATitle').value = '';
+            document.getElementById('tchQAAns').value = '';
+        }
+
+        // محادثة واتساب (تدعم الصور والبصمات والتعديل والحذف)
+        function sendTeacherMsg() {
+            const text = document.getElementById('teacherChatInput').value.trim();
+            const fileInput = document.getElementById('teacherChatFile');
+            const fileInfo = fileInput.files[0] ? fileInput.files[0].name : null;
+            if(!text && !fileInfo) return;
+            db.chatMessages.push({ id: Date.now(), sender: currentUser.fullName, text: text || "مرفق ملف/صورة/بصمة", file: fileInfo });
+            document.getElementById('teacherChatInput').value = '';
+            document.getElementById('teacherChatFile').value = '';
+            renderTeacherChat();
+            renderStudentChat();
+        }
+
+        function renderTeacherChat() {
+            const box = document.getElementById('teacherChatBox');
+            if(!box) return;
+            box.innerHTML = db.chatMessages.map(m => `
+                <div class="chat-msg ${m.sender === currentUser.fullName ? 'self' : 'other'}">
+                    <strong>${m.sender}:</strong> ${m.text}
+                    ${m.file ? `<br><small style="color:#0284c7;">📎 ${m.file}</small>` : ''}
+                    <div style="text-align: left; margin-top:5px;">
+                        <button onclick="editMsg(${m.id})" style="font-size:0.7rem; background:none; border:none; color:#0284c7; cursor:pointer;">تعديل</button>
+                        <button onclick="deleteMsg(${m.id})" style="font-size:0.7rem; background:none; border:none; color:#ef4444; cursor:pointer;">حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchStuTab(tab) {
+            document.querySelectorAll('.stu-sub').forEach(el => el.style.display = 'none');
+            if(tab === 'chat') { document.getElementById('stu-tab-chat').style.display = 'block'; renderStudentChat(); }
+            if(tab === 'lectures') { document.getElementById('stu-tab-lectures').style.display = 'block'; renderStudentLectures(); }
+            if(tab === 'qa') { document.getElementById('stu-tab-qa').style.display = 'block'; renderStudentQA(); }
+        }
+
+        function sendStudentMsg() {
+            const text = document.getElementById('studentChatInput').value.trim();
+            const fileInput = document.getElementById('studentChatFile');
+            const fileInfo = fileInput.files[0] ? fileInput.files[0].name : null;
+            if(!text && !fileInfo) return;
+            db.chatMessages.push({ id: Date.now(), sender: currentUser.fullName, text: text || "مرفق ملف/صورة/بصمة", file: fileInfo });
+            document.getElementById('studentChatInput').value = '';
+            document.getElementById('studentChatFile').value = '';
+            renderStudentChat();
+            renderTeacherChat();
+        }
+
+        function renderStudentChat() {
+            const box = document.getElementById('studentChatBox');
+            if(!box) return;
+            box.innerHTML = db.chatMessages.map(m => `
+                <div class="chat-msg ${m.sender === currentUser.fullName ? 'self' : 'other'}">
+                    <strong>${m.sender}:</strong> ${m.text}
+                    ${m.file ? `<br><small style="color:#0284c7;">📎 ${m.file}</small>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function editMsg(id) {
+            const newText = prompt("تعديل الرسالة:");
+            if(newText) {
+                const msg = db.chatMessages.find(m => m.id === id);
+                if(msg) msg.text = newText;
+                renderTeacherChat();
+                renderStudentChat();
+            }
+        }
+
+        function deleteMsg(id) {
+            db.chatMessages = db.chatMessages.filter(m => m.id !== id);
+            renderTeacherChat();
+            renderStudentChat();
+        }
+
+        function renderStudentWorkspace() {
+            renderStudentChat();
+            renderStudentLectures();
+            renderStudentQA();
+        }
+
+        function renderStudentLectures() {
+            const list = document.getElementById('studentLecturesList');
+            const filtered = db.lectures.filter(l => l.targetClass === currentUser.sClass);
+            if(filtered.length === 0) { list.innerHTML = `<p style="color:#64748b;">لا توجد محاضرات لصفك حالياً.</p>`; return; }
+            list.innerHTML = filtered.map(l => `<div style="background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #e2e8f0;"><h4>${l.title}</h4><p>${l.desc}</p><span class="badge">الأستاذ: ${l.teacher}</span></div>`).join('');
+        }
+
+        function renderStudentQA() {
+            const list = document.getElementById('studentQAList');
+            const filtered = db.qaList.filter(q => q.targetClass === currentUser.sClass);
+            if(filtered.length === 0) { list.innerHTML = `<p style="color:#64748b;">لا توجد أسئلة لصفك حالياً.</p>`; return; }
+            list.innerHTML = filtered.map(q => `<div style="background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #e2e8f0;"><h4>❓ ${q.title}</h4><p>💬 الجواب: ${q.answer}</p></div>`).join('');
+        }
+
+        // --- تواصل الإدارة والمدرسين ---
+        function sendAdminTeacherMsg() {
+            const text = document.getElementById('adminTeacherChatInput').value.trim();
+            const fileInput = document.getElementById('adminTeacherChatFile');
+            const fileInfo = fileInput.files[0] ? fileInput.files[0].name : null;
+            if(!text && !fileInfo) return;
+            db.adminTeacherChat.push({ sender: currentUser.fullName, text: text || "مرفق ملف", file: fileInfo });
+            document.getElementById('adminTeacherChatInput').value = '';
+            document.getElementById('adminTeacherChatFile').value = '';
+            renderAdminTeacherChat();
+        }
+
+        function renderAdminTeacherChat() {
+            const box = document.getElementById('adminTeacherChatBox');
+            if(!box) return;
+            box.innerHTML = db.adminTeacherChat.map(m => `
+                <div class="chat-msg ${m.sender === currentUser.fullName ? 'self' : 'other'}">
+                    <strong>${m.sender}:</strong> ${m.text}
+                    ${m.file ? `<br><small style="color:#0284c7;">📎 ${m.file}</small>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function uploadAdminFile() {
+            const fileInput = document.getElementById('adminFileUp');
+            if(fileInput.files[0]) {
+                db.adminFiles.push(fileInput.files[0].name);
+                document.getElementById('adminFilesList').innerHTML = db.adminFiles.map(f => `📁 ${f}`).join('<br>');
+                alert("تم رفع وتخزين الملف بنجاح!");
+            }
+        }
+
+        function sendAdminNotice() {
+            const notice = document.getElementById('adminNoticeInput').value.trim();
+            if(!notice) return;
+            db.notices.unshift(`⚠️ إعلان إداري رسمي: ${notice}`);
+            document.getElementById('tickerContent').innerHTML = db.notices.map(n => `<div class="ticker-item">${n}</div>`).join('');
+            document.getElementById('adminNoticeInput').value = '';
+            alert("تم نشر التبليغ بنجاح في شريط الإعلانات العلوي!");
+        }
+
+        function requestNotificationPermission() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") alert("✅ تم تفعيل الإشعارات بنجاح!");
+                });
+            }
+        }
     </script>
 </body>
 </html>
