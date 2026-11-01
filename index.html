@@ -28,48 +28,53 @@
         .ticker-item { padding: 0 40px; font-weight: 600; font-size: 0.95rem; color: #34d399; }
         @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .container { max-width: 1300px; margin: 20px auto; padding: 0 15px; position: relative; }
+        .container { max-width: 1300px; margin: 20px auto; padding: 0 15px; }
 
+        /* أزرار الدخول العلوية مرتبة */
         .top-btns {
-            position: absolute; top: 0; left: 15px; display: flex; gap: 8px; z-index: 100;
+            display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap;
         }
         .custom-login-btn {
-            background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(124,58,237,0.3);
+            background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(124,58,237,0.3);
         }
         .admin-login-btn {
-            background: linear-gradient(135deg, #1e3b8a, #0f172a); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(15,23,42,0.2);
+            background: linear-gradient(135deg, #1e3b8a, #0f172a); color: white; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(15,23,42,0.2);
         }
 
         header {
-            background: var(--primary-gradient); color: var(--white); padding: 25px; border-radius: 16px; text-align: center; margin-bottom: 25px;
+            background: var(--primary-gradient); color: var(--white); padding: 25px; border-radius: 16px; text-align: center; margin-bottom: 20px;
         }
         header h1 { margin: 0; font-size: 1.8rem; }
         header p { margin: 8px 0 0 0; font-size: 0.95rem; opacity: 0.85; }
 
-        /* شاشة عرض الجدول في البداية */
         .schedule-display-banner {
-            background: white; border: 2px dashed #10b981; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            background: white; border: 2px dashed #10b981; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
-        .layout-flex { display: flex; gap: 20px; align-items: flex-start; }
+        /* الترتيب الدقيق جداً: القائمة يمين والمحتوى يسار */
+        .layout-flex { display: flex; flex-direction: row-reverse; gap: 20px; align-items: flex-start; }
+        @media(max-width: 768px) {
+            .layout-flex { flex-direction: column; }
+            .sidebar-menu { width: 100% !important; }
+        }
         .sidebar-menu { width: 300px; flex-shrink: 0; background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .content-area { flex-grow: 1; background: var(--card-bg); border-radius: 14px; padding: 25px; border: 1px solid var(--border-color); min-height: 480px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: all 0.3s ease; }
+        .content-area { flex-grow: 1; width: 100%; background: var(--card-bg); border-radius: 14px; padding: 25px; border: 1px solid var(--border-color); min-height: 480px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
 
-        .menu-title { font-size: 1.05rem; color: #1e3b8a; margin-top: 0; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9; font-weight: 700; }
+        .menu-title { font-size: 1.05rem; color: #1e3b8a; margin-top: 0; padding-bottom: 10px; border-bottom: 2px solid #f1f5f9; font-weight: 700; text-align: right; }
         .menu-item {
             padding: 12px 15px; margin-bottom: 8px; border-radius: 10px; background: #f8fafc; cursor: pointer; font-weight: 600; color: #475569; border: 1px solid var(--border-color); text-align: right; width: 100%; transition: 0.2s;
         }
         .menu-item:hover { background: #f1f5f9; color: #1e3b8a; }
         .menu-item.active { background: var(--primary-gradient); color: white; border-color: transparent; }
 
-        .content-panel { display: none; }
+        .content-panel { display: none; text-align: right; }
         .content-panel.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .panel { display: none; }
         .panel.active { display: block; }
 
-        .form-group { margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; text-align: right; }
         label { display: block; margin-bottom: 6px; font-weight: 700; color: #1e3b8a; font-size: 0.9rem; }
         input, select, textarea { width: 100%; padding: 10px 14px; border: 2px solid var(--border-color); border-radius: 10px; font-size: 0.95rem; background: #f8fafc; color: var(--text-main); }
         input:focus, select:focus, textarea:focus { border-color: #10b981; background: white; outline: none; }
@@ -80,7 +85,7 @@
         .btn-warning { background: #f59e0b; color: white; padding: 8px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
 
         .whatsapp-chat-box { background: #efeae2; border-radius: 12px; padding: 15px; height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; border: 2px solid #cbd5e1; transition: height 0.3s ease; }
-        .chat-msg { background: #ffffff; padding: 8px 14px; border-radius: 10px; max-width: 75%; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.9rem; }
+        .chat-msg { background: #ffffff; padding: 8px 14px; border-radius: 10px; max-width: 75%; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.9rem; text-align: right; }
         .chat-msg.self { background: #dcf8c6; margin-right: auto; }
         .chat-msg.other { background: #ffffff; margin-left: auto; }
 
@@ -96,7 +101,7 @@
 
     <div class="ticker-wrap">
         <div class="ticker" id="tickerContent">
-            <div class="ticker-item">🌟 أهلاً بكم في المنصة التعليمية الرقمية - نظام غرفة الإدارة المتكاملة.</div>
+            <div class="ticker-item">🌟 أهلاً بكم في المنصة التعليمية الرقمية - غرفة الإدارة المتكاملة.</div>
         </div>
     </div>
 
@@ -108,7 +113,7 @@
 
         <header>
             <h1>المنصة التعليمية الرقمية الشاملة</h1>
-            <p>غرفة الإدارة والأقسام المتقدمة (يمين ويسار)</p>
+            <p>غرفة الإدارة والأقسام المتقدمة (القوائم يمين والتفاصيل يسار)</p>
             <button class="btn-success" onclick="requestNotificationPermission()" style="margin-top: 10px; width: auto; font-size: 0.85rem;">🔔 تفعيل الإشعارات</button>
         </header>
 
@@ -140,7 +145,6 @@
 
         <!-- ================= البوابة العامة ================= -->
         <div id="public-home-panel" class="panel active">
-            <!-- شاشة عرض الجدول في البداية -->
             <div id="publicScheduleBanner" class="schedule-display-banner" style="display:none;">
                 <h3 style="color: #1e3b8a; margin-top:0;">📅 جدول الحصص والأنشطة المدرسية الرسمي</h3>
                 <div id="publicScheduleContent" style="margin: 15px 0;"></div>
@@ -203,7 +207,7 @@
             </div>
         </div>
 
-        <!-- ================= لوحة دخولك الخاص ================= -->
+        <!-- ================= لوحة دخولك الخاص (يمين ويسار) ================= -->
         <div id="panel-custom" class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:white; padding:12px 20px; border-radius:12px; border:1px solid var(--border-color);">
                 <h3 style="color:#7c3aed; margin:0; font-size:1.1rem;">🔐 لوحة الدخول الخاص (التحكم الشامل)</h3>
@@ -229,7 +233,7 @@
             </div>
         </div>
 
-        <!-- ================= لوحة تحكم الطالب ================= -->
+        <!-- ================= لوحة تحكم الطالب (يمين ويسار) ================= -->
         <div id="panel-student" class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:white; padding:12px 20px; border-radius:12px; border:1px solid var(--border-color);">
                 <h3 id="stuWelcomeTitle" style="color:#1e3b8a; margin:0; font-size:1.1rem;">🎓 غرفة الطالب</h3>
@@ -263,7 +267,7 @@
             </div>
         </div>
 
-        <!-- ================= لوحة تحكم المدرسين ================= -->
+        <!-- ================= لوحة تحكم المدرسين (يمين ويسار) ================= -->
         <div id="panel-teacher" class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:white; padding:12px 20px; border-radius:12px; border:1px solid var(--border-color);">
                 <h3 id="tchWelcomeTitle" style="color:#1e3b8a; margin:0; font-size:1.1rem;">👨‍🏫 غرفة المدرسين</h3>
@@ -361,7 +365,7 @@
                         <div style="margin-top: 15px;" id="adminFilesTableContainer"></div>
                     </div>
 
-                    <!-- 3. قسم الاجتماع (محادثة واتساب متبادلة مع البصمات وتكبير الشاشة) -->
+                    <!-- 3. قسم الاجتماع -->
                     <div id="mgmt-tab-meeting" class="content-panel">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                             <h4 style="margin:0; color:#1e3b8a;">قسم الاجتماع (المدرسين، الإدارة، المعاونين):</h4>
@@ -443,7 +447,7 @@
             const p = document.getElementById('modalAdminPass').value.trim();
             const adminUser = db.users.find(x => x.username === u && x.password === p && (x.role === 'admin' || x.role === 'assistant'));
             if(adminUser) {
-                closeAdminModal();
+                closeCustomModal();
                 currentUser = adminUser;
                 document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
                 document.getElementById('panel-management').classList.add('active');
@@ -558,7 +562,6 @@
             alert("تم تحديث الشريط بنجاح!");
         }
 
-        // --- 1. قسم التبليغات ---
         function sendAdminNotice() {
             const notice = document.getElementById('adminNoticeInput').value.trim();
             if(!notice) return;
@@ -568,7 +571,6 @@
             alert("تم نشر التبليغ بنجاح في الشريط المتحرك!");
         }
 
-        // --- 2. قسم الملفات (عرض، تعديل، حذف) ---
         function uploadAdminFile() {
             const fileInput = document.getElementById('adminFileUp');
             if(fileInput.files[0]) {
@@ -616,7 +618,6 @@
             alert("تم حذف الملف بنجاح!");
         }
 
-        // --- 3. قسم الاجتماع (واتساب مع بصمات حقيقية وتكبير الشاشة) ---
         let isMeetingExpanded = false;
         function toggleMeetingChatSize() {
             const box = document.getElementById('meetingChatBox');
@@ -695,7 +696,6 @@
             renderMeetingChat();
         }
 
-        // --- 4. قسم رفع الجدول ---
         function uploadSchedule() {
             const fileInput = document.getElementById('scheduleFileUp');
             const titleInput = document.getElementById('scheduleTitleUp').value.trim();
@@ -750,7 +750,6 @@
             }
         }
 
-        // الوظائف الباقية (مدرسين وطلبة)
         function createTeacherRoom() {
             const subject = document.getElementById('newRoomSubject').value.trim();
             if(!subject) return alert("أدخل اسم المادة");
