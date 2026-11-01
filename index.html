@@ -107,7 +107,7 @@
     <!-- شاشة التنبيهات المتحركة في الأعلى -->
     <div class="ticker-wrap">
         <div class="ticker" id="tickerContent">
-            <div class="ticker-item">📢 أهلاً بكم في المنصة الرقمية التعليمية - يرجى تسجيل حساب جديد وانتظار موافقة الإدارة للدخول.</div>
+            <div class="ticker-item">📢 أهلاً بكم في المنصة الرقمية التعليمية - يرجى تسجيل الدخول بكودك الخاص أو تقديم طلب حساب جديد.</div>
         </div>
     </div>
 
@@ -117,11 +117,11 @@
             <p style="color: #666; margin-top: 5px;">النظام الآمن لإدارة الصفوف، الواجبات، وشؤون الطلبة</p>
         </header>
 
-        <!-- ================= بوابة تسجيل الدخول / التسجيل (الواجهة الرئيسية قبل الدخول) ================= -->
+        <!-- ================= بوابة تسجيل الدخول والتسجيل ================= -->
         <div id="auth-panel" class="auth-box">
             <div class="auth-tabs">
                 <span class="auth-tab active" onclick="switchAuthMode('login')">تسجيل الدخول</span>
-                <span class="auth-tab" onclick="switchAuthMode('register')">إنشاء حساب جديد</span>
+                <span class="auth-tab" onclick="switchAuthMode('register')">إنشاء حساب جديد (طالب)</span>
             </div>
 
             <!-- نموذج تسجيل الدخول -->
@@ -130,9 +130,9 @@
                 <div class="form-group">
                     <label>اختر صفة الدخول:</label>
                     <select id="loginRole">
-                        <option value="student">طالب 🎓</option>
+                        <option value="admin">الإدارة (الأستاذ وليد) 🏛️</option>
                         <option value="teacher">مدرس 👨‍🏫</option>
-                        <option value="admin">إدارة 🏛️</option>
+                        <option value="student">طالب 🎓</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -146,7 +146,7 @@
                 <button class="btn-submit" onclick="handleLogin()">دخول للمنصة</button>
             </div>
 
-            <!-- نموذج طلب التسجيل الجديد -->
+            <!-- نموذج طلب التسجيل الجديد للطلاب -->
             <div id="register-form" style="display: none;">
                 <h3 style="text-align: center; color: var(--primary);">طلب انضمام لحساب جديد</h3>
                 <p style="font-size: 0.85rem; color: #666; text-align: center;">ملاحظة: يتطلب تفعيل الحساب موافقة الإدارة أولاً.</p>
@@ -166,17 +166,17 @@
                 </div>
                 <div class="form-group">
                     <label>اختر اسم المستخدم (يوزر):</label>
-                    <input type="text" id="regUsername" placeholder="مثال: waleed_2026">
+                    <input type="text" id="regUsername" placeholder="مثال: student_ali">
                 </div>
                 <div class="form-group">
-                    <label>اختر رمز المرور (كود سري تحفظه جيداً):</label>
-                    <input type="password" id="regPassword" placeholder="اكتب كود سري لا ينسا...">
+                    <label>اختر رمز المرور (كود سري):</label>
+                    <input type="password" id="regPassword" placeholder="اكتب كود سري خاص بك...">
                 </div>
                 <button class="btn-submit" onclick="submitRegistrationRequest()">إرسال طلب التسجيل للإدارة</button>
             </div>
         </div>
 
-        <!-- ================= لوحة تحكم الطالب (تظهر بعد الدخول الموافق عليه) ================= -->
+        <!-- ================= لوحة تحكم الطالب ================= -->
         <div id="panel-student" class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h3 id="studentWelcomeTitle" style="margin: 0; color: var(--primary);">أهلاً بك يا طالبنا العزيز</h3>
@@ -278,22 +278,22 @@
             <button class="btn-submit" onclick="publishAssignment()">نشر الواجب للطلاب</button>
         </div>
 
-        <!-- ================= لوحة تحكم الإدارة ================= -->
+        <!-- ================= لوحة تحكم الإدارة (الأستاذ وليد) ================= -->
         <div id="panel-admin" class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0; color: var(--primary);">لوحة تحكم إدارة المدرسة</h3>
+                <h3 style="margin: 0; color: var(--primary);">لوحة تحكم الإدارة (الأستاذ وليد الشمري)</h3>
                 <button class="btn-danger" onclick="logout()" style="width: auto;">تسجيل الخروج</button>
             </div>
 
             <!-- قسم إدارة طلبات التسجيل والموافقة -->
             <div style="background: #eef9f6; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
-                <h4>طلبات التسجيل المعلقة (بانتظار موافقة الإدارة):</h4>
+                <h4>طلبات التسجيل المعلقة للطلاب (بانتظار موافقتك):</h4>
                 <table>
                     <thead>
                         <tr>
                             <th>اسم الطالب</th>
                             <th>الصف</th>
-                            <th>اسم المستخدم (اليوزر)</th>
+                            <th>اسم المستخدم</th>
                             <th>الإجراء</th>
                         </tr>
                     </thead>
@@ -330,7 +330,7 @@
                 </table>
             </div>
 
-            <!-- قسم إدارة الجداول وقراءتها وتحليلها من الملفات/الصور -->
+            <!-- إدارة الجداول وقراءتها وتحليلها من الملفات/الصور -->
             <div style="background: #f4f6f6; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
                 <h4>إدارة الجداول الأسبوعية (رفع، قراءة وتحليل الملفات أو الصور):</h4>
                 <div class="form-group">
@@ -361,11 +361,11 @@
     </div>
 
     <script>
-        // قاعدة بيانات وهمية للمنصة
+        // قاعدة البيانات مع بيانات الإدارة الخاصة بك
         let db = {
             users: [
-                { fullName: "أستاذ وليد", username: "admin", password: "123", role: "admin", sClass: "" },
-                { fullName: "مدرس الحاسوب", username: "teacher", password: "123", role: "teacher", sClass: "" }
+                { fullName: "الأستاذ وليد الشمري (الإدارة)", username: "waleed", password: "WA1992wa", role: "admin", sClass: "" },
+                { fullName: "الكادر التدريسي", username: "teacher", password: "123", role: "teacher", sClass: "" }
             ],
             pendingRequests: [],
             rooms: [
@@ -373,12 +373,12 @@
             ],
             assignments: [],
             schedules: {},
-            notices: ["📢 أهلاً بكم في منصة الطالب المتفوق التعليمية - يرجى تسجيل الدخول بكودك السري."]
+            notices: ["📢 أهلاً بكم في منصة الطالب المتفوق التعليمية - يرجى تسجيل الدخول بكودك الخاص أو تقديم طلب حساب جديد."]
         };
 
         let currentUser = null;
 
-        // تبديل أوضاع واجهة الدخول (تسجيل الدخول / إنشاء حساب)
+        // تبديل أوضاع واجهة الدخول
         function switchAuthMode(mode) {
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             if(mode === 'login') {
@@ -392,7 +392,7 @@
             }
         }
 
-        // تقديم طلب تسجيل جديد
+        // تقديم طلب تسجيل جديد للطلاب
         function submitRegistrationRequest() {
             const fullName = document.getElementById('regFullName').value.trim();
             const sClass = document.getElementById('regClass').value;
@@ -403,10 +403,9 @@
                 return alert("يرجى ملء جميع حقول التسجيل بدقة");
             }
 
-            // فحص عدم تكرار اليوزر
             const exists = db.users.some(u => u.username === username) || db.pendingRequests.some(r => r.username === username);
             if (exists) {
-                return alert("اسم المستخدم (اليوزر) مستخدم مسبقاً، ياختر اسماً آخر.");
+                return alert("اسم المستخدم (اليوزر) مستخدم مسبقاً، يرجى اختيار اسم آخر.");
             }
 
             db.pendingRequests.push({ fullName, sClass, username, password, role: 'student' });
@@ -418,23 +417,18 @@
             switchAuthMode('login');
         }
 
-        // معالجة تسجيل الدخول الحقيقي
+        // تسجيل الدخول بالبيانات
         function handleLogin() {
             const role = document.getElementById('loginRole').value;
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            // حسابات افتراضية للإدارة والمدرسين
-            if(role === 'admin' && username === 'admin' && password === '123') {
-                loginSuccess({ fullName: "الإدارة العامة", role: 'admin' });
-                return;
-            }
-            if(role === 'teacher' && username === 'teacher' && password === '123') {
-                loginSuccess({ fullName: "الكادر التدريسي", role: 'teacher' });
+            // فحص دخول الإدارة الخاص بك (waleed / WA1992wa)
+            if(role === 'admin' && username === 'waleed' && password === 'WA1992wa') {
+                loginSuccess(db.users[0]);
                 return;
             }
 
-            // البحث في المستخدمين المقبولين للطلاب
             const user = db.users.find(u => u.username === username && u.password === password && u.role === role);
             if(user) {
                 loginSuccess(user);
@@ -446,8 +440,6 @@
         function loginSuccess(user) {
             currentUser = user;
             document.getElementById('auth-panel').style.display = 'none';
-            
-            // إخفاء كل اللوحات ثم إظهار اللوحة الخاصة بالمستخدم
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
 
             if (user.role === 'admin') {
@@ -464,7 +456,6 @@
             }
         }
 
-        // تسجيل الخروج
         function logout() {
             currentUser = null;
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -473,7 +464,7 @@
             document.getElementById('loginPassword').value = '';
         }
 
-        // عرض طلبات التسجيل المعلقة في لوحة الإدارة
+        // إدارة الطلبات من قبل الإدارة
         function renderPendingRequests() {
             const tbody = document.getElementById('pendingRequestsTable');
             if (db.pendingRequests.length === 0) {
@@ -493,7 +484,6 @@
             `).join('');
         }
 
-        // موافقة الإدارة على الطالب
         function approveRequest(idx) {
             const req = db.pendingRequests.splice(idx, 1)[0];
             db.users.push(req);
@@ -502,19 +492,17 @@
             renderApprovedStudents();
         }
 
-        // رفض الطلب
         function rejectRequest(idx) {
             db.pendingRequests.splice(idx, 1);
-            alert("تم رفض الطلب بنجاح.");
+            alert("تم رفض الطلب.");
             renderPendingRequests();
         }
 
-        // عرض شؤون الطلبة المقبولين
         function renderApprovedStudents() {
             const tbody = document.getElementById('approvedStudentsTable');
             const students = db.users.filter(u => u.role === 'student');
             if (students.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="color: #777;">لا توجد حسابات طلاب مفعلة.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="color: #777;">لا توجد حسابات طلاب مفعلة حتى الآن.</td></tr>`;
                 return;
             }
             tbody.innerHTML = students.map(s => `
@@ -527,7 +515,6 @@
             `).join('');
         }
 
-        // إضافة غرفة للمدرس
         function addTeacherRoom() {
             const subject = document.getElementById('roomSubject').value.trim();
             const teacher = document.getElementById('roomTeacherName').value.trim();
@@ -554,7 +541,6 @@
             `).join('');
         }
 
-        // نشر واجب
         function publishAssignment() {
             const subject = document.getElementById('assignSubjectSelect').value;
             const targetClass = document.getElementById('assignClass').value;
@@ -571,7 +557,6 @@
             document.getElementById('assignFile').value = '';
         }
 
-        // عرض الواجبات للطالب
         function renderStudentAssignments() {
             const sClass = currentUser ? currentUser.sClass : document.getElementById('filterClass').value;
             const sDay = document.getElementById('filterDay').value;
@@ -592,7 +577,6 @@
             `).join('');
         }
 
-        // إرسال تبليغ من الإدارة لعرضه في شريط التنبيهات العلوي
         function sendAdminNotice() {
             const notice = document.getElementById('adminNoticeInput').value.trim();
             if(!notice) return;
@@ -602,7 +586,6 @@
             alert("تم نشر التبليغ في شاشة العرض الرئيسية بنجاح!");
         }
 
-        // رفع وقراءة وتحليل الجدول الأسبوعي
         function uploadAndAnalyzeSchedule() {
             const sClass = document.getElementById('scheduleClass').value;
             const fileInput = document.getElementById('scheduleFileInput');
@@ -637,7 +620,6 @@
             alert("تم الحذف بنجاح!");
         }
 
-        // التشغيل الأولي
         renderRooms();
     </script>
 </body>
