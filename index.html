@@ -19,7 +19,7 @@
         * { box-sizing: border-box; font-family: Tahoma, 'Segoe UI', Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); margin: 0; padding: 0; direction: rtl; }
 
-        /* شاشة التنبيهات في الأعلى */
+        /* شاشة التنبيهات المتحركة في الأعلى */
         .ticker-wrap {
             width: 100%;
             background: var(--primary);
@@ -82,7 +82,7 @@
         .panel { display: none; background: var(--white); padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .panel.active { display: block; }
 
-        /* العناصر الجداول والنماذج */
+        /* العناصر والنماذج */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--primary); }
         input, select, textarea {
@@ -104,7 +104,7 @@
         }
         .btn-submit:hover { background: #138d75; }
 
-        /* جداول العرض */
+        /* الجداول */
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         th { background-color: var(--primary); color: white; }
@@ -121,7 +121,7 @@
 </head>
 <body>
 
-    <!-- شاشة التنبيهات الإخبارية في بداية الصفحة -->
+    <!-- شاشة التنبيهات الإخبارية العلوية (ترتبط بتنبيهات الإدارة) -->
     <div class="ticker-wrap">
         <div class="ticker" id="tickerContent">
             <div class="ticker-item">📢 أهلاً بكم في المنصة الرقمية التعليمية الشاملة - يرجى متابعة الواجبات والجدول الأسبوعي بشكل دوري.</div>
@@ -134,7 +134,7 @@
             <p style="color: #666; margin-top: 5px;">نظام إدارة الصفوف، الواجبات، وشؤون الطلبة</p>
         </header>
 
-        <!-- اختيارات تسجبل الدخول -->
+        <!-- أزرار تبديل الأدوار -->
         <div class="role-selector">
             <button class="btn-role active" onclick="switchRole('student')">دخول الطلبة 🎓</button>
             <button class="btn-role" onclick="switchRole('teacher')">دخول المدرسين 👨‍🏫</button>
@@ -145,24 +145,25 @@
         <div id="panel-student" class="panel active">
             <h3>قسم الطلاب والواجبات اليومية</h3>
             
+            <!-- تسجيل دخول الطالب وانضمامه لقسم شؤون الطلبة -->
             <div class="form-group" style="background: #eef9f6; padding: 15px; border-radius: 8px;">
                 <label>تسجيل دخول الطالب لتثبيت الحضور:</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="studentNameInput" placeholder="أدخل اسمك الثلاثي">
-                    <select id="studentClassSelect" style="width: 200px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="studentNameInput" placeholder="أدخل اسمك الثلاثي" style="flex: 2;">
+                    <select id="studentClassSelect" style="flex: 1;">
                         <option value="الأول متوسط">الأول متوسط</option>
                         <option value="الثاني متوسط">الثاني متوسط</option>
                         <option value="الثالث متوسط">الثالث متوسط</option>
                         <option value="الرابع إعدادي">الرابع إعدادي</option>
                         <option value="الخامس إعدادي">الخامس إعدادي</option>
                     </select>
-                    <button class="btn-submit" style="width: 150px;" onclick="registerStudent()">تسجيل الدخول</button>
+                    <button class="btn-submit" style="width: 140px;" onclick="registerStudent()">تسجيل الدخول</button>
                 </div>
             </div>
 
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
-            <h4>عرض الواجبات والجدول الأسبوعي:</h4>
+            <h4>عرض الواجبات حسب الصف واليوم:</h4>
             <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                 <div style="flex: 1;">
                     <label>اختر الصف:</label>
@@ -187,12 +188,12 @@
             </div>
 
             <div class="grid-cards" id="assignmentsContainer">
-                <!-- يتم تحميل الواجبات هنا -->
+                <p style="color:#888;">اختر الصف واليوم لعرض الواجبات المتاحة.</p>
             </div>
 
             <h4 style="margin-top: 30px;">الجدول الأسبوعي المعتمد:</h4>
             <div id="studentScheduleView">
-                <!-- يتم تحميل الجدول هنا -->
+                <p style="color:#777;">لم يتم نشر جدول أسبوعي بعد من قبل الإدارة.</p>
             </div>
         </div>
 
@@ -200,20 +201,18 @@
         <div id="panel-teacher" class="panel">
             <h3>بوابة الكادر التدريسي</h3>
             
-            <!-- إضافة غرف للمواد -->
+            <!-- إنشاء غرف المواد -->
             <div style="background: #fdfefe; border: 1px solid #d4efdf; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <h4>إنشاء غرفة مادة خاصة بك:</h4>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <input type="text" id="roomSubject" placeholder="اسم المادة (مثال: الحاسوب، الرياضيات)" style="flex: 1;">
-                    <input type="text" id="teacherName" placeholder="اسم المدرس" style="flex: 1;">
+                    <input type="text" id="teacherName" placeholder="اسم الاستاذ" style="flex: 1;">
                     <button class="btn-submit" style="width: 150px;" onclick="addTeacherRoom()">إنشاء الغرفة</button>
                 </div>
             </div>
 
             <h4>غرف المواد الحالية:</h4>
-            <div class="grid-cards" id="teacherRoomsContainer" style="margin-bottom: 25px;">
-                <!-- الغرف المضافة -->
-            </div>
+            <div class="grid-cards" id="teacherRoomsContainer" style="margin-bottom: 25px;"></div>
 
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
@@ -222,7 +221,7 @@
                 <label>اختر المادة والغرفة:</label>
                 <select id="assignSubjectSelect"></select>
             </div>
-            <div style="display: flex; gap: 15px;">
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                 <div class="form-group" style="flex: 1;">
                     <label>الصف المستهدف:</label>
                     <select id="assignClass">
@@ -234,7 +233,7 @@
                     </select>
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>يوم التسليم/المادة:</label>
+                    <label>اليوم:</label>
                     <select id="assignDay">
                         <option value="الأحد">الأحد</option>
                         <option value="الإثنين">الإثنين</option>
@@ -245,11 +244,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>تفاصيل الواجب العلمي:</label>
-                <textarea id="assignDetails" rows="3" placeholder="اكتب تفاصيل الواجب والتمارين المطلوب حلها..."></textarea>
+                <label>كتابة تفاصيل الواجب:</label>
+                <textarea id="assignDetails" rows="3" placeholder="اكتب تفاصيل الواجب أو التمارين المطلوب حلها..."></textarea>
             </div>
             <div class="form-group">
-                <label>إرفاق ملف / صورة (اختياري):</label>
+                <label>رفع ملف أو صورة (اختياري):</label>
                 <input type="file" id="assignFile">
             </div>
             <button class="btn-submit" onclick="publishAssignment()">نشر الواجب للطلاب</button>
@@ -259,69 +258,72 @@
         <div id="panel-admin" class="panel">
             <h3>لوحة تحكم إدارة المدرسة</h3>
 
-            <!-- قسم إرسال التنبيهات -->
+            <!-- قسم التبليغات والتنبيهات -->
             <div style="background: #fef9e7; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h4>إرسال تنبيه عاجل (يظهر بشاشة العرض الرئيسية):</h4>
+                <h4>قسم التبليغات (يظهر مباشرة في شاشة العرض العلوية):</h4>
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="adminNoticeInput" placeholder="اكتب التنبيه هنا ليظهر في أعلى المنصة لكل الطلاب...">
-                    <button class="btn-submit" style="width: 150px; background: var(--warning);" onclick="sendAdminNotice()">نشر التنبيه</button>
+                    <input type="text" id="adminNoticeInput" placeholder="اكتب التبليغ أو التنبيه هنا...">
+                    <button class="btn-submit" style="width: 150px; background: var(--warning);" onclick="sendAdminNotice()">نشر التبليغ</button>
                 </div>
             </div>
 
-            <!-- قسم شؤون الطلبة المسجلين -->
+            <!-- قسم شؤون الطلبة -->
             <div style="margin-bottom: 25px;">
-                <h4>قسم شؤون الطلبة (الذين سجلوا دخولهم):</h4>
+                <h4>قسم شؤون الطلبة (أسماء الطلبة الذين دخلوا النظام):</h4>
                 <table>
                     <thead>
                         <tr>
                             <th>اسم الطالب</th>
                             <th>الصف</th>
-                            <th>وقت تسجيل الدخول</th>
+                            <th>وقت الدخول</th>
                         </tr>
                     </thead>
                     <tbody id="studentLogTable">
-                        <!-- بيانات تسجيل الدخول -->
+                        <tr><td colspan="3" style="color: #777;">لم يسجل أي طالب دخول حتى الآن.</td></tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- إدارة الجدول الأسبوعي -->
             <div style="margin-bottom: 25px;">
-                <h4>إدارة وحفظ الجدول الأسبوعي:</h4>
-                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <h4>قسم إدارة الجداول الأسبوعية (رفع، تعديل، حذف):</h4>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
                     <select id="scheduleClass" style="width: 200px;">
                         <option value="الأول متوسط">الأول متوسط</option>
                         <option value="الثاني متوسط">الثاني متوسط</option>
                         <option value="الثالث متوسط">الثالث متوسط</option>
+                        <option value="الرابع إعدادي">الرابع إعدادي</option>
+                        <option value="الخامس إعدادي">الخامس إعدادي</option>
                     </select>
-                    <input type="text" id="scheduleDetails" placeholder="تفاصيل الجدول (مثال: الأحد: حاسوب، الإثنين: رياضيات...)">
-                    <button class="btn-submit" style="width: 150px;" onclick="saveSchedule()">حفظ الجدول</button>
+                    <input type="text" id="scheduleDetails" placeholder="تفاصيل الجدول الأسبوعي..." style="flex: 1;">
+                    <button class="btn-submit" style="width: 140px;" onclick="saveSchedule()">حفظ / تحديث</button>
                 </div>
+                <div id="adminScheduleList"></div>
             </div>
 
             <!-- قسم الأرشيف -->
             <div>
-                <h4>قسم أرشيف القرارات والواجبات:</h4>
-                <div id="archiveContainer">
-                    <p style="color: #777;">جميع الواجبات والتنبيهات المضافة محفوظة ومؤرشفة تلقائياً في السجل الرقمي للنظام.</p>
+                <h4>قسم الأرشيف المركزي:</h4>
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px solid #ddd;">
+                    <p style="color: #555; margin: 0;">يتم أفظ كافة السجلات والواجبات المنشورة والتبليغات السابقة تلقائياً في الأرشيف.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // قواعد البيانات المحلية المؤقتة
+        // قواعد البيانات المحلية للمنصة
         let appData = {
             students: [],
             rooms: [
-                { subject: "مادة الحاسوب", teacher: "الأستاذ وليد الشمري" }
+                { subject: "مادة الحاسوب العملي", teacher: "الأستاذ وليد الشمري" }
             ],
             assignments: [],
             schedules: {},
             notices: ["📢 أهلاً بكم في المنصة الرقمية التعليمية الشاملة - يرجى متابعة الواجبات والجدول الأسبوعي."]
         };
 
-        // التنقل بين الأقسام
+        // تبديل الواجهات (طلبة / مدرسين / إدارة)
         function switchRole(role) {
             document.querySelectorAll('.btn-role').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -330,9 +332,9 @@
             document.getElementById(`panel-${role}`).classList.add('active');
         }
 
-        // تسجيل الطالب
+        // تسجيل الطالب وانضمامه لشؤون الطلبة
         function registerStudent() {
-            const name = document.getElementById('studentNameInput').value;
+            const name = document.getElementById('studentNameInput').value.trim();
             const sClass = document.getElementById('studentClassSelect').value;
             if (!name) return alert("يرجى كتابة اسم الطالب الثلاثي");
 
@@ -344,9 +346,13 @@
             renderStudentLogs();
         }
 
-        // عرض سجل الطلاب في الإدارة
+        // عرض سجل الطلبة في الإدارة
         function renderStudentLogs() {
             const tbody = document.getElementById('studentLogTable');
+            if (appData.students.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="color: #777;">لم يسجل أي طالب دخول حتى الآن.</td></tr>`;
+                return;
+            }
             tbody.innerHTML = appData.students.map(s => `
                 <tr>
                     <td>${s.name}</td>
@@ -356,18 +362,20 @@
             `).join('');
         }
 
-        // إضافة غرفة مدرس
+        // إضافة غرفة للمدرس
         function addTeacherRoom() {
-            const subject = document.getElementById('roomSubject').value;
-            const teacher = document.getElementById('teacherName').value;
-            if (!subject || !teacher) return alert("يرجى ملء جميع الحقول");
+            const subject = document.getElementById('roomSubject').value.trim();
+            const teacher = document.getElementById('teacherName').value.trim();
+            if (!subject || !teacher) return alert("يرجى ملء جميع الحقول المطلوبة");
 
             appData.rooms.push({ subject, teacher });
             document.getElementById('roomSubject').value = '';
             document.getElementById('teacherName').value = '';
             renderRooms();
+            alert("تم إنشاء الغرفة بنجاح!");
         }
 
+        // تحديث وعرض غرف المواد والمدرسين
         function renderRooms() {
             const container = document.getElementById('teacherRoomsContainer');
             const select = document.getElementById('assignSubjectSelect');
@@ -385,12 +393,12 @@
             `).join('');
         }
 
-        // نشر واجب
+        // نشر واجب من قبل المدرس
         function publishAssignment() {
             const subject = document.getElementById('assignSubjectSelect').value;
             const targetClass = document.getElementById('assignClass').value;
             const day = document.getElementById('assignDay').value;
-            const details = document.getElementById('assignDetails').value;
+            const details = document.getElementById('assignDetails').value.trim();
             const fileInput = document.getElementById('assignFile');
 
             if (!details) return alert("يرجى كتابة تفاصيل الواجب");
@@ -407,7 +415,7 @@
             renderStudentAssignments();
         }
 
-        // عرض الواجبات لدى الطلبة
+        // عرض الواجبات للطلاب حسب الصف واليوم
         function renderStudentAssignments() {
             const sClass = document.getElementById('filterClass').value;
             const sDay = document.getElementById('filterDay').value;
@@ -416,47 +424,53 @@
             const filtered = appData.assignments.filter(a => a.class === sClass && a.day === sDay);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<p style="color:#888;">لا يوجد واجب معلن لهذا الصف في يوم ${sDay}.</p>`;
+                container.innerHTML = `<p style="color:#888;">لا توجد واجبات معلنة لهذا الصف في يوم ${sDay}.</p>`;
                 return;
             }
 
             container.innerHTML = filtered.map(a => `
                 <div class="card" style="border-right: 4px solid var(--secondary);">
                     <h4>${a.subject}</h4>
-                    <p style="margin: 5px 0;">${a.details}</p>
+                    <p style="margin: 5px 0; white-space: pre-line;">${a.details}</p>
                     ${a.fileName ? `<p style="font-size:0.85rem; color:var(--accent);">📎 المرفق: ${a.fileName}</p>` : ''}
                     <span class="badge" style="background:var(--primary);">${a.day}</span>
                 </div>
             `).join('');
         }
 
-        // نشر تنبيه من الإدارة
+        // إرسال تبليغ من الإدارة يظهر في شاشة التنبيهات العلوية
         function sendAdminNotice() {
-            const notice = document.getElementById('adminNoticeInput').value;
+            const notice = document.getElementById('adminNoticeInput').value.trim();
             if (!notice) return;
 
             appData.notices.unshift(`⚠️ تنبيه إداري: ${notice}`);
             document.getElementById('tickerContent').innerHTML = appData.notices.map(n => `<div class="ticker-item">${n}</div>`).join('');
             document.getElementById('adminNoticeInput').value = '';
-            alert("تم إرسال التنبيه إلى شاشة العرض الرئيسية!");
+            alert("تم نشر التبليغ بنجاح ليظهر في شاشة العرض الرئيسية!");
         }
 
-        // حفظ الجدول
+        // حفظ / تعديل الجدول الأسبوعي
         function saveSchedule() {
             const sClass = document.getElementById('scheduleClass').value;
-            const details = document.getElementById('scheduleDetails').value;
-            if(!details) return;
+            const details = document.getElementById('scheduleDetails').value.trim();
+            if(!details) return alert("يرجى كتابة تفاصيل الجدول");
 
             appData.schedules[sClass] = details;
+            
             document.getElementById('studentScheduleView').innerHTML = `
-                <div style="background:#f4f6f6; padding:15px; border-radius:6px;">
+                <div style="background:#f4f6f6; padding:15px; border-radius:6px; border-right: 4px solid var(--accent);">
                     <strong>جدول صف ${sClass}:</strong> ${details}
                 </div>
             `;
-            alert("تم تحديث الجدول الأسبوعي بنجاح!");
+            
+            document.getElementById('adminScheduleList').innerHTML = `
+                <p style="color: var(--secondary); margin-top:10px;">✅ تم حفظ جدول ${sClass} بنجاح وتحديثه للطلبة.</p>
+            `;
+            document.getElementById('scheduleDetails').value = '';
+            alert("تم حفظ الجدول الأسبوعي وتحديثه بنجاح!");
         }
 
-        // تشغيل أولي
+        // التهيئة الأولية عند فتح الصفحة
         renderRooms();
     </script>
 </body>
