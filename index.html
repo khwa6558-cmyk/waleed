@@ -130,7 +130,7 @@
     <!-- شريط التنبيهات العلوي المتحرك -->
     <div class="ticker-wrap">
         <div class="ticker" id="tickerContent">
-            <div class="ticker-item">🌟 أهلاً بكم في المنصة التعليمية الرقمية - يرجى تسجيل الدخول أو اختيار صفتك للمتابعة.</div>
+            <div class="ticker-item">🌟 أهلاً بكم في المنصة التعليمية الرقمية الشاملة - يرجى تسجيل الدخول أو اختيار صفتك للمتابعة.</div>
         </div>
     </div>
 
@@ -145,17 +145,16 @@
             <div class="auth-tabs">
                 <div class="auth-tab active" onclick="switchAuthMode('login')">تسجيل الدخول</div>
                 <div class="auth-tab" onclick="switchAuthMode('registerStudent')">تسجيل طالب</div>
-                <div class="auth-tab" onclick="switchAuthMode('registerStaff')">تسجيل معاون/مدرس</div>
+                <div class="auth-tab" onclick="switchAuthMode('registerStaff')">تسجيل إداري / مدرس</div>
             </div>
 
-            <!-- نموذج تسجيل الدخول العام -->
+            <!-- نموذج تسجيل الدخول العام (المدير والمعاون في مسار الإدارة الموحد) -->
             <div id="login-form">
                 <h3 style="text-align: center; color: #1e3b8a; margin-bottom: 25px;">تسجيل الدخول للنظام</h3>
                 <div class="form-group">
                     <label>اختر صفة الدخول:</label>
                     <select id="loginRole">
-                        <option value="admin">المدير (الإدارة الرئيسية) 🏛️</option>
-                        <option value="assistant">المعاون الإداري 📑</option>
+                        <option value="management">الإدارة العليا (المدير / المعاون) 🏛️</option>
                         <option value="teacher">مدرس 👨‍🏫</option>
                         <option value="student">طالب 🎓</option>
                     </select>
@@ -201,10 +200,10 @@
                 <button class="btn-modern" onclick="submitStudentRegistration()" style="margin-top: 10px;">إرسال طلب الانضمام</button>
             </div>
 
-            <!-- نموذج تسجيل معاون أو مدرس جديد -->
+            <!-- نموذج تسجيل إداري (معاون أو مدير) أو مدرس -->
             <div id="register-staff-form" style="display: none;">
-                <h3 style="text-align: center; color: #1e3b8a; margin-bottom: 10px;">تسجيل معاون أو مدرس جديد</h3>
-                <p style="font-size: 0.85rem; color: #64748b; text-align: center; margin-bottom: 20px;">يتم الاعتماد والموافقة من قبل المدير.</p>
+                <h3 style="text-align: center; color: #1e3b8a; margin-bottom: 10px;">تسجيل حساب إداري / مدرس</h3>
+                <p style="font-size: 0.85rem; color: #64748b; text-align: center; margin-bottom: 20px;">يتم مراجعة الطلب من قبل المدير العام.</p>
                 <div class="form-group">
                     <label>الصفة الوظيفية:</label>
                     <select id="regStaffRole">
@@ -331,15 +330,16 @@
             <button class="btn-modern" onclick="publishAssignment()" style="margin-top: 10px;">نشر الواجب للطلاب</button>
         </div>
 
-        <!-- ================= لوحة تحكم المعاونين الإداريين ================= -->
-        <div id="panel-assistant" class="panel">
+        <!-- ================= لوحة الإدارة الموحدة (للمدير وللمعاونين في مسار واحد) ================= -->
+        <div id="panel-management" class="panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h3 id="assistantWelcomeTitle" style="margin: 0; color: #1e3b8a; font-size: 1.5rem;">لوحة تحكم المعاون الإداري</h3>
+                <h3 id="managementWelcomeTitle" style="margin: 0; color: #1e3b8a; font-size: 1.5rem;">لوحة إدارة المدرسة (الإدارة والمعاونين)</h3>
                 <button class="btn-danger" onclick="logout()">تسجيل الخروج</button>
             </div>
 
+            <!-- قسم الموافقات على طلبات الطلاب (متاح للمدير والمعاونين) -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 30px;">
-                <h4 style="color: #1e3b8a; margin-top:0;">طلبات تسجيل الطلاب المعلقة (مراجعة وموافقة المعاون):</h4>
+                <h4 style="color: #1e3b8a; margin-top:0;">طلبات تسجيل الطلاب المعلقة:</h4>
                 <table>
                     <thead>
                         <tr>
@@ -349,18 +349,18 @@
                             <th>الإجراء</th>
                         </tr>
                     </thead>
-                    <tbody id="assistantPendingTable">
-                        <tr><td colspan="4" style="color: #64748b;">لا توجد طلبات معلقة حالياً.</td></tr>
+                    <tbody id="managementStudentPendingTable">
+                        <tr><td colspan="4" style="color: #64748b;">لا توجد طلبات طلاب معلقة حالياً.</td></tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- إدارة الجداول الأسبوعية -->
-            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+            <!-- قسم إدارة الجداول الدراسية (متاح للمدير والمعاونين) -->
+            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 30px;">
                 <h4 style="color: #1e3b8a; margin-top:0;">إدارة الجداول الدراسية (رفع وتحليل الملفات أو الصور):</h4>
                 <div class="form-group">
                     <label>اختر الصف:</label>
-                    <select id="assistantScheduleClass">
+                    <select id="mgmtScheduleClass">
                         <option value="الأول متوسط">الأول متوسط</option>
                         <option value="الثاني متوسط">الثاني متوسط</option>
                         <option value="الثالث متوسط">الثالث متوسط</option>
@@ -371,66 +371,45 @@
                 </div>
                 <div class="form-group">
                     <label>رفع صورة أو ملف الجدول:</label>
-                    <input type="file" id="assistantScheduleFile" accept="image/*,.pdf">
+                    <input type="file" id="mgmtScheduleFile" accept="image/*,.pdf">
                 </div>
                 <div class="form-group">
                     <label>أو كتابة تفاصيل الجدول يدوياً:</label>
-                    <textarea id="assistantScheduleDetails" rows="2" placeholder="تفاصيل الحصص..."></textarea>
+                    <textarea id="mgmtScheduleDetails" rows="2" placeholder="تفاصيل الحصص..."></textarea>
                 </div>
-                <button class="btn-modern" onclick="uploadScheduleByAssistant()">اعتماد ونشر الجدول</button>
-            </div>
-        </div>
-
-        <!-- ================= لوحة تحكم الإدارة (المدير / دخولك الخاص) ================= -->
-        <div id="panel-admin" class="panel">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h3 style="margin: 0; color: #1e3b8a; font-size: 1.5rem;">لوحة تحكم المدير (الإدارة العليا)</h3>
-                <button class="btn-danger" onclick="logout()">تسجيل الخروج</button>
+                <button class="btn-modern" onclick="uploadScheduleByManagement()">اعتماد ونشر الجدول</button>
             </div>
 
-            <!-- قسم الموافقة على طلبات الكادر (المعاونين والمدرسين) -->
-            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 30px;">
-                <h4 style="color: #1e3b8a; margin-top:0;">طلبات تسجيل المعاونين والمدرسين المعلقة:</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الاسم الكامل</th>
-                            <th>الصفة الوظيفية</th>
-                            <th>اسم المستخدم</th>
-                            <th>الإجراء</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminStaffPendingTable">
-                        <tr><td colspan="4" style="color: #64748b;">لا توجد طلبات معلقة للكادر.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- قسم التبليغات وشاشة العرض العلوية -->
-            <div style="background: #fffbeb; padding: 20px; border-radius: 12px; border: 1px solid #fef3c7; margin-bottom: 30px;">
-                <h4 style="color: #b45309; margin-top:0;">نشر تبليغ عاجل (يظهر بشاشة التنبيهات العلوية للجميع):</h4>
-                <div style="display: flex; gap: 15px;">
-                    <input type="text" id="adminNoticeInput" placeholder="اكتب التبليغ أو التنبيه هنا...">
-                    <button class="btn-modern" style="width: 180px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" onclick="sendAdminNotice()">نشر التبليغ</button>
+            <!-- أقسام خاصة بالمدير فقط (تظهر فقط عند دخولك بالكود الخاص waleed / WA1992wa) -->
+            <div id="adminOnlySection" style="display: none; border-top: 3px dashed #1e3b8a; padding-top: 25px; margin-top: 25px;">
+                <h3 style="color: #b45309; margin-bottom: 20px;">🔒 صلاحيات المدير المطلقة (خاص بالأستاذ وليد)</h3>
+                
+                <!-- الموافقة على طلبات المعاونين والمدرسين -->
+                <div style="background: #fffbeb; padding: 20px; border-radius: 12px; border: 1px solid #fef3c7; margin-bottom: 25px;">
+                    <h4 style="color: #b45309; margin-top:0;">طلبات تسجيل المعاونين والمدرسين المعلقة:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الاسم الكامل</th>
+                                <th>الصفة الوظيفية</th>
+                                <th>اسم المستخدم</th>
+                                <th>الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminStaffPendingTable">
+                            <tr><td colspan="4" style="color: #64748b;">لا توجد طلبات معلقة للكادر.</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
 
-            <!-- شؤون الطلبة والكادر -->
-            <div style="margin-bottom: 30px;">
-                <h4 style="color: #1e3b8a;">قائمة شؤون الطلبة والمستخدمين المقبولين:</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الاسم</th>
-                            <th>الصف / الصفة</th>
-                            <th>اسم المستخدم</th>
-                            <th>الحالة</th>
-                        </tr>
-                    </thead>
-                    <tbody id="approvedUsersTable">
-                        <tr><td colspan="4" style="color: #64748b;">جاري التحميل...</td></tr>
-                    </tbody>
-                </table>
+                <!-- نشر التبليغات في شريط التنبيهات -->
+                <div style="background: #fffbeb; padding: 20px; border-radius: 12px; border: 1px solid #fef3c7; margin-bottom: 25px;">
+                    <h4 style="color: #b45309; margin-top:0;">نشر تبليغ عاجل لشريط التنبيهات العلوي:</h4>
+                    <div style="display: flex; gap: 15px;">
+                        <input type="text" id="adminNoticeInput" placeholder="اكتب التبليغ أو التنبيه هنا...">
+                        <button class="btn-modern" style="width: 180px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);" onclick="sendAdminNotice()">نشر التبليغ</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -485,14 +464,14 @@
             if (exists) return alert("اسم المستخدم مستخدم مسبقاً، يرجى اختيار يوزر آخر.");
 
             db.pendingStudents.push({ fullName, sClass, username, password, role: 'student' });
-            alert("تم إرسال طلبك بنجاح! سيتم تفعيله بعد مراجعة المعاونين أو الإدارة.");
+            alert("تم إرسال طلبك بنجاح! سيتم تفعيله بعد مراجعة الإدارة أو المعاونين.");
             document.getElementById('regStudentName').value = '';
             document.getElementById('regStudentUser').value = '';
             document.getElementById('regStudentPass').value = '';
             switchAuthMode('login');
         }
 
-        // تقديم طلب تسجيل معاون أو مدرس جديد
+        // تقديم طلب تسجيل إداري (معاون أو مدرس)
         function submitStaffRegistration() {
             const role = document.getElementById('regStaffRole').value;
             const fullName = document.getElementById('regStaffName').value.trim();
@@ -505,26 +484,28 @@
             if (exists) return alert("اسم المستخدم مستخدم مسبقاً.");
 
             db.pendingStaff.push({ fullName, username, password, role });
-            alert("تم إرسال طلبك إلى الإدارة العامة بانتظار الموافقة.");
+            alert("تم إرسال طلبك إلى المدير العام بانتظار الموافقة.");
             document.getElementById('regStaffName').value = '';
             document.getElementById('regStaffUser').value = '';
             document.getElementById('regStaffPass').value = '';
             switchAuthMode('login');
         }
 
-        // تسجيل الدخول الشامل
+        // تسجيل الدخول الشامل (المدير والمعاون في مسار الإدارة الموحد)
         function handleLogin() {
             const role = document.getElementById('loginRole').value;
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
             // دخول المدير الخاص بك (waleed / WA1992wa)
-            if(role === 'admin' && username === 'waleed' && password === 'WA1992wa') {
+            if(role === 'management' && username === 'waleed' && password === 'WA1992wa') {
                 loginSuccess(db.users[0]);
                 return;
             }
 
-            const user = db.users.find(u => u.username === username && u.password === password && u.role === role);
+            // فحص دخول المعاونين أو المدرسين أو الطلاب المسجلين
+            const user = db.users.find(u => u.username === username && u.password === password && (role === 'management' ? (u.role === 'admin' || u.role === 'assistant') : u.role === role));
+            
             if(user) {
                 loginSuccess(user);
             } else {
@@ -537,13 +518,20 @@
             document.getElementById('auth-panel').style.display = 'none';
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
 
-            if (user.role === 'admin') {
-                document.getElementById('panel-admin').classList.add('active');
-                renderAdminStaffPending();
-                renderApprovedUsers();
-            } else if (user.role === 'assistant') {
-                document.getElementById('panel-assistant').classList.add('active');
-                renderAssistantPendingStudents();
+            if (user.role === 'admin' || user.role === 'assistant') {
+                document.getElementById('panel-management').classList.add('active');
+                renderManagementPendingStudents();
+
+                // إذا كان الدخول للمدير الخاص بك، نظهر له صلاحيات المدير المطلقة
+                if(user.role === 'admin') {
+                    document.getElementById('managementWelcomeTitle').innerText = `لوحة الإدارة العليا (المدير: ${user.fullName})`;
+                    document.getElementById('adminOnlySection').style.display = 'block';
+                    renderAdminStaffPending();
+                } else {
+                    document.getElementById('managementWelcomeTitle').innerText = `لوحة إدارة المدرسة (المعاون الإداري: ${user.fullName})`;
+                    document.getElementById('adminOnlySection').style.display = 'none';
+                }
+
             } else if (user.role === 'teacher') {
                 document.getElementById('panel-teacher').classList.add('active');
                 document.getElementById('teacherWelcomeTitle').innerText = `بوابة المدرس: ${user.fullName}`;
@@ -563,9 +551,9 @@
             document.getElementById('loginPassword').value = '';
         }
 
-        // موافقة المعاونين على الطلبة
-        function renderAssistantPendingStudents() {
-            const tbody = document.getElementById('assistantPendingTable');
+        // عرض طلبات الطلاب في مسار الإدارة الموحد (للمدير والمعاونين)
+        function renderManagementPendingStudents() {
+            const tbody = document.getElementById('managementStudentPendingTable');
             if (db.pendingStudents.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" style="color: #64748b;">لا توجد طلبات طلاب معلقة حالياً.</td></tr>`;
                 return;
@@ -587,16 +575,16 @@
             const student = db.pendingStudents.splice(idx, 1)[0];
             db.users.push(student);
             alert(`تمت الموافقة على الطالب: ${student.fullName}`);
-            renderAssistantPendingStudents();
+            renderManagementPendingStudents();
         }
 
         function rejectStudent(idx) {
             db.pendingStudents.splice(idx, 1);
             alert("تم رفض الطلب.");
-            renderAssistantPendingStudents();
+            renderManagementPendingStudents();
         }
 
-        // موافقة المدير على المعاونين والمدرسين
+        // موافقة المدير على المعاونين والمدرسين (خاص بصلاحيات المدير المطلقة)
         function renderAdminStaffPending() {
             const tbody = document.getElementById('adminStaffPendingTable');
             if (db.pendingStaff.length === 0) {
@@ -621,25 +609,12 @@
             db.users.push(staff);
             alert(`تمت الموافقة على حساب: ${staff.fullName}`);
             renderAdminStaffPending();
-            renderApprovedUsers();
         }
 
         function rejectStaff(idx) {
             db.pendingStaff.splice(idx, 1);
             alert("تم رفض الطلب.");
             renderAdminStaffPending();
-        }
-
-        function renderApprovedUsers() {
-            const tbody = document.getElementById('approvedUsersTable');
-            tbody.innerHTML = db.users.map(u => `
-                <tr>
-                    <td>${u.fullName}</td>
-                    <td><span class="badge">${u.role === 'admin' ? 'مدير' : u.role === 'assistant' ? 'معاون' : u.role === 'teacher' ? 'مدرس' : u.sClass}</span></td>
-                    <td>${u.username}</td>
-                    <td><span style="color:#059669; font-weight:bold;">معتمد</span></td>
-                </tr>
-            `).join('');
         }
 
         // غرف المدرسين والواجبات
@@ -706,11 +681,11 @@
             `).join('');
         }
 
-        // رفع الجدول من قبل المعاون
-        function uploadScheduleByAssistant() {
-            const sClass = document.getElementById('assistantScheduleClass').value;
-            const fileInput = document.getElementById('assistantScheduleFile');
-            const manualDetails = document.getElementById('assistantScheduleDetails').value.trim();
+        // رفع الجدول من مسار الإدارة الموحد (للمدير أو المعاونين)
+        function uploadScheduleByManagement() {
+            const sClass = document.getElementById('mgmtScheduleClass').value;
+            const fileInput = document.getElementById('mgmtScheduleFile');
+            const manualDetails = document.getElementById('mgmtScheduleDetails').value.trim();
 
             let scheduleContent = manualDetails;
             let fileName = fileInput.files[0] ? fileInput.files[0].name : null;
@@ -728,11 +703,11 @@
                 </div>
             `;
             alert("تم اعتماد ونشر الجدول بنجاح لصف " + sClass);
-            document.getElementById('assistantScheduleDetails').value = '';
-            document.getElementById('assistantScheduleFile').value = '';
+            document.getElementById('mgmtScheduleDetails').value = '';
+            document.getElementById('mgmtScheduleFile').value = '';
         }
 
-        // نشر تبليغ من المدير
+        // نشر تبليغ من المدير (خاص بصلاحيات المدير المطلقة)
         function sendAdminNotice() {
             const notice = document.getElementById('adminNoticeInput').value.trim();
             if(!notice) return;
