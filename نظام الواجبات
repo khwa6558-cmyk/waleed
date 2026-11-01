@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنصة المدرسية الرقمية الشاملة - إدارة الصفوف وغرف الأساتذة</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #16a085;
+            --accent: #2980b9;
+            --bg-color: #f4f7f6;
+            --white: #ffffff;
+            --danger: #e74c3c;
+            --success: #27ae60;
+        }
+        body { font-family: Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; direction: rtl; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--white); padding: 25px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1, h2, h3 { color: var(--primary); text-align: center; }
+        
+        /* نظام التنقل بين الأقسام الرئيسية */
+        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tab-btn { background-color: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        .tab-btn:hover, .tab-btn.active { background-color: var(--secondary); transform: translateY(-2px); }
+
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+
+        /* الأقسام المشتركة والأزرار */
+        .card { background: #fafafa; border: 1px solid #e1e4e8; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: Tahoma; }
+        button.action-btn { background-color: var(--accent); color: var(--white); border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button.action-btn:hover { background-color: #1f618d; }
+
+        /* قسم الطالب والواجبات */
+        .day-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .day-btn { background-color: #7f8c8d; color: var(--white); border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .day-btn.active { background-color: var(--secondary); }
+        .homework-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .completed-text { text-decoration: line-through; color: #95a5a6; }
+
+        /* غرف الأساتذة والحماية */
+        .room-lock-box { background: #fff3f3; border: 1px solid #f5b7b1; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+        .lib-card { background: #e8f8f5; border: 1px solid #a3e4d7; padding: 10px; border-radius: 6px; text-align: center; }
+
+        /* غرفة الإدارة ومحادثات الواتساب القابلة للتكبير */
+        .admin-chat-container { border: 2px solid #ccc; border-radius: 8px; background: #efeae2; display: flex; flex-direction: column; height: 450px; transition: 0.3s; position: relative; }
+        .admin-chat-container.maximized { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; border-radius: 0; padding: 10px; background: #efeae2; }
+        .chat-header { background: var(--primary); color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-radius: 6px 6px 0 0; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .message-bubble { background: #ffffff; padding: 10px 15px; border-radius: 8px; max-width: 70%; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .message-bubble.mine { background: #dcf8c6; margin-right: auto; }
+        .chat-input-area { display: flex; padding: 10px; background: #f0f0f0; gap: 5px; align-items: center; border-radius: 0 0 6px 6px; }
+        
+        .badge { background: var(--danger); color: white; padding: 2px 6px; border-radius: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="mainContainer">
+    <h1>المنصة التعليمية الرقمية الشاملة</h1>
+    
+    <!-- أزرار التنقل بين الأقسام الرئيسية -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('studentTab', this)">لوحة الطالب والواجبات</button>
+        <button class="tab-btn" onclick="switchTab('teacherTab', this)">غرف ومكتبات الأساتذة</button>
+        <button class="tab-btn" onclick="switchTab('adminTab', this)">غرفة الإدارة والدردشة</button>
+    </div>
+
+    <!-- 1. قسم الطالب والواجبات اليومية -->
+    <div id="studentTab" class="section-content active">
+        <h2>جدول الحصص الستة والواجبات اليومية</h2>
+        <div class="day-selector">
+            <button class="day-btn active" onclick="loadDayHomework('الأحد', this)">الأحد</button>
+            <button class="day-btn" onclick="loadDayHomework('الإثنين', this)">الإثنين</button>
+            <button class="day-btn" onclick="loadDayHomework('الثلاثاء', this)">الثلاثاء</button>
+            <button class="day-btn" onclick="loadDayHomework('الأربعاء', this)">الأربعاء</button>
+            <button class="day-btn" onclick="loadDayHomework('الخميس', this)">الخميس</button>
+        </div>
+        <h3 id="selectedDayTitle">واجبات يوم: الأحد (6 حصص)</h3>
+        <div class="card" id="studentHomeworkList">
+            <!-- تعبئة ديناميكية للحصص -->
+        </div>
+        
+        <h3>غرف الطلاب الخاصة (لكل المواد بما فيها الحاسوب)</h3>
+        <div class="card">
+            <label>اختر مادة الغرفة:</label>
+            <select>
+                <option>غرفة مادة الحاسوب والعملي</option>
+                <option>غرفة مادة الرياضيات</option>
+                <option>غرفة مادة اللغة الإنجليزية</option>
+                <option>غرفة مادة الفيزياء والكيمياء</option>
+            </select>
+            <button class="action-btn" onclick="alert('تم الدخول لغرفة الطلاب بنجاح. تتيح لك التعديل والحذف الكامل للملفات والمناقشات.')">دخول الغرفة والتعديل</button>
+        </div>
+    </div>
+
+    <!-- 2. قسم غرف الأساتذة ومكتبة الملفات الضخمة -->
+    <div id="teacherTab" class="section-content">
+        <h2>مكتبات الغرف الخاصة بالأساتذة (محمية برمز)</h2>
+        <div class="room-lock-box">
+            <h3>إنشاء أو الدخول لغرفة أستاذ</h3>
+            <label>اسم الأستاذ / المادة:</label>
+            <input type="text" id="profName" placeholder="مثال: أستاذ وليد - حاسوب">
+            <label>رمز الحماية السري:</label>
+            <input type="password" id="roomPin" placeholder="أدخل رمز الدخول">
+            <button class="action-btn" onclick="verifyTeacherRoom()">إنشاء / فتح الغرفة</button>
+            <div id="roomStatus" style="margin-top: 10px; font-weight: bold; color: var(--success);"></div>
+        </div>
+
+        <div id="teacherDashboard" style="display:none;" class="card">
+            <h3 style="color:var(--secondary);">لوحة تحكم الأستاذ (غرفة محمية)</h3>
+            <p>قفل الغرفة التام: <input type="checkbox" id="lockRoomToggle"> قفل تام (حتى لو عرفوا الرمز)</p>
+            
+            <h4>طلبات الانضمام للغرفة (يمكن للطلاب إرسال طلبات متعددة):</h4>
+            <div class="card" style="background:#fff;">
+                <p>الطالب: محمد أحمد <span class="badge">طلب جديد #2</span> <button class="action-btn" style="background:var(--success); padding:3px 8px;" onclick="alert('تم قبول الطالب')">قبول</button> <button class="action-btn" style="background:var(--danger); padding:3px 8px;" onclick="alert('تم رفض الطالب')">رفض</button></p>
+            </div>
+
+            <h4>أقسام الغرفة المتاحة (مع صلاحيات الحذف والتعديل الكاملة):</h4>
+            <div class="library-grid">
+                <div class="lib-card">📂 قسم المحاضرات والكتب الكاملة الضخمة <br><button class="action-btn" style="margin-top:5px; padding:5px;" onclick="alert('رفع ملف حجم كبير جداً بنجاح')">رفع ملف جديد</button></div>
+                <div class="lib-card">❓ قسم الأسئلة والاستفسارات</div>
+                <div class="lib-card">📝 قسم الامتحانات اليومية</div>
+                <div class="lib-card">🏆 قسم امتحانات نصف السنة والنهائي</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. قسم الإدارة والدردشة الفورية والتبليغات -->
+    <div id="adminTab" class="section-content">
+        <h2>غرفة الإدارة المركزية والتبليغات</h2>
+        
+        <div class="card">
+            <h3>قسم التبليغات الإدارية الرسمية</h3>
+            <textarea placeholder="اكتب التبليغ الجديد هنا ليظهر لكل الطلاب والأساتذة مع تفعيل الإشعارات..."></textarea>
+            <button class="action-btn">إرسال وتفعيل الإشعارات الشاملة</button>
+        </div>
+
+        <div class="card">
+            <h3>قسم رفع الملفات الإدارية (سرعة فائقة وأحجام ضخمة)</h3>
+            <input type="file" multiple>
+            <button class="action-btn">رفع الملفات بسرعة خيالية</button>
+        </div>
+
+        <h3>غرفة المراسلة الفورية (شبيهة بـ WhatsApp)</h3>
+        <div class="admin-chat-container" id="chatBoxContainer">
+            <div class="chat-header">
+                <span>المراسلات الإدارية الفورية</span>
+                <div>
+                    <button onclick="toggleMaximizeChat()" style="background:transparent; border:none; color:white; cursor:pointer; font-weight:bold; font-size:16px;" title="تكبير الشاشة">🗖 تكبير / تصغير</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message-bubble">مرحباً بالأستاذ وليد، تم إطلاق نظام الإدارة والتحاضير بنجاح.</div>
+                <div class="message-bubble mine">أهلاً بك، النظام يعمل بسرعة فائقة ويدعم البصمات والملفات.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInputText" placeholder="اكتب رسالة..." style="margin:0; flex:1;">
+                <button class="action-btn" onclick="sendTextMessage()">إرسال ✈️</button>
+                <button class="action-btn" style="background:var(--success);" onclick="alert('جاري تسجيل وبث البصمة الصوتية...')">🎤 بصمة</button>
+                <button class="action-btn" style="background:#e67e22;" onclick="alert('تم رفع الصورة أو الملف بنجاح')">📎 ملف/صورة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // التنقل بين الأقسام الرئيسية
+    function switchTab(tabId, btnElement) {
+        document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    }
+
+    // إدارة جدول وحصص الطالب (6 حصص)
+    const sampleHomeworks = {
+        "الأحد": [
+            {h: "الحصة 1", sub: "رياضيات", task: "حل تمارين الجذور صفحة 14"},
+            {h: "الحصة 2", sub: "حاسوب (عملي)", task: "تطبيق تحديثات نظام التشغيل وتجهيز المختبر"},
+            {h: "الحصة 3", sub: "اللغة العربية", task: "حل تمارين الإعراب"},
+            {h: "الحصة 4", sub: "اللغة الإنجليزية", task: "قراءة النص واستخراج الكلمات"},
+            {h: "الحصة 5", sub: "الفيزياء", task: "تحضير تجربة الضغط"},
+            {h: "الحصة 6", sub: "التربية الإسلامية", task: "حفظ الآيات المقررة"}
+        ],
+        "الإثنين": [
+            {h: "الحصة 1", sub: "حاسوب", task: "مراجعة أسئلة البرمجة الأساسية"},
+            {h: "الحصة 2", sub: "رياضيات", task: "حل الواجب البيتي صفحة 18"},
+            {h: "الحصة 3", sub: "الكيمياء", task: "كتابة المعادلات"},
+            {h: "الحصة 4", sub: "الأحياء", task: "رسم الجهاز الهيكلي"},
+            {h: "الحصة 5", sub: "الاجتماعيات", task: "تحديد الخرائط"},
+            {h: "الحصة 6", sub: "الرياضة / الفنية", task: "تجهيز المتطلبات"}
+        ],
+        "الثلاثاء": [
+            {h: "الحصة 1", sub: "اللغة العربية", task: "كتابة تعبير عن العلم"},
+            {h: "الحصة 2", sub: "حاسوب", task: "اختبار عملي الويندوز"},
+            {h: "الحصة 3", sub: "رياضيات", task: "مراجعة عامة"},
+            {h: "الحصة 4", sub: "إنجليزي", task: "تمرين القواعد"},
+            {h: "الحصة 5", sub: "فيزياء", task: "حل المسائل"},
+            {h: "الحصة 6", sub: "إسلامية", task: "تحضير الحديث"}
+        ],
+        "الأربعاء": [
+            {h: "الحصة 1", sub: "رياضيات", task: "حل التمارين العامة"},
+            {h: "الحصة 2", sub: "حاسوب", task: "تطبيق صيانة الملفات"},
+            {h: "الحصة 3", sub: "إنجليزي", task: "الاستماع والتدريب"},
+            {h: "الحصة 4", sub: "كيمياء", task: "تجارب المعمل"},
+            {h: "الحصة 5", sub: "تاريخ", task: "قراءة الفصل الثاني"},
+            {h: "الحصة 6", sub: "جغرافيا", task: "تخطيط التضاريس"}
+        ],
+        "الخميس": [
+            {h: "الحصة 1", sub: "حاسوب", task: "المشروع العملي الأسبوعي"},
+            {h: "الحصة 2", sub: "رياضيات", task: "اختبار قصير أسبوعي"},
+            {h: "الحصة 3", sub: "عربي", task: "قواعد اللغة"},
+            {h: "الحصة 4", sub: "إنجليزي", task: "محادثة"},
+            {h: "الحصة 5", sub: "علوم", task: "مراجعة شاملة"},
+            {h: "الحصة 6", sub: "نشاط", task: "معرض المدرسة"}
+        ]
+    };
+
+    function loadDayHomework(dayName, btnElem) {
+        document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+        btnElem.classList.add('active');
+        document.getElementById('selectedDayTitle').innerText = `واجبات يوم: ${dayName} (6 حصص)`;
+        
+        let container = document.getElementById('studentHomeworkList');
+        container.innerHTML = '';
+
+        sampleHomeworks[dayName].forEach((item, idx) => {
+            let row = document.createElement('div');
+            row.className = 'homework-item';
+            row.innerHTML = `
+                <div><strong>${item.h} (${item.sub}):</strong> <span id="task-${idx}">${item.task}</span></div>
+                <button class="action-btn" style="background:var(--danger);" onclick="toggleHomeworkDone(${idx}, this)">تم الإنجاز</button>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    function toggleHomeworkDone(idx, btn) {
+        let span = document.getElementById(`task-${idx}`);
+        span.classList.toggle('completed-text');
+        if(span.classList.contains('completed-text')) {
+            btn.innerText = 'منجز (يتكرر أسبوعياً)';
+            btn.style.background = 'var(--success)';
+        } else {
+            btn.innerText = 'تم الإنجاز';
+            btn.style.background = 'var(--danger)';
+        }
+    }
+
+    // التحقق من رمز غرفة الأستاذ
+    function verifyTeacherRoom() {
+        let name = document.getElementById('profName').value;
+        let pin = document.getElementById('roomPin').value;
+        if(name && pin) {
+            document.getElementById('roomStatus').innerText = `تم فتح غرفة الأستاذ (${name}) بنجاح وحمايتها برمز سري!`;
+            document.getElementById('teacherDashboard').style.display = 'block';
+        } else {
+            alert('الرجاء كتابة الاسم والرمز السري للغرفة.');
+        }
+    }
+
+    // تكبير شاشة دردشة الإدارة
+    function toggleMaximizeChat() {
+        let box = document.getElementById('chatBoxContainer');
+        box.classList.toggle('maximized');
+    }
+
+    // إرسال رسالة نصية في الدردشة الإدارية مع إمكانية التعديل والحذف
+    function sendTextMessage() {
+        let text = document.getElementById('chatInputText').value;
+        if(!text.trim()) return;
+        let chatMsgs = document.getElementById('chatMessages');
+        let bubble = document.createElement('div');
+        bubble.className = 'message-bubble mine';
+        bubble.innerHTML = `${text} <br><small style="font-size:10px; cursor:pointer; color:blue;" onclick="this.parentElement.remove()">[حذف]</small>`;
+        chatMsgs.appendChild(bubble);
+        document.getElementById('chatInputText').value = '';
+        chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+
+    // تحميل افتراضي ليوم الأحد عند فتح الصفحة
+    loadDayHomework('الأحد', document.querySelector('.day-btn'));
+</script>
+
+</body>
+</html>
