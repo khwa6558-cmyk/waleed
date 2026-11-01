@@ -3,64 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التعليم الذكية</title>
-    <!-- Tailwind CSS للـ Styling السريع والحديث -->
+    <title>المنصة التعليمية الشاملة - الكود النهائي</title>
+    <!-- Tailwind CSS للتصميم الحديث -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100 font-sans h-screen flex overflow-hidden">
 
+    <!-- خلفية شفافة عند فتح القائمة في الموبايل -->
+    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden"></div>
+
     <!-- القائمة الرئيسية (الأساس) على اليمين -->
-    <aside class="w-80 bg-slate-900 text-white flex flex-col justify-between border-l border-slate-800 shadow-xl z-10">
+    <aside id="main-sidebar" class="fixed md:static inset-y-0 right-0 w-80 bg-slate-900 text-white flex flex-col justify-between border-l border-slate-800 shadow-xl z-30 transform translate-x-full md:translate-x-0 transition-transform duration-300">
         <div>
             <!-- شعار المنصة -->
-            <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-                <div class="bg-indigo-600 p-2.5 rounded-xl text-white font-bold">
-                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 p-2 rounded-xl text-white font-bold">
+                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base">منصة التعليم الرقمي</h1>
+                        <span class="text-[11px] text-slate-400">لوحة التحكم والأقسام</span>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="font-bold text-lg">منصة التعليم الرقمي</h1>
-                    <span class="text-xs text-slate-400">لوحة التحكم والتحكم بالأقسام</span>
-                </div>
+                <!-- زر إغلاق القائمة في الموبايل -->
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
 
             <!-- روابط الأقسام الرئيسية -->
-            <nav class="p-4 space-y-2 overflow-y-auto max-h-[calc(100vh-160px)]">
+            <nav class="p-3 space-y-2 overflow-y-auto max-h-[calc(100vh-140px)]">
                 
-                <!-- قسم الإدارة -->
+                <!-- قسم الإدارة والتبليغات -->
                 <div class="space-y-1">
-                    <div class="text-xs font-semibold text-slate-400 px-3 uppercase tracking-wider mb-1">قسم الإدارة</div>
-                    <button onclick="switchSection('admin-notices')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-bullhorn text-indigo-400"></i> التبليغات الرسمية
+                    <div class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider mb-1">قسم الإدارة</div>
+                    <button onclick="switchSection('admin-notices')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white text-sm transition">
+                        <i class="fa-solid fa-bullhorn text-indigo-400 w-5"></i> التبليغات (الإدارة والمعاونون)
                     </button>
-                    <button onclick="switchSection('admin-archive')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-box-archive text-amber-400"></i> الأرشفة والملفات
+                    <button onclick="switchSection('admin-archive')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white text-sm transition">
+                        <i class="fa-solid fa-box-archive text-amber-400 w-5"></i> قسم الأرشفة والملفات
                     </button>
-                    <button onclick="switchSection('admin-chat')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                        <i class="fa-solid fa-comments text-emerald-400"></i> تواصل الأساتذة والإدارة
+                    <button onclick="switchSection('admin-chat')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white text-sm transition">
+                        <i class="fa-solid fa-comments text-emerald-400 w-5"></i> تواصل الأساتذة والإدارة
                     </button>
                 </div>
 
-                <hr class="border-slate-800 my-3">
+                <hr class="border-slate-800 my-2">
 
                 <!-- قسم الأساتذة والغرف الصفية -->
                 <div class="space-y-1">
-                    <div class="text-xs font-semibold text-slate-400 px-3 uppercase tracking-wider mb-1">غرف الأساتذة (المواد)</div>
-                    <!-- مثال لأستاذ -->
+                    <div class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider mb-1">قسم الأساتذة والغرف</div>
                     <div class="bg-slate-800/50 rounded-lg p-2 space-y-1">
-                        <div class="text-sm font-bold text-indigo-300 px-2 flex justify-between items-center">
-                            <span>أ. أحمد (رياضيات)</span>
-                            <span class="text-xs bg-indigo-900 text-indigo-200 px-1.5 py-0.5 rounded">غرفة خاصة</span>
+                        <div class="text-xs font-bold text-indigo-300 px-2 flex justify-between items-center">
+                            <span>أ. أحمد (قسم الرياضيات)</span>
+                            <span class="text-[10px] bg-indigo-900 text-indigo-200 px-1 py-0.5 rounded">غرفة خاصة</span>
                         </div>
                         <!-- الصفوف من الأول إلى السادس -->
                         <div class="grid grid-cols-2 gap-1 pt-1">
-                            <button onclick="openClassRoom('الأول الابتدائي', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الأول</button>
-                            <button onclick="openClassRoom('الثاني الابتدائي', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الثاني</button>
-                            <button onclick="openClassRoom('الثالث الابتدائي', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الثالث</button>
-                            <button onclick="openClassRoom('الرابع الابتدائي', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الرابع</button>
-                            <button onclick="openClassRoom('الخامس الابتدائي', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الخامس</button>
-                            <button onclick="openClassRoom('السادس الابتدائي', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف السادس</button>
+                            <button onclick="openClassRoom('الصف الأول', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الأول</button>
+                            <button onclick="openClassRoom('الصف الثاني', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الثاني</button>
+                            <button onclick="openClassRoom('الصف الثالث', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الثالث</button>
+                            <button onclick="openClassRoom('الصف الرابع', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الرابع</button>
+                            <button onclick="openClassRoom('الصف الخامس', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الخامس</button>
+                            <button onclick="openClassRoom('الصف السادس', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف السادس</button>
                         </div>
                     </div>
                 </div>
@@ -68,167 +76,179 @@
             </nav>
         </div>
 
-        <!-- أسفل القائمة: ملف المستخدم -->
-        <div class="p-4 border-t border-slate-800 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center font-bold">م</div>
+        <!-- أسفل القائمة -->
+        <div class="p-3 border-t border-slate-800 flex items-center justify-between text-sm">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold text-xs">م</div>
                 <div>
-                    <h4 class="text-sm font-semibold">مدير المنصة</h4>
-                    <span class="text-xs text-emerald-400">متصل الآن</span>
+                    <h4 class="text-xs font-semibold">مدير المنصة</h4>
+                    <span class="text-[10px] text-emerald-400">متصل الآن</span>
                 </div>
             </div>
             <button class="text-slate-400 hover:text-red-400 transition"><i class="fa-solid fa-power-off"></i></button>
         </div>
     </aside>
 
-    <!-- المحتوى (على اليسار) -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-white">
+    <!-- المحتوى الرئيسي (على اليسار) -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-white w-full">
         
-        <!-- الهيدر العلوي للمحتوى -->
-        <header class="h-16 border-b border-gray-200 px-6 flex items-center justify-between bg-gray-50">
-            <h2 id="current-title" class="text-lg font-bold text-gray-800">التبليغات الرسمية للإدارة</h2>
+        <!-- الهيدر العلوي -->
+        <header class="h-16 border-b border-gray-200 px-4 md:px-6 flex items-center justify-between bg-gray-50 shrink-0">
             <div class="flex items-center gap-3">
-                <span class="bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full font-medium" id="current-role">الإدارة والمعاونون</span>
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-700 hover:text-indigo-600 p-2 text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2 id="current-title" class="text-sm md:text-lg font-bold text-gray-800 truncate">التبليغات الرسمية للإدارة</h2>
             </div>
+            <span class="bg-indigo-100 text-indigo-700 text-[11px] md:text-xs px-2.5 py-1 rounded-full font-medium" id="current-role">الإدارة والمعاونون</span>
         </header>
 
-        <!-- منطقة عرض الأقسام المتغيرة -->
-        <div id="content-viewport" class="flex-1 overflow-y-auto p-6 flex flex-col">
+        <!-- منطقة عرض المحتوى -->
+        <div id="content-viewport" class="flex-1 overflow-y-auto p-3 md:p-6 flex flex-col">
             
-            <!-- 1. شاشة التبليغات الافتراضية -->
+            <!-- 1. شاشة التبليغات (للإدارة والمعاونين حصرياً) -->
             <div id="section-admin-notices" class="space-y-4">
-                <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl flex items-center justify-between">
+                <div class="bg-amber-50 border border-amber-200 text-amber-800 p-3 md:p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div>
-                        <h4 class="font-bold">تنبيه نظام الإعلانات</h4>
-                        <p class="text-sm">التبليغات هنا تنشر حصرياً من قبل الإدارة والمعاونين وتظهر لجميع الطلاب والأساتذة.</p>
+                        <h4 class="font-bold text-sm md:text-base">لوحة الإعلانات الرسمية</h4>
+                        <p class="text-xs md:text-sm">هذا القسم خاص بنشر التبليغات من قبل الإدارة والمعاونين فقط لتظهر كإعلان عام.</p>
                     </div>
-                    <button class="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-700 transition">إضافة تبليغ جديد</button>
+                    <button class="bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm hover:bg-amber-700 transition whitespace-nowrap">إعلان جديد</button>
                 </div>
-
                 <div class="space-y-3">
                     <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm">
                         <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-indigo-600">تبليغ إداري هام</span>
-                            <span class="text-xs text-gray-400">منذ ساعتين</span>
+                            <span class="font-bold text-xs md:text-sm text-indigo-600">تبليغ إداري هام</span>
+                            <span class="text-[11px] text-gray-400">منذ ساعة</span>
                         </div>
-                        <p class="text-gray-700">تعلن إدارة المدرسة عن بدء الامتحانات الشهرية للفصل الدراسي الحالي اعتباراً من يوم الأحد القادم.</p>
+                        <p class="text-xs md:text-sm text-gray-700">تعلن إدارة المدرسة عن بدء العطلة الربيعية ابتداءً من يوم الأسبوع المقبل.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. غرفة الصف ومحتوياتها (محاكاة واتساب + محاضرات + أسئلة + طلاب) -->
+            <!-- 2. الغرفة الصفية (محتوى الغرفة والأقسام الأربعة) -->
             <div id="section-classroom" class="hidden flex-1 flex flex-col h-full">
-                <!-- تبويبات الغرفة الصفية -->
-                <div class="flex border-b border-gray-200 mb-4 gap-2">
-                    <button onclick="switchTab('chat')" id="tab-btn-chat" class="px-4 py-2 border-b-2 border-indigo-600 text-indigo-600 font-bold text-sm">قسم التواصل (محادثة)</button>
-                    <button onclick="switchTab('lectures')" id="tab-btn-lectures" class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm">قسم المحاضرات</button>
-                    <button onclick="switchTab('qa')" id="tab-btn-qa" class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm">الأسئلة والأجوبة</button>
-                    <button onclick="switchTab('students')" id="tab-btn-students" class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm">قائمة الطلبة المسجلين</button>
+                <!-- التبويبات الفرعية للغرفة -->
+                <div class="flex border-b border-gray-200 mb-3 gap-1 overflow-x-auto shrink-0 pb-1">
+                    <button onclick="switchTab('chat')" id="tab-btn-chat" class="px-3 py-2 border-b-2 border-indigo-600 text-indigo-600 font-bold text-xs md:text-sm whitespace-nowrap">قسم التواصل</button>
+                    <button onclick="switchTab('lectures')" id="tab-btn-lectures" class="px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap">قسم المحاضرات</button>
+                    <button onclick="switchTab('qa')" id="tab-btn-qa" class="px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap">الأسئلة والأجوبة</button>
+                    <button onclick="switchTab('students')" id="tab-btn-students" class="px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap">قسم الطلبة</button>
                 </div>
 
-                <!-- محتوى تبويب التواصل (شبيه واتساب) -->
-                <div id="tab-content-chat" class="flex-1 flex flex-col border border-gray-200 rounded-xl bg-slate-50 overflow-hidden">
-                    <!-- صندوق الرسائل -->
-                    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3">
-                        <!-- رسالة واردة -->
-                        <div class="flex items-start gap-2.5">
-                            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">ط</div>
-                            <div class="bg-white p-3 rounded-2xl shadow-sm max-w-md border border-gray-100">
-                                <span class="text-xs font-bold text-indigo-600 block mb-1">محمد علي (طالب)</span>
-                                <p class="text-sm text-gray-800">أستاذ، هل هذه المحاضرة داخلة في امتحان الشهر الثاني؟</p>
-                                <span class="text-[10px] text-gray-400 block text-left mt-1">10:30 صباحاً</span>
+                <!-- محترم تبويب التواصل (شبيه واتساب مع خيارات تعديل وحذف وصورة وبصمة) -->
+                <div id="tab-content-chat" class="flex-1 flex flex-col border border-gray-200 rounded-xl bg-slate-50 overflow-hidden min-h-[300px]">
+                    <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3">
+                        <!-- رسالة طالب -->
+                        <div class="flex items-start gap-2">
+                            <div class="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center text-[10px] font-bold shrink-0">ط</div>
+                            <div class="bg-white p-2.5 rounded-2xl shadow-sm max-w-[80%] border border-gray-100 relative group">
+                                <span class="text-[11px] font-bold text-indigo-600 block mb-0.5">محمد علي (طالب)</span>
+                                <p class="text-xs md:text-sm text-gray-800">أستاذ، متى موعد الامتحان التجريبي؟</p>
+                                <span class="text-[9px] text-gray-400 block text-left mt-1">10:30 صباحاً</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- شريط إرسال الرسائل (نص، صورة، بصمة) -->
-                    <div class="p-3 bg-white border-t border-gray-200 flex items-center gap-2">
-                        <label class="cursor-pointer text-gray-500 hover:text-indigo-600 p-2">
-                            <i class="fa-solid fa-image text-lg"></i>
+                    <!-- شريط إرسال الرسائل -->
+                    <div class="p-2.5 bg-white border-t border-gray-200 flex items-center gap-1.5 shrink-0">
+                        <label class="cursor-pointer text-gray-500 hover:text-indigo-600 p-1.5" title="إرسال صورة">
+                            <i class="fa-solid fa-image text-base"></i>
                             <input type="file" accept="image/*" class="hidden">
                         </label>
-                        <button onclick="recordVoice()" class="text-gray-500 hover:text-red-500 p-2" title="إرسال بصمة صوتية">
-                            <i class="fa-solid fa-microphone text-lg"></i>
+                        <button onclick="recordVoice()" class="text-gray-500 hover:text-red-500 p-1.5" title="إرسال بصمة صوتية">
+                            <i class="fa-solid fa-microphone text-base"></i>
                         </button>
-                        <input type="text" id="message-input" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-indigo-500">
-                        <button onclick="sendMessage()" class="bg-indigo-600 text-white px-5 py-2 rounded-full text-sm hover:bg-indigo-700 transition">
+                        <input type="text" id="message-input" placeholder="اكتب رسالة (واتساب)..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-3 py-1.5 text-xs md:text-sm focus:outline-none focus:border-indigo-500">
+                        <button onclick="sendMessage()" class="bg-indigo-600 text-white px-3.5 py-1.5 rounded-full text-xs md:text-sm hover:bg-indigo-700 transition">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- محتوى تبويب المحاضرات -->
-                <div id="tab-content-lectures" class="hidden flex-1 p-4 bg-white border border-gray-200 rounded-xl">
-                    <h3 class="font-bold text-gray-700 mb-3">الملفات والمحاضرات المتاحة</h3>
+                <!-- قسم المحاضرات -->
+                <div id="tab-content-lectures" class="hidden flex-1 p-3 bg-white border border-gray-200 rounded-xl overflow-y-auto">
+                    <h3 class="font-bold text-xs md:text-sm text-gray-700 mb-3">محاضرات المادة الدراسية</h3>
                     <div class="space-y-2">
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-file-pdf text-red-500 text-2xl"></i>
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100">
+                            <div class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-file-pdf text-red-500 text-xl"></i>
                                 <div>
-                                    <h4 class="text-sm font-bold text-gray-800">محاضرة الفصل الأول - مقدمة المادة</h4>
-                                    <span class="text-xs text-gray-400">PDF • 2.4 MB</span>
+                                    <h4 class="text-xs md:text-sm font-bold text-gray-800">محاضرة الدرس الأول</h4>
+                                    <span class="text-[10px] text-gray-400">PDF • 1.8 MB</span>
                                 </div>
                             </div>
-                            <button class="text-indigo-600 hover:underline text-sm font-medium">تحميل</button>
+                            <button class="text-indigo-600 hover:underline text-xs font-medium">تحميل</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- محتوى تبويب الأسئلة والأجوبة -->
-                <div id="tab-content-qa" class="hidden flex-1 p-4 bg-white border border-gray-200 rounded-xl">
-                    <h3 class="font-bold text-gray-700 mb-3">بنك الأسئلة الشائعة</h3>
-                    <p class="text-sm text-gray-500">لا توجد أسئلة مضافة حتى الآن في هذا القسم.</p>
+                <!-- قسم الأسئلة والأجوبة -->
+                <div id="tab-content-qa" class="hidden flex-1 p-3 bg-white border border-gray-200 rounded-xl overflow-y-auto">
+                    <h3 class="font-bold text-xs md:text-sm text-gray-700 mb-3">الأسئلة والأجوبة الخاصة بالمنهج</h3>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-1">
+                        <p class="text-xs font-bold text-gray-800">س: هل التمرين الثاني مطلوب؟</p>
+                        <p class="text-xs text-gray-600">ج: نعم، مطلوب مع الواجب البيتي.</p>
+                    </div>
                 </div>
 
-                <!-- محتوى تبويب الطلبة المسجلين -->
-                <div id="tab-content-students" class="hidden flex-1 p-4 bg-white border border-gray-200 rounded-xl">
-                    <h3 class="font-bold text-gray-700 mb-3">قائمة الطلبة المسجلين في هذا الصف</h3>
-                    <ul class="divide-y divide-gray-100 text-sm">
+                <!-- قسم الطلبة (حسب الصف المختار) -->
+                <div id="tab-content-students" class="hidden flex-1 p-3 bg-white border border-gray-200 rounded-xl overflow-y-auto">
+                    <h3 class="font-bold text-xs md:text-sm text-gray-700 mb-3">قائمة الطلبة المسجلين في هذا الصف</h3>
+                    <ul class="divide-y divide-gray-100 text-xs md:text-sm">
                         <li class="py-2 flex justify-between items-center">
                             <span>محمد علي حسن</span>
-                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">تم التسجيل</span>
+                            <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">تم التسجيل</span>
                         </li>
                         <li class="py-2 flex justify-between items-center">
-                            <span>فاطمة أحمد جاسم</span>
-                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">تم التسجيل</span>
+                            <span>زينب أحمد جاسم</span>
+                            <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">تم التسجيل</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <!-- 3. قسم الأرشفة والملفات الإدارية -->
+            <!-- 3. قسم الأرشفة والملفات -->
             <div id="section-admin-archive" class="hidden space-y-4">
-                <div class="bg-white border border-gray-200 p-5 rounded-xl shadow-sm">
-                    <h3 class="font-bold text-gray-800 mb-3">قسم الأرشفة والملفات</h3>
-                    <p class="text-sm text-gray-600">يمكنك هنا حفظ واستعراض كافة المستندات الإدارية وأرشفتها بأمان.</p>
+                <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm">
+                    <h3 class="font-bold text-xs md:text-sm text-gray-800 mb-2">قسم الأرشفة والملفات الإدارية</h3>
+                    <p class="text-xs md:text-sm text-gray-600">أرشيف شامل لجميع الملفات والوثائق الخاصة بالمنصة والمدرسين.</p>
                 </div>
             </div>
 
-            <!-- 4. قسم تواصل الإدارة والمدرسين -->
-            <div id="section-admin-chat" class="hidden flex-1 flex flex-col h-full bg-white border border-gray-200 rounded-xl p-4">
-                <h3 class="font-bold text-gray-800 mb-3">غرفة مراسلة الأساتذة والإدارة</h3>
-                <div class="flex-1 border rounded-lg bg-slate-50 p-4 overflow-y-auto mb-3">
-                    <p class="text-xs text-gray-400 text-center">محادثة خاصة ومباشرة بين الكادر التدريسي والإدارة.</p>
+            <!-- 4. قسم التواصل بين المدرسين والإدارة -->
+            <div id="section-admin-chat" class="hidden flex-1 flex flex-col h-full bg-white border border-gray-200 rounded-xl p-3">
+                <h3 class="font-bold text-xs md:text-sm text-gray-800 mb-2">غرفة تواصل الأساتذة والإدارة</h3>
+                <div class="flex-1 border rounded-lg bg-slate-50 p-3 overflow-y-auto mb-2 flex flex-col space-y-2">
+                    <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl max-w-[80%]">
+                        <span class="text-[11px] font-bold text-indigo-700 block">الإدارة المدرسية</span>
+                        <p class="text-xs text-gray-800">يرجى تسليم السجلات الخاصة بالدرجات في موعد أقصاه يوم الخميس.</p>
+                    </div>
                 </div>
                 <div class="flex gap-2">
-                    <input type="text" placeholder="اكتب رسالة للإدارة أو الأساتذة..." class="flex-1 border rounded-lg px-4 py-2 text-sm">
-                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm">إرسال</button>
+                    <input type="text" placeholder="اكتب رسالتك للإدارة..." class="flex-1 border rounded-lg px-3 py-1.5 text-xs md:text-sm">
+                    <button class="bg-indigo-600 text-white px-3.5 py-1.5 rounded-lg text-xs md:text-sm">إرسال</button>
                 </div>
             </div>
 
         </div>
     </main>
 
-    <!-- JavaScript للتحكم بالواجهة والأقسام -->
+    <!-- الأكواد البرمجية التفاعلية -->
     <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebar.classList.toggle('translate-x-full');
+            backdrop.classList.toggle('hidden');
+        }
+
         function switchSection(sectionId) {
-            // إخفاء جميع الأقسام
             document.getElementById('section-admin-notices').classList.add('hidden');
             document.getElementById('section-classroom').classList.add('hidden');
             document.getElementById('section-admin-archive').classList.add('hidden');
             document.getElementById('section-admin-chat').classList.add('hidden');
 
-            // إظهار القسم المطلوب وتغيير العنوان
             if (sectionId === 'admin-notices') {
                 document.getElementById('section-admin-notices').classList.remove('hidden');
                 document.getElementById('current-title').innerText = 'التبليغات الرسمية للإدارة';
@@ -239,6 +259,8 @@
                 document.getElementById('section-admin-chat').classList.remove('hidden');
                 document.getElementById('current-title').innerText = 'تواصل الأساتذة والإدارة';
             }
+
+            if (window.innerWidth < 768) toggleSidebar();
         }
 
         function openClassRoom(className, subject) {
@@ -247,22 +269,19 @@
             document.getElementById('section-admin-chat').classList.add('hidden');
             document.getElementById('section-classroom').classList.remove('hidden');
 
-            document.getElementById('current-title').innerText = `غرفة ${subject} - ${className}`;
+            document.getElementById('current-title').innerText = `قسم ${subject} - ${className}`;
+
+            if (window.innerWidth < 768) toggleSidebar();
         }
 
         function switchTab(tabName) {
-            document.getElementById('tab-content-chat').classList.add('hidden');
-            document.getElementById('tab-content-lectures').classList.add('hidden');
-            document.getElementById('tab-content-qa').classList.add('hidden');
-            document.getElementById('tab-content-students').classList.add('hidden');
-
-            document.getElementById('tab-btn-chat').className = "px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm";
-            document.getElementById('tab-btn-lectures').className = "px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm";
-            document.getElementById('tab-btn-qa').className = "px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm";
-            document.getElementById('tab-btn-students').className = "px-4 py-2 text-gray-500 hover:text-gray-700 font-medium text-sm";
+            ['chat', 'lectures', 'qa', 'students'].forEach(tab => {
+                document.getElementById(`tab-content-${tab}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${tab}`).className = "px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap";
+            });
 
             document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
-            document.getElementById(`tab-btn-${tabName}`).className = "px-4 py-2 border-b-2 border-indigo-600 text-indigo-600 font-bold text-sm";
+            document.getElementById(`tab-btn-${tabName}`).className = "px-3 py-2 border-b-2 border-indigo-600 text-indigo-600 font-bold text-xs md:text-sm whitespace-nowrap";
         }
 
         function sendMessage() {
@@ -271,11 +290,17 @@
 
             const chatMessages = document.getElementById('chat-messages');
             const messageDiv = document.createElement('div');
-            messageDiv.className = "flex items-start gap-2.5 justify-end";
+            messageDiv.className = "flex items-start gap-2 justify-end";
             messageDiv.innerHTML = `
-                <div class="bg-indigo-600 text-white p-3 rounded-2xl shadow-sm max-w-md">
-                    <p class="text-sm">${input.value}</p>
-                    <span class="text-[10px] text-indigo-200 block text-right mt-1">الآن</span>
+                <div class="bg-indigo-600 text-white p-2.5 rounded-2xl shadow-sm max-w-[80%] relative group">
+                    <p class="text-xs md:text-sm">${input.value}</p>
+                    <div class="flex justify-between items-center mt-1 gap-2">
+                        <span class="text-[9px] text-indigo-200">الآن</span>
+                        <div class="space-x-1 space-x-reverse text-[10px]">
+                            <button onclick="this.closest('.group').querySelector('p').contentEditable=true;this.closest('.group').querySelector('p').focus()" class="hover:underline text-indigo-100">تعديل</button>
+                            <button onclick="this.closest('.flex.items-start').remove()" class="hover:underline text-red-200">حذف</button>
+                        </div>
+                    </div>
                 </div>
             `;
             chatMessages.appendChild(messageDiv);
@@ -284,7 +309,7 @@
         }
 
         function recordVoice() {
-            alert("تم بدء تسجيل البصمة الصوتية (محاكاة). سيتم إرسالها فور الإنهاء.");
+            alert("تم بدء تسجيل البصمة الصوتية وإرسالها بنجاح (محاكاة واتساب).");
         }
     </script>
 </body>
