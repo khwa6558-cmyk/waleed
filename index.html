@@ -73,46 +73,31 @@
         </div>
       </div>
 
-      <!-- Schedule / Daily Preparation (6 Lessons) -->
+      <!-- Schedule & Homework Combined (6 Lessons) -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
         <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3 flex-wrap gap-2">
           <h2 class="text-lg font-bold text-indigo-950 flex items-center gap-2">
             <i class="fa-solid fa-book-open text-amber-500"></i>
-            جدول الحصص والتحضير اليومي (6 حصص)
+            جدول الحصص والواجبات اليومية (المادة وأمامها الواجب والملف)
           </h2>
           <!-- Day Filter -->
           <div class="flex gap-1 overflow-x-auto text-xs" id="dayFilterTabs"></div>
         </div>
 
-        <div id="studentScheduleContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3"></div>
+        <div id="studentScheduleContainer" class="space-y-3"></div>
       </div>
 
-      <!-- Homework & Lectures (Material Aligned) -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        <!-- Homework List -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-          <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-            <h3 class="font-bold text-indigo-950 flex items-center gap-2">
-              <i class="fa-solid fa-pen-ruler text-rose-500"></i> الواجبات المنزلية (المادة وأمامها الواجب)
-            </h3>
-            <span id="hwCountBadge" class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
-          </div>
-          <div id="studentHwList" class="space-y-3"></div>
+      <!-- Lectures -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-indigo-950 flex items-center gap-2">
+            <i class="fa-solid fa-file-video text-indigo-600"></i> المحاضرات والملخصات الإضافية
+          </h3>
+          <span id="lecCountBadge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
         </div>
-
-        <!-- Lectures List -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-          <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-            <h3 class="font-bold text-indigo-950 flex items-center gap-2">
-              <i class="fa-solid fa-file-video text-indigo-600"></i> المحاضرات والملخصات
-            </h3>
-            <span id="lecCountBadge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
-          </div>
-          <div id="studentLecList" class="space-y-3"></div>
-        </div>
-
+        <div id="studentLecList" class="space-y-3"></div>
       </div>
+
     </section>
 
     <!-- ========================================== -->
@@ -122,8 +107,8 @@
 
       <div class="bg-indigo-900 text-white p-4 rounded-xl shadow-md flex justify-between items-center flex-wrap gap-3">
         <div>
-          <h2 class="font-bold text-lg">لوحة التحكم وإدارة الجداول - ثانوية المتفوقين الثانية</h2>
-          <p class="text-xs text-indigo-200">إدارة الجداول لـ 6 حصص لكل يوم، ورفع الواجبات والمحاضرات</p>
+          <h2 class="font-bold text-lg">لوحة التحكم وإدارة الجداول والواجبات - ثانوية المتفوقين الثانية</h2>
+          <p class="text-xs text-indigo-200">إدارة الجداول للـ 6 حصص، ورفع الواجبات المباشرة لكل مادة</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow transition">
           <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات
@@ -174,7 +159,7 @@
         <!-- Add Homework -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
           <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-rose-600">
-            <i class="fa-solid fa-plus-circle ml-1"></i> رفع واجب جديد (يحذف تلقائياً الساعة 12 ظهراً)
+            <i class="fa-solid fa-plus-circle ml-1"></i> رفع واجب لمادة معينة (يحذف تلقائياً 12 ظهراً)
           </h3>
           <form onsubmit="handleAddHomework(event)" class="space-y-3">
             <div>
@@ -189,8 +174,18 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1">المادة الدراسية:</label>
-              <input type="text" id="hwSubject" required placeholder="مثال: الرياضيات" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+              <label class="block text-xs font-semibold mb-1">اسم المادة (يجب أن تطابق اسم المادة في جدول الحصص تماماً):</label>
+              <input type="text" id="hwSubject" required placeholder="مثال: رياضيات" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">تحديد اليوم المرتبط بالواجب:</label>
+              <select id="hwDay" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+                <option value="الأحد">الأحد</option>
+                <option value="الإثنين">الإثنين</option>
+                <option value="الثلاثاء">الثلاثاء</option>
+                <option value="الأربعاء">الأربعاء</option>
+                <option value="الخميس">الخميس</option>
+              </select>
             </div>
             <div>
               <label class="block text-xs font-semibold mb-1">تفاصيل الواجب (اختياري مع الملف):</label>
@@ -205,7 +200,7 @@
               <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
             </div>
             <button type="submit" class="w-full bg-rose-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-rose-700 transition">
-              نشر الواجب
+              نشر الواجب للمادة
             </button>
           </form>
         </div>
@@ -330,39 +325,60 @@
 
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
+      const gradeHws = db.homeworks.filter(h => h.grade === grade && h.day === selectedDayFilter);
 
-      scheduleContainer.innerHTML = daySchedule.map((subject, idx) => `
-        <div class="p-3 rounded-lg border ${subject && subject.trim() ? 'bg-indigo-50/60 border-indigo-100' : 'bg-slate-50 border-slate-100 opacity-60'}">
-          <div class="text-[11px] text-indigo-600 font-bold mb-1">الحصة ${idx + 1}</div>
-          <div class="font-bold text-slate-800 text-sm">${subject || 'فراغ'}</div>
-        </div>
-      `).join('');
-
-      const hwContainer = document.getElementById('studentHwList');
-      const filteredHws = db.homeworks.filter(h => h.grade === grade);
-      document.getElementById('hwCountBadge').innerText = filteredHws.length;
-
-      if (filteredHws.length === 0) {
-        hwContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد واجبات نشطة لهذا الصف.</p>`;
-      } else {
-        hwContainer.innerHTML = filteredHws.map(hw => `
-          <div class="p-3 bg-rose-50/40 rounded-lg border border-rose-100 space-y-2">
-            <div class="flex justify-between items-center flex-wrap gap-2">
-              <span class="text-xs font-bold bg-rose-200 text-rose-800 px-2 py-0.5 rounded"><i class="fa-solid fa-bookmark ml-1"></i> المادة: ${hw.subject}</span>
-              <span class="text-[10px] text-slate-500"><i class="fa-solid fa-clock ml-1"></i>يحذف 12:00 ظهراً (${hw.dueDate})</span>
-            </div>
-            ${hw.desc ? `<p class="text-xs text-slate-700 font-semibold bg-white p-2 rounded border border-rose-50">${hw.desc}</p>` : ''}
-            ${hw.fileData ? `
-              <div class="pt-1">
-                <a href="${hw.fileData}" target="_blank" download="واجب_${hw.subject}" class="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded transition shadow-sm">
-                  <i class="fa-solid fa-file-arrow-down"></i> فتح / تحميل ملف الواجب
-                </a>
-              </div>
-            ` : ''}
+      if (daySchedule.every(slot => !slot || !slot.trim())) {
+        scheduleContainer.innerHTML = `
+          <div class="py-8 text-center text-slate-400">
+            <i class="fa-solid fa-calendar-xmark text-3xl mb-2"></i>
+            <p class="text-sm">لم يتم إضافة جدول حصص لهذا اليوم بعد.</p>
           </div>
-        `).join('');
+        `;
+      } else {
+        scheduleContainer.innerHTML = daySchedule.map((subject, idx) => {
+          if (!subject || !subject.trim()) {
+            return `
+              <div class="p-3 rounded-lg border bg-slate-50 border-slate-100 opacity-60 flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-400">الحصة ${idx + 1}</span>
+                <span class="text-xs text-slate-400">فراغ</span>
+              </div>
+            `;
+          }
+
+          // Find homework for this specific subject
+          const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === subject.trim().toLowerCase());
+
+          return `
+            <div class="p-4 rounded-xl border bg-indigo-50/40 border-indigo-100 space-y-2">
+              <div class="flex justify-between items-center flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="bg-indigo-900 text-white text-xs font-bold px-2.5 py-1 rounded-md">الحصة ${idx + 1}</span>
+                  <span class="font-extrabold text-indigo-950 text-base">${subject}</span>
+                </div>
+                ${matchHw ? `<span class="text-[11px] bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-pen-ruler ml-1"></i>يوجد واجب</span>` : `<span class="text-[11px] text-slate-400">لا يوجد واجب</span>`}
+              </div>
+
+              ${matchHw ? `
+                <div class="mt-2 p-3 bg-white rounded-lg border border-rose-100 space-y-2">
+                  ${matchHw.desc ? `<p class="text-xs text-slate-700 font-semibold"><strong class="text-rose-600">الواجب:</strong> ${matchHw.desc}</p>` : ''}
+                  ${matchHw.fileData ? `
+                    <div>
+                      <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded transition shadow-sm">
+                        <i class="fa-solid fa-file-arrow-down"></i> فتح ملف الواجب
+                      </a>
+                    </div>
+                  ` : ''}
+                  <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً (${matchHw.dueDate})
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
       }
 
+      // Lectures
       const lecContainer = document.getElementById('studentLecList');
       const filteredLecs = db.lectures.filter(l => l.grade === grade);
       document.getElementById('lecCountBadge').innerText = filteredLecs.length;
@@ -422,7 +438,8 @@
     function handleAddHomework(e) {
       e.preventDefault();
       const grade = document.getElementById('hwTargetGrade').value;
-      const subject = document.getElementById('hwSubject').value;
+      const subject = document.getElementById('hwSubject').value.trim();
+      const day = document.getElementById('hwDay').value;
       const desc = document.getElementById('hwDesc').value;
       const dueDate = document.getElementById('hwDueDate').value;
       const fileInput = document.getElementById('hwFile');
@@ -440,13 +457,14 @@
             id: Date.now(),
             grade,
             subject,
+            day,
             desc,
             dueDate,
             fileData: uploadEvent.target.result
           });
           saveDB();
           resetHwForm();
-          alert('تم إدراج الواجب مع الملف بنجاح وسيتم حذفه تلقائياً في موعده!');
+          alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً في موعده!');
           renderStudentDashboard();
         };
         reader.readAsDataURL(file);
@@ -455,13 +473,14 @@
           id: Date.now(),
           grade,
           subject,
+          day,
           desc,
           dueDate,
           fileData: null
         });
         saveDB();
         resetHwForm();
-        alert('تم إدراج الواجب بنجاح وسيتم حذفه تلقائياً في موعده!');
+        alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً في موعده!');
         renderStudentDashboard();
       }
     }
