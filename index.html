@@ -79,8 +79,8 @@
 
   <!-- Notification Banner -->
   <div class="bg-teal-50 border-b border-teal-200 text-teal-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
-    <i class="fa-solid fa-shield-halved text-teal-700 text-base animate-pulse"></i>
-    <span>تم تفعيل نظام التخزين الثابت والمستقر لمنع اختفاء البيانات نهائياً.</span>
+    <i class="fa-solid fa-circle-check text-teal-700 text-base"></i>
+    <span>جميع أقسام المنصة بما فيها جدول الحصص أصبحت مفتوحة بالكامل للتعديل والحفظ المباشر.</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -145,7 +145,7 @@
     <section id="adminView" class="hidden space-y-6">
       <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-slate-800">
         <div>
-          <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
+          <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات (مفتوحة بالكامل)</h2>
           <p class="text-xs text-slate-300 mt-1">تعديل الجداول، رفع الملفات، وحفظها بثبات دائم</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
@@ -160,7 +160,7 @@
             <span class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base">
               <i class="fa-solid fa-table"></i>
             </span>
-            تنظيم وتعديل جدول الحصص (محمي بررمز WA1992wa)
+            تنظيم وتعديل جدول الحصص (مفتوح للتعديل والحفظ المباشر)
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-slate-800">اختر الصف:</label>
@@ -186,7 +186,7 @@
                 <th class="p-3.5 border border-slate-200">الحصة 4</th>
                 <th class="p-3.5 border border-slate-200">الحصة 5</th>
                 <th class="p-3.5 border border-slate-200">الحصة 6</th>
-                <th class="p-3.5 border border-slate-200 text-center rounded-l-2xl">حفظ (بالرمز)</th>
+                <th class="p-3.5 border border-slate-200 text-center rounded-l-2xl">حفظ مباشر</th>
               </tr>
             </thead>
             <tbody id="adminScheduleTbody" class="divide-y divide-slate-100 font-semibold"></tbody>
@@ -325,9 +325,6 @@
       '6h': 'السادس إعدادي'
     };
 
-    const SCHEDULE_PASSWORD = "WA1992wa";
-
-    // استخدام مفاتيح ثابتة ومستقرة تماماً في الذاكرة المحلية (LocalStorage) لضمان عدم ضياع أي بيان
     let appData = {
       schedules: JSON.parse(localStorage.getItem('waleed_sec_schedules_v3')) || {},
       homeworks: JSON.parse(localStorage.getItem('waleed_sec_homeworks_v3')) || [],
@@ -341,14 +338,13 @@
         localStorage.setItem('waleed_sec_schedules_v3', JSON.stringify(appData.schedules));
         localStorage.setItem('waleed_sec_homeworks_v3', JSON.stringify(appData.homeworks));
         
-        // حفظ بيانات المكتبة بدون ملفات الـ Blob الكبيرة في LocalStorage لتفادي امتلاء الذاكرة
         const metaOnly = appData.lectures.map(l => ({
           id: l.id,
           grade: l.grade,
           title: l.title,
           subject: l.subject,
           desc: l.desc,
-          fileData: l.fileData // Base64 لتخزين الملفات الصغيرة أو المتوسطة بثبات تام
+          fileData: l.fileData
         }));
         localStorage.setItem('waleed_sec_lectures_meta_v3', JSON.stringify(metaOnly));
       } catch (e) {
@@ -528,8 +524,8 @@
               </td>
             `).join('')}
             <td class="p-3.5 border border-slate-200 text-center">
-              <button onclick="saveAdminRowProtected('${grade}', '${day}')" class="bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
-                <i class="fa-solid fa-lock"></i> حفظ (بالرمز)
+              <button onclick="saveAdminRowDirect('${grade}', '${day}')" class="bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
+                <i class="fa-solid fa-check"></i> حفظ
               </button>
             </td>
           </tr>
@@ -537,14 +533,8 @@
       }).join('');
     }
 
-    function saveAdminRowProtected(grade, day) {
-      const enteredPass = prompt("أدخل رمز الحماية السري لتعديل جدول الحصص:");
-      if (enteredPass === null) return;
-      if (enteredPass.trim() !== SCHEDULE_PASSWORD) {
-        alert("⚠️ رمز الحماية خاطئ! لا يمكن حفظ الجدول.");
-        return;
-      }
-
+    // حفظ مباشر بدون أي كلمة سر أو قيود
+    function saveAdminRowDirect(grade, day) {
       if (!appData.schedules[grade]) appData.schedules[grade] = {};
       const newSlots = [];
       for (let i = 0; i < 6; i++) {
@@ -553,7 +543,7 @@
       }
       appData.schedules[grade][day] = newSlots;
       saveAppData();
-      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح وثبات تام!`);
+      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح مباشر!`);
       updateHwSubjectsDropdown();
     }
 
@@ -788,7 +778,6 @@
       }
     }
 
-    // التشغيل الفوري عند تحميل الصفحة
     initPlatform();
   </script>
 </body>
