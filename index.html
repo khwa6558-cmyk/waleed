@@ -140,7 +140,7 @@
       <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
           <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
-          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، نشر الواجبات، ورفع الملفات ومزامنتها فوراً</p>
+          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، نشر الواجبات، ورفع الملفات ومزامنتهما فوراً</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2 border border-rose-500/40">
           <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
@@ -269,7 +269,7 @@
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">المادة:</label>
-                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
+                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none"> مفتاح
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر الملف (فيديو، PDF، صورة...):</label>
@@ -319,18 +319,46 @@
       '6h': 'السادس إعدادي'
     };
 
-    const STORAGE_KEY_NAME = 'waleed_sec_platform_ultimate_sync_key';
+    const MAIN_STORAGE_KEY = 'waleed_sec_platform_ultimate_sync_key';
 
-    // نظام استرجاع البيانات المزدوج (متصفح واختصار الشاشة الرئيسية)
+    // نظام استرجاع ذكي يبحث عن البيانات القديمة في جميع المفاتيح السابقة لدمجها تلقائياً وعدم فقدان أي معلومة
     function loadAppData() {
       try {
-        let rawData = localStorage.getItem(STORAGE_KEY_NAME);
-        if (!rawData) {
-          rawData = sessionStorage.getItem(STORAGE_KEY_NAME);
-        }
+        // فحص المفتاح الرئيسي الحديث
+        let rawData = localStorage.getItem(MAIN_STORAGE_KEY) || sessionStorage.getItem(MAIN_STORAGE_KEY);
         if (rawData) {
           return JSON.parse(rawData);
         }
+
+        // البحث الاحتياطي في المفاتيح القديمة لضمان عدم ضياع أي بيانات سابقة
+        const oldKeys = [
+          'waleed_sec_platform_master_v5',
+          'waleed_sec_schedules_master_v5',
+          'waleed_sec_schedules_v4',
+          'waleed_sec_schedules_v3'
+        ];
+
+        let mergedData = { schedules: {}, homeworks: [], lectures: [] };
+
+        for (let key of oldKeys) {
+          let oldVal = localStorage.getItem(key);
+          if (oldVal) {
+            let parsed = JSON.parse(oldVal);
+            if (key.includes('schedules') && !parsed.homeworks) {
+              mergedData.schedules = Object.keys(mergedData.schedules).length ? mergedData.schedules : parsed;
+            } else if (parsed.schedules || parsed.homeworks) {
+              if (Object.keys(mergedData.schedules).length === 0) mergedData.schedules = parsed.schedules || {};
+              if (mergedData.homeworks.length === 0) mergedData.homeworks = parsed.homeworks || [];
+              if (mergedData.lectures.length === 0) mergedData.lectures = parsed.lectures || [];
+            }
+          }
+        }
+
+        if (Object.keys(mergedData.schedules).length > 0 || mergedData.homeworks.length > 0) {
+          saveAppDataDirect(mergedData);
+          return mergedData;
+        }
+
       } catch (e) {
         console.error(e);
       }
@@ -340,35 +368,24 @@
     let appData = loadAppData();
     let selectedDayFilter = getCurrentDayName();
 
-    // نظام المزامنة الفورية بين النوافذ وجميع بيئات التشغيل
-    window.addEventListener('storage', (event) => {
-      if (event.key === STORAGE_KEY_NAME && event.newValue) {
-        try {
-          appData = JSON.parse(event.newValue);
-          initPlatform();
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    });
-
-    function saveAppData() {
+    function saveAppDataDirect(dataObj) {
       try {
-        const payload = JSON.stringify(appData);
-        localStorage.setItem(STORAGE_KEY_NAME, payload);
-        sessionStorage.setItem(STORAGE_KEY_NAME, payload);
-        
-        // إرسال إشارة مزامنة فورية إذا كان هناك نافذة أخرى مفتوحة
-        if (window.localStorage) {
-          localStorage.setItem('waleed_sync_trigger', Date.now().toString());
-        }
+        const payload = JSON.stringify(dataObj);
+        localStorage.setItem(MAIN_STORAGE_KEY, payload);
+        sessionStorage.setItem(MAIN_STORAGE_KEY, payload);
+        localStorage.setItem('waleed_sync_trigger', Date.now().toString());
       } catch (e) {
-        alert('مساحة التخزين ممتلئة تقريباً.');
+        console.error(e);
       }
     }
 
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'waleed_sync_trigger') {
+    function saveAppData() {
+      saveAppDataDirect(appData);
+    }
+
+    // مزامنة فورية بين المتصفح واختصار الشاشة الرئيسية عند أي تغيير
+    window.addEventListener('storage', (event) => {
+      if (event.key === MAIN_STORAGE_KEY || event.key === 'waleed_sync_trigger') {
         appData = loadAppData();
         initPlatform();
       }
