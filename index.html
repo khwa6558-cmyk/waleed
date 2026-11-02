@@ -87,14 +87,14 @@
         <div id="studentScheduleContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3"></div>
       </div>
 
-      <!-- Homework & Lectures -->
+      <!-- Homework & Lectures (Material Aligned) -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         <!-- Homework List -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
           <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
             <h3 class="font-bold text-indigo-950 flex items-center gap-2">
-              <i class="fa-solid fa-pen-ruler text-rose-500"></i> الواجبات المنزلية
+              <i class="fa-solid fa-pen-ruler text-rose-500"></i> الواجبات المنزلية (المادة وأمامها الواجب)
             </h3>
             <span id="hwCountBadge" class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
           </div>
@@ -193,8 +193,12 @@
               <input type="text" id="hwSubject" required placeholder="مثال: الرياضيات" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1">تفاصيل الواجب:</label>
-              <textarea id="hwDesc" required placeholder="اكتب المطلوب حله والملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
+              <label class="block text-xs font-semibold mb-1">تفاصيل الواجب (اختياري مع الملف):</label>
+              <textarea id="hwDesc" placeholder="اكتب المطلوب حله أو الملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">رفع ملف الواجب (اختياري - صورة أو PDF):</label>
+              <input type="file" id="hwFile" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-300 text-xs p-1.5 rounded cursor-pointer">
             </div>
             <div>
               <label class="block text-xs font-semibold mb-1">تاريخ التسليم النهائي:</label>
@@ -342,12 +346,19 @@
         hwContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد واجبات نشطة لهذا الصف.</p>`;
       } else {
         hwContainer.innerHTML = filteredHws.map(hw => `
-          <div class="p-3 bg-rose-50/40 rounded-lg border border-rose-100 space-y-1">
-            <div class="flex justify-between items-center">
-              <span class="text-xs font-bold bg-rose-200 text-rose-800 px-2 py-0.5 rounded">${hw.subject}</span>
+          <div class="p-3 bg-rose-50/40 rounded-lg border border-rose-100 space-y-2">
+            <div class="flex justify-between items-center flex-wrap gap-2">
+              <span class="text-xs font-bold bg-rose-200 text-rose-800 px-2 py-0.5 rounded"><i class="fa-solid fa-bookmark ml-1"></i> المادة: ${hw.subject}</span>
               <span class="text-[10px] text-slate-500"><i class="fa-solid fa-clock ml-1"></i>يحذف 12:00 ظهراً (${hw.dueDate})</span>
             </div>
-            <p class="text-xs text-slate-700 font-semibold mt-1">${hw.desc}</p>
+            ${hw.desc ? `<p class="text-xs text-slate-700 font-semibold bg-white p-2 rounded border border-rose-50">${hw.desc}</p>` : ''}
+            ${hw.fileData ? `
+              <div class="pt-1">
+                <a href="${hw.fileData}" target="_blank" download="واجب_${hw.subject}" class="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded transition shadow-sm">
+                  <i class="fa-solid fa-file-arrow-down"></i> فتح / تحميل ملف الواجب
+                </a>
+              </div>
+            ` : ''}
           </div>
         `).join('');
       }
@@ -360,12 +371,12 @@
         lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد محاضرات مرفوعة حالياً.</p>`;
       } else {
         lecContainer.innerHTML = filteredLecs.map(lec => `
-          <div class="p-3 bg-indigo-50/40 rounded-lg border border-indigo-100 flex justify-between items-center">
+          <div class="p-3 bg-indigo-50/40 rounded-lg border border-indigo-100 flex justify-between items-center flex-wrap gap-2">
             <div>
               <span class="text-[10px] font-bold bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded">${lec.subject}</span>
               <h4 class="text-xs font-bold text-slate-800 mt-1">${lec.title}</h4>
             </div>
-            ${lec.link ? `<a href="${lec.link}" target="_blank" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded hover:bg-indigo-700 transition"><i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>عرض</a>` : ''}
+            ${lec.link ? `<a href="${lec.link}" target="_blank" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded hover:bg-indigo-700 transition"><i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>عرض المحاضرة</a>` : ''}
           </div>
         `).join('');
       }
@@ -414,14 +425,51 @@
       const subject = document.getElementById('hwSubject').value;
       const desc = document.getElementById('hwDesc').value;
       const dueDate = document.getElementById('hwDueDate').value;
+      const fileInput = document.getElementById('hwFile');
 
-      db.homeworks.push({ id: Date.now(), grade, subject, desc, dueDate });
-      saveDB();
+      if (!desc.trim() && !fileInput.files.length) {
+        alert('يرجى إدخال تفاصيل كتابية أو اختيار ملف للواجب على الأقل.');
+        return;
+      }
 
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(uploadEvent) {
+          db.homeworks.push({
+            id: Date.now(),
+            grade,
+            subject,
+            desc,
+            dueDate,
+            fileData: uploadEvent.target.result
+          });
+          saveDB();
+          resetHwForm();
+          alert('تم إدراج الواجب مع الملف بنجاح وسيتم حذفه تلقائياً في موعده!');
+          renderStudentDashboard();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        db.homeworks.push({
+          id: Date.now(),
+          grade,
+          subject,
+          desc,
+          dueDate,
+          fileData: null
+        });
+        saveDB();
+        resetHwForm();
+        alert('تم إدراج الواجب بنجاح وسيتم حذفه تلقائياً في موعده!');
+        renderStudentDashboard();
+      }
+    }
+
+    function resetHwForm() {
       document.getElementById('hwSubject').value = '';
       document.getElementById('hwDesc').value = '';
-      alert('تم إدراج الواجب بنجاح وسيتم حذفه تلقائياً في موعده!');
-      renderStudentDashboard();
+      document.getElementById('hwFile').value = '';
     }
 
     function handleAddLecture(e) {
