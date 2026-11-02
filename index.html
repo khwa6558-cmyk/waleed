@@ -140,7 +140,7 @@
       <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
           <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
-          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، نشر الواجبات، ورفع الملفات بثبات دائم</p>
+          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، نشر الواجبات، ورفع الملفات ومزامنتها فوراً</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2 border border-rose-500/40">
           <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
@@ -154,7 +154,7 @@
             <span class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-300 flex items-center justify-center text-base border border-indigo-700">
               <i class="fa-solid fa-table"></i>
             </span>
-            تنظيم وتعديل جدول الحصص (حفظ مباشر)
+            تنظيم وتعديل جدول الحصص (حفظ ومزامنة فورية)
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
@@ -319,36 +319,60 @@
       '6h': 'السادس إعدادي'
     };
 
-    // نظام تخزين مزدوج موحد ومربوط بجميع آليات التخزين المحلية لمنع مسح أو اختفاء البيانات من الشاشة الرئيسية
-    let appData = {
-      schedules: JSON.parse(localStorage.getItem('waleed_sec_schedules_master_v5')) || {},
-      homeworks: JSON.parse(localStorage.getItem('waleed_sec_homeworks_master_v5')) || [],
-      lectures: JSON.parse(localStorage.getItem('waleed_sec_lectures_master_v5')) || []
-    };
+    const STORAGE_KEY_NAME = 'waleed_sec_platform_ultimate_sync_key';
 
-    let selectedDayFilter = getCurrentDayName();
-
-    function saveAppData() {
+    // نظام استرجاع البيانات المزدوج (متصفح واختصار الشاشة الرئيسية)
+    function loadAppData() {
       try {
-        localStorage.setItem('waleed_sec_schedules_master_v5', JSON.stringify(appData.schedules));
-        localStorage.setItem('waleed_sec_homeworks_master_v5', JSON.stringify(appData.homeworks));
-        
-        const metaOnly = appData.lectures.map(l => ({
-          id: l.id,
-          grade: l.grade,
-          title: l.title,
-          subject: l.subject,
-          desc: l.desc,
-          fileData: l.fileData
-        }));
-        localStorage.setItem('waleed_sec_lectures_master_v5', JSON.stringify(metaOnly));
-        
-        // مزامنة احتياطية فورية لضمان عدم ضياع البيانات عند فتحها كاختصار على سطح المكتب
-        sessionStorage.setItem('sync_backup_active', 'true');
+        let rawData = localStorage.getItem(STORAGE_KEY_NAME);
+        if (!rawData) {
+          rawData = sessionStorage.getItem(STORAGE_KEY_NAME);
+        }
+        if (rawData) {
+          return JSON.parse(rawData);
+        }
       } catch (e) {
         console.error(e);
       }
+      return { schedules: {}, homeworks: [], lectures: [] };
     }
+
+    let appData = loadAppData();
+    let selectedDayFilter = getCurrentDayName();
+
+    // نظام المزامنة الفورية بين النوافذ وجميع بيئات التشغيل
+    window.addEventListener('storage', (event) => {
+      if (event.key === STORAGE_KEY_NAME && event.newValue) {
+        try {
+          appData = JSON.parse(event.newValue);
+          initPlatform();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
+
+    function saveAppData() {
+      try {
+        const payload = JSON.stringify(appData);
+        localStorage.setItem(STORAGE_KEY_NAME, payload);
+        sessionStorage.setItem(STORAGE_KEY_NAME, payload);
+        
+        // إرسال إشارة مزامنة فورية إذا كان هناك نافذة أخرى مفتوحة
+        if (window.localStorage) {
+          localStorage.setItem('waleed_sync_trigger', Date.now().toString());
+        }
+      } catch (e) {
+        alert('مساحة التخزين ممتلئة تقريباً.');
+      }
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'waleed_sync_trigger') {
+        appData = loadAppData();
+        initPlatform();
+      }
+    });
 
     function getCurrentDayName() {
       const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
@@ -380,6 +404,7 @@
     }
 
     function initPlatform() {
+      appData = loadAppData();
       document.getElementById('currentDayName').innerText = getCurrentDayName();
       document.getElementById('hwDueDate').valueAsDate = new Date();
       cleanupExpiredHomeworks();
@@ -452,13 +477,13 @@
 
           return `
             <div class="p-4 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl border border-indigo-700/60 shadow-lg hover:shadow-indigo-500/10 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <!-- الحصة والمادة على اليمين بألوان متميزة -->
+              <!-- الحصة والمادة على اليمين -->
               <div class="flex items-center gap-3 w-full sm:w-auto">
                 <span class="bg-amber-500 text-indigo-950 text-xs font-black px-3.5 py-2 rounded-2xl shadow-md whitespace-nowrap">الحصة ${idx + 1}</span>
                 <h3 class="font-black text-white text-lg sm:text-xl tracking-wide">${subject}</h3>
               </div>
 
-              <!-- الواجب أو الملف على اليسار (تم تضخيم الخط وزيادة وضوحه وتلوينه) -->
+              <!-- الواجب أو الملف على اليسار (بخط كبير وملون وواضح) -->
               <div class="w-full sm:w-auto flex flex-wrap items-center gap-2 justify-end">
                 ${matchHw ? `
                   <div class="bg-amber-500/10 border-2 border-amber-400/60 text-amber-200 px-5 py-3 rounded-2xl text-sm sm:text-base font-extrabold shadow-md flex items-center gap-3 flex-grow sm:flex-grow-0">
@@ -545,7 +570,7 @@
       }
       appData.schedules[grade][day] = newSlots;
       saveAppData();
-      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح وثبات تام!`);
+      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح ومزامنته فوراً!`);
       updateHwSubjectsDropdown();
     }
 
@@ -573,7 +598,7 @@
           appData.homeworks[hwIndex].desc = desc;
           appData.homeworks[hwIndex].dueDate = dueDate;
         }
-        alert('تم تعديل الواجب بنجاح!');
+        alert('تم تعديل الواجب بنجاح ومزامنته!');
         cancelEditHomework();
       } else {
         appData.homeworks.push({
@@ -584,7 +609,7 @@
           desc,
           dueDate
         });
-        alert('تم نشر الواجب بنجاح!');
+        alert('تم نشر الواجب بنجاح ومزامنته!');
         resetHwForm();
       }
       
@@ -609,7 +634,7 @@
         appData.homeworks = appData.homeworks.filter(h => String(h.id) !== String(id));
         saveAppData();
         renderStudentDashboard();
-        alert('تم حذف الواجب بنجاح.');
+        alert('تم حذف الواجب ومزامنته بنجاح.');
       }
     }
 
@@ -643,11 +668,11 @@
         if (editId) {
           const idx = appData.lectures.findIndex(l => Number(l.id) === Number(editId));
           if (idx !== -1) appData.lectures[idx] = lecObj;
-          alert('تم تعديل الملف بنجاح!');
+          alert('تم تعديل الملف ومزامنته بنجاح!');
           cancelEditLecture();
         } else {
           appData.lectures.push(lecObj);
-          alert('تم رفع الملف بنجاح إلى المكتبة!');
+          alert('تم رفع الملف ومزامنته بنجاح!');
           document.getElementById('lecTitle').value = '';
           document.getElementById('lecSubject').value = '';
           document.getElementById('lecDesc').value = '';
@@ -705,7 +730,7 @@
         saveAppData();
         renderAdminLibraryList();
         renderStudentDashboard();
-        alert('تم الحذف بنجاح.');
+        alert('تم الحذف ومزامنته بنجاح.');
       }
     }
 
