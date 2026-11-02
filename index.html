@@ -8,9 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Firebase SDK (للمزامنة السحابية الحقيقية اللحظية) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <style>
     body { font-family: 'Cairo', sans-serif; }
     @keyframes pulseGlow {
@@ -50,7 +47,7 @@
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-indigo-950 font-black text-xl shadow-lg border-2 border-white/20">ث</div>
         <div>
           <h1 class="text-xl font-extrabold tracking-wide text-amber-300">منصة ثانوية المتفوقين الثانية</h1>
-          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (مزامنة سحابية أوتوماتيكية بالكامل)</p>
+          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (إصدار مستقر وخالٍ من الأخطاء)</p>
         </div>
       </div>
 
@@ -85,9 +82,6 @@
         <div class="flex items-center gap-2">
           <span class="text-xs bg-indigo-950 text-indigo-200 font-bold px-4 py-2.5 rounded-2xl shadow-md border border-indigo-800 flex items-center gap-2">
             <i class="fa-solid fa-calendar-day text-amber-400"></i>اليوم الحالي: <strong id="currentDayName" class="text-amber-300"></strong>
-          </span>
-          <span id="cloudStatus" class="text-[10px] bg-teal-500/20 text-teal-300 px-3 py-2 rounded-xl border border-teal-500/30 font-bold">
-            <i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب أوتوماتيكياً
           </span>
         </div>
       </div>
@@ -126,11 +120,11 @@
     <section id="adminView" class="hidden space-y-6">
       <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
-          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة (مزامنة سحابية لحظية 100%)</h2>
-          <p class="text-xs text-indigo-200 mt-1">أي تعديل هنا ينتقل أوتوماتيكياً وفوراً للمتصفح وسطح المكتب معاً</p>
+          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة والتحكم</h2>
+          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، ونشر الواجبات وإدارة المكتبة</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2 border border-rose-500/40">
-          <i class="fa-solid fa-rotate-left"></i> إعادة ضبط السحاب
+          <i class="fa-solid fa-rotate-left"></i> تصفير البيانات
         </button>
       </div>
 
@@ -141,7 +135,7 @@
             <span class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-300 flex items-center justify-center text-base border border-indigo-700">
               <i class="fa-solid fa-table"></i>
             </span>
-            تنظيم وتعديل جدول الحصص (حفظ سحابي فوري)
+            تنظيم وتعديل جدول الحصص (حفظ فوري)
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
@@ -167,7 +161,7 @@
                 <th class="p-3.5 border border-indigo-800">الحصة 4</th>
                 <th class="p-3.5 border border-indigo-800">الحصة 5</th>
                 <th class="p-3.5 border border-indigo-800">الحصة 6</th>
-                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ فوري</th>
+                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ مباشر</th>
               </tr>
             </thead>
             <tbody id="adminScheduleTbody" class="divide-y divide-indigo-800/40 font-semibold"></tbody>
@@ -220,7 +214,7 @@
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب سحابياً
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب
                 </button>
                 <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
               </div>
@@ -232,7 +226,7 @@
         <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-teal-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (سحابي)
+              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
@@ -265,7 +259,7 @@
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ سحابي
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ الملف
                 </button>
                 <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
               </div>
@@ -289,52 +283,50 @@
   </footer>
 
   <script>
-    // إعدادات قاعدة البيانات السحابية الحية (Realtime Cloud Database)
-    const firebaseConfig = {
-      databaseURL: "https://waleed-school-platform-default-rtdb.firebaseio.com/"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const dbRef = firebase.database().ref('school_platform_data');
-
     const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
     const GRADES = {
       '1m': 'الأول متوسط', '2m': 'الثاني متوسط', '3m': 'الثالث متوسط',
       '4h': 'الرابع إعدادي', '5h': 'الخامس إعدادي', '6h': 'السادس إعدادي'
     };
 
-    let appData = { schedules: {}, homeworks: [], lectures: [] };
+    const STORAGE_KEY = 'waleed_platform_clean_v10';
+
+    function loadAppData() {
+      try {
+        let raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {
+        console.error("Storage read error:", e);
+      }
+      return { schedules: {}, homeworks: [], lectures: [] };
+    }
+
+    let appData = loadAppData();
     let selectedDayFilter = getCurrentDayName();
 
-    // الاستماع الفوري للتحديثات السحابية أوتوماتيكياً (تزامن لحظي ثنائي الاتجاه)
-    dbRef.on('value', (snapshot) => {
-      const serverData = snapshot.val();
-      if (serverData) {
-        appData = serverData;
-      } else {
-        // البيانات الافتراضية الأولى إذا كانت القاعدة فارغة
-        appData = { schedules: {}, homeworks: [], lectures: [] };
+    function saveAppData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      } catch (e) {
+        alert('خطأ: مساحة التخزين ممتلئة.');
       }
-      initPlatform();
-      if (!document.getElementById('adminView').classList.contains('hidden')) {
-        renderAdminScheduleTable();
-        renderAdminLibraryList();
+    }
+
+    // الاستماع للتغييرات إذا تم فتح أكثر من نافذة لضمان مزامنة التاب والـ PWA محلياً دون أخطاء
+    window.addEventListener('storage', (event) => {
+      if (event.key === STORAGE_KEY && event.newValue) {
+        try {
+          appData = JSON.parse(event.newValue);
+          initPlatform();
+          if (!document.getElementById('adminView').classList.contains('hidden')) {
+            renderAdminScheduleTable();
+            renderAdminLibraryList();
+          }
+        } catch (e) {
+          console.error("Sync error:", e);
+        }
       }
     });
-
-    // دالة الحفظ السحابي المباشر
-    function saveAppData() {
-      dbRef.set(appData).then(() => {
-        const status = document.getElementById('cloudStatus');
-        if (status) {
-          status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> تم التحديث بالسحاب أوتوماتيكياً';
-          setTimeout(() => {
-            status.innerHTML = '<i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب أوتوماتيكياً';
-          }, 2500);
-        }
-      }).catch(err => {
-        alert('خطأ في الاتصال بالإنترنت أو السحاب.');
-      });
-    }
 
     function getCurrentDayName() {
       const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
@@ -392,7 +384,7 @@
       const selectEl = document.getElementById('hwSubjectSelect');
       
       let daySubjects = [];
-      if (appData.schedules[grade] && appData.schedules[grade][day]) {
+      if (appData.schedules && appData.schedules[grade] && appData.schedules[grade][day]) {
         appData.schedules[grade][day].forEach(s => {
           if (s && s.trim()) daySubjects.push(s.trim());
         });
@@ -409,7 +401,7 @@
       cleanupExpiredHomeworks();
       const grade = document.getElementById('studentGradeSelect').value;
       const scheduleContainer = document.getElementById('studentScheduleContainer');
-      const daySchedule = (appData.schedules[grade] && appData.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
+      const daySchedule = (appData.schedules && appData.schedules[grade] && appData.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
       const gradeHws = (appData.homeworks || []).filter(h => h.grade === grade && h.day === selectedDayFilter);
       const gradeLecs = (appData.lectures || []).filter(l => l.grade === grade);
 
@@ -482,7 +474,7 @@
       const grade = document.getElementById('adminGradeSelect').value;
       const tbody = document.getElementById('adminScheduleTbody');
       tbody.innerHTML = DAYS.map(day => {
-        const row = (appData.schedules[grade] && appData.schedules[grade][day]) || ['', '', '', '', '', ''];
+        const row = (appData.schedules && appData.schedules[grade] && appData.schedules[grade][day]) || ['', '', '', '', '', ''];
         return `
           <tr class="bg-indigo-950/40 hover:bg-indigo-900/60 transition">
             <td class="p-3.5 font-extrabold text-white border border-indigo-800">${day}</td>
@@ -510,7 +502,7 @@
       }
       appData.schedules[grade][day] = newSlots;
       saveAppData();
-      alert(`تم حفظ يوم ${day} ومزامنته سحابياً أوتوماتيكياً للجميع!`);
+      alert(`تم حفظ جدول يوم ${day} بنجاح وتحديثه في المنصة!`);
       updateHwSubjectsDropdown();
     }
 
@@ -539,7 +531,7 @@
       }
       saveAppData();
       renderStudentDashboard();
-      alert('تم نشر الواجب ومزامنته سحابياً أوتوماتيكياً!');
+      alert('تم نشر الواجب بنجاح!');
     }
 
     function resetHwForm() {
@@ -550,7 +542,7 @@
     function cancelEditHomework() { resetHwForm(); }
 
     function deleteHomeworkFromDashboard(id) {
-      if (confirm('حذف الواجب؟')) {
+      if (confirm('هل أنت متأكد من حذف هذا الواجب؟')) {
         appData.homeworks = (appData.homeworks || []).filter(h => String(h.id) !== String(id));
         saveAppData();
         renderStudentDashboard();
@@ -589,7 +581,7 @@
         saveAppData();
         renderAdminLibraryList();
         renderStudentDashboard();
-        alert('تم حفظ الملف ومزامنته سحابياً أوتوماتيكياً!');
+        alert('تم حفظ الملف بنجاح!');
       };
 
       if (fileInput.files.length > 0) {
@@ -621,7 +613,7 @@
     }
 
     function deleteLibraryItem(id) {
-      if (confirm('حذف الملف؟')) {
+      if (confirm('هل أنت متأكد من حذف هذا الملف؟')) {
         appData.lectures = (appData.lectures || []).filter(l => Number(l.id) !== Number(id));
         saveAppData();
         renderAdminLibraryList();
@@ -659,11 +651,17 @@
     }
 
     function resetAllData() {
-      if (confirm('تصفير كافة بيانات السحاب نهائياً؟')) {
+      if (confirm('هل أنت متأكد من تصفير كافة البيانات؟')) {
+        localStorage.removeItem(STORAGE_KEY);
         appData = { schedules: {}, homeworks: [], lectures: [] };
-        saveAppData();
+        initPlatform();
+        renderAdminScheduleTable();
+        renderAdminLibraryList();
+        alert("تمت إعادة ضبط المنصة بنجاح.");
       }
     }
+
+    initPlatform();
   </script>
 </body>
 </html>
