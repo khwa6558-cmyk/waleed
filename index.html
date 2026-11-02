@@ -42,7 +42,7 @@
   <!-- Notification Banner -->
   <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-2.5 text-xs sm:text-sm text-center font-medium shadow-inner">
     <i class="fa-solid fa-clock ml-1 text-amber-600"></i>
-    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم.
+    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم[span_0](start_span)[span_0](end_span).
   </div>
 
   <main class="container mx-auto px-4 py-6">
@@ -387,6 +387,7 @@
           }
 
           const cleanSubject = subject.trim().toLowerCase();
+          // مطابقة مرنة للواجب بحسب اسم المادة (تظهر لأي يوم تم رفعه طالما هي نفس المادة والصف)
           const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === cleanSubject);
 
           return `
@@ -410,7 +411,7 @@
                     </div>
                   ` : ''}
                   <div class="text-[10px] text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (تاريخ التسليم: ${matchHw.dueDate})
+                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (تاريخ التسليم: ${matchHw.dueDate})[span_1](start_span)[span_1](end_span)
                   </div>
                 </div>
               ` : ''}
