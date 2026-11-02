@@ -89,14 +89,14 @@
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
 
     <!-- ========================================== -->
-    <!-- STUDENT VIEW                               -->
+    <!-- STUDENT VIEW (واجهة عرض الحصص والواجبات مع أزرار التحكم السريع للمدرس) -->
     <!-- ========================================== -->
     <section id="studentView" class="space-y-6">
       
       <!-- Student Grade Selection & Info -->
       <div class="bg-white/90 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-100 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <label for="studentGradeSelect" class="font-extrabold text-indigo-950 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
+          <label for="studentGradeSelect" class="font-extrabold text-indigo-950 text-sm whitespace-nowrap">اختر الصف الدراسي:</label>
           <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-indigo-50/70 border border-indigo-200 text-indigo-950 text-sm font-extrabold rounded-2xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-sm">
             <option value="1m">الأول متوسط</option>
             <option value="2m">الثاني متوسط</option>
@@ -121,7 +121,7 @@
             <span class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-base shadow-sm">
               <i class="fa-solid fa-book-open"></i>
             </span>
-            جدول الحصص والواجبات اليومية الكامل (الـ 6 حصص)
+            جدول الحصص والواجبات اليومية الكامل (مع أزرار التعديل والحذف المباشر)
           </h2>
           <!-- Day Filter -->
           <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
@@ -319,14 +319,6 @@
 
       </div>
 
-      <!-- ACTIVE HOMEWORKS MANAGEMENT TABLE -->
-      <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 mt-6">
-        <h3 class="font-extrabold text-slate-800 mb-4 border-b border-indigo-50 pb-3 text-indigo-950 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-list-check text-indigo-600"></i> قائمة الواجبات النشطة (إدارة، تعديل، أو حذف)
-        </h3>
-        <div id="adminHomeworksList" class="space-y-3"></div>
-      </div>
-
     </section>
 
   </main>
@@ -392,7 +384,6 @@
         studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
         renderAdminScheduleTable();
         updateHwSubjectsDropdown();
-        renderAdminHomeworksList();
       }
     }
 
@@ -500,7 +491,7 @@
 
               ${matchHw ? `
                 <div class="mt-2 p-3.5 bg-white rounded-2xl border border-rose-100 shadow-sm space-y-2.5">
-                  ${matchHw.desc ? `<p class="text-xs text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-0.5">الواجب المطلوب:</strong> ${matchHw.desc}</p>` : ''}
+                  <p class="text-xs text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-0.5">الواجب المطلوب:</strong> ${matchHw.desc || '(ملف مرفق)'}</p>
                   ${matchHw.fileData ? `
                     <div>
                       <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-[11px] font-extrabold px-3.5 py-2 rounded-xl transition shadow-md">
@@ -508,8 +499,17 @@
                       </a>
                     </div>
                   ` : ''}
-                  <div class="text-[10px] text-slate-400 font-medium flex items-center gap-1 pt-1 border-t border-slate-100">
-                    <i class="fa-solid fa-clock text-rose-500"></i> تاريخ التسليم: ${matchHw.dueDate}
+                  <div class="text-[10px] text-slate-400 font-medium flex items-center justify-between pt-1 border-t border-slate-100">
+                    <span><i class="fa-solid fa-clock text-rose-500"></i> ${matchHw.dueDate}</span>
+                    <!-- أزرار التعديل والحذف مباشرة تحت الواجب -->
+                    <div class="flex gap-1.5">
+                      <button type="button" onclick="editHomeworkFromDashboard('${matchHw.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-[10px] font-extrabold px-2.5 py-1 rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-pen"></i> تعديل
+                      </button>
+                      <button type="button" onclick="deleteHomeworkFromDashboard('${matchHw.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg transition shadow-sm">
+                        <i class="fa-solid fa-trash"></i> حذف
+                      </button>
+                    </div>
                   </div>
                 </div>
               ` : ''}
@@ -644,7 +644,6 @@
         }
         
         saveDB();
-        renderAdminHomeworksList();
         renderStudentDashboard();
       };
 
@@ -678,7 +677,9 @@
       resetHwForm();
     }
 
-    function editHomework(id) {
+    // دوال للتحكم بالواجب مباشرة من واجهة الطالب (التحويل التلقائي للوحة الإدارة وتعبئة البيانات)
+    function editHomeworkFromDashboard(id) {
+      switchTab('admin');
       const hw = db.homeworks.find(h => String(h.id) === String(id));
       if (!hw) return;
 
@@ -697,42 +698,13 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function deleteHomework(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الواجب؟ سيتم إزالته فوراً.')) {
+    function deleteHomeworkFromDashboard(id) {
+      if (confirm('هل أنت متأكد من حذف هذا الواجب؟ سيتم إزالته فوراً وإتاحة المكان لإضافة واجب جديد.')) {
         db.homeworks = db.homeworks.filter(h => String(h.id) !== String(id));
         saveDB();
-        renderAdminHomeworksList();
         renderStudentDashboard();
         alert('تم حذف الواجب بنجاح.');
       }
-    }
-
-    function renderAdminHomeworksList() {
-      const container = document.getElementById('adminHomeworksList');
-      if (db.homeworks.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا توجد واجبات نشطة حالياً.</p>`;
-        return;
-      }
-
-      container.innerHTML = db.homeworks.map(hw => `
-        <div class="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3 shadow-sm">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-[10px] font-extrabold bg-indigo-900 text-white px-3 py-0.5 rounded-lg">${GRADES[hw.grade] || hw.grade}</span>
-              <span class="text-xs font-bold text-indigo-950">${hw.subject} (${hw.day})</span>
-            </div>
-            <p class="text-xs text-slate-600 font-medium">${hw.desc ? hw.desc : '(ملف مرفق بدون نص)'}</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="editHomework('${hw.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
-              <i class="fa-solid fa-pen ml-1"></i> تعديل
-            </button>
-            <button type="button" onclick="deleteHomework('${hw.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
-              <i class="fa-solid fa-trash ml-1"></i> حذف
-            </button>
-          </div>
-        </div>
-      `).join('');
     }
 
     function handleAddLecture(e) {
