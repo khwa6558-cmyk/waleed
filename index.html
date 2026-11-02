@@ -70,10 +70,10 @@
 
       <!-- Tab Controls -->
       <div class="flex items-center gap-2 bg-indigo-900/80 p-1.5 rounded-2xl border border-indigo-700/60 shadow-inner">
-        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
+        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
           <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
         </button>
-        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5">
+        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5">
           <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات
         </button>
       </div>
@@ -83,7 +83,7 @@
   <!-- Notification Banner -->
   <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200 text-amber-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
     <i class="fa-solid fa-clock text-amber-600 text-base animate-pulse"></i>
-    <span>تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً بتوقيت العراق من يوم التسليم.</span>
+    <span>تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً بتوقيت العراق من يوم التسليم[span_0](start_span)[span_0](end_span).</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <!-- Schedule & Homework Combined (Full Professional Grid) -->
+      <!-- Schedule & Homework Combined -->
       <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-100 p-6">
         <div class="flex justify-between items-center mb-6 border-b border-indigo-50 pb-4 flex-wrap gap-3">
           <h2 class="text-base sm:text-lg font-extrabold text-indigo-950 flex items-center gap-2.5">
@@ -428,23 +428,20 @@
 
     function updateHwSubjectsDropdown() {
       const grade = document.getElementById('hwTargetGrade').value;
+      const day = document.getElementById('hwDay').value;
       const selectEl = document.getElementById('hwSubjectSelect');
       
-      let allSubjects = new Set();
-      if (db.schedules[grade]) {
-        Object.values(db.schedules[grade]).forEach(daySlots => {
-          if (Array.isArray(daySlots)) {
-            daySlots.forEach(s => {
-              if (s && s.trim()) allSubjects.add(s.trim());
-            });
-          }
+      let daySubjects = [];
+      if (db.schedules[grade] && db.schedules[grade][day]) {
+        db.schedules[grade][day].forEach(s => {
+          if (s && s.trim()) daySubjects.push(s.trim());
         });
       }
 
-      if (allSubjects.size === 0) {
-        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا الصف (يرجى حفظ الجدول أولاً)</option>`;
+      if (daySubjects.length === 0) {
+        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا اليوم (${day}) (يرجى حفظ الجدول أولاً)</option>`;
       } else {
-        selectEl.innerHTML = Array.from(allSubjects).map(sub => `<option value="${sub}">${sub}</option>`).join('');
+        selectEl.innerHTML = daySubjects.map(sub => `<option value="${sub}">${sub}</option>`).join('');
       }
     }
 
@@ -477,7 +474,7 @@
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
       
-      const gradeHws = db.homeworks.filter(h => h.grade === grade);
+      const gradeHws = db.homeworks.filter(h => h.grade === grade && h.day === selectedDayFilter);
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
@@ -521,7 +518,7 @@
                     </div>
                   ` : ''}
                   <div class="text-[10px] text-slate-400 font-medium flex items-center gap-1 pt-1 border-t border-slate-100">
-                    <i class="fa-solid fa-clock text-rose-500"></i> التسليم: ${matchHw.dueDate}
+                    <i class="fa-solid fa-clock text-rose-500"></i> التسليم: ${matchHw.dueDate}[span_1](start_span)[span_1](end_span)
                   </div>
                 </div>
               ` : ''}
@@ -620,7 +617,7 @@
       const fileInput = document.getElementById('hwFile');
 
       if (!subject || subject.includes('لا توجد مواد')) {
-        alert('يرجى التأكد من حفظ جدول الحصص لهذا الصف أولاً لكي تظهر المواد.');
+        alert('يرجى التأكد من حفظ جدول الحصص لهذا اليوم لكي تظهر المواد.');
         return;
       }
 
@@ -690,10 +687,11 @@
       const hw = db.homeworks.find(h => h.id == id);
       if (!hw) return;
 
-      document.getElementById('editHwId').value = hw.id;
+      document.getElementById('editHwId').value = hw.grade;
       document.getElementById('hwTargetGrade').value = hw.grade;
-      updateHwSubjectsDropdown();
       document.getElementById('hwDay').value = hw.day;
+      updateHwSubjectsDropdown();
+      document.getElementById('editHwId').value = hw.id;
       document.getElementById('hwSubjectSelect').value = hw.subject;
       document.getElementById('hwDesc').value = hw.desc || '';
       document.getElementById('hwDueDate').value = hw.dueDate || '';
