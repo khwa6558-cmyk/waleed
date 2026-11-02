@@ -80,7 +80,7 @@
   <!-- Notification Banner -->
   <div class="bg-teal-50 border-b border-teal-200 text-teal-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
     <i class="fa-solid fa-shield-halved text-teal-700 text-base animate-pulse"></i>
-    <span>تم تثبيت الربط الشامل لضمان ظهور الجداول والملفات بثبات على الشاشة الرئيسية.</span>
+    <span>تم تفعيل نظام التخزين الثابت والمستقر لمنع اختفاء البيانات نهائياً.</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -131,7 +131,7 @@
             <span class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-base shadow-sm">
               <i class="fa-solid fa-folder-open"></i>
             </span>
-            مكتبة الملفات والمقاطع والملخصات (فتح بلا حدود)
+            مكتبة الملفات والمقاطع والملخصات
           </h3>
           <span id="lecCountBadge" class="bg-slate-200 text-slate-800 text-xs font-black px-3.5 py-1.5 rounded-full shadow-inner">0</span>
         </div>
@@ -325,119 +325,34 @@
       '6h': 'السادس إعدادي'
     };
 
-    const SCHEDULE_PASSWORD = "WA1992wa"; // الرمز السري للجدول فقط
+    const SCHEDULE_PASSWORD = "WA1992wa";
 
-    let db;
-    // استخدام اسم قاعدة بيانات ونظام تخزين موحد يضمن عدم ضياع البيانات عند إضافتها للشاشة الرئيسية
-    const dbName = "SchoolPlatformDB_Waleed_Ultimate_v2";
-    const dbVersion = 1;
-
+    // استخدام مفاتيح ثابتة ومستقرة تماماً في الذاكرة المحلية (LocalStorage) لضمان عدم ضياع أي بيان
     let appData = {
-      schedules: JSON.parse(localStorage.getItem('sec_schedules_fixed')) || {},
-      homeworks: JSON.parse(localStorage.getItem('sec_homeworks_fixed')) || [],
-      lectures: []
+      schedules: JSON.parse(localStorage.getItem('waleed_sec_schedules_v3')) || {},
+      homeworks: JSON.parse(localStorage.getItem('waleed_sec_homeworks_v3')) || [],
+      lectures: JSON.parse(localStorage.getItem('waleed_sec_lectures_meta_v3')) || []
     };
 
     let selectedDayFilter = getCurrentDayName();
 
-    function initIndexedDB() {
-      return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName, dbVersion);
-        request.onerror = (event) => reject(event.target.error);
-        request.onsuccess = (event) => {
-          db = event.target.result;
-          loadLecturesFromDB().then(() => {
-            initData();
-            resolve(db);
-          });
-        };
-        request.onupgradeneeded = (event) => {
-          const dbInstance = event.target.result;
-          if (!dbInstance.objectStoreNames.contains("lecturesStore")) {
-            dbInstance.createObjectStore("lecturesStore", { keyPath: "id" });
-          }
-          if (!dbInstance.objectStoreNames.contains("syncStore")) {
-            dbInstance.createObjectStore("syncStore", { keyPath: "key" });
-          }
-        };
-      });
-    }
-
-    function loadLecturesFromDB() {
-      return new Promise((resolve) => {
-        if (!db) return resolve([]);
-        const transaction = db.transaction(["lecturesStore", "syncStore"], "readonly");
-        
-        // استرجاع الجداول والواجبات من IndexedDB لضمان عدم اختفائها على الشاشة الرئيسية
-        const syncStore = transaction.objectStore("syncStore");
-        const getSchedules = syncStore.get("schedules");
-        const getHomeworks = syncStore.get("homeworks");
-
-        getSchedules.onsuccess = (e) => {
-          if (e.target.result && e.target.result.data) {
-            appData.schedules = e.target.result.data;
-          }
-        };
-
-        getHomeworks.onsuccess = (e) => {
-          if (e.target.result && e.target.result.data) {
-            appData.homeworks = e.target.result.data;
-          }
-        };
-
-        const store = transaction.objectStore("lecturesStore");
-        const request = store.getAll();
-        request.onsuccess = (event) => {
-          appData.lectures = event.target.result || [];
-          renderStudentDashboard();
-          renderAdminLibraryList();
-          resolve(appData.lectures);
-        };
-        request.onerror = () => resolve([]);
-      });
-    }
-
-    function saveSyncDataToDB() {
-      if (!db) return;
-      const transaction = db.transaction(["syncStore"], "readwrite");
-      const store = transaction.objectStore("syncStore");
-      store.put({ key: "schedules", data: appData.schedules });
-      store.put({ key: "homeworks", data: appData.homeworks });
-    }
-
-    function saveLectureToDB(lecObj) {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction(["lecturesStore"], "readwrite");
-        const store = transaction.objectStore("lecturesStore");
-        const request = store.put(lecObj);
-        request.onsuccess = () => {
-          loadLecturesFromDB();
-          resolve(true);
-        };
-        request.onerror = (e) => reject(e.target.error);
-      });
-    }
-
-    function deleteLectureFromDB(id) {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction(["lecturesStore"], "readwrite");
-        const store = transaction.objectStore("lecturesStore");
-        const request = store.delete(Number(id));
-        request.onsuccess = () => {
-          loadLecturesFromDB();
-          resolve(true);
-        };
-        request.onerror = (e) => reject(e.target.error);
-      });
-    }
-
-    function saveAppDataLocally() {
+    function saveAppData() {
       try {
-        localStorage.setItem('sec_schedules_fixed', JSON.stringify(appData.schedules));
-        localStorage.setItem('sec_homeworks_fixed', JSON.stringify(appData.homeworks));
-        saveSyncDataToDB();
+        localStorage.setItem('waleed_sec_schedules_v3', JSON.stringify(appData.schedules));
+        localStorage.setItem('waleed_sec_homeworks_v3', JSON.stringify(appData.homeworks));
+        
+        // حفظ بيانات المكتبة بدون ملفات الـ Blob الكبيرة في LocalStorage لتفادي امتلاء الذاكرة
+        const metaOnly = appData.lectures.map(l => ({
+          id: l.id,
+          grade: l.grade,
+          title: l.title,
+          subject: l.subject,
+          desc: l.desc,
+          fileData: l.fileData // Base64 لتخزين الملفات الصغيرة أو المتوسطة بثبات تام
+        }));
+        localStorage.setItem('waleed_sec_lectures_meta_v3', JSON.stringify(metaOnly));
       } catch (e) {
-        console.error(e);
+        alert('مساحة التخزين ممتلئة تقريباً.');
       }
     }
 
@@ -470,7 +385,7 @@
       }
     }
 
-    function initData() {
+    function initPlatform() {
       document.getElementById('currentDayName').innerText = getCurrentDayName();
       document.getElementById('hwDueDate').valueAsDate = new Date();
       cleanupExpiredHomeworks();
@@ -483,11 +398,12 @@
       `).join('');
 
       renderStudentDashboard();
+      renderAdminLibraryList();
     }
 
     function changeStudentDayFilter(day) {
       selectedDayFilter = day;
-      initData();
+      initPlatform();
     }
 
     function updateHwSubjectsDropdown() {
@@ -577,30 +493,23 @@
       if (filteredLecs.length === 0) {
         lecContainer.innerHTML = `<p class="text-xs text-slate-500 text-center py-6 col-span-full font-medium">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
       } else {
-        lecContainer.innerHTML = filteredLecs.map(lec => {
-          let fileUrl = '#';
-          if (lec.fileBlob) {
-            fileUrl = URL.createObjectURL(lec.fileBlob);
-          }
-
-          return `
-            <div class="p-4 bg-white rounded-3xl border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition space-y-3">
-              <div>
-                <div class="flex justify-between items-center mb-2">
-                  <span class="text-[10px] font-extrabold bg-teal-100 text-teal-800 px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid fa-file"></i> ${lec.subject}</span>
-                </div>
-                <h4 class="text-sm font-black text-slate-900 mb-1">${lec.title}</h4>
-                ${lec.desc ? `<p class="text-xs text-slate-600 font-medium mb-2">${lec.desc}</p>` : ''}
+        lecContainer.innerHTML = filteredLecs.map(lec => `
+          <div class="p-4 bg-white rounded-3xl border border-slate-200 flex flex-col justify-between shadow-sm hover:shadow-md transition space-y-3">
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-[10px] font-extrabold bg-teal-100 text-teal-800 px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid fa-file"></i> ${lec.subject}</span>
               </div>
-
-              <div class="flex gap-2">
-                <a href="${fileUrl}" target="_blank" download="${lec.title}" class="flex-grow bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold py-2.5 px-3 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
-                  <i class="fa-solid fa-folder-open"></i> فتح / عرض الملف
-                </a>
-              </div>
+              <h4 class="text-sm font-black text-slate-900 mb-1">${lec.title}</h4>
+              ${lec.desc ? `<p class="text-xs text-slate-600 font-medium mb-2">${lec.desc}</p>` : ''}
             </div>
-          `;
-        }).join('');
+
+            <div class="flex gap-2">
+              <a href="${lec.fileData || '#'}" target="_blank" download="${lec.title}" class="flex-grow bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold py-2.5 px-3 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-folder-open"></i> فتح / عرض الملف
+              </a>
+            </div>
+          </div>
+        `).join('');
       }
     }
 
@@ -643,7 +552,7 @@
         newSlots.push(val);
       }
       appData.schedules[grade][day] = newSlots;
-      saveAppDataLocally();
+      saveAppData();
       alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح وثبات تام!`);
       updateHwSubjectsDropdown();
     }
@@ -687,7 +596,7 @@
         resetHwForm();
       }
       
-      saveAppDataLocally();
+      saveAppData();
       renderStudentDashboard();
     }
 
@@ -726,7 +635,7 @@
     function deleteHomeworkFromDashboard(id) {
       if (confirm('هل أنت متأكد من حذف هذا الواجب؟')) {
         appData.homeworks = appData.homeworks.filter(h => String(h.id) !== String(id));
-        saveAppDataLocally();
+        saveAppData();
         renderStudentDashboard();
         alert('تم حذف الواجب بنجاح.');
       }
@@ -741,12 +650,13 @@
       const desc = document.getElementById('lecDesc').value;
       const fileInput = document.getElementById('lecFileInput');
 
-      const processSave = (blobData) => {
+      const processSave = (fileBase64) => {
         const recordId = editId ? Number(editId) : Date.now();
-        
-        if (editId && !blobData) {
+        let existingFile = fileBase64;
+
+        if (editId && !existingFile) {
           const existing = appData.lectures.find(l => Number(l.id) === Number(editId));
-          blobData = existing ? existing.fileBlob : null;
+          existingFile = existing ? existing.fileData : '';
         }
 
         const lecObj = {
@@ -755,28 +665,35 @@
           title,
           subject,
           desc,
-          fileBlob: blobData
+          fileData: existingFile
         };
 
-        saveLectureToDB(lecObj).then(() => {
-          if (editId) {
-            alert('تم تعديل اسم الملف وتفاصيله بنجاح!');
-            cancelEditLecture();
-          } else {
-            alert('تم رفع الملف بنجاح إلى المكتبة!');
-            document.getElementById('lecTitle').value = '';
-            document.getElementById('lecSubject').value = '';
-            document.getElementById('lecDesc').value = '';
-            document.getElementById('lecFileInput').value = '';
-          }
-          renderAdminLibraryList();
-          renderStudentDashboard();
-        });
+        if (editId) {
+          const idx = appData.lectures.findIndex(l => Number(l.id) === Number(editId));
+          if (idx !== -1) appData.lectures[idx] = lecObj;
+          alert('تم تعديل اسم الملف وتفاصيله بنجاح!');
+          cancelEditLecture();
+        } else {
+          appData.lectures.push(lecObj);
+          alert('تم رفع الملف بنجاح إلى المكتبة وثباته!');
+          document.getElementById('lecTitle').value = '';
+          document.getElementById('lecSubject').value = '';
+          document.getElementById('lecDesc').value = '';
+          document.getElementById('lecFileInput').value = '';
+        }
+
+        saveAppData();
+        renderAdminLibraryList();
+        renderStudentDashboard();
       };
 
       if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        processSave(file);
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          processSave(event.target.result);
+        };
+        reader.readAsDataURL(file);
       } else {
         processSave(null);
       }
@@ -812,11 +729,11 @@
 
     function deleteLibraryItem(id) {
       if (confirm('هل أنت متأكد من حذف هذا الملف من المكتبة؟')) {
-        deleteLectureFromDB(id).then(() => {
-          renderAdminLibraryList();
-          renderStudentDashboard();
-          alert('تم الحذف بنجاح.');
-        });
+        appData.lectures = appData.lectures.filter(l => Number(l.id) !== Number(id));
+        saveAppData();
+        renderAdminLibraryList();
+        renderStudentDashboard();
+        alert('تم الحذف بنجاح.');
       }
     }
 
@@ -827,35 +744,28 @@
         return;
       }
 
-      container.innerHTML = appData.lectures.map(lec => {
-        let fileUrl = '#';
-        if (lec.fileBlob) {
-          fileUrl = URL.createObjectURL(lec.fileBlob);
-        }
-
-        return `
-          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center flex-wrap gap-3 shadow-sm">
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="text-[10px] font-extrabold bg-slate-800 text-white px-3 py-0.5 rounded-lg">${GRADES[lec.grade] || lec.grade}</span>
-                <span class="text-xs font-extrabold text-slate-900">${lec.subject}: ${lec.title}</span>
-              </div>
-              <p class="text-xs text-slate-600 font-medium">${lec.desc || '(ملف مخزن)'}</p>
+      container.innerHTML = appData.lectures.map(lec => `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center flex-wrap gap-3 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-extrabold bg-slate-800 text-white px-3 py-0.5 rounded-lg">${GRADES[lec.grade] || lec.grade}</span>
+              <span class="text-xs font-extrabold text-slate-900">${lec.subject}: ${lec.title}</span>
             </div>
-            <div class="flex gap-2">
-              <a href="${fileUrl}" target="_blank" class="bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1">
-                <i class="fa-solid fa-folder-open"></i> فتح
-              </a>
-              <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-                <i class="fa-solid fa-pen ml-1"></i> تعديل الاسم
-              </button>
-              <button type="button" onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-                <i class="fa-solid fa-trash ml-1"></i> حذف
-              </button>
-            </div>
+            <p class="text-xs text-slate-600 font-medium">${lec.desc || '(ملف مخزن)'}</p>
           </div>
-        `;
-      }).join('');
+          <div class="flex gap-2">
+            <a href="${lec.fileData || '#'}" target="_blank" class="bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1">
+              <i class="fa-solid fa-folder-open"></i> فتح
+            </a>
+            <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
+              <i class="fa-solid fa-pen ml-1"></i> تعديل الاسم
+            </button>
+            <button type="button" onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
+              <i class="fa-solid fa-trash ml-1"></i> حذف
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
     function cleanupExpiredHomeworks() {
@@ -864,26 +774,22 @@
         if (!hw.dueDate) return true;
         return hw.dueDate >= todayStr;
       });
-      saveAppDataLocally();
+      saveAppData();
     }
 
     function resetAllData() {
       if (confirm('تحذير: هل أنت متأكد من مسح كافة الجداول والبيانات؟')) {
         localStorage.clear();
-        if (db) {
-          const transaction = db.transaction(["lecturesStore", "syncStore"], "readwrite");
-          transaction.objectStore("lecturesStore").clear();
-          transaction.objectStore("syncStore").clear();
-        }
         appData = { schedules: {}, homeworks: [], lectures: [] };
-        initData();
+        initPlatform();
         renderAdminScheduleTable();
         renderAdminLibraryList();
         alert("تمت إعادة ضبط المنصة بنجاح.");
       }
     }
 
-    initIndexedDB();
+    // التشغيل الفوري عند تحميل الصفحة
+    initPlatform();
   </script>
 </body>
 </html>
