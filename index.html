@@ -71,7 +71,7 @@
           <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
         </button>
         <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-slate-300 hover:text-white flex items-center gap-1.5">
-          <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات (مفتوحة)
+          <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات
         </button>
       </div>
     </div>
@@ -79,8 +79,8 @@
 
   <!-- Notification Banner -->
   <div class="bg-teal-50 border-b border-teal-200 text-teal-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
-    <i class="fa-solid fa-lock text-teal-700 text-base animate-pulse"></i>
-    <span>جدول الحصص محمي بررمز سري، بينما لوحة الإدارة والواجبات والمكتبة مفتوحة بالكامل.</span>
+    <i class="fa-solid fa-shield-halved text-teal-700 text-base animate-pulse"></i>
+    <span>تم تثبيت الربط الشامل لضمان ظهور الجداول والملفات بثبات على الشاشة الرئيسية.</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -145,22 +145,22 @@
     <section id="adminView" class="hidden space-y-6">
       <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-slate-800">
         <div>
-          <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات (مفتوحة)</h2>
-          <p class="text-xs text-slate-300 mt-1">تعديل الواجبات والملفات مباشر - جدول الحصص فقط محمي بالرمز السري</p>
+          <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
+          <p class="text-xs text-slate-300 mt-1">تعديل الجداول، رفع الملفات، وحفظها بثبات دائم</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
           <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
         </button>
       </div>
 
-      <!-- SCHEDULE TABLE (محمي بالرمز WA1992wa) -->
+      <!-- SCHEDULE TABLE -->
       <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-slate-200">
         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6 border-b border-slate-100 pb-4">
           <h3 class="font-extrabold text-slate-800 text-base flex items-center gap-2.5">
             <span class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base">
               <i class="fa-solid fa-table"></i>
             </span>
-            تنظيم وتعديل جدول الحصص (محمي بالرمز السري)
+            تنظيم وتعديل جدول الحصص (محمي بررمز WA1992wa)
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-slate-800">اختر الصف:</label>
@@ -186,7 +186,7 @@
                 <th class="p-3.5 border border-slate-200">الحصة 4</th>
                 <th class="p-3.5 border border-slate-200">الحصة 5</th>
                 <th class="p-3.5 border border-slate-200">الحصة 6</th>
-                <th class="p-3.5 border border-slate-200 text-center rounded-l-2xl">حفظ (محمي)</th>
+                <th class="p-3.5 border border-slate-200 text-center rounded-l-2xl">حفظ (بالرمز)</th>
               </tr>
             </thead>
             <tbody id="adminScheduleTbody" class="divide-y divide-slate-100 font-semibold"></tbody>
@@ -201,7 +201,7 @@
         <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-slate-200 flex flex-col justify-between">
           <div>
             <h3 id="hwFormTitle" class="font-extrabold text-slate-800 mb-5 border-b border-slate-100 pb-3 text-rose-700 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة (مفتوح)
+              <i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة
             </h3>
             <form onsubmit="handleSaveHomework(event)" class="space-y-4">
               <input type="hidden" id="editHwId" value="">
@@ -254,7 +254,7 @@
         <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-slate-200 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-slate-800 mb-5 border-b border-slate-100 pb-3 text-teal-800 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (مفتوح)
+              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (عدد غير محدود)
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
@@ -302,7 +302,7 @@
       <!-- LIBRARY MANAGEMENT TABLE -->
       <div class="bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-slate-200 mt-6">
         <h3 class="font-extrabold text-slate-800 mb-4 border-b border-slate-100 pb-3 text-slate-900 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-folder-open text-teal-800"></i> إدارة مكتبة الملفات (مفتوحة بالكامل)
+          <i class="fa-solid fa-folder-open text-teal-800"></i> إدارة مكتبة الملفات (فتح، تعديل الاسم، والحذف)
         </h3>
         <div id="adminLibraryList" class="space-y-3"></div>
       </div>
@@ -325,15 +325,16 @@
       '6h': 'السادس إعدادي'
     };
 
-    const SCHEDULE_PASSWORD = "WA1992wa"; // الرمز السري الخاص بالجدول فقط
+    const SCHEDULE_PASSWORD = "WA1992wa"; // الرمز السري للجدول فقط
 
     let db;
-    const dbName = "SchoolPlatformDB_Waleed_Global";
+    // استخدام اسم قاعدة بيانات ونظام تخزين موحد يضمن عدم ضياع البيانات عند إضافتها للشاشة الرئيسية
+    const dbName = "SchoolPlatformDB_Waleed_Ultimate_v2";
     const dbVersion = 1;
 
     let appData = {
-      schedules: JSON.parse(localStorage.getItem('sec_schedules')) || {},
-      homeworks: JSON.parse(localStorage.getItem('sec_homeworks')) || [],
+      schedules: JSON.parse(localStorage.getItem('sec_schedules_fixed')) || {},
+      homeworks: JSON.parse(localStorage.getItem('sec_homeworks_fixed')) || [],
       lectures: []
     };
 
@@ -355,6 +356,9 @@
           if (!dbInstance.objectStoreNames.contains("lecturesStore")) {
             dbInstance.createObjectStore("lecturesStore", { keyPath: "id" });
           }
+          if (!dbInstance.objectStoreNames.contains("syncStore")) {
+            dbInstance.createObjectStore("syncStore", { keyPath: "key" });
+          }
         };
       });
     }
@@ -362,7 +366,25 @@
     function loadLecturesFromDB() {
       return new Promise((resolve) => {
         if (!db) return resolve([]);
-        const transaction = db.transaction(["lecturesStore"], "readonly");
+        const transaction = db.transaction(["lecturesStore", "syncStore"], "readonly");
+        
+        // استرجاع الجداول والواجبات من IndexedDB لضمان عدم اختفائها على الشاشة الرئيسية
+        const syncStore = transaction.objectStore("syncStore");
+        const getSchedules = syncStore.get("schedules");
+        const getHomeworks = syncStore.get("homeworks");
+
+        getSchedules.onsuccess = (e) => {
+          if (e.target.result && e.target.result.data) {
+            appData.schedules = e.target.result.data;
+          }
+        };
+
+        getHomeworks.onsuccess = (e) => {
+          if (e.target.result && e.target.result.data) {
+            appData.homeworks = e.target.result.data;
+          }
+        };
+
         const store = transaction.objectStore("lecturesStore");
         const request = store.getAll();
         request.onsuccess = (event) => {
@@ -373,6 +395,14 @@
         };
         request.onerror = () => resolve([]);
       });
+    }
+
+    function saveSyncDataToDB() {
+      if (!db) return;
+      const transaction = db.transaction(["syncStore"], "readwrite");
+      const store = transaction.objectStore("syncStore");
+      store.put({ key: "schedules", data: appData.schedules });
+      store.put({ key: "homeworks", data: appData.homeworks });
     }
 
     function saveLectureToDB(lecObj) {
@@ -401,10 +431,11 @@
       });
     }
 
-    function saveLocalStorageData() {
+    function saveAppDataLocally() {
       try {
-        localStorage.setItem('sec_schedules', JSON.stringify(appData.schedules));
-        localStorage.setItem('sec_homeworks', JSON.stringify(appData.homeworks));
+        localStorage.setItem('sec_schedules_fixed', JSON.stringify(appData.schedules));
+        localStorage.setItem('sec_homeworks_fixed', JSON.stringify(appData.homeworks));
+        saveSyncDataToDB();
       } catch (e) {
         console.error(e);
       }
@@ -597,7 +628,6 @@
       }).join('');
     }
 
-    // حفظ الجدول يشترط إدخال الرمز السري
     function saveAdminRowProtected(grade, day) {
       const enteredPass = prompt("أدخل رمز الحماية السري لتعديل جدول الحصص:");
       if (enteredPass === null) return;
@@ -613,12 +643,11 @@
         newSlots.push(val);
       }
       appData.schedules[grade][day] = newSlots;
-      saveLocalStorageData();
-      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح!`);
+      saveAppDataLocally();
+      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح وثبات تام!`);
       updateHwSubjectsDropdown();
     }
 
-    // الواجبات مفتوحة بدون رمز سري
     function handleSaveHomework(e) {
       e.preventDefault();
       const editIdInput = document.getElementById('editHwId').value;
@@ -658,14 +687,14 @@
         resetHwForm();
       }
       
-      saveLocalStorageData();
+      saveAppDataLocally();
       renderStudentDashboard();
     }
 
     function resetHwForm() {
       document.getElementById('editHwId').value = '';
       document.getElementById('hwDesc').value = '';
-      document.getElementById('hwFormTitle').innerHTML = '<i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة (مفتوح)';
+      document.getElementById('hwFormTitle').innerHTML = '<i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة';
       document.getElementById('hwSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب للمادة';
       document.getElementById('hwCancelEditBtn').classList.add('hidden');
     }
@@ -697,13 +726,12 @@
     function deleteHomeworkFromDashboard(id) {
       if (confirm('هل أنت متأكد من حذف هذا الواجب؟')) {
         appData.homeworks = appData.homeworks.filter(h => String(h.id) !== String(id));
-        saveLocalStorageData();
+        saveAppDataLocally();
         renderStudentDashboard();
         alert('تم حذف الواجب بنجاح.');
       }
     }
 
-    // إدارة الملفات مفتوحة بدون رمز سري
     function handleAddOrUpdateLecture(e) {
       e.preventDefault();
       const editId = document.getElementById('editLecId').value;
@@ -836,15 +864,16 @@
         if (!hw.dueDate) return true;
         return hw.dueDate >= todayStr;
       });
-      saveLocalStorageData();
+      saveAppDataLocally();
     }
 
     function resetAllData() {
       if (confirm('تحذير: هل أنت متأكد من مسح كافة الجداول والبيانات؟')) {
         localStorage.clear();
         if (db) {
-          const transaction = db.transaction(["lecturesStore"], "readwrite");
+          const transaction = db.transaction(["lecturesStore", "syncStore"], "readwrite");
           transaction.objectStore("lecturesStore").clear();
+          transaction.objectStore("syncStore").clear();
         }
         appData = { schedules: {}, homeworks: [], lectures: [] };
         initData();
