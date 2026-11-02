@@ -31,7 +31,6 @@
       display: inline-flex;
       animation: marqueeLeftToRight 22s linear infinite;
     }
-    /* خلفية متناسقة وملونة باحترافية */
     .page-gradient-bg {
       background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #fdf4f5 100%);
     }
@@ -39,7 +38,7 @@
 </head>
 <body class="page-gradient-bg text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <!-- PROFESSIONAL MOVING BANNER (حركة مستمرة من اليسار إلى اليمين للأبد) -->
+  <!-- PROFESSIONAL MOVING BANNER -->
   <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 text-indigo-950 py-3 shadow-md overflow-hidden border-b-2 border-amber-400 relative z-50">
     <div class="marquee-container">
       <div class="marquee-text font-black text-base sm:text-lg tracking-wider neon-text items-center">
@@ -115,20 +114,21 @@
         </div>
       </div>
 
-      <!-- Schedule & Homework Combined (6 Lessons) -->
+      <!-- Schedule & Homework Combined (Full Professional Table / Grid) -->
       <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-100 p-6">
         <div class="flex justify-between items-center mb-6 border-b border-indigo-50 pb-4 flex-wrap gap-3">
           <h2 class="text-base sm:text-lg font-extrabold text-indigo-950 flex items-center gap-2.5">
             <span class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-base shadow-sm">
               <i class="fa-solid fa-book-open"></i>
             </span>
-            جدول الحصص والواجبات اليومية
+            جدول الحصص والواجبات اليومية الكامل (الـ 6 حصص)
           </h2>
           <!-- Day Filter -->
           <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
         </div>
 
-        <div id="studentScheduleContainer" class="space-y-4"></div>
+        <!-- جدول الحصص الكامل بشكل احترافي -->
+        <div id="studentScheduleContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
 
       <!-- Lectures -->
@@ -193,8 +193,8 @@
                 <th class="p-3.5 border border-indigo-100">الحصة 2</th>
                 <th class="p-3.5 border border-indigo-100">الحصة 3</th>
                 <th class="p-3.5 border border-indigo-100">الحصة 4</th>
-                <th class="p-3 border border-indigo-100">الحصة 5</th>
-                <th class="p-3 border border-indigo-100">الحصة 6</th>
+                <th class="p-3.5 border border-indigo-100">الحصة 5</th>
+                <th class="p-3.5 border border-indigo-100">الحصة 6</th>
                 <th class="p-3.5 border border-indigo-100 text-center rounded-l-2xl">حفظ</th>
               </tr>
             </thead>
@@ -484,7 +484,7 @@
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
-          <div class="py-12 text-center text-slate-400">
+          <div class="col-span-full py-12 text-center text-slate-400">
             <i class="fa-solid fa-calendar-xmark text-4xl mb-3 text-indigo-300"></i>
             <p class="text-sm font-semibold">لم يتم إضافة جدول حصص لهذا اليوم (${selectedDayFilter}) بعد.</p>
           </div>
@@ -504,27 +504,28 @@
           const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === cleanSubject);
 
           return `
-            <div class="p-5 rounded-3xl border bg-gradient-to-r from-indigo-50/50 to-violet-50/50 border-indigo-100/80 space-y-3 transition hover:shadow-md">
-              <div class="flex justify-between items-center flex-wrap gap-2">
-                <div class="flex items-center gap-3">
-                  <span class="bg-gradient-to-r from-indigo-900 to-violet-900 text-white text-xs font-extrabold px-3.5 py-1.5 rounded-xl shadow-sm">الحصة ${idx + 1}</span>
-                  <span class="font-black text-indigo-950 text-base sm:text-lg">${subject}</span>
+            <div class="p-5 rounded-3xl border bg-gradient-to-r from-indigo-50/50 to-violet-50/50 border-indigo-100/80 space-y-3 transition hover:shadow-md flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <span class="bg-gradient-to-r from-indigo-900 to-violet-900 text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-sm">الحصة ${idx + 1}</span>
+                  ${matchHw ? `<span class="text-[11px] bg-rose-100 text-rose-700 font-extrabold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-pen-ruler"></i>يوجد واجب</span>` : `<span class="text-[11px] text-slate-400 font-medium bg-slate-100 px-3 py-1 rounded-full">لا يوجد واجب</span>`}
                 </div>
-                ${matchHw ? `<span class="text-xs bg-rose-100 text-rose-700 font-extrabold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-pen-ruler"></i>يوجد واجب</span>` : `<span class="text-xs text-slate-400 font-medium bg-slate-100 px-3.5 py-1.5 rounded-full">لا يوجد واجب</span>`}
+                <!-- اسم المادة كامل وواضح -->
+                <h3 class="font-black text-indigo-950 text-base sm:text-lg tracking-wide mb-2">${subject}</h3>
               </div>
 
               ${matchHw ? `
-                <div class="mt-2 p-4 bg-white rounded-2xl border border-rose-100 shadow-sm space-y-3">
-                  ${matchHw.desc ? `<p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-1">الواجب المطلوب:</strong> ${matchHw.desc}</p>` : ''}
+                <div class="mt-2 p-3.5 bg-white rounded-2xl border border-rose-100 shadow-sm space-y-2.5">
+                  ${matchHw.desc ? `<p class="text-xs text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-0.5">الواجب المطلوب:</strong> ${matchHw.desc}</p>` : ''}
                   ${matchHw.fileData ? `
                     <div>
-                      <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl transition shadow-md">
-                        <i class="fa-solid fa-file-arrow-down text-sm"></i> فتح / تحميل ملف الواجب
+                      <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-[11px] font-extrabold px-3.5 py-2 rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-file-arrow-down text-xs"></i> تحميل ملف الواجب
                       </a>
                     </div>
                   ` : ''}
-                  <div class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5 pt-1 border-t border-slate-100">
-                    <i class="fa-solid fa-clock text-rose-500"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (التسليم: ${matchHw.dueDate})[span_1](start_span)[span_1](end_span)
+                  <div class="text-[10px] text-slate-400 font-medium flex items-center gap-1 pt-1 border-t border-slate-100">
+                    <i class="fa-solid fa-clock text-rose-500"></i> التسليم: ${matchHw.dueDate}[span_1](start_span)[span_1](end_span)
                   </div>
                 </div>
               ` : ''}
