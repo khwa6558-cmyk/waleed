@@ -126,6 +126,18 @@
 
     <!-- ADMIN VIEW -->
     <section id="adminView" class="hidden space-y-6">
+      
+      <!-- زر استعادة البيانات القديمة من المتصفح -->
+      <div class="bg-gradient-to-r from-rose-900 via-red-900 to-indigo-950 p-5 rounded-3xl shadow-xl border-2 border-rose-500 flex justify-between items-center flex-wrap gap-4">
+        <div>
+          <h3 class="font-extrabold text-amber-300 text-base"><i class="fa-solid fa-triangle-exclamation"></i> هل فقدت بياناتك القديمة؟</h3>
+          <p class="text-xs text-indigo-100 mt-1">اضغط هنا لسحب المعلومات المخزنة سابقاً في ذاكرة متصفحك ورفعها فوراً للسحاب لتعود للكل!</p>
+        </div>
+        <button onclick="recoverOldDataFromLocalStorage()" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-black text-xs px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up text-sm"></i> استيراد بياناتي القديمة من المتصفح للسحاب
+        </button>
+      </div>
+
       <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
           <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة السحابية اللحظية</h2>
@@ -288,7 +300,6 @@
   </footer>
 
   <script>
-    // ربط الرابط برابط قاعدة بياناتك الحقيقية
     const firebaseConfig = {
       databaseURL: "https://waleed-alshammari-default-rtdb.firebaseio.com/"
     };
@@ -304,13 +315,46 @@
     let appData = { schedules: {}, homeworks: [], lectures: [] };
     let selectedDayFilter = getCurrentDayName();
 
-    // الاستماع الفوري واللحظي للتغييرات السحابية في الجهتين
+    // دالة استعادة البيانات القديمة من ذاكرة المتصفح ورفعها للسحاب
+    function recoverOldDataFromLocalStorage() {
+      try {
+        // البحث عن أي مفاتيح قديمة محتملة في الـ LocalStorage
+        let oldRaw = localStorage.getItem('school_platform_data') || localStorage.getItem('appData') || localStorage.getItem('schoolData');
+        if (!oldRaw) {
+          // جرب البحث في كل مفاتيح الـ LocalStorage
+          for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            let val = localStorage.getItem(key);
+            if (val && (val.includes('schedules') || val.includes('homeworks') || val.includes('lectures'))) {
+              oldRaw = val;
+              break;
+            }
+          }
+        }
+
+        if (oldRaw) {
+          const parsed = JSON.parse(oldRaw);
+          if (parsed && typeof parsed === 'object') {
+            appData = parsed;
+            saveAppData(); // رفعها مباشرة لقاعدة بيانات Firebase
+            alert('تم استيراد بياناتك القديمة ورفعها بنجاح إلى السحاب!');
+            initPlatform();
+            renderAdminScheduleTable();
+            renderAdminLibraryList();
+            return;
+          }
+        }
+        alert('لم يتم العثور على بيانات قديمة مخزنة في هذا المتصفح. تأكد من فتح المنصة من المتصفح الذي كنت تدخل منه سابقاً.');
+      } catch (err) {
+        console.error(err);
+        alert('حدث خطأ أثناء محاولة استرجاع البيانات.');
+      }
+    }
+
     dbRef.on('value', (snapshot) => {
       const serverData = snapshot.val();
       if (serverData) {
         appData = serverData;
-      } else {
-        appData = { schedules: {}, homeworks: [], lectures: [] };
       }
       initPlatform();
       if (!document.getElementById('adminView').classList.contains('hidden')) {
