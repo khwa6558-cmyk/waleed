@@ -8,37 +8,28 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Firebase SDK (للمزامنة السحابية الحقيقية اللحظية) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <style>
     body { font-family: 'Cairo', sans-serif; }
     @keyframes pulseGlow {
       0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3); }
       50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.5); }
     }
-    .neon-text {
-      animation: pulseGlow 2s infinite ease-in-out;
-    }
+    .neon-text { animation: pulseGlow 2s infinite ease-in-out; }
     @keyframes marqueeLeftToRight {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-    .marquee-container {
-      display: flex;
-      width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .marquee-text {
-      display: inline-flex;
-      animation: marqueeLeftToRight 22s linear infinite;
-    }
-    .page-gradient-bg {
-      background: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #0f172a 100%);
-    }
+    .marquee-container { display: flex; width: 100%; overflow: hidden; white-space: nowrap; }
+    .marquee-text { display: inline-flex; animation: marqueeLeftToRight 22s linear infinite; }
+    .page-gradient-bg { background: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #0f172a 100%); }
   </style>
 </head>
 <body class="page-gradient-bg text-slate-100 min-h-screen flex flex-col justify-between">
 
-  <!-- PROFESSIONAL MOVING BANNER -->
+  <!-- MOVING BANNER -->
   <div class="bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-950 text-amber-300 py-3 shadow-md overflow-hidden border-b-2 border-amber-500/30 relative z-50">
     <div class="marquee-container">
       <div class="marquee-text font-black text-base sm:text-lg tracking-wider neon-text items-center">
@@ -47,9 +38,6 @@
         </span>
         <span class="mx-8 inline-flex items-center gap-2 text-white">
           ★ منصة ثانوية المتفوقين الثانية للتحضير اليومي والجدول المدرسي ★
-        </span>
-        <span class="mx-8 inline-flex items-center gap-2">
-          <i class="fa-solid fa-code text-amber-400"></i> إعداد و برمجة: WALEED ALSHAMMARI <i class="fa-solid fa-laptop-code text-amber-400"></i>
         </span>
       </div>
     </div>
@@ -62,7 +50,7 @@
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-indigo-950 font-black text-xl shadow-lg border-2 border-white/20">ث</div>
         <div>
           <h1 class="text-xl font-extrabold tracking-wide text-amber-300">منصة ثانوية المتفوقين الثانية</h1>
-          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (من الأول متوسط إلى السادس إعدادي)</p>
+          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (مزامنة سحابية أوتوماتيكية بالكامل)</p>
         </div>
       </div>
 
@@ -79,9 +67,7 @@
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-5xl">
 
-    <!-- ========================================== -->
-    <!-- STUDENT VIEW                               -->
-    <!-- ========================================== -->
+    <!-- STUDENT VIEW -->
     <section id="studentView" class="space-y-6">
       <div class="bg-indigo-900/60 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -100,13 +86,13 @@
           <span class="text-xs bg-indigo-950 text-indigo-200 font-bold px-4 py-2.5 rounded-2xl shadow-md border border-indigo-800 flex items-center gap-2">
             <i class="fa-solid fa-calendar-day text-amber-400"></i>اليوم الحالي: <strong id="currentDayName" class="text-amber-300"></strong>
           </span>
-          <span id="syncIndicator" class="text-[10px] bg-teal-500/20 text-teal-300 px-3 py-2 rounded-xl border border-teal-500/30 font-bold">
-            <i class="fa-solid fa-rotate animate-spin"></i> متزامن أوتوماتيكياً
+          <span id="cloudStatus" class="text-[10px] bg-teal-500/20 text-teal-300 px-3 py-2 rounded-xl border border-teal-500/30 font-bold">
+            <i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب أوتوماتيكياً
           </span>
         </div>
       </div>
 
-      <!-- Schedule & Homework Combined -->
+      <!-- Schedule & Homework -->
       <div class="bg-indigo-900/50 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-700/50 p-6">
         <div class="flex justify-between items-center mb-6 border-b border-indigo-800/60 pb-4 flex-wrap gap-3">
           <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
@@ -121,7 +107,7 @@
         <div id="studentScheduleContainer" class="space-y-4"></div>
       </div>
 
-      <!-- LIBRARY & MEDIA SECTION -->
+      <!-- LIBRARY -->
       <div class="bg-indigo-900/50 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-700/50 p-6">
         <div class="flex justify-between items-center mb-5 border-b border-indigo-800/60 pb-4">
           <h3 class="font-extrabold text-white text-base sm:text-lg flex items-center gap-2.5">
@@ -136,17 +122,15 @@
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- ADMIN VIEW                                 -->
-    <!-- ========================================== -->
+    <!-- ADMIN VIEW -->
     <section id="adminView" class="hidden space-y-6">
       <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
-          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
-          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، نشر الواجبات، ومزامنة أوتوماتيكية سحابية 100%</p>
+          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة (مزامنة سحابية لحظية 100%)</h2>
+          <p class="text-xs text-indigo-200 mt-1">أي تعديل هنا ينتقل أوتوماتيكياً وفوراً للمتصفح وسطح المكتب معاً</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2 border border-rose-500/40">
-          <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
+          <i class="fa-solid fa-rotate-left"></i> إعادة ضبط السحاب
         </button>
       </div>
 
@@ -157,7 +141,7 @@
             <span class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-300 flex items-center justify-center text-base border border-indigo-700">
               <i class="fa-solid fa-table"></i>
             </span>
-            تنظيم وتعديل جدول الحصص (حفظ سحابي أوتوماتيكي)
+            تنظيم وتعديل جدول الحصص (حفظ سحابي فوري)
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
@@ -183,7 +167,7 @@
                 <th class="p-3.5 border border-indigo-800">الحصة 4</th>
                 <th class="p-3.5 border border-indigo-800">الحصة 5</th>
                 <th class="p-3.5 border border-indigo-800">الحصة 6</th>
-                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ أوتوماتيكي</th>
+                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ فوري</th>
               </tr>
             </thead>
             <tbody id="adminScheduleTbody" class="divide-y divide-indigo-800/40 font-semibold"></tbody>
@@ -193,8 +177,7 @@
 
       <!-- FORMS -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <!-- Add / Edit Homework -->
+        <!-- Homework Form -->
         <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
           <div>
             <h3 id="hwFormTitle" class="font-extrabold text-amber-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
@@ -214,7 +197,7 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تحديد اليوم المرتبط بالواجب:</label>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تحديد اليوم:</label>
                 <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
                   <option value="الأحد">الأحد</option>
                   <option value="الإثنين">الإثنين</option>
@@ -228,7 +211,7 @@
                 <select id="hwSubjectSelect" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl font-extrabold text-amber-300 focus:outline-none"></select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تفاصيل الواجب أو ملاحظات (سيظهر بخط كبير وملون):</label>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تفاصيل الواجب (بخط كبير وملون):</label>
                 <textarea id="hwDesc" placeholder="اكتب المطلوب حله..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-24 text-white focus:outline-none shadow-inner"></textarea>
               </div>
               <div>
@@ -237,21 +220,19 @@
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب أوتوماتيكياً
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب سحابياً
                 </button>
-                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 hover:bg-slate-700 text-white font-bold text-xs px-4 py-3.5 rounded-2xl transition">
-                  إلغاء
-                </button>
+                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
               </div>
             </form>
           </div>
         </div>
 
-        <!-- Add / Edit Library Item -->
+        <!-- Library Form -->
         <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-teal-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (أوتوماتيكي)
+              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (سحابي)
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
@@ -267,7 +248,7 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">عنوان الملف (قابل للتعديل):</label>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">عنوان الملف:</label>
                 <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفصل الأول" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
               </div>
               <div>
@@ -275,115 +256,84 @@
                 <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر الملف (فيديو، PDF، صورة...):</label>
-                <input type="file" id="lecFileInput" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-2.5 rounded-2xl text-white cursor-pointer file:ml-2 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-teal-500 file:text-indigo-950 hover:file:bg-teal-400">
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر الملف:</label>
+                <input type="file" id="lecFileInput" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-2.5 rounded-2xl text-white cursor-pointer">
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">ملاحظات إضافية (اختياري):</label>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">ملاحظات إضافية:</label>
                 <textarea id="lecDesc" placeholder="وصف موجز..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-16 text-white focus:outline-none"></textarea>
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ أوتوماتيكي
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ سحابي
                 </button>
-                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 hover:bg-slate-700 text-white font-bold text-xs px-4 py-3.5 rounded-2xl transition">
-                  إلغاء
-                </button>
+                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
               </div>
             </form>
           </div>
         </div>
-
       </div>
 
-      <!-- LIBRARY MANAGEMENT TABLE -->
+      <!-- LIBRARY TABLE -->
       <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 mt-6">
         <h3 class="font-extrabold text-white mb-4 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-folder-open text-teal-400"></i> إدارة مكتبة الملفات (فتح، تعديل الاسم، والحذف)
+          <i class="fa-solid fa-folder-open text-teal-400"></i> إدارة مكتبة الملفات
         </h3>
         <div id="adminLibraryList" class="space-y-3"></div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="bg-indigo-950/90 border-t border-indigo-800/50 py-4 text-center text-xs text-indigo-300 font-bold shadow-inner">
     جميع الحقوق محفوظة © ثانوية المتفوقين الثانية 2026 | تصميم وإعداد: WALEED ALSHAMMARI
   </footer>
 
   <script>
+    // إعدادات قاعدة البيانات السحابية الحية (Realtime Cloud Database)
+    const firebaseConfig = {
+      databaseURL: "https://waleed-school-platform-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('school_platform_data');
+
     const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
     const GRADES = {
-      '1m': 'الأول متوسط',
-      '2m': 'الثاني متوسط',
-      '3m': 'الثالث متوسط',
-      '4h': 'الرابع إعدادي',
-      '5h': 'الخامس إعدادي',
-      '6h': 'السادس إعدادي'
+      '1m': 'الأول متوسط', '2m': 'الثاني متوسط', '3m': 'الثالث متوسط',
+      '4h': 'الرابع إعدادي', '5h': 'الخامس إعدادي', '6h': 'السادس إعدادي'
     };
 
-    // استخدام سرفر سحابي عام مجاني ومستقر تماماً للمزامنة الأوتوماتيكية الفورية (JSONbin v3)
-    const BIN_ID = '673a5a7cad19ca34f8c67311'; 
-    const API_KEY = '$2a$10$vQ3yR7K9q5z5Z3v5K8w3eO3v3v3v3v3v3v3v3v3v3v3v3v3v3v3v3'; // مفتاح عام جاهز للاستخدام الفوري
-
-    let appData = {
-      schedules: {},
-      homeworks: [],
-      lectures: []
-    };
-
+    let appData = { schedules: {}, homeworks: [], lectures: [] };
     let selectedDayFilter = getCurrentDayName();
 
-    // جلب البيانات أوتوماتيكياً من السحاب لحظة فتح الصفحة (سواء بالمتصفح أو سطح المكتب)
-    async function fetchCloudData() {
-      try {
-        // استرجاع احتياطي سريع من الذاكرة المحلية أولاً لتظهر الصفحة فوراً
-        let localData = localStorage.getItem('waleed_cloud_sync_cache');
-        if (localData) {
-          appData = JSON.parse(localData);
-          initPlatform();
-        }
-
-        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-          headers: {
-            'X-Master-Key': '$2a$10$7vQ3yR7K9q5z5Z3v5K8w3eO' // مفتاح مصادقة سحابي موثوق
-          }
-        });
-        
-        if (response.ok) {
-          const resJson = await response.json();
-          if (resJson && resJson.record) {
-            appData = resJson.record;
-            localStorage.setItem('waleed_cloud_sync_cache', JSON.stringify(appData));
-            initPlatform();
-            if(document.getElementById('adminView').classList.contains('hidden') == false) {
-              renderAdminScheduleTable();
-              renderAdminLibraryList();
-            }
-          }
-        }
-      } catch (e) {
-        console.log('وضع العمل المحلي المتصل');
+    // الاستماع الفوري للتحديثات السحابية أوتوماتيكياً (تزامن لحظي ثنائي الاتجاه)
+    dbRef.on('value', (snapshot) => {
+      const serverData = snapshot.val();
+      if (serverData) {
+        appData = serverData;
+      } else {
+        // البيانات الافتراضية الأولى إذا كانت القاعدة فارغة
+        appData = { schedules: {}, homeworks: [], lectures: [] };
       }
-    }
-
-    // حفظ ونشر البيانات أوتوماتيكياً للسحاب وللذاكرة المحلية معاً
-    async function saveAppData() {
-      try {
-        localStorage.setItem('waleed_cloud_sync_cache', JSON.stringify(appData));
-        
-        // حفظ سحابي أوتوماتيكي في الخلفية
-        fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': '$2a$10$7vQ3yR7K9q5z5Z3v5K8w3eO'
-          },
-          body: JSON.stringify(appData)
-        }).catch(err => console.log('جاري المزامنة...'));
-      } catch (e) {
-        console.error(e);
+      initPlatform();
+      if (!document.getElementById('adminView').classList.contains('hidden')) {
+        renderAdminScheduleTable();
+        renderAdminLibraryList();
       }
+    });
+
+    // دالة الحفظ السحابي المباشر
+    function saveAppData() {
+      dbRef.set(appData).then(() => {
+        const status = document.getElementById('cloudStatus');
+        if (status) {
+          status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> تم التحديث بالسحاب أوتوماتيكياً';
+          setTimeout(() => {
+            status.innerHTML = '<i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب أوتوماتيكياً';
+          }, 2500);
+        }
+      }).catch(err => {
+        alert('خطأ في الاتصال بالإنترنت أو السحاب.');
+      });
     }
 
     function getCurrentDayName() {
@@ -428,9 +378,7 @@
           </button>
         `).join('');
       }
-
       renderStudentDashboard();
-      if(document.getElementById('adminLibraryList')) renderAdminLibraryList();
     }
 
     function changeStudentDayFilter(day) {
@@ -460,11 +408,10 @@
     function renderStudentDashboard() {
       cleanupExpiredHomeworks();
       const grade = document.getElementById('studentGradeSelect').value;
-
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (appData.schedules[grade] && appData.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
-      const gradeHws = appData.homeworks.filter(h => h.grade === grade && h.day === selectedDayFilter);
-      const gradeLecs = appData.lectures.filter(l => l.grade === grade);
+      const gradeHws = (appData.homeworks || []).filter(h => h.grade === grade && h.day === selectedDayFilter);
+      const gradeLecs = (appData.lectures || []).filter(l => l.grade === grade);
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
@@ -489,14 +436,11 @@
           const matchLec = gradeLecs.find(l => l.subject.trim().replace(/\s+/g, ' ') === cleanSub);
 
           return `
-            <div class="p-4 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl border border-indigo-700/60 shadow-lg hover:shadow-indigo-500/10 transition flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <!-- الحصة والمادة على اليمين -->
+            <div class="p-4 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl border border-indigo-700/60 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div class="flex items-center gap-3 w-full sm:w-auto">
                 <span class="bg-amber-500 text-indigo-950 text-xs font-black px-3.5 py-2 rounded-2xl shadow-md whitespace-nowrap">الحصة ${idx + 1}</span>
                 <h3 class="font-black text-white text-lg sm:text-xl tracking-wide">${subject}</h3>
               </div>
-
-              <!-- الواجب أو الملف على اليسار (بخط كبير وملون وواضح) -->
               <div class="w-full sm:w-auto flex flex-wrap items-center gap-2 justify-end">
                 ${matchHw ? `
                   <div class="bg-amber-500/10 border-2 border-amber-400/60 text-amber-200 px-5 py-3 rounded-2xl text-sm sm:text-base font-extrabold shadow-md flex items-center gap-3 flex-grow sm:flex-grow-0">
@@ -508,43 +452,27 @@
                     </div>
                     <button type="button" onclick="deleteHomeworkFromDashboard('${matchHw.id}')" class="text-rose-400 hover:text-rose-300 mr-2 p-1"><i class="fa-solid fa-trash text-base"></i></button>
                   </div>
-                ` : `
-                  <span class="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-4 py-2.5 rounded-2xl border border-indigo-800">لا يوجد واجب</span>
-                `}
-
-                ${matchLec ? `
-                  <a href="${matchLec.fileData || '#'}" target="_blank" download="${matchLec.title}" class="bg-teal-600 hover:bg-teal-500 text-white border border-teal-500 text-xs font-bold px-4 py-3 rounded-2xl transition shadow-md inline-flex items-center gap-2">
-                    <i class="fa-solid fa-folder-open text-teal-200"></i> ${matchLec.title}
-                  </a>
-                ` : ''}
+                ` : `<span class="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-4 py-2.5 rounded-2xl border border-indigo-800">لا يوجد واجب</span>`}
+                ${matchLec ? `<a href="${matchLec.fileData || '#'}" target="_blank" download="${matchLec.title}" class="bg-teal-600 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-md inline-flex items-center gap-2"><i class="fa-solid fa-folder-open"></i> ${matchLec.title}</a>` : ''}
               </div>
             </div>
           `;
         }).join('');
       }
 
-      // LIBRARY RENDER
       const lecContainer = document.getElementById('studentLecList');
       document.getElementById('lecCountBadge').innerText = gradeLecs.length;
-
       if (gradeLecs.length === 0) {
         lecContainer.innerHTML = `<p class="text-xs text-indigo-300 text-center py-6 col-span-full font-medium">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
       } else {
         lecContainer.innerHTML = gradeLecs.map(lec => `
-          <div class="p-4 bg-indigo-950/60 rounded-3xl border border-indigo-800 flex flex-col justify-between shadow-md hover:shadow-indigo-500/20 transition space-y-3">
+          <div class="p-4 bg-indigo-950/60 rounded-3xl border border-indigo-800 flex flex-col justify-between shadow-md space-y-3">
             <div>
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30 flex items-center gap-1"><i class="fa-solid fa-file"></i> ${lec.subject}</span>
-              </div>
-              <h4 class="text-sm font-black text-white mb-1">${lec.title}</h4>
-              ${lec.desc ? `<p class="text-xs text-indigo-200 font-medium mb-2">${lec.desc}</p>` : ''}
+              <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30">${lec.subject}</span>
+              <h4 class="text-sm font-black text-white mt-2">${lec.title}</h4>
+              ${lec.desc ? `<p class="text-xs text-indigo-200 mt-1">${lec.desc}</p>` : ''}
             </div>
-
-            <div class="flex gap-2">
-              <a href="${lec.fileData || '#'}" target="_blank" download="${lec.title}" class="flex-grow bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold py-2.5 px-3 rounded-xl transition shadow-md inline-flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-folder-open"></i> فتح / عرض الملف
-              </a>
-            </div>
+            <a href="${lec.fileData || '#'}" target="_blank" download="${lec.title}" class="bg-teal-600 text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center inline-flex items-center justify-center gap-1.5"><i class="fa-solid fa-folder-open"></i> فتح الملف</a>
           </div>
         `).join('');
       }
@@ -553,7 +481,6 @@
     function renderAdminScheduleTable() {
       const grade = document.getElementById('adminGradeSelect').value;
       const tbody = document.getElementById('adminScheduleTbody');
-      
       tbody.innerHTML = DAYS.map(day => {
         const row = (appData.schedules[grade] && appData.schedules[grade][day]) || ['', '', '', '', '', ''];
         return `
@@ -575,79 +502,58 @@
     }
 
     function saveAdminRowDirect(grade, day) {
+      if (!appData.schedules) appData.schedules = {};
       if (!appData.schedules[grade]) appData.schedules[grade] = {};
       const newSlots = [];
       for (let i = 0; i < 6; i++) {
-        let val = document.getElementById(`slot_${day}_${i}`).value.trim();
-        newSlots.push(val);
+        newSlots.push(document.getElementById(`slot_${day}_${i}`).value.trim());
       }
       appData.schedules[grade][day] = newSlots;
       saveAppData();
-      alert(`تم حفظ يوم ${day} ومزامنته سحابياً أوتوماتيكياً!`);
+      alert(`تم حفظ يوم ${day} ومزامنته سحابياً أوتوماتيكياً للجميع!`);
       updateHwSubjectsDropdown();
     }
 
     function handleSaveHomework(e) {
       e.preventDefault();
-      const editIdInput = document.getElementById('editHwId').value;
+      const editId = document.getElementById('editHwId').value;
       const grade = document.getElementById('hwTargetGrade').value;
-      const subjectSelect = document.getElementById('hwSubjectSelect');
-      const subject = subjectSelect ? subjectSelect.value : '';
+      const subject = document.getElementById('hwSubjectSelect').value;
       const day = document.getElementById('hwDay').value;
       const desc = document.getElementById('hwDesc').value;
       const dueDate = document.getElementById('hwDueDate').value;
 
       if (!subject || subject.includes('لا توجد مواد')) {
-        alert('يرجى التأكد من حفظ جدول الحصص لهذا اليوم لكي تظهر المواد.');
+        alert('يرجى حفظ الجدول أولاً لتظهر المواد.');
         return;
       }
 
-      if (editIdInput) {
-        const hwIndex = appData.homeworks.findIndex(h => String(h.id) === String(editIdInput));
-        if (hwIndex !== -1) {
-          appData.homeworks[hwIndex].grade = grade;
-          appData.homeworks[hwIndex].subject = subject;
-          appData.homeworks[hwIndex].day = day;
-          appData.homeworks[hwIndex].desc = desc;
-          appData.homeworks[hwIndex].dueDate = dueDate;
-        }
-        alert('تم تعديل الواجب ومزامنته أوتوماتيكياً!');
+      if (!appData.homeworks) appData.homeworks = [];
+      if (editId) {
+        const idx = appData.homeworks.findIndex(h => String(h.id) === String(editId));
+        if (idx !== -1) appData.homeworks[idx] = { id: Number(editId), grade, subject, day, desc, dueDate };
         cancelEditHomework();
       } else {
-        appData.homeworks.push({
-          id: Date.now(),
-          grade,
-          subject,
-          day,
-          desc,
-          dueDate
-        });
-        alert('تم نشر الواجب ومزامنته أوتوماتيكياً!');
+        appData.homeworks.push({ id: Date.now(), grade, subject, day, desc, dueDate });
         resetHwForm();
       }
-      
       saveAppData();
       renderStudentDashboard();
+      alert('تم نشر الواجب ومزامنته سحابياً أوتوماتيكياً!');
     }
 
     function resetHwForm() {
       document.getElementById('editHwId').value = '';
       document.getElementById('hwDesc').value = '';
-      document.getElementById('hwFormTitle').innerHTML = '<i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة';
-      document.getElementById('hwSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب أوتوماتيكياً';
-      document.getElementById('hwCancelEditBtn').classList.add('hidden');
     }
 
-    function cancelEditHomework() {
-      resetHwForm();
-    }
+    function cancelEditHomework() { resetHwForm(); }
 
     function deleteHomeworkFromDashboard(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الواجب؟')) {
-        appData.homeworks = appData.homeworks.filter(h => String(h.id) !== String(id));
+      if (confirm('حذف الواجب؟')) {
+        appData.homeworks = (appData.homeworks || []).filter(h => String(h.id) !== String(id));
         saveAppData();
         renderStudentDashboard();
-        alert('تم حذف الواجب ومزامنته.');
       }
     }
 
@@ -661,68 +567,48 @@
       const fileInput = document.getElementById('lecFileInput');
 
       const processSave = (fileBase64) => {
+        if (!appData.lectures) appData.lectures = [];
         const recordId = editId ? Number(editId) : Date.now();
         let existingFile = fileBase64;
-
         if (editId && !existingFile) {
-          const existing = appData.lectures.find(l => Number(l.id) === Number(editId));
-          existingFile = existing ? existing.fileData : '';
+          const ex = appData.lectures.find(l => Number(l.id) === Number(editId));
+          existingFile = ex ? ex.fileData : '';
         }
-
-        const lecObj = {
-          id: recordId,
-          grade,
-          title,
-          subject,
-          desc,
-          fileData: existingFile
-        };
-
+        const lecObj = { id: recordId, grade, title, subject, desc, fileData: existingFile };
         if (editId) {
           const idx = appData.lectures.findIndex(l => Number(l.id) === Number(editId));
           if (idx !== -1) appData.lectures[idx] = lecObj;
-          alert('تم تعديل الملف ومزامنته أوتوماتيكياً!');
           cancelEditLecture();
         } else {
           appData.lectures.push(lecObj);
-          alert('تم رفع الملف ومزامنته أوتوماتيكياً!');
           document.getElementById('lecTitle').value = '';
           document.getElementById('lecSubject').value = '';
           document.getElementById('lecDesc').value = '';
           document.getElementById('lecFileInput').value = '';
         }
-
         saveAppData();
         renderAdminLibraryList();
         renderStudentDashboard();
+        alert('تم حفظ الملف ومزامنته سحابياً أوتوماتيكياً!');
       };
 
       if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
         const reader = new FileReader();
-        reader.onload = function(event) {
-          processSave(event.target.result);
-        };
-        reader.readAsDataURL(file);
+        reader.onload = ev => processSave(ev.target.result);
+        reader.readAsDataURL(fileInput.files[0]);
       } else {
         processSave(null);
       }
     }
 
     function editLibraryItem(id) {
-      const lec = appData.lectures.find(l => Number(l.id) === Number(id));
+      const lec = (appData.lectures || []).find(l => Number(l.id) === Number(id));
       if (!lec) return;
-
       document.getElementById('editLecId').value = lec.id;
       document.getElementById('lecTargetGrade').value = lec.grade;
       document.getElementById('lecTitle').value = lec.title;
       document.getElementById('lecSubject').value = lec.subject;
       document.getElementById('lecDesc').value = lec.desc || '';
-
-      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل اسم الملف';
-      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-check text-sm"></i> حفظ التعديلات';
-      document.getElementById('lecCancelEditBtn').classList.remove('hidden');
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -732,47 +618,34 @@
       document.getElementById('lecSubject').value = '';
       document.getElementById('lecDesc').value = '';
       document.getElementById('lecFileInput').value = '';
-      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (أوتوماتيكي)';
-      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ أوتوماتيكي';
-      document.getElementById('lecCancelEditBtn').classList.add('hidden');
     }
 
     function deleteLibraryItem(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الملف من المكتبة؟')) {
-        appData.lectures = appData.lectures.filter(l => Number(l.id) !== Number(id));
+      if (confirm('حذف الملف؟')) {
+        appData.lectures = (appData.lectures || []).filter(l => Number(l.id) !== Number(id));
         saveAppData();
         renderAdminLibraryList();
         renderStudentDashboard();
-        alert('تم الحذف ومزامنته.');
       }
     }
 
     function renderAdminLibraryList() {
       const container = document.getElementById('adminLibraryList');
-      if (appData.lectures.length === 0) {
-        container.innerHTML = `<p class="text-xs text-indigo-300 text-center py-4">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
+      const lecs = appData.lectures || [];
+      if (lecs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-indigo-300 text-center py-4">لا توجد ملفات مرفوعة حالياً.</p>`;
         return;
       }
-
-      container.innerHTML = appData.lectures.map(lec => `
-        <div class="p-4 bg-indigo-950/60 rounded-2xl border border-indigo-800 flex justify-between items-center flex-wrap gap-3 shadow-sm">
+      container.innerHTML = lecs.map(lec => `
+        <div class="p-4 bg-indigo-950/60 rounded-2xl border border-indigo-800 flex justify-between items-center flex-wrap gap-3">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-3 py-0.5 rounded-lg border border-teal-500/30">${GRADES[lec.grade] || lec.grade}</span>
-              <span class="text-xs font-extrabold text-white">${lec.subject}: ${lec.title}</span>
-            </div>
-            <p class="text-xs text-indigo-200 font-medium">${lec.desc || '(ملف مخزن)'}</p>
+            <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-3 py-0.5 rounded-lg">${GRADES[lec.grade]}</span>
+            <span class="text-xs font-extrabold text-white ml-2">${lec.subject}: ${lec.title}</span>
           </div>
           <div class="flex gap-2">
-            <a href="${lec.fileData || '#'}" target="_blank" class="bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1">
-              <i class="fa-solid fa-folder-open"></i> فتح
-            </a>
-            <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-              <i class="fa-solid fa-pen ml-1"></i> تعديل
-            </button>
-            <button type="button" onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 hover:bg-rose-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-              <i class="fa-solid fa-trash ml-1"></i> حذف
-            </button>
+            <a href="${lec.fileData || '#'}" target="_blank" class="bg-teal-600 text-white text-xs font-bold px-3 py-2 rounded-xl"><i class="fa-solid fa-folder-open"></i> فتح</a>
+            <button onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl">تعديل</button>
+            <button onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl">حذف</button>
           </div>
         </div>
       `).join('');
@@ -780,28 +653,17 @@
 
     function cleanupExpiredHomeworks() {
       const todayStr = new Date().toISOString().split('T')[0];
-      appData.homeworks = appData.homeworks.filter(hw => {
-        if (!hw.dueDate) return true;
-        return hw.dueDate >= todayStr;
-      });
-      saveAppData();
-    }
-
-    function resetAllData() {
-      if (confirm('تحذير: هل أنت متأكد من مسح كافة الجداول والبيانات؟')) {
-        localStorage.clear();
-        appData = { schedules: {}, homeworks: [], lectures: [] };
-        saveAppData();
-        initPlatform();
-        renderAdminScheduleTable();
-        renderAdminLibraryList();
-        alert("تمت إعادة ضبط المنصة بنجاح.");
+      if (appData.homeworks) {
+        appData.homeworks = appData.homeworks.filter(hw => !hw.dueDate || hw.dueDate >= todayStr);
       }
     }
 
-    // التشغيل الفوري وجلب البيانات سحابياً عند فتح الصفحة
-    fetchCloudData();
-    setInterval(fetchCloudData, 10000); // تحديث أوتوماتيكي في الخلفية كل 10 ثوانٍ
+    function resetAllData() {
+      if (confirm('تصفير كافة بيانات السحاب نهائياً؟')) {
+        appData = { schedules: {}, homeworks: [], lectures: [] };
+        saveAppData();
+      }
+    }
   </script>
 </body>
 </html>
