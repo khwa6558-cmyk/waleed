@@ -42,7 +42,7 @@
   <!-- Notification Banner -->
   <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-2.5 text-xs sm:text-sm text-center font-medium shadow-inner">
     <i class="fa-solid fa-clock ml-1 text-amber-600"></i>
-    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم.
+    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم[span_1](start_span)[span_1](end_span).
   </div>
 
   <main class="container mx-auto px-4 py-6">
@@ -159,7 +159,7 @@
         <!-- Add Homework -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
           <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-rose-600">
-            <i class="fa-solid fa-plus-circle ml-1"></i> رفع واجب لمادة معينة (يحذف 12 ظهراً بتوقيت العراق)
+            <i class="fa-solid fa-plus-circle ml-1"></i> رفع واجب لمادة معينة (يحذف 12 ظهراً بتوقيت العراق)[span_2](start_span)[span_2](end_span)
           </h3>
           <form onsubmit="handleAddHomework(event)" class="space-y-3">
             <div>
@@ -190,7 +190,7 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1">تفاصيل الواجب (اختياري مع الملف):</label>
+              <label class="block text-xs font-semibold mb-1">تفاصيل الواجب (كتابة - اختيارية):</label>
               <textarea id="hwDesc" placeholder="اكتب المطلوب حله أو الملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
             </div>
             <div>
@@ -198,7 +198,7 @@
               <input type="file" id="hwFile" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-300 text-xs p-1.5 rounded cursor-pointer">
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1">تاريخ التسليم النهائي (يحذف يوم التاريخ المحدد الساعة 12 ظهراً):</label>
+              <label class="block text-xs font-semibold mb-1">تاريخ التسليم النهائي:</label>
               <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
             </div>
             <button type="submit" class="w-full bg-rose-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-rose-700 transition">
@@ -279,7 +279,6 @@
       return DAYS.includes(today) ? today : 'الأحد';
     }
 
-    // دالة لجلب الوقت الحالي بتوقيت العراق (بغداد) بدقة
     function getIraqCurrentDate() {
       const options = { timeZone: 'Asia/Baghdad', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
       const formatter = new Intl.DateTimeFormat([], options);
@@ -550,13 +549,11 @@
       renderStudentDashboard();
     }
 
-    // فحص وحذف الواجبات المنتهية بناءً على الساعة 12:00 ظهراً بتوقيت العراق
     function cleanupExpiredHomeworks() {
       const nowIraq = getIraqCurrentDate();
       
       db.homeworks = db.homeworks.filter(hw => {
         if (!hw.dueDate) return true;
-        // موعد انتهاء الواجب هو الساعة 12:00 ظهراً في تاريخ التسليم المحدد
         const expirationDate = new Date(`${hw.dueDate}T12:00:00`);
         return nowIraq < expirationDate;
       });
@@ -572,7 +569,6 @@
       }
     }
 
-    // فحص تلقائي كل دقيقة لتحديث حالة الواجبات المحذوفة
     setInterval(cleanupExpiredHomeworks, 60000);
     initData();
   </script>
