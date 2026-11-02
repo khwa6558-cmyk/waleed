@@ -184,9 +184,9 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1">اختر المادة (من جدول الحصص المسجل لهذا اليوم):</label>
+              <label class="block text-xs font-semibold mb-1">اختر المادة (من جدول الحصص المسجل):</label>
               <select id="hwSubjectSelect" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded font-bold text-indigo-900">
-                <!-- Populated dynamically based on schedule -->
+                <!-- Populated dynamically -->
               </select>
             </div>
             <div>
@@ -322,19 +322,26 @@
       initData();
     }
 
-    // Dynamic dropdown for subjects based on schedule
     function updateHwSubjectsDropdown() {
       const grade = document.getElementById('hwTargetGrade').value;
-      const day = document.getElementById('hwDay').value;
       const selectEl = document.getElementById('hwSubjectSelect');
+      
+      // Collect all unique subjects across all days for this grade
+      let allSubjects = new Set();
+      if (db.schedules[grade]) {
+        Object.values(db.schedules[grade]).forEach(daySlots => {
+          if (Array.isArray(daySlots)) {
+            daySlots.forEach(s => {
+              if (s && s.trim()) allSubjects.add(s.trim());
+            });
+          }
+        });
+      }
 
-      const daySchedule = (db.schedules[grade] && db.schedules[grade][day]) || [];
-      const validSubjects = daySchedule.filter(s => s && s.trim().length > 0);
-
-      if (validSubjects.length === 0) {
-        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة بهذا اليوم في الجدول</option>`;
+      if (allSubjects.size === 0) {
+        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا الصف في الجدول</option>`;
       } else {
-        selectEl.innerHTML = validSubjects.map(sub => `<option value="${sub.trim()}">${sub.trim()}</option>`).join('');
+        selectEl.innerHTML = Array.from(allSubjects).map(sub => `<option value="${sub}">${sub}</option>`).join('');
       }
     }
 
@@ -344,7 +351,9 @@
 
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
-      const gradeHws = db.homeworks.filter(h => h.grade === grade && h.day === selectedDayFilter);
+      
+      // Get all homeworks for this grade (matching the grade regardless of strict day filter)
+      const gradeHws = db.homeworks.filter(h => h.grade === grade);
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
@@ -364,8 +373,8 @@
             `;
           }
 
-          // Flexible match for homework
           const cleanSubject = subject.trim().toLowerCase();
+          // Find any homework matching this subject name for this grade
           const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === cleanSubject);
 
           return `
@@ -375,7 +384,7 @@
                   <span class="bg-indigo-900 text-white text-xs font-bold px-2.5 py-1 rounded-md">الحصة ${idx + 1}</span>
                   <span class="font-extrabold text-indigo-950 text-base">${subject}</span>
                 </div>
-                ${matchHw ? `<span class="text-[11px] bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-pen-ruler ml-1"></i>يوجد واجب للمادة</span>` : `<span class="text-[11px] text-slate-400">لا يوجد واجب</span>`}
+                ${matchHw ? `<span class="text-[11px] bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-pen-ruler ml-1"></i>يوجد واجب</span>` : `<span class="text-[11px] text-slate-400">لا يوجد واجب</span>`}
               </div>
 
               ${matchHw ? `
