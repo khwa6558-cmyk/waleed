@@ -89,14 +89,14 @@
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
 
     <!-- ========================================== -->
-    <!-- STUDENT VIEW (واجهة عرض الحصص والواجبات مع أزرار التحكم السريع للمدرس) -->
+    <!-- STUDENT VIEW                               -->
     <!-- ========================================== -->
     <section id="studentView" class="space-y-6">
       
       <!-- Student Grade Selection & Info -->
       <div class="bg-white/90 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-100 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <label for="studentGradeSelect" class="font-extrabold text-indigo-950 text-sm whitespace-nowrap">اختر الصف الدراسي:</label>
+          <label for="studentGradeSelect" class="font-extrabold text-indigo-950 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
           <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-indigo-50/70 border border-indigo-200 text-indigo-950 text-sm font-extrabold rounded-2xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-sm">
             <option value="1m">الأول متوسط</option>
             <option value="2m">الثاني متوسط</option>
@@ -121,7 +121,7 @@
             <span class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-base shadow-sm">
               <i class="fa-solid fa-book-open"></i>
             </span>
-            جدول الحصص والواجبات اليومية الكامل (مع أزرار التعديل والحذف المباشر)
+            جدول الحصص والواجبات اليومية الكامل
           </h2>
           <!-- Day Filter -->
           <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
@@ -130,18 +130,18 @@
         <div id="studentScheduleContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- Lectures -->
+      <!-- LIBRARY & LECTURES SECTION (مكتبة الملفات والمقاطع - فتح وعرض بلا حدود) -->
       <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-100 p-6">
         <div class="flex justify-between items-center mb-5 border-b border-indigo-50 pb-4">
           <h3 class="font-extrabold text-indigo-950 text-base sm:text-lg flex items-center gap-2.5">
             <span class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-base shadow-sm">
-              <i class="fa-solid fa-file-video"></i>
+              <i class="fa-solid fa-photo-film"></i>
             </span>
-            المحاضرات والملخصات الإضافية
+            مكتبة الملفات، الصور، والمقاطع والملخصات (عرض بلا حدود)
           </h3>
           <span id="lecCountBadge" class="bg-indigo-100 text-indigo-900 text-xs font-black px-3.5 py-1.5 rounded-full shadow-inner">0</span>
         </div>
-        <div id="studentLecList" class="space-y-3"></div>
+        <div id="studentLecList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
 
     </section>
@@ -153,8 +153,8 @@
 
       <div class="bg-gradient-to-r from-indigo-950 via-indigo-900 to-violet-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
-          <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة الواجبات والجداول</h2>
-          <p class="text-xs text-indigo-200 mt-1">نشر، تعديل، وحذف الواجبات وإدارة الجداول بكل مرونة</p>
+          <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
+          <p class="text-xs text-indigo-200 mt-1">إضافة، تعديل أسماء، وحذف الملفات والمقاطع والواجبات بكل مرونة</p>
         </div>
         <button onclick="resetAllData()" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
           <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
@@ -263,13 +263,14 @@
           </div>
         </div>
 
-        <!-- Add Lecture -->
+        <!-- Add / Edit Library Item (رفع أو تعديل اسم المحاضرة أو الملف للمكتبة) -->
         <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 flex flex-col justify-between">
           <div>
-            <h3 class="font-extrabold text-slate-800 mb-5 border-b border-indigo-50 pb-3 text-indigo-600 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع محاضرة أو ملخص (كتابة أو ملف)
+            <h3 id="lecFormTitle" class="font-extrabold text-slate-800 mb-5 border-b border-indigo-50 pb-3 text-indigo-600 flex items-center gap-2 text-base">
+              <i class="fa-solid fa-photo-film"></i> رفع محاضرة، صورة، مقطع أو ملخص للمكتبة
             </h3>
-            <form onsubmit="handleAddLecture(event)" class="space-y-4">
+            <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
+              <input type="hidden" id="editLecId" value="">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">الصف المستهدف:</label>
                 <select id="lecTargetGrade" class="w-full bg-slate-50 border border-slate-200 text-xs font-bold p-3 rounded-2xl focus:outline-none">
@@ -282,41 +283,54 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان المحاضرة أو الملخص:</label>
-                <input type="text" id="lecTitle" required placeholder="مثال: ملخص الفصل الاول" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان الملف / المحاضرة (قابل للتعديل):</label>
+                <input type="text" id="lecTitle" required placeholder="مثال: شرح بالفيديو أو ملخص الفصل الأول" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">المادة:</label>
-                <input type="text" id="lecSubject" required placeholder="مثال: الفيزياء" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
+                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الفيزياء" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">طريقة الإضافة (اختر نوع المحتوى):</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">نوع الملف أو المحتوى:</label>
                 <select id="lecType" onchange="toggleLecInputType()" class="w-full bg-slate-50 border border-slate-200 text-xs font-bold p-3 rounded-2xl focus:outline-none mb-2">
-                  <option value="link">رابط (YouTube أو خارجي)</option>
-                  <option value="file">رفع ملف (صورة أو PDF)</option>
+                  <option value="link">رابط فيديو (YouTube / يوتيوب أو خارجي)</option>
+                  <option value="file">رفع ملف أو صورة (صورة، PDF)</option>
                   <option value="text">كتابة نص / ملخص مباشر</option>
                 </select>
               </div>
 
               <div id="lecInputContainer">
                 <div id="lecLinkGroup">
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط المحاضرة:</label>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط الفيديو أو الرابط الخارجي:</label>
                   <input type="url" id="lecLinkVal" placeholder="https://..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات إضافية (اختياري):</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات أو وصف إضافي (اختياري):</label>
                 <textarea id="lecDesc" placeholder="اكتب وصفاً مختصراً..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-16 focus:outline-none"></textarea>
               </div>
 
-              <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 pt-2">
-                <i class="fa-solid fa-cloud-arrow-up text-sm"></i> رفع المحاضرة / الملخص
-              </button>
+              <div class="flex gap-2 pt-2">
+                <button type="submit" id="lecSubmitBtn" class="flex-grow bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> إضافة إلى المكتبة
+                </button>
+                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-400 hover:bg-slate-500 text-white font-bold text-xs px-4 py-3.5 rounded-2xl transition">
+                  إلغاء
+                </button>
+              </div>
             </form>
           </div>
         </div>
 
+      </div>
+
+      <!-- LIBRARY MANAGEMENT TABLE (تعديل أسماء وحذف ملفات المكتبة) -->
+      <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 mt-6">
+        <h3 class="font-extrabold text-slate-800 mb-4 border-b border-indigo-50 pb-3 text-indigo-950 flex items-center gap-2 text-base">
+          <i class="fa-solid fa-folder-open text-indigo-600"></i> إدارة مكتبة الملفات والمقاطع (تعديل الأسماء أو الحذف)
+        </h3>
+        <div id="adminLibraryList" class="space-y-3"></div>
       </div>
 
     </section>
@@ -384,6 +398,7 @@
         studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
         renderAdminScheduleTable();
         updateHwSubjectsDropdown();
+        renderAdminLibraryList();
       }
     }
 
@@ -433,12 +448,12 @@
 
       if (type === 'link') {
         container.innerHTML = `
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط المحاضرة:</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط الفيديو (يوتيوب أو رابط خارجي):</label>
           <input type="url" id="lecLinkVal" placeholder="https://..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none" required>
         `;
       } else if (type === 'file') {
         container.innerHTML = `
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر ملف المحاضرة (صورة أو PDF):</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر الملف أو الصورة (صورة، PDF):</label>
           <input type="file" id="lecFileVal" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-2xl cursor-pointer" required>
         `;
       } else {
@@ -501,7 +516,6 @@
                   ` : ''}
                   <div class="text-[10px] text-slate-400 font-medium flex items-center justify-between pt-1 border-t border-slate-100">
                     <span><i class="fa-solid fa-clock text-rose-500"></i> ${matchHw.dueDate}</span>
-                    <!-- أزرار التعديل والحذف مباشرة تحت الواجب -->
                     <div class="flex gap-1.5">
                       <button type="button" onclick="editHomeworkFromDashboard('${matchHw.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-[10px] font-extrabold px-2.5 py-1 rounded-lg transition shadow-sm">
                         <i class="fa-solid fa-pen"></i> تعديل
@@ -518,39 +532,48 @@
         }).join('');
       }
 
-      // Lectures & Summaries
+      // LIBRARY & MEDIA RENDER (عرض المكتبة - فتح وغلق وعرض بلا حدود آلاف المرات)
       const lecContainer = document.getElementById('studentLecList');
       const filteredLecs = db.lectures.filter(l => l.grade === grade);
       document.getElementById('lecCountBadge').innerText = filteredLecs.length;
 
       if (filteredLecs.length === 0) {
-        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 font-medium">لا يوجد محاضرات أو ملخصات مرفوعة حالياً.</p>`;
+        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-full font-medium">لا توجد ملفات أو مقاطع مرفوعة في المكتبة حالياً.</p>`;
       } else {
-        lecContainer.innerHTML = filteredLecs.map(lec => `
-          <div class="p-4 bg-indigo-50/40 rounded-3xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3 shadow-sm">
-            <div class="space-y-1">
-              <span class="text-[10px] font-extrabold bg-indigo-200/80 text-indigo-900 px-3 py-0.5 rounded-lg">${lec.subject}</span>
-              <h4 class="text-sm font-extrabold text-slate-800">${lec.title}</h4>
-              ${lec.desc ? `<p class="text-xs text-slate-600 font-medium">${lec.desc}</p>` : ''}
+        lecContainer.innerHTML = filteredLecs.map(lec => {
+          let badgeIcon = 'fa-file-lines';
+          let badgeColor = 'bg-amber-100 text-amber-800';
+          if (lec.type === 'link') { badgeIcon = 'fa-video'; badgeColor = 'bg-rose-100 text-rose-800'; }
+          else if (lec.type === 'file') { badgeIcon = 'fa-image'; badgeColor = 'bg-emerald-100 text-emerald-800'; }
+
+          return `
+            <div class="p-4 bg-white rounded-3xl border border-indigo-100 flex flex-col justify-between shadow-sm hover:shadow-md transition space-y-3">
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-[10px] font-extrabold ${badgeColor} px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid ${badgeIcon}"></i> ${lec.subject}</span>
+                </div>
+                <h4 class="text-sm font-black text-indigo-950 mb-1">${lec.title}</h4>
+                ${lec.desc ? `<p class="text-xs text-slate-600 font-medium mb-2">${lec.desc}</p>` : ''}
+              </div>
+
+              <div>
+                ${lec.type === 'link' ? `
+                  <a href="${lec.content}" target="_blank" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-play"></i> مشاهدة الفيديو (بدون حدود)
+                  </a>
+                ` : lec.type === 'file' ? `
+                  <a href="${lec.content}" target="_blank" download="${lec.title}" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> فتح أو تحميل الملف / الصورة
+                  </a>
+                ` : `
+                  <button onclick="alert('${lec.content.replace(/'/g, "\\'")}')" class="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-note-sticky"></i> قراءة الملخص
+                  </button>
+                `}
+              </div>
             </div>
-            
-            <div>
-              ${lec.type === 'link' ? `
-                <a href="${lec.content}" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition shadow-sm inline-flex items-center gap-1.5">
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i> عرض الرابط
-                </a>
-              ` : lec.type === 'file' ? `
-                <a href="${lec.content}" target="_blank" download="${lec.title}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition shadow-sm inline-flex items-center gap-1.5">
-                  <i class="fa-solid fa-file-arrow-down"></i> تحميل الملف
-                </a>
-              ` : `
-                <button onclick="alert('${lec.content.replace(/'/g, "\\'")}')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition shadow-sm inline-flex items-center gap-1.5">
-                  <i class="fa-solid fa-note-sticky"></i> قراءة الملخص
-                </button>
-              `}
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
     }
 
@@ -677,7 +700,6 @@
       resetHwForm();
     }
 
-    // دوال للتحكم بالواجب مباشرة من واجهة الطالب (التحويل التلقائي للوحة الإدارة وتعبئة البيانات)
     function editHomeworkFromDashboard(id) {
       switchTab('admin');
       const hw = db.homeworks.find(h => String(h.id) === String(id));
@@ -707,46 +729,144 @@
       }
     }
 
-    function handleAddLecture(e) {
+    // إدارة مكتبة الملفات والمقاطع (إضافة، تعديل الاسم، وحذف)
+    function handleAddOrUpdateLecture(e) {
       e.preventDefault();
+      const editId = document.getElementById('editLecId').value;
       const grade = document.getElementById('lecTargetGrade').value;
       const title = document.getElementById('lecTitle').value;
       const subject = document.getElementById('lecSubject').value;
       const type = document.getElementById('lecType').value;
       const desc = document.getElementById('lecDesc').value;
 
-      let content = '';
+      const processSave = (content) => {
+        if (editId) {
+          const lec = db.lectures.find(l => String(l.id) === String(editId));
+          if (lec) {
+            lec.grade = grade;
+            lec.title = title;
+            lec.subject = subject;
+            lec.type = type;
+            lec.desc = desc;
+            if (content) lec.content = content;
+          }
+          alert('تم تعديل اسم وتفاصيل الملف في المكتبة بنجاح!');
+          cancelEditLecture();
+        } else {
+          db.lectures.push({ id: Date.now(), grade, title, subject, type, content, desc });
+          alert('تمت إضافة الملف أو المقطع إلى المكتبة بنجاح!');
+          document.getElementById('lecTitle').value = '';
+          document.getElementById('lecSubject').value = '';
+          document.getElementById('lecDesc').value = '';
+          toggleLecInputType();
+        }
+        saveDB();
+        renderAdminLibraryList();
+        renderStudentDashboard();
+      };
 
-      if (type === 'link') {
-        content = document.getElementById('lecLinkVal').value;
-        saveLectureToDb(grade, title, subject, type, content, desc);
-      } else if (type === 'text') {
-        content = document.getElementById('lecTextVal').value;
-        saveLectureToDb(grade, title, subject, type, content, desc);
-      } else if (type === 'file') {
+      if (type === 'file') {
         const fileInput = document.getElementById('lecFileVal');
-        if (fileInput.files.length > 0) {
+        if (fileInput && fileInput.files.length > 0) {
           const file = fileInput.files[0];
           const reader = new FileReader();
           reader.onload = function(uploadEvent) {
-            content = uploadEvent.target.result;
-            saveLectureToDb(grade, title, subject, type, content, desc);
+            processSave(uploadEvent.target.result);
           };
           reader.readAsDataURL(file);
+          return;
         }
+      }
+
+      let content = '';
+      if (type === 'link') {
+        const linkEl = document.getElementById('lecLinkVal');
+        content = linkEl ? linkEl.value : '';
+      } else if (type === 'text') {
+        const textEl = document.getElementById('lecTextVal');
+        content = textEl ? textEl.value : '';
+      } else if (editId) {
+        const existing = db.lectures.find(l => String(l.id) === String(editId));
+        content = existing ? existing.content : '';
+      }
+
+      processSave(content);
+    }
+
+    function editLibraryItem(id) {
+      const lec = db.lectures.find(l => String(l.id) === String(id));
+      if (!lec) return;
+
+      document.getElementById('editLecId').value = lec.id;
+      document.getElementById('lecTargetGrade').value = lec.grade;
+      document.getElementById('lecTitle').value = lec.title;
+      document.getElementById('lecSubject').value = lec.subject;
+      document.getElementById('lecType').value = lec.type;
+      document.getElementById('lecDesc').value = lec.desc || '';
+      toggleLecInputType();
+
+      if (lec.type === 'link') {
+        const linkEl = document.getElementById('lecLinkVal');
+        if (linkEl) linkEl.value = lec.content;
+      } else if (lec.type === 'text') {
+        const textEl = document.getElementById('lecTextVal');
+        if (textEl) textEl.value = lec.content;
+      }
+
+      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل اسم أو تفاصيل الملف';
+      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-check text-sm"></i> حفظ التعديلات';
+      document.getElementById('lecCancelEditBtn').classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelEditLecture() {
+      document.getElementById('editLecId').value = '';
+      document.getElementById('lecTitle').value = '';
+      document.getElementById('lecSubject').value = '';
+      document.getElementById('lecDesc').value = '';
+      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-photo-film"></i> رفع محاضرة، صورة، مقطع أو ملخص للمكتبة';
+      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> إضافة إلى المكتبة';
+      document.getElementById('lecCancelEditBtn').classList.add('hidden');
+      toggleLecInputType();
+    }
+
+    function deleteLibraryItem(id) {
+      if (confirm('هل أنت متأكد من حذف هذا الملف أو المقطع من المكتبة؟')) {
+        db.lectures = db.lectures.filter(l => String(l.id) !== String(id));
+        saveDB();
+        renderAdminLibraryList();
+        renderStudentDashboard();
+        alert('تم الحذف بنجاح.');
       }
     }
 
-    function saveLectureToDb(grade, title, subject, type, content, desc) {
-      db.lectures.push({ id: Date.now(), grade, title, subject, type, content, desc });
-      if (saveDB()) {
-        document.getElementById('lecTitle').value = '';
-        document.getElementById('lecSubject').value = '';
-        document.getElementById('lecDesc').value = '';
-        toggleLecInputType();
-        alert('تم رفع المحاضرة أو الملخص بنجاح!');
-        renderStudentDashboard();
+    function renderAdminLibraryList() {
+      const container = document.getElementById('adminLibraryList');
+      if (db.lectures.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا توجد ملفات أو مقاطع مرفوعة في المكتبة حالياً.</p>`;
+        return;
       }
+
+      container.innerHTML = db.lectures.map(lec => `
+        <div class="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-extrabold bg-indigo-900 text-white px-3 py-0.5 rounded-lg">${GRADES[lec.grade] || lec.grade}</span>
+              <span class="text-xs font-extrabold text-indigo-950">${lec.subject}: ${lec.title}</span>
+            </div>
+            <p class="text-xs text-slate-600 font-medium">${lec.desc ? lec.desc : '(محتوى الوسائط أو الملف مرفق)'}</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
+              <i class="fa-solid fa-pen ml-1"></i> تعديل الاسم
+            </button>
+            <button type="button" onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
+              <i class="fa-solid fa-trash ml-1"></i> حذف
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
     function cleanupExpiredHomeworks() {
