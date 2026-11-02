@@ -80,7 +80,7 @@
   <!-- Notification Banner -->
   <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200 text-amber-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
     <i class="fa-solid fa-database text-amber-600 text-base animate-pulse"></i>
-    <span>يعمل بنظام التخزين الداخلي العملاق (IndexedDB): عدد غير محدود من الملفات والوسائط والأحجام الضخمة بدون إنترنت.</span>
+    <span>مكتبة الملفات تدعم الفتح والغلق بلا حدود، وتعديل الأسماء، والحذف بكل مرونة.</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -124,14 +124,14 @@
         <div id="studentScheduleContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- LIBRARY & MEDIA SECTION -->
+      <!-- LIBRARY & MEDIA SECTION (مكتبة الملفات - فتح وغلق بلا حدود) -->
       <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-100 p-6">
         <div class="flex justify-between items-center mb-5 border-b border-indigo-50 pb-4">
           <h3 class="font-extrabold text-indigo-950 text-base sm:text-lg flex items-center gap-2.5">
             <span class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-base shadow-sm">
-              <i class="fa-solid photo-film"></i>
+              <i class="fa-solid fa-folder-open"></i>
             </span>
-            مكتبة الملفات والمقاطع والملخصات (رفع مباشر وبلا حدود)
+            مكتبة الملفات والمقاطع والملخصات (فتح بلا حدود)
           </h3>
           <span id="lecCountBadge" class="bg-indigo-100 text-indigo-900 text-xs font-black px-3.5 py-1.5 rounded-full shadow-inner">0</span>
         </div>
@@ -146,7 +146,7 @@
       <div class="bg-gradient-to-r from-indigo-950 via-indigo-900 to-violet-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
           <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
-          <p class="text-xs text-indigo-200 mt-1">رفع وتخزين عدد غير محدود من الملفات الثقيلة محلياً وبدون إنترنت</p>
+          <p class="text-xs text-indigo-200 mt-1">رفع الملفات، تعديل أسمائها، وحذفها بكل مرونة</p>
         </div>
         <button onclick="resetAllData()" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
           <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
@@ -250,11 +250,11 @@
           </div>
         </div>
 
-        <!-- Add / Edit Library Item (رفع ملفات ضخمة بلا حدود وبشكل مباشر) -->
+        <!-- Add / Edit Library Item (رفع الملفات مع إمكانية تعديل الاسم) -->
         <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-slate-800 mb-5 border-b border-indigo-50 pb-3 text-indigo-600 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف ضخم، فيديو، أو صورة للمكتبة (بدون حدود للحجم)
+              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (عدد غير محدود)
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
@@ -270,24 +270,24 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان الملف (قابل للتعديل):</label>
-                <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفيديو الكبرى أو كتاب PDF" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان الملف (قابل للتعديل في أي وقت):</label>
+                <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفصل الأول أو ملخص الفيزياء" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">المادة:</label>
-                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الفيزياء" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
+                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر الملف من جهازك (فيديو، PDF، صور... مهما كان حجمه):</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر الملف (فيديو، PDF، صورة...):</label>
                 <input type="file" id="lecFileInput" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-2xl cursor-pointer file:ml-2 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات إضافية (اختياري):</label>
-                <textarea id="lecDesc" placeholder="وصف موجز للملف..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-16 focus:outline-none"></textarea>
+                <textarea id="lecDesc" placeholder="وصف موجز..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-16 focus:outline-none"></textarea>
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="lecSubmitBtn" class="flex-grow bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> رفع وحفظ في قاعدة البيانات
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ في المكتبة
                 </button>
                 <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-400 hover:bg-slate-500 text-white font-bold text-xs px-4 py-3.5 rounded-2xl transition">
                   إلغاء
@@ -299,10 +299,10 @@
 
       </div>
 
-      <!-- LIBRARY MANAGEMENT TABLE -->
+      <!-- LIBRARY MANAGEMENT TABLE (أزرار التعديل والحذف المباشر لأسماء الملفات والمقاطع) -->
       <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 mt-6">
         <h3 class="font-extrabold text-slate-800 mb-4 border-b border-indigo-50 pb-3 text-indigo-950 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-folder-open text-indigo-600"></i> إدارة مكتبة الملفات (تعديل الأسماء، التعديل، والحذف)
+          <i class="fa-solid fa-folder-open text-indigo-600"></i> إدارة مكتبة الملفات (فتح، تعديل الاسم، والحذف)
         </h3>
         <div id="adminLibraryList" class="space-y-3"></div>
       </div>
@@ -325,7 +325,6 @@
       '6h': 'السادس إعدادي'
     };
 
-    // نظام قاعدة البيانات المحلية العملاقة IndexedDB لتخزين عدد غير محدود وبأحجام ضخمة
     let db;
     const dbName = "SchoolPlatformDB_Waleed";
     const dbVersion = 1;
@@ -537,7 +536,7 @@
         }).join('');
       }
 
-      // LIBRARY RENDER
+      // LIBRARY RENDER (عرض الملفات مع زر الفتح المتكرر بلا حدود)
       const lecContainer = document.getElementById('studentLecList');
       const filteredLecs = appData.lectures.filter(l => l.grade === grade);
       document.getElementById('lecCountBadge').innerText = filteredLecs.length;
@@ -555,15 +554,15 @@
             <div class="p-4 bg-white rounded-3xl border border-indigo-100 flex flex-col justify-between shadow-sm hover:shadow-md transition space-y-3">
               <div>
                 <div class="flex justify-between items-center mb-2">
-                  <span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid fa-file-arrow-down"></i> ${lec.subject}</span>
+                  <span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid fa-file"></i> ${lec.subject}</span>
                 </div>
                 <h4 class="text-sm font-black text-indigo-950 mb-1">${lec.title}</h4>
                 ${lec.desc ? `<p class="text-xs text-slate-600 font-medium mb-2">${lec.desc}</p>` : ''}
               </div>
 
-              <div>
-                <a href="${fileUrl}" target="_blank" download="${lec.title}" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
-                  <i class="fa-solid fa-cloud-arrow-down"></i> فتح أو تحميل الملف (بلا حدود)
+              <div class="flex gap-2">
+                <a href="${fileUrl}" target="_blank" download="${lec.title}" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-folder-open"></i> فتح / عرض الملف
                 </a>
               </div>
             </div>
@@ -693,7 +692,7 @@
       }
     }
 
-    // إدارة مكتبة الملفات الضخمة وتخزينها في IndexedDB
+    // إدارة مكتبة الملفات (حفظ، تعديل الاسم، فتح، وحذف)
     function handleAddOrUpdateLecture(e) {
       e.preventDefault();
       const editId = document.getElementById('editLecId').value;
@@ -706,7 +705,6 @@
       const processSave = (blobData) => {
         const recordId = editId ? Number(editId) : Date.now();
         
-        // إذا كان تعديل ولم يتم اختيار ملف جديد، نحتفظ بالملف القديم
         if (editId && !blobData) {
           const existing = appData.lectures.find(l => Number(l.id) === Number(editId));
           blobData = existing ? existing.fileBlob : null;
@@ -723,10 +721,10 @@
 
         saveLectureToDB(lecObj).then(() => {
           if (editId) {
-            alert('تم تعديل اسم وتفاصيل الملف بنجاح!');
+            alert('تم تعديل اسم الملف وتفاصيله بنجاح!');
             cancelEditLecture();
           } else {
-            alert('تم رفع وحفظ الملف الضخم في قاعدة البيانات المحلية بنجاح!');
+            alert('تم رفع الملف بنجاح إلى المكتبة!');
             document.getElementById('lecTitle').value = '';
             document.getElementById('lecSubject').value = '';
             document.getElementById('lecDesc').value = '';
@@ -739,7 +737,7 @@
 
       if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        processSave(file); // حفظ الملف الخام (Blob) مباشرة في قاعدة البيانات بدون ضغط وبأحجام غير محدودة
+        processSave(file);
       } else {
         processSave(null);
       }
@@ -768,8 +766,8 @@
       document.getElementById('lecSubject').value = '';
       document.getElementById('lecDesc').value = '';
       document.getElementById('lecFileInput').value = '';
-      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-upload"></i> رفع ملف ضخم، فيديو، أو صورة للمكتبة (بدون حدود للحجم)';
-      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> رفع وحفظ في قاعدة البيانات';
+      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (عدد غير محدود)';
+      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ في المكتبة';
       document.getElementById('lecCancelEditBtn').classList.add('hidden');
     }
 
@@ -790,25 +788,35 @@
         return;
       }
 
-      container.innerHTML = appData.lectures.map(lec => `
-        <div class="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3 shadow-sm">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-[10px] font-extrabold bg-indigo-900 text-white px-3 py-0.5 rounded-lg">${GRADES[lec.grade] || lec.grade}</span>
-              <span class="text-xs font-extrabold text-indigo-950">${lec.subject}: ${lec.title}</span>
+      container.innerHTML = appData.lectures.map(lec => {
+        let fileUrl = '#';
+        if (lec.fileBlob) {
+          fileUrl = URL.createObjectURL(lec.fileBlob);
+        }
+
+        return `
+          <div class="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3 shadow-sm">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[10px] font-extrabold bg-indigo-900 text-white px-3 py-0.5 rounded-lg">${GRADES[lec.grade] || lec.grade}</span>
+                <span class="text-xs font-extrabold text-indigo-950">${lec.subject}: ${lec.title}</span>
+              </div>
+              <p class="text-xs text-slate-600 font-medium">${lec.desc || '(ملف مخزن)'}</p>
             </div>
-            <p class="text-xs text-slate-600 font-medium">${lec.desc || '(ملف مخزن محلياً)'}</p>
+            <div class="flex gap-2">
+              <a href="${fileUrl}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1">
+                <i class="fa-solid fa-folder-open"></i> فتح
+              </a>
+              <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
+                <i class="fa-solid fa-pen ml-1"></i> تعديل الاسم
+              </button>
+              <button type="button" onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
+                <i class="fa-solid fa-trash ml-1"></i> حذف
+              </button>
+            </div>
           </div>
-          <div class="flex gap-2">
-            <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-              <i class="fa-solid fa-pen ml-1"></i> تعديل الاسم
-            </button>
-            <button type="button" onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-              <i class="fa-solid fa-trash ml-1"></i> حذف
-            </button>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function cleanupExpiredHomeworks() {
@@ -834,7 +842,6 @@
       }
     }
 
-    // بدء تشغيل نظام التخزين العملاق IndexedDB فور فتح الصفحة
     initIndexedDB();
   </script>
 </body>
