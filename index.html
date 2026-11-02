@@ -42,7 +42,7 @@
   <!-- Notification Banner -->
   <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-2.5 text-xs sm:text-sm text-center font-medium shadow-inner">
     <i class="fa-solid fa-clock ml-1 text-amber-600"></i>
-    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم.
+    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم[span_1](start_span)[span_1](end_span).
   </div>
 
   <main class="container mx-auto px-4 py-6">
@@ -159,7 +159,7 @@
         <!-- Add Homework -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
           <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-rose-600">
-            <i class="fa-solid fa-circle-plus ml-1"></i> لوحة إضافة الواجب (يحذف 12 ظهراً بتوقيت العراق)
+            <i class="fa-solid fa-circle-plus ml-1"></i> لوحة إضافة الواجب (يحذف 12 ظهراً بتوقيت العراق)[span_2](start_span)[span_2](end_span)
           </h3>
           <form onsubmit="handleAddHomework(event)" class="space-y-3">
             <div>
@@ -268,9 +268,15 @@
     let selectedDayFilter = getCurrentDayName();
 
     function saveDB() {
-      localStorage.setItem('sec_schedules', JSON.stringify(db.schedules));
-      localStorage.setItem('sec_homeworks', JSON.stringify(db.homeworks));
-      localStorage.setItem('sec_lectures', JSON.stringify(db.lectures));
+      try {
+        localStorage.setItem('sec_schedules', JSON.stringify(db.schedules));
+        localStorage.setItem('sec_homeworks', JSON.stringify(db.homeworks));
+        localStorage.setItem('sec_lectures', JSON.stringify(db.lectures));
+        return true;
+      } catch (e) {
+        alert('مساحة التخزين ممتلئة! يرجى اختيار ملف بحجم أصغر.');
+        return false;
+      }
     }
 
     function getCurrentDayName() {
@@ -347,7 +353,7 @@
       }
 
       if (allSubjects.size === 0) {
-        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا الصف في الجدول</option>`;
+        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا الصف في الجدول (يرجى حفظ الجدول أولاً)</option>`;
       } else {
         selectEl.innerHTML = Array.from(allSubjects).map(sub => `<option value="${sub}">${sub}</option>`).join('');
       }
@@ -360,13 +366,14 @@
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
       
+      // جلب جميع الواجبات الخاصة بهذا الصف بغض النظر عن اليوم لتجاوز أي تعارض في الفلترة
       const gradeHws = db.homeworks.filter(h => h.grade === grade);
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
           <div class="py-8 text-center text-slate-400">
             <i class="fa-solid fa-calendar-xmark text-3xl mb-2"></i>
-            <p class="text-sm">لم يتم إضافة جدول حصص لهذا اليوم بعد.</p>
+            <p class="text-sm">لم يتم إضافة جدول حصص لهذا اليوم (${selectedDayFilter}) بعد.</p>
           </div>
         `;
       } else {
@@ -381,6 +388,7 @@
           }
 
           const cleanSubject = subject.trim().toLowerCase();
+          // مطابقة مرنة وسريعة للواجب بحسب اسم المادة ضمن نفس الصف
           const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === cleanSubject);
 
           return `
@@ -404,7 +412,7 @@
                     </div>
                   ` : ''}
                   <div class="text-[10px] text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (${matchHw.dueDate})
+                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (تاريخ التسليم: ${matchHw.dueDate})[span_3](start_span)[span_3](end_span)
                   </div>
                 </div>
               ` : ''}
@@ -466,9 +474,10 @@
         newSlots.push(val);
       }
       db.schedules[grade][day] = newSlots;
-      saveDB();
-      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح!`);
-      updateHwSubjectsDropdown();
+      if (saveDB()) {
+        alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح!`);
+        updateHwSubjectsDropdown();
+      }
     }
 
     function handleAddHomework(e) {
@@ -481,8 +490,8 @@
       const dueDate = document.getElementById('hwDueDate').value;
       const fileInput = document.getElementById('hwFile');
 
-      if (!subject) {
-        alert('يرجى اختيار مادة صالحة من الجدول أولاً.');
+      if (!subject || subject.includes('لا توجد مواد')) {
+        alert('يرجى التأكد من حفظ جدول الحصص لهذا الصف أولاً لكي تظهر المواد.');
         return;
       }
 
@@ -504,10 +513,11 @@
             dueDate,
             fileData: uploadEvent.target.result
           });
-          saveDB();
-          resetHwForm();
-          alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً الساعة 12:00 ظهراً بتوقيت العراق!');
-          renderStudentDashboard();
+          if (saveDB()) {
+            resetHwForm();
+            alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً الساعة 12:00 ظهراً بتوقيت العراق!');
+            renderStudentDashboard();
+          }
         };
         reader.readAsDataURL(file);
       } else {
@@ -520,10 +530,11 @@
           dueDate,
           fileData: null
         });
-        saveDB();
-        resetHwForm();
-        alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً الساعة 12:00 ظهراً بتوقيت العراق!');
-        renderStudentDashboard();
+        if (saveDB()) {
+          resetHwForm();
+          alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً الساعة 12:00 ظهراً بتوقيت العراق!');
+          renderStudentDashboard();
+        }
       }
     }
 
@@ -540,13 +551,13 @@
       const link = document.getElementById('lecLink').value;
 
       db.lectures.push({ id: Date.now(), grade, title, subject, link });
-      saveDB();
-
-      document.getElementById('lecTitle').value = '';
-      document.getElementById('lecSubject').value = '';
-      document.getElementById('lecLink').value = '';
-      alert('تم رفع المحاضرة بنجاح!');
-      renderStudentDashboard();
+      if (saveDB()) {
+        document.getElementById('lecTitle').value = '';
+        document.getElementById('lecSubject').value = '';
+        document.getElementById('lecLink').value = '';
+        alert('تم رفع المحاضرة بنجاح!');
+        renderStudentDashboard();
+      }
     }
 
     function cleanupExpiredHomeworks() {
