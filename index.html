@@ -42,7 +42,7 @@
   <!-- Notification Banner -->
   <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-2.5 text-xs sm:text-sm text-center font-medium shadow-inner">
     <i class="fa-solid fa-clock ml-1 text-amber-600"></i>
-    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم[span_1](start_span)[span_1](end_span).
+    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً (بتوقيت العراق) من يوم التسليم.
   </div>
 
   <main class="container mx-auto px-4 py-6">
@@ -159,7 +159,7 @@
         <!-- Add Homework -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
           <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-rose-600">
-            <i class="fa-solid fa-circle-plus ml-1"></i> لوحة إضافة الواجب (يحذف 12 ظهراً بتوقيت العراق)[span_2](start_span)[span_2](end_span)
+            <i class="fa-solid fa-circle-plus ml-1"></i> لوحة إضافة الواجب (يحذف 12 ظهراً بتوقيت العراق)
           </h3>
           <form onsubmit="handleAddHomework(event)" class="space-y-3">
             <div>
@@ -366,7 +366,6 @@
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
       
-      // جلب جميع الواجبات الخاصة بهذا الصف بغض النظر عن اليوم لتجاوز أي تعارض في الفلترة
       const gradeHws = db.homeworks.filter(h => h.grade === grade);
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
@@ -388,7 +387,6 @@
           }
 
           const cleanSubject = subject.trim().toLowerCase();
-          // مطابقة مرنة وسريعة للواجب بحسب اسم المادة ضمن نفس الصف
           const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === cleanSubject);
 
           return `
@@ -412,7 +410,7 @@
                     </div>
                   ` : ''}
                   <div class="text-[10px] text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (تاريخ التسليم: ${matchHw.dueDate})[span_3](start_span)[span_3](end_span)
+                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (تاريخ التسليم: ${matchHw.dueDate})
                   </div>
                 </div>
               ` : ''}
