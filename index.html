@@ -58,8 +58,6 @@
   <!-- Header -->
   <header class="bg-gradient-to-r from-indigo-950 via-indigo-900 to-violet-950 text-white shadow-xl sticky top-0 z-40 border-b-2 border-indigo-700">
     <div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center flex-col sm:flex-row gap-4">
-      
-      <!-- Logo & Title -->
       <div class="flex items-center space-x-3 space-x-reverse">
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-indigo-950 font-black text-xl shadow-lg border-2 border-white/20">ث</div>
         <div>
@@ -68,7 +66,6 @@
         </div>
       </div>
 
-      <!-- Tab Controls -->
       <div class="flex items-center gap-2 bg-indigo-900/80 p-1.5 rounded-2xl border border-indigo-700/60 shadow-inner">
         <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
           <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
@@ -82,8 +79,8 @@
 
   <!-- Notification Banner -->
   <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200 text-amber-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
-    <i class="fa-solid fa-clock text-amber-600 text-base animate-pulse"></i>
-    <span>تُحذف الواجبات اليومية تلقائياً بعد انتهاء تاريخ التسليم المحدد.</span>
+    <i class="fa-solid fa-database text-amber-600 text-base animate-pulse"></i>
+    <span>يعمل بنظام التخزين الداخلي العملاق (IndexedDB): عدد غير محدود من الملفات والوسائط والأحجام الضخمة بدون إنترنت.</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -92,8 +89,6 @@
     <!-- STUDENT VIEW                               -->
     <!-- ========================================== -->
     <section id="studentView" class="space-y-6">
-      
-      <!-- Student Grade Selection & Info -->
       <div class="bg-white/90 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-100 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <label for="studentGradeSelect" class="font-extrabold text-indigo-950 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
@@ -123,38 +118,35 @@
             </span>
             جدول الحصص والواجبات اليومية الكامل
           </h2>
-          <!-- Day Filter -->
           <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
         </div>
 
         <div id="studentScheduleContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- LIBRARY & LECTURES SECTION (مكتبة الملفات والمقاطع - فتح وعرض بلا حدود) -->
+      <!-- LIBRARY & MEDIA SECTION -->
       <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-100 p-6">
         <div class="flex justify-between items-center mb-5 border-b border-indigo-50 pb-4">
           <h3 class="font-extrabold text-indigo-950 text-base sm:text-lg flex items-center gap-2.5">
             <span class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-base shadow-sm">
-              <i class="fa-solid fa-photo-film"></i>
+              <i class="fa-solid photo-film"></i>
             </span>
-            مكتبة الملفات، الصور، والمقاطع والملخصات (عرض بلا حدود)
+            مكتبة الملفات والمقاطع والملخصات (رفع مباشر وبلا حدود)
           </h3>
           <span id="lecCountBadge" class="bg-indigo-100 text-indigo-900 text-xs font-black px-3.5 py-1.5 rounded-full shadow-inner">0</span>
         </div>
         <div id="studentLecList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
-
     </section>
 
     <!-- ========================================== -->
     <!-- ADMIN VIEW                                 -->
     <!-- ========================================== -->
     <section id="adminView" class="hidden space-y-6">
-
       <div class="bg-gradient-to-r from-indigo-950 via-indigo-900 to-violet-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
           <h2 class="font-extrabold text-lg sm:text-xl">لوحة الإدارة وإدارة المكتبة والواجبات</h2>
-          <p class="text-xs text-indigo-200 mt-1">إضافة، تعديل أسماء، وحذف الملفات والمقاطع والواجبات بكل مرونة</p>
+          <p class="text-xs text-indigo-200 mt-1">رفع وتخزين عدد غير محدود من الملفات الثقيلة محلياً وبدون إنترنت</p>
         </div>
         <button onclick="resetAllData()" class="bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white text-xs font-bold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
           <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
@@ -235,25 +227,20 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر المادة (من جدول الحصص المسجل):</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر المادة:</label>
                 <select id="hwSubjectSelect" required class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl font-extrabold text-indigo-950 focus:outline-none"></select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">تفاصيل الواجب (كتابة - اختياري):</label>
-                <textarea id="hwDesc" placeholder="اكتب المطلوب حله أو الملاحظات..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-24 focus:outline-none shadow-inner"></textarea>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">إرفاق ملف الواجب (صورة أو PDF):</label>
-                <input type="file" id="hwFile" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-2xl cursor-pointer file:ml-2 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-rose-100 file:text-rose-700 hover:file:bg-rose-200">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">تفاصيل الواجب أو ملاحظات:</label>
+                <textarea id="hwDesc" placeholder="اكتب المطلوب حله..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-24 focus:outline-none shadow-inner"></textarea>
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">تاريخ التسليم النهائي:</label>
                 <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
-              
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="hwSubmitBtn" class="flex-grow bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب للمادة
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب
                 </button>
                 <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-400 hover:bg-slate-500 text-white font-bold text-xs px-4 py-3.5 rounded-2xl transition">
                   إلغاء
@@ -263,11 +250,11 @@
           </div>
         </div>
 
-        <!-- Add / Edit Library Item (رفع أو تعديل اسم المحاضرة أو الملف للمكتبة) -->
+        <!-- Add / Edit Library Item (رفع ملفات ضخمة بلا حدود وبشكل مباشر) -->
         <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-slate-800 mb-5 border-b border-indigo-50 pb-3 text-indigo-600 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-photo-film"></i> رفع محاضرة، صورة، مقطع أو ملخص للمكتبة
+              <i class="fa-solid fa-upload"></i> رفع ملف ضخم، فيديو، أو صورة للمكتبة (بدون حدود للحجم)
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
@@ -283,37 +270,24 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان الملف / المحاضرة (قابل للتعديل):</label>
-                <input type="text" id="lecTitle" required placeholder="مثال: شرح بالفيديو أو ملخص الفصل الأول" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان الملف (قابل للتعديل):</label>
+                <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفيديو الكبرى أو كتاب PDF" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">المادة:</label>
                 <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الفيزياء" class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">نوع الملف أو المحتوى:</label>
-                <select id="lecType" onchange="toggleLecInputType()" class="w-full bg-slate-50 border border-slate-200 text-xs font-bold p-3 rounded-2xl focus:outline-none mb-2">
-                  <option value="link">رابط فيديو (YouTube / يوتيوب أو خارجي)</option>
-                  <option value="file">رفع ملف أو صورة (صورة، PDF)</option>
-                  <option value="text">كتابة نص / ملخص مباشر</option>
-                </select>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر الملف من جهازك (فيديو، PDF، صور... مهما كان حجمه):</label>
+                <input type="file" id="lecFileInput" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-2xl cursor-pointer file:ml-2 file:py-1.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200">
               </div>
-
-              <div id="lecInputContainer">
-                <div id="lecLinkGroup">
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط الفيديو أو الرابط الخارجي:</label>
-                  <input type="url" id="lecLinkVal" placeholder="https://..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none">
-                </div>
-              </div>
-
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات أو وصف إضافي (اختياري):</label>
-                <textarea id="lecDesc" placeholder="اكتب وصفاً مختصراً..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-16 focus:outline-none"></textarea>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات إضافية (اختياري):</label>
+                <textarea id="lecDesc" placeholder="وصف موجز للملف..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-16 focus:outline-none"></textarea>
               </div>
-
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="lecSubmitBtn" class="flex-grow bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> إضافة إلى المكتبة
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> رفع وحفظ في قاعدة البيانات
                 </button>
                 <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-400 hover:bg-slate-500 text-white font-bold text-xs px-4 py-3.5 rounded-2xl transition">
                   إلغاء
@@ -325,16 +299,14 @@
 
       </div>
 
-      <!-- LIBRARY MANAGEMENT TABLE (تعديل أسماء وحذف ملفات المكتبة) -->
+      <!-- LIBRARY MANAGEMENT TABLE -->
       <div class="bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-100 mt-6">
         <h3 class="font-extrabold text-slate-800 mb-4 border-b border-indigo-50 pb-3 text-indigo-950 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-folder-open text-indigo-600"></i> إدارة مكتبة الملفات والمقاطع (تعديل الأسماء أو الحذف)
+          <i class="fa-solid fa-folder-open text-indigo-600"></i> إدارة مكتبة الملفات (تعديل الأسماء، التعديل، والحذف)
         </h3>
         <div id="adminLibraryList" class="space-y-3"></div>
       </div>
-
     </section>
-
   </main>
 
   <!-- Footer -->
@@ -353,23 +325,87 @@
       '6h': 'السادس إعدادي'
     };
 
-    let db = {
+    // نظام قاعدة البيانات المحلية العملاقة IndexedDB لتخزين عدد غير محدود وبأحجام ضخمة
+    let db;
+    const dbName = "SchoolPlatformDB_Waleed";
+    const dbVersion = 1;
+
+    let appData = {
       schedules: JSON.parse(localStorage.getItem('sec_schedules')) || {},
       homeworks: JSON.parse(localStorage.getItem('sec_homeworks')) || [],
-      lectures: JSON.parse(localStorage.getItem('sec_lectures')) || []
+      lectures: []
     };
 
     let selectedDayFilter = getCurrentDayName();
 
-    function saveDB() {
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(dbName, dbVersion);
+        request.onerror = (event) => reject(event.target.error);
+        request.onsuccess = (event) => {
+          db = event.target.result;
+          loadLecturesFromDB().then(() => {
+            initData();
+            resolve(db);
+          });
+        };
+        request.onupgradeneeded = (event) => {
+          const dbInstance = event.target.result;
+          if (!dbInstance.objectStoreNames.contains("lecturesStore")) {
+            dbInstance.createObjectStore("lecturesStore", { keyPath: "id" });
+          }
+        };
+      });
+    }
+
+    function loadLecturesFromDB() {
+      return new Promise((resolve) => {
+        if (!db) return resolve([]);
+        const transaction = db.transaction(["lecturesStore"], "readonly");
+        const store = transaction.objectStore("lecturesStore");
+        const request = store.getAll();
+        request.onsuccess = (event) => {
+          appData.lectures = event.target.result || [];
+          renderStudentDashboard();
+          renderAdminLibraryList();
+          resolve(appData.lectures);
+        };
+        request.onerror = () => resolve([]);
+      });
+    }
+
+    function saveLectureToDB(lecObj) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(["lecturesStore"], "readwrite");
+        const store = transaction.objectStore("lecturesStore");
+        const request = store.put(lecObj);
+        request.onsuccess = () => {
+          loadLecturesFromDB();
+          resolve(true);
+        };
+        request.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function deleteLectureFromDB(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(["lecturesStore"], "readwrite");
+        const store = transaction.objectStore("lecturesStore");
+        const request = store.delete(Number(id));
+        request.onsuccess = () => {
+          loadLecturesFromDB();
+          resolve(true);
+        };
+        request.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function saveLocalStorageData() {
       try {
-        localStorage.setItem('sec_schedules', JSON.stringify(db.schedules));
-        localStorage.setItem('sec_homeworks', JSON.stringify(db.homeworks));
-        localStorage.setItem('sec_lectures', JSON.stringify(db.lectures));
-        return true;
+        localStorage.setItem('sec_schedules', JSON.stringify(appData.schedules));
+        localStorage.setItem('sec_homeworks', JSON.stringify(appData.homeworks));
       } catch (e) {
-        alert('مساحة التخزين ممتلئة! يرجى اختيار ملف بحجم أصغر.');
-        return false;
+        alert('مساحة التخزين النصية ممتلئة.');
       }
     }
 
@@ -405,7 +441,6 @@
     function initData() {
       document.getElementById('currentDayName').innerText = getCurrentDayName();
       document.getElementById('hwDueDate').valueAsDate = new Date();
-
       cleanupExpiredHomeworks();
 
       const filterTabsContainer = document.getElementById('dayFilterTabs');
@@ -429,8 +464,8 @@
       const selectEl = document.getElementById('hwSubjectSelect');
       
       let daySubjects = [];
-      if (db.schedules[grade] && db.schedules[grade][day]) {
-        db.schedules[grade][day].forEach(s => {
+      if (appData.schedules[grade] && appData.schedules[grade][day]) {
+        appData.schedules[grade][day].forEach(s => {
           if (s && s.trim()) daySubjects.push(s.trim());
         });
       }
@@ -442,36 +477,13 @@
       }
     }
 
-    function toggleLecInputType() {
-      const type = document.getElementById('lecType').value;
-      const container = document.getElementById('lecInputContainer');
-
-      if (type === 'link') {
-        container.innerHTML = `
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط الفيديو (يوتيوب أو رابط خارجي):</label>
-          <input type="url" id="lecLinkVal" placeholder="https://..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl focus:outline-none" required>
-        `;
-      } else if (type === 'file') {
-        container.innerHTML = `
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر الملف أو الصورة (صورة، PDF):</label>
-          <input type="file" id="lecFileVal" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-2xl cursor-pointer" required>
-        `;
-      } else {
-        container.innerHTML = `
-          <label class="block text-xs font-bold text-slate-700 mb-1.5">نص الملخص / المحاضرة:</label>
-          <textarea id="lecTextVal" placeholder="اكتب المحتوى أو الملخص هنا..." class="w-full bg-slate-50 border border-slate-200 text-xs p-3 rounded-2xl h-24 focus:outline-none" required></textarea>
-        `;
-      }
-    }
-
     function renderStudentDashboard() {
       cleanupExpiredHomeworks();
       const grade = document.getElementById('studentGradeSelect').value;
 
       const scheduleContainer = document.getElementById('studentScheduleContainer');
-      const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
-      
-      const gradeHws = db.homeworks.filter(h => h.grade === grade && h.day === selectedDayFilter);
+      const daySchedule = (appData.schedules[grade] && appData.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
+      const gradeHws = appData.homeworks.filter(h => h.grade === grade && h.day === selectedDayFilter);
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
@@ -506,14 +518,7 @@
 
               ${matchHw ? `
                 <div class="mt-2 p-3.5 bg-white rounded-2xl border border-rose-100 shadow-sm space-y-2.5">
-                  <p class="text-xs text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-0.5">الواجب المطلوب:</strong> ${matchHw.desc || '(ملف مرفق)'}</p>
-                  ${matchHw.fileData ? `
-                    <div>
-                      <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white text-[11px] font-extrabold px-3.5 py-2 rounded-xl transition shadow-md">
-                        <i class="fa-solid fa-file-arrow-down text-xs"></i> تحميل ملف الواجب
-                      </a>
-                    </div>
-                  ` : ''}
+                  <p class="text-xs text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-0.5">الواجب المطلوب:</strong> ${matchHw.desc || ''}</p>
                   <div class="text-[10px] text-slate-400 font-medium flex items-center justify-between pt-1 border-t border-slate-100">
                     <span><i class="fa-solid fa-clock text-rose-500"></i> ${matchHw.dueDate}</span>
                     <div class="flex gap-1.5">
@@ -532,44 +537,34 @@
         }).join('');
       }
 
-      // LIBRARY & MEDIA RENDER (عرض المكتبة - فتح وغلق وعرض بلا حدود آلاف المرات)
+      // LIBRARY RENDER
       const lecContainer = document.getElementById('studentLecList');
-      const filteredLecs = db.lectures.filter(l => l.grade === grade);
+      const filteredLecs = appData.lectures.filter(l => l.grade === grade);
       document.getElementById('lecCountBadge').innerText = filteredLecs.length;
 
       if (filteredLecs.length === 0) {
-        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-full font-medium">لا توجد ملفات أو مقاطع مرفوعة في المكتبة حالياً.</p>`;
+        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-full font-medium">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
       } else {
         lecContainer.innerHTML = filteredLecs.map(lec => {
-          let badgeIcon = 'fa-file-lines';
-          let badgeColor = 'bg-amber-100 text-amber-800';
-          if (lec.type === 'link') { badgeIcon = 'fa-video'; badgeColor = 'bg-rose-100 text-rose-800'; }
-          else if (lec.type === 'file') { badgeIcon = 'fa-image'; badgeColor = 'bg-emerald-100 text-emerald-800'; }
+          let fileUrl = '#';
+          if (lec.fileBlob) {
+            fileUrl = URL.createObjectURL(lec.fileBlob);
+          }
 
           return `
             <div class="p-4 bg-white rounded-3xl border border-indigo-100 flex flex-col justify-between shadow-sm hover:shadow-md transition space-y-3">
               <div>
                 <div class="flex justify-between items-center mb-2">
-                  <span class="text-[10px] font-extrabold ${badgeColor} px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid ${badgeIcon}"></i> ${lec.subject}</span>
+                  <span class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-xl flex items-center gap-1"><i class="fa-solid fa-file-arrow-down"></i> ${lec.subject}</span>
                 </div>
                 <h4 class="text-sm font-black text-indigo-950 mb-1">${lec.title}</h4>
                 ${lec.desc ? `<p class="text-xs text-slate-600 font-medium mb-2">${lec.desc}</p>` : ''}
               </div>
 
               <div>
-                ${lec.type === 'link' ? `
-                  <a href="${lec.content}" target="_blank" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-play"></i> مشاهدة الفيديو (بدون حدود)
-                  </a>
-                ` : lec.type === 'file' ? `
-                  <a href="${lec.content}" target="_blank" download="${lec.title}" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-cloud-arrow-down"></i> فتح أو تحميل الملف / الصورة
-                  </a>
-                ` : `
-                  <button onclick="alert('${lec.content.replace(/'/g, "\\'")}')" class="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-note-sticky"></i> قراءة الملخص
-                  </button>
-                `}
+                <a href="${fileUrl}" target="_blank" download="${lec.title}" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition shadow-sm inline-flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-cloud-arrow-down"></i> فتح أو تحميل الملف (بلا حدود)
+                </a>
               </div>
             </div>
           `;
@@ -582,7 +577,7 @@
       const tbody = document.getElementById('adminScheduleTbody');
       
       tbody.innerHTML = DAYS.map(day => {
-        const row = (db.schedules[grade] && db.schedules[grade][day]) || ['', '', '', '', '', ''];
+        const row = (appData.schedules[grade] && appData.schedules[grade][day]) || ['', '', '', '', '', ''];
         return `
           <tr class="bg-white hover:bg-indigo-50/40 transition">
             <td class="p-3.5 font-extrabold text-indigo-950 border border-indigo-100">${day}</td>
@@ -602,18 +597,16 @@
     }
 
     function saveAdminRow(grade, day) {
-      if (!db.schedules[grade]) db.schedules[grade] = {};
-      
+      if (!appData.schedules[grade]) appData.schedules[grade] = {};
       const newSlots = [];
       for (let i = 0; i < 6; i++) {
         let val = document.getElementById(`slot_${day}_${i}`).value.trim();
         newSlots.push(val);
       }
-      db.schedules[grade][day] = newSlots;
-      if (saveDB()) {
-        alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح!`);
-        updateHwSubjectsDropdown();
-      }
+      appData.schedules[grade][day] = newSlots;
+      saveLocalStorageData();
+      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]} بنجاح!`);
+      updateHwSubjectsDropdown();
     }
 
     function handleSaveHomework(e) {
@@ -625,72 +618,43 @@
       const day = document.getElementById('hwDay').value;
       const desc = document.getElementById('hwDesc').value;
       const dueDate = document.getElementById('hwDueDate').value;
-      const fileInput = document.getElementById('hwFile');
 
       if (!subject || subject.includes('لا توجد مواد')) {
         alert('يرجى التأكد من حفظ جدول الحصص لهذا اليوم لكي تظهر المواد.');
         return;
       }
 
-      if (!desc.trim() && !fileInput.files.length && !editIdInput) {
-        alert('يرجى إدخال تفاصيل كتابية أو اختيار ملف للواجب على الأقل.');
-        return;
-      }
-
-      const processSave = (fileData) => {
-        if (editIdInput) {
-          const hwIndex = db.homeworks.findIndex(h => String(h.id) === String(editIdInput));
-          if (hwIndex !== -1) {
-            db.homeworks[hwIndex].grade = grade;
-            db.homeworks[hwIndex].subject = subject;
-            db.homeworks[hwIndex].day = day;
-            db.homeworks[hwIndex].desc = desc;
-            db.homeworks[hwIndex].dueDate = dueDate;
-            if (fileData) {
-              db.homeworks[hwIndex].fileData = fileData;
-            }
-          }
-          alert('تم تعديل الواجب بنجاح!');
-          cancelEditHomework();
-        } else {
-          db.homeworks.push({
-            id: Date.now(),
-            grade,
-            subject,
-            day,
-            desc,
-            dueDate,
-            fileData: fileData || null
-          });
-          alert('تم نشر الواجب بنجاح ويمكن للطلاب رؤيته فوراً!');
-          resetHwForm();
+      if (editIdInput) {
+        const hwIndex = appData.homeworks.findIndex(h => String(h.id) === String(editIdInput));
+        if (hwIndex !== -1) {
+          appData.homeworks[hwIndex].grade = grade;
+          appData.homeworks[hwIndex].subject = subject;
+          appData.homeworks[hwIndex].day = day;
+          appData.homeworks[hwIndex].desc = desc;
+          appData.homeworks[hwIndex].dueDate = dueDate;
         }
-        
-        saveDB();
-        renderStudentDashboard();
-      };
-
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function(uploadEvent) {
-          processSave(uploadEvent.target.result);
-        };
-        reader.readAsDataURL(file);
+        alert('تم تعديل الواجب بنجاح!');
+        cancelEditHomework();
       } else {
-        let existingFile = null;
-        if (editIdInput) {
-          const hw = db.homeworks.find(h => String(h.id) === String(editIdInput));
-          if (hw) existingFile = hw.fileData;
-        }
-        processSave(existingFile);
+        appData.homeworks.push({
+          id: Date.now(),
+          grade,
+          subject,
+          day,
+          desc,
+          dueDate
+        });
+        alert('تم نشر الواجب بنجاح!');
+        resetHwForm();
       }
+      
+      saveLocalStorageData();
+      renderStudentDashboard();
     }
 
     function resetHwForm() {
       document.getElementById('editHwId').value = '';
       document.getElementById('hwDesc').value = '';
-      document.getElementById('hwFile').value = '';
       document.getElementById('hwFormTitle').innerHTML = '<i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة';
       document.getElementById('hwSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب للمادة';
       document.getElementById('hwCancelEditBtn').classList.add('hidden');
@@ -702,7 +666,7 @@
 
     function editHomeworkFromDashboard(id) {
       switchTab('admin');
-      const hw = db.homeworks.find(h => String(h.id) === String(id));
+      const hw = appData.homeworks.find(h => String(h.id) === String(id));
       if (!hw) return;
 
       document.getElementById('editHwId').value = hw.id;
@@ -721,99 +685,77 @@
     }
 
     function deleteHomeworkFromDashboard(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الواجب؟ سيتم إزالته فوراً وإتاحة المكان لإضافة واجب جديد.')) {
-        db.homeworks = db.homeworks.filter(h => String(h.id) !== String(id));
-        saveDB();
+      if (confirm('هل أنت متأكد من حذف هذا الواجب؟')) {
+        appData.homeworks = appData.homeworks.filter(h => String(h.id) !== String(id));
+        saveLocalStorageData();
         renderStudentDashboard();
         alert('تم حذف الواجب بنجاح.');
       }
     }
 
-    // إدارة مكتبة الملفات والمقاطع (إضافة، تعديل الاسم، وحذف)
+    // إدارة مكتبة الملفات الضخمة وتخزينها في IndexedDB
     function handleAddOrUpdateLecture(e) {
       e.preventDefault();
       const editId = document.getElementById('editLecId').value;
       const grade = document.getElementById('lecTargetGrade').value;
       const title = document.getElementById('lecTitle').value;
       const subject = document.getElementById('lecSubject').value;
-      const type = document.getElementById('lecType').value;
       const desc = document.getElementById('lecDesc').value;
+      const fileInput = document.getElementById('lecFileInput');
 
-      const processSave = (content) => {
-        if (editId) {
-          const lec = db.lectures.find(l => String(l.id) === String(editId));
-          if (lec) {
-            lec.grade = grade;
-            lec.title = title;
-            lec.subject = subject;
-            lec.type = type;
-            lec.desc = desc;
-            if (content) lec.content = content;
-          }
-          alert('تم تعديل اسم وتفاصيل الملف في المكتبة بنجاح!');
-          cancelEditLecture();
-        } else {
-          db.lectures.push({ id: Date.now(), grade, title, subject, type, content, desc });
-          alert('تمت إضافة الملف أو المقطع إلى المكتبة بنجاح!');
-          document.getElementById('lecTitle').value = '';
-          document.getElementById('lecSubject').value = '';
-          document.getElementById('lecDesc').value = '';
-          toggleLecInputType();
+      const processSave = (blobData) => {
+        const recordId = editId ? Number(editId) : Date.now();
+        
+        // إذا كان تعديل ولم يتم اختيار ملف جديد، نحتفظ بالملف القديم
+        if (editId && !blobData) {
+          const existing = appData.lectures.find(l => Number(l.id) === Number(editId));
+          blobData = existing ? existing.fileBlob : null;
         }
-        saveDB();
-        renderAdminLibraryList();
-        renderStudentDashboard();
+
+        const lecObj = {
+          id: recordId,
+          grade,
+          title,
+          subject,
+          desc,
+          fileBlob: blobData
+        };
+
+        saveLectureToDB(lecObj).then(() => {
+          if (editId) {
+            alert('تم تعديل اسم وتفاصيل الملف بنجاح!');
+            cancelEditLecture();
+          } else {
+            alert('تم رفع وحفظ الملف الضخم في قاعدة البيانات المحلية بنجاح!');
+            document.getElementById('lecTitle').value = '';
+            document.getElementById('lecSubject').value = '';
+            document.getElementById('lecDesc').value = '';
+            document.getElementById('lecFileInput').value = '';
+          }
+          renderAdminLibraryList();
+          renderStudentDashboard();
+        });
       };
 
-      if (type === 'file') {
-        const fileInput = document.getElementById('lecFileVal');
-        if (fileInput && fileInput.files.length > 0) {
-          const file = fileInput.files[0];
-          const reader = new FileReader();
-          reader.onload = function(uploadEvent) {
-            processSave(uploadEvent.target.result);
-          };
-          reader.readAsDataURL(file);
-          return;
-        }
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        processSave(file); // حفظ الملف الخام (Blob) مباشرة في قاعدة البيانات بدون ضغط وبأحجام غير محدودة
+      } else {
+        processSave(null);
       }
-
-      let content = '';
-      if (type === 'link') {
-        const linkEl = document.getElementById('lecLinkVal');
-        content = linkEl ? linkEl.value : '';
-      } else if (type === 'text') {
-        const textEl = document.getElementById('lecTextVal');
-        content = textEl ? textEl.value : '';
-      } else if (editId) {
-        const existing = db.lectures.find(l => String(l.id) === String(editId));
-        content = existing ? existing.content : '';
-      }
-
-      processSave(content);
     }
 
     function editLibraryItem(id) {
-      const lec = db.lectures.find(l => String(l.id) === String(id));
+      const lec = appData.lectures.find(l => Number(l.id) === Number(id));
       if (!lec) return;
 
       document.getElementById('editLecId').value = lec.id;
       document.getElementById('lecTargetGrade').value = lec.grade;
       document.getElementById('lecTitle').value = lec.title;
       document.getElementById('lecSubject').value = lec.subject;
-      document.getElementById('lecType').value = lec.type;
       document.getElementById('lecDesc').value = lec.desc || '';
-      toggleLecInputType();
 
-      if (lec.type === 'link') {
-        const linkEl = document.getElementById('lecLinkVal');
-        if (linkEl) linkEl.value = lec.content;
-      } else if (lec.type === 'text') {
-        const textEl = document.getElementById('lecTextVal');
-        if (textEl) textEl.value = lec.content;
-      }
-
-      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل اسم أو تفاصيل الملف';
+      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل اسم الملف';
       document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-check text-sm"></i> حفظ التعديلات';
       document.getElementById('lecCancelEditBtn').classList.remove('hidden');
 
@@ -825,37 +767,37 @@
       document.getElementById('lecTitle').value = '';
       document.getElementById('lecSubject').value = '';
       document.getElementById('lecDesc').value = '';
-      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-photo-film"></i> رفع محاضرة، صورة، مقطع أو ملخص للمكتبة';
-      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> إضافة إلى المكتبة';
+      document.getElementById('lecFileInput').value = '';
+      document.getElementById('lecFormTitle').innerHTML = '<i class="fa-solid fa-upload"></i> رفع ملف ضخم، فيديو، أو صورة للمكتبة (بدون حدود للحجم)';
+      document.getElementById('lecSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-sm"></i> رفع وحفظ في قاعدة البيانات';
       document.getElementById('lecCancelEditBtn').classList.add('hidden');
-      toggleLecInputType();
     }
 
     function deleteLibraryItem(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الملف أو المقطع من المكتبة؟')) {
-        db.lectures = db.lectures.filter(l => String(l.id) !== String(id));
-        saveDB();
-        renderAdminLibraryList();
-        renderStudentDashboard();
-        alert('تم الحذف بنجاح.');
+      if (confirm('هل أنت متأكد من حذف هذا الملف من المكتبة؟')) {
+        deleteLectureFromDB(id).then(() => {
+          renderAdminLibraryList();
+          renderStudentDashboard();
+          alert('تم الحذف بنجاح.');
+        });
       }
     }
 
     function renderAdminLibraryList() {
       const container = document.getElementById('adminLibraryList');
-      if (db.lectures.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا توجد ملفات أو مقاطع مرفوعة في المكتبة حالياً.</p>`;
+      if (appData.lectures.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
         return;
       }
 
-      container.innerHTML = db.lectures.map(lec => `
+      container.innerHTML = appData.lectures.map(lec => `
         <div class="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3 shadow-sm">
           <div>
             <div class="flex items-center gap-2 mb-1">
               <span class="text-[10px] font-extrabold bg-indigo-900 text-white px-3 py-0.5 rounded-lg">${GRADES[lec.grade] || lec.grade}</span>
               <span class="text-xs font-extrabold text-indigo-950">${lec.subject}: ${lec.title}</span>
             </div>
-            <p class="text-xs text-slate-600 font-medium">${lec.desc ? lec.desc : '(محتوى الوسائط أو الملف مرفق)'}</p>
+            <p class="text-xs text-slate-600 font-medium">${lec.desc || '(ملف مخزن محلياً)'}</p>
           </div>
           <div class="flex gap-2">
             <button type="button" onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
@@ -871,24 +813,29 @@
 
     function cleanupExpiredHomeworks() {
       const todayStr = new Date().toISOString().split('T')[0];
-      db.homeworks = db.homeworks.filter(hw => {
+      appData.homeworks = appData.homeworks.filter(hw => {
         if (!hw.dueDate) return true;
         return hw.dueDate >= todayStr;
       });
-      saveDB();
+      saveLocalStorageData();
     }
 
     function resetAllData() {
-      if (confirm('هل أنت متأكد من مسح كافة الجداول والبيانات من النظام؟')) {
+      if (confirm('هل أنت متأكد من مسح كافة الجداول والبيانات؟')) {
         localStorage.clear();
-        db = { schedules: {}, homeworks: [], lectures: [] };
+        if (db) {
+          const transaction = db.transaction(["lecturesStore"], "readwrite");
+          transaction.objectStore("lecturesStore").clear();
+        }
+        appData = { schedules: {}, homeworks: [], lectures: [] };
         initData();
         renderAdminScheduleTable();
+        renderAdminLibraryList();
       }
     }
 
-    initData();
-    toggleLecInputType();
+    // بدء تشغيل نظام التخزين العملاق IndexedDB فور فتح الصفحة
+    initIndexedDB();
   </script>
 </body>
 </html>
