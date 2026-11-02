@@ -1,316 +1,511 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة التعليمية الشاملة - الكود النهائي</title>
-    <!-- Tailwind CSS للتصميم الحديث -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome للأيقونات -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة الثانوية - التحضير اليومي والواجبات</title>
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans h-screen flex overflow-hidden">
+<body class="bg-slate-100 text-slate-800 min-h-screen">
 
-    <!-- خلفية شفافة عند فتح القائمة في الموبايل -->
-    <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden"></div>
-
-    <!-- القائمة الرئيسية (الأساس) على اليمين -->
-    <aside id="main-sidebar" class="fixed md:static inset-y-0 right-0 w-80 bg-slate-900 text-white flex flex-col justify-between border-l border-slate-800 shadow-xl z-30 transform translate-x-full md:translate-x-0 transition-transform duration-300">
+  <!-- Header -->
+  <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-items flex-col sm:flex-row gap-3">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <i class="fa-solid fa-graduation-cap text-3xl text-amber-400"></i>
         <div>
-            <!-- شعار المنصة -->
-            <div class="p-4 border-b border-slate-800 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="bg-indigo-600 p-2 rounded-xl text-white font-bold">
-                        <i class="fa-solid fa-graduation-cap text-lg"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-base">منصة التعليم الرقمي</h1>
-                        <span class="text-[11px] text-slate-400">لوحة التحكم والأقسام</span>
-                    </div>
-                </div>
-                <!-- زر إغلاق القائمة في الموبايل -->
-                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white p-2">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
+          <h1 class="text-xl font-bold">منصة الثانوية الإلكترونية</h1>
+          <p class="text-xs text-indigo-200">متابعة التحضير والواجبات والمحاضرات (المنهج الثانوي)</p>
+        </div>
+      </div>
+      <!-- Tab Controls -->
+      <div class="flex items-center gap-2 bg-indigo-950 p-1 rounded-lg self-center">
+        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow">
+          <i class="fa-solid fa-user-graduate ml-1"></i> واجهة الطالب
+        </button>
+        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white">
+          <i class="fa-solid fa-[#1e1b4b] fa-user-tie ml-1"></i> لوحة الإدارة والمعلمين
+        </button>
+      </div>
+    </div>
+  </header>
 
-            <!-- روابط الأقسام الرئيسية -->
-            <nav class="p-3 space-y-2 overflow-y-auto max-h-[calc(100vh-140px)]">
-                
-                <!-- قسم الإدارة والتبليغات -->
-                <div class="space-y-1">
-                    <div class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider mb-1">قسم الإدارة</div>
-                    <button onclick="switchSection('admin-notices')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white text-sm transition">
-                        <i class="fa-solid fa-bullhorn text-indigo-400 w-5"></i> التبليغات (الإدارة والمعاونون)
-                    </button>
-                    <button onclick="switchSection('admin-archive')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white text-sm transition">
-                        <i class="fa-solid fa-box-archive text-amber-400 w-5"></i> قسم الأرشفة والملفات
-                    </button>
-                    <button onclick="switchSection('admin-chat')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white text-sm transition">
-                        <i class="fa-solid fa-comments text-emerald-400 w-5"></i> تواصل الأساتذة والإدارة
-                    </button>
-                </div>
+  <!-- Notification Banner for Auto-delete -->
+  <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-3 text-xs sm:text-sm text-center font-medium shadow-inner">
+    <i class="fa-solid fa-clock-history ml-1 text-amber-600"></i>
+    ملاحظة: تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً من كل يوم.
+  </div>
 
-                <hr class="border-slate-800 my-2">
+  <main class="container mx-auto px-4 py-6">
 
-                <!-- قسم الأساتذة والغرف الصفية -->
-                <div class="space-y-1">
-                    <div class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider mb-1">قسم الأساتذة والغرف</div>
-                    <div class="bg-slate-800/50 rounded-lg p-2 space-y-1">
-                        <div class="text-xs font-bold text-indigo-300 px-2 flex justify-between items-center">
-                            <span>أ. أحمد (قسم الرياضيات)</span>
-                            <span class="text-[10px] bg-indigo-900 text-indigo-200 px-1 py-0.5 rounded">غرفة خاصة</span>
-                        </div>
-                        <!-- الصفوف من الأول إلى السادس -->
-                        <div class="grid grid-cols-2 gap-1 pt-1">
-                            <button onclick="openClassRoom('الصف الأول', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الأول</button>
-                            <button onclick="openClassRoom('الصف الثاني', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الثاني</button>
-                            <button onclick="openClassRoom('الصف الثالث', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الثالث</button>
-                            <button onclick="openClassRoom('الصف الرابع', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الرابع</button>
-                            <button onclick="openClassRoom('الصف الخامس', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف الخامس</button>
-                            <button onclick="openClassRoom('الصف السادس', 'رياضيات')" class="text-xs text-right px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">الصف السادس</button>
-                        </div>
-                    </div>
-                </div>
-
-            </nav>
+    <!-- ========================================== -->
+    <!-- STUDENT VIEW                               -->
+    <!-- ========================================== -->
+    <section id="studentView" class="space-y-6">
+      
+      <!-- Student Controls -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <label for="studentGradeSelect" class="font-bold text-slate-700 whitespace-nowrap">اختر الصف الدراسي:</label>
+          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-slate-50 border border-slate-300 text-indigo-900 text-sm font-bold rounded-lg p-2.5 focus:ring-amber-500 focus:border-amber-500">
+            <option value="1m">الأول متوسط</option>
+            <option value="2m">الثاني متوسط</option>
+            <option value="3m">الثالث متوسط</option>
+            <option value="4h">الرابع إعدادي</option>
+            <option value="5h">الخامس إعدادي</option>
+            <option value="6h">السادس إعدادي</option>
+          </select>
         </div>
 
-        <!-- أسفل القائمة -->
-        <div class="p-3 border-t border-slate-800 flex items-center justify-between text-sm">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center font-bold text-xs">م</div>
-                <div>
-                    <h4 class="text-xs font-semibold">مدير المنصة</h4>
-                    <span class="text-[10px] text-emerald-400">متصل الآن</span>
-                </div>
-            </div>
-            <button class="text-slate-400 hover:text-red-400 transition"><i class="fa-solid fa-power-off"></i></button>
+        <div class="flex items-center gap-2">
+          <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200">
+            <i class="fa-solid fa-calendar-day ml-1 text-indigo-600"></i>اليوم الحالي: <strong id="currentDayName" class="text-indigo-900"></strong>
+          </span>
         </div>
-    </aside>
+      </div>
 
-    <!-- المحتوى الرئيسي (على اليسار) -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-white w-full">
+      <!-- Schedule / Preparation for Today -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+          <h2 class="text-lg font-bold text-indigo-950 flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-amber-500"></i>
+            جدول التحضير اليومي
+          </h2>
+          <!-- Day filter -->
+          <div class="flex gap-1 overflow-x-auto text-xs" id="dayFilterTabs">
+            <!-- Populated JS -->
+          </div>
+        </div>
+
+        <div id="studentScheduleContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Active Homeworks & Lectures -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        <!-- الهيدر العلوي -->
-        <header class="h-16 border-b border-gray-200 px-4 md:px-6 flex items-center justify-between bg-gray-50 shrink-0">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar()" class="md:hidden text-gray-700 hover:text-indigo-600 p-2 text-xl">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <h2 id="current-title" class="text-sm md:text-lg font-bold text-gray-800 truncate">التبليغات الرسمية للإدارة</h2>
-            </div>
-            <span class="bg-indigo-100 text-indigo-700 text-[11px] md:text-xs px-2.5 py-1 rounded-full font-medium" id="current-role">الإدارة والمعاونون</span>
-        </header>
-
-        <!-- منطقة عرض المحتوى -->
-        <div id="content-viewport" class="flex-1 overflow-y-auto p-3 md:p-6 flex flex-col">
-            
-            <!-- 1. شاشة التبليغات (للإدارة والمعاونين حصرياً) -->
-            <div id="section-admin-notices" class="space-y-4">
-                <div class="bg-amber-50 border border-amber-200 text-amber-800 p-3 md:p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                    <div>
-                        <h4 class="font-bold text-sm md:text-base">لوحة الإعلانات الرسمية</h4>
-                        <p class="text-xs md:text-sm">هذا القسم خاص بنشر التبليغات من قبل الإدارة والمعاونين فقط لتظهر كإعلان عام.</p>
-                    </div>
-                    <button class="bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm hover:bg-amber-700 transition whitespace-nowrap">إعلان جديد</button>
-                </div>
-                <div class="space-y-3">
-                    <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-xs md:text-sm text-indigo-600">تبليغ إداري هام</span>
-                            <span class="text-[11px] text-gray-400">منذ ساعة</span>
-                        </div>
-                        <p class="text-xs md:text-sm text-gray-700">تعلن إدارة المدرسة عن بدء العطلة الربيعية ابتداءً من يوم الأسبوع المقبل.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. الغرفة الصفية (محتوى الغرفة والأقسام الأربعة) -->
-            <div id="section-classroom" class="hidden flex-1 flex flex-col h-full">
-                <!-- التبويبات الفرعية للغرفة -->
-                <div class="flex border-b border-gray-200 mb-3 gap-1 overflow-x-auto shrink-0 pb-1">
-                    <button onclick="switchTab('chat')" id="tab-btn-chat" class="px-3 py-2 border-b-2 border-indigo-600 text-indigo-600 font-bold text-xs md:text-sm whitespace-nowrap">قسم التواصل</button>
-                    <button onclick="switchTab('lectures')" id="tab-btn-lectures" class="px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap">قسم المحاضرات</button>
-                    <button onclick="switchTab('qa')" id="tab-btn-qa" class="px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap">الأسئلة والأجوبة</button>
-                    <button onclick="switchTab('students')" id="tab-btn-students" class="px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap">قسم الطلبة</button>
-                </div>
-
-                <!-- محترم تبويب التواصل (شبيه واتساب مع خيارات تعديل وحذف وصورة وبصمة) -->
-                <div id="tab-content-chat" class="flex-1 flex flex-col border border-gray-200 rounded-xl bg-slate-50 overflow-hidden min-h-[300px]">
-                    <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3">
-                        <!-- رسالة طالب -->
-                        <div class="flex items-start gap-2">
-                            <div class="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center text-[10px] font-bold shrink-0">ط</div>
-                            <div class="bg-white p-2.5 rounded-2xl shadow-sm max-w-[80%] border border-gray-100 relative group">
-                                <span class="text-[11px] font-bold text-indigo-600 block mb-0.5">محمد علي (طالب)</span>
-                                <p class="text-xs md:text-sm text-gray-800">أستاذ، متى موعد الامتحان التجريبي؟</p>
-                                <span class="text-[9px] text-gray-400 block text-left mt-1">10:30 صباحاً</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- شريط إرسال الرسائل -->
-                    <div class="p-2.5 bg-white border-t border-gray-200 flex items-center gap-1.5 shrink-0">
-                        <label class="cursor-pointer text-gray-500 hover:text-indigo-600 p-1.5" title="إرسال صورة">
-                            <i class="fa-solid fa-image text-base"></i>
-                            <input type="file" accept="image/*" class="hidden">
-                        </label>
-                        <button onclick="recordVoice()" class="text-gray-500 hover:text-red-500 p-1.5" title="إرسال بصمة صوتية">
-                            <i class="fa-solid fa-microphone text-base"></i>
-                        </button>
-                        <input type="text" id="message-input" placeholder="اكتب رسالة (واتساب)..." class="flex-1 bg-gray-100 border border-gray-200 rounded-full px-3 py-1.5 text-xs md:text-sm focus:outline-none focus:border-indigo-500">
-                        <button onclick="sendMessage()" class="bg-indigo-600 text-white px-3.5 py-1.5 rounded-full text-xs md:text-sm hover:bg-indigo-700 transition">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- قسم المحاضرات -->
-                <div id="tab-content-lectures" class="hidden flex-1 p-3 bg-white border border-gray-200 rounded-xl overflow-y-auto">
-                    <h3 class="font-bold text-xs md:text-sm text-gray-700 mb-3">محاضرات المادة الدراسية</h3>
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-file-pdf text-red-500 text-xl"></i>
-                                <div>
-                                    <h4 class="text-xs md:text-sm font-bold text-gray-800">محاضرة الدرس الأول</h4>
-                                    <span class="text-[10px] text-gray-400">PDF • 1.8 MB</span>
-                                </div>
-                            </div>
-                            <button class="text-indigo-600 hover:underline text-xs font-medium">تحميل</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- قسم الأسئلة والأجوبة -->
-                <div id="tab-content-qa" class="hidden flex-1 p-3 bg-white border border-gray-200 rounded-xl overflow-y-auto">
-                    <h3 class="font-bold text-xs md:text-sm text-gray-700 mb-3">الأسئلة والأجوبة الخاصة بالمنهج</h3>
-                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-1">
-                        <p class="text-xs font-bold text-gray-800">س: هل التمرين الثاني مطلوب؟</p>
-                        <p class="text-xs text-gray-600">ج: نعم، مطلوب مع الواجب البيتي.</p>
-                    </div>
-                </div>
-
-                <!-- قسم الطلبة (حسب الصف المختار) -->
-                <div id="tab-content-students" class="hidden flex-1 p-3 bg-white border border-gray-200 rounded-xl overflow-y-auto">
-                    <h3 class="font-bold text-xs md:text-sm text-gray-700 mb-3">قائمة الطلبة المسجلين في هذا الصف</h3>
-                    <ul class="divide-y divide-gray-100 text-xs md:text-sm">
-                        <li class="py-2 flex justify-between items-center">
-                            <span>محمد علي حسن</span>
-                            <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">تم التسجيل</span>
-                        </li>
-                        <li class="py-2 flex justify-between items-center">
-                            <span>زينب أحمد جاسم</span>
-                            <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">تم التسجيل</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 3. قسم الأرشفة والملفات -->
-            <div id="section-admin-archive" class="hidden space-y-4">
-                <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm">
-                    <h3 class="font-bold text-xs md:text-sm text-gray-800 mb-2">قسم الأرشفة والملفات الإدارية</h3>
-                    <p class="text-xs md:text-sm text-gray-600">أرشيف شامل لجميع الملفات والوثائق الخاصة بالمنصة والمدرسين.</p>
-                </div>
-            </div>
-
-            <!-- 4. قسم التواصل بين المدرسين والإدارة -->
-            <div id="section-admin-chat" class="hidden flex-1 flex flex-col h-full bg-white border border-gray-200 rounded-xl p-3">
-                <h3 class="font-bold text-xs md:text-sm text-gray-800 mb-2">غرفة تواصل الأساتذة والإدارة</h3>
-                <div class="flex-1 border rounded-lg bg-slate-50 p-3 overflow-y-auto mb-2 flex flex-col space-y-2">
-                    <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl max-w-[80%]">
-                        <span class="text-[11px] font-bold text-indigo-700 block">الإدارة المدرسية</span>
-                        <p class="text-xs text-gray-800">يرجى تسليم السجلات الخاصة بالدرجات في موعد أقصاه يوم الخميس.</p>
-                    </div>
-                </div>
-                <div class="flex gap-2">
-                    <input type="text" placeholder="اكتب رسالتك للإدارة..." class="flex-1 border rounded-lg px-3 py-1.5 text-xs md:text-sm">
-                    <button class="bg-indigo-600 text-white px-3.5 py-1.5 rounded-lg text-xs md:text-sm">إرسال</button>
-                </div>
-            </div>
-
+        <!-- Homeworks Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+          <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+            <h3 class="font-bold text-indigo-950 flex items-center gap-2">
+              <i class="fa-solid fa-pen-ruler text-rose-500"></i> الواجبات المنزلية النشطة
+            </h3>
+            <span id="hwCountBadge" class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
+          </div>
+          <div id="studentHwList" class="space-y-3">
+            <!-- Homework cards -->
+          </div>
         </div>
-    </main>
 
-    <!-- الأكواد البرمجية التفاعلية -->
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('main-sidebar');
-            const backdrop = document.getElementById('sidebar-backdrop');
-            sidebar.classList.toggle('translate-x-full');
-            backdrop.classList.toggle('hidden');
-        }
+        <!-- Lectures Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+          <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+            <h3 class="font-bold text-indigo-950 flex items-center gap-2">
+              <i class="fa-solid fa-file-video text-indigo-600"></i> المحاضرات والملخصات
+            </h3>
+            <span id="lecCountBadge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
+          </div>
+          <div id="studentLecList" class="space-y-3">
+            <!-- Lecture cards -->
+          </div>
+        </div>
 
-        function switchSection(sectionId) {
-            document.getElementById('section-admin-notices').classList.add('hidden');
-            document.getElementById('section-classroom').classList.add('hidden');
-            document.getElementById('section-admin-archive').classList.add('hidden');
-            document.getElementById('section-admin-chat').classList.add('hidden');
+      </div>
 
-            if (sectionId === 'admin-notices') {
-                document.getElementById('section-admin-notices').classList.remove('hidden');
-                document.getElementById('current-title').innerText = 'التبليغات الرسمية للإدارة';
-            } else if (sectionId === 'admin-archive') {
-                document.getElementById('section-admin-archive').classList.remove('hidden');
-                document.getElementById('current-title').innerText = 'قسم الأرشفة والملفات';
-            } else if (sectionId === 'admin-chat') {
-                document.getElementById('section-admin-chat').classList.remove('hidden');
-                document.getElementById('current-title').innerText = 'تواصل الأساتذة والإدارة';
-            }
+    </section>
 
-            if (window.innerWidth < 768) toggleSidebar();
-        }
+    <!-- ========================================== -->
+    <!-- ADMIN / TEACHER VIEW                       -->
+    <!-- ========================================== -->
+    <section id="adminView" class="hidden space-y-6">
 
-        function openClassRoom(className, subject) {
-            document.getElementById('section-admin-notices').classList.add('hidden');
-            document.getElementById('section-admin-archive').classList.add('hidden');
-            document.getElementById('section-admin-chat').classList.add('hidden');
-            document.getElementById('section-classroom').classList.remove('hidden');
+      <div class="bg-indigo-900 text-white p-4 rounded-xl shadow-md flex justify-between items-center">
+        <div>
+          <h2 class="font-bold text-lg">لوحة التحكم وإدارة كافة الصفوف الثانوية</h2>
+          <p class="text-xs text-indigo-200">إضافة الجداول والواجبات والمحاضرات لجميع الصفوف الدراسية</p>
+        </div>
+        <button onclick="resetAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow transition">
+          <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات
+        </button>
+      </div>
 
-            document.getElementById('current-title').innerText = `قسم ${subject} - ${className}`;
+      <!-- ALL GRADES SCHEDULE MANAGEMENT -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+          <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+            <i class="fa-solid fa-table text-indigo-600"></i> جدول التحضير لكافة الصفوف
+          </h3>
+          <!-- Admin Grade Selector -->
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-semibold text-slate-600">اختر الصف:</label>
+            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-slate-50 border border-slate-300 text-xs font-bold rounded-lg p-2">
+              <option value="1m">الأول متوسط</option>
+              <option value="2m">الثاني متوسط</option>
+              <option value="3m">الثالث متوسط</option>
+              <option value="4h">الرابع إعدادي</option>
+              <option value="5h">الخامس إعدادي</option>
+              <option value="6h">السادس إعدادي</option>
+            </select>
+          </div>
+        </div>
 
-            if (window.innerWidth < 768) toggleSidebar();
-        }
+        <!-- Schedule Editor Form -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-right text-slate-600 border-collapse">
+            <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+              <tr>
+                <th class="p-2 border">اليوم</th>
+                <th class="p-2 border">الحصة 1</th>
+                <th class="p-2 border">الحصة 2</th>
+                <th class="p-2 border">الحصة 3</th>
+                <th class="p-2 border">الحصة 4</th>
+                <th class="p-2 border">الحصة 5</th>
+                <th class="p-2 border">الحصة 6</th>
+                <th class="p-2 border text-center">حفظ</th>
+              </tr>
+            </thead>
+            <tbody id="adminScheduleTbody">
+              <!-- JS Populated table rows for days -->
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        function switchTab(tabName) {
-            ['chat', 'lectures', 'qa', 'students'].forEach(tab => {
-                document.getElementById(`tab-content-${tab}`).classList.add('hidden');
-                document.getElementById(`tab-btn-${tab}`).className = "px-3 py-2 text-gray-500 hover:text-gray-700 font-medium text-xs md:text-sm whitespace-nowrap";
-            });
+      <!-- ADD HOMEWORK & LECTURE FORMS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
-            document.getElementById(`tab-btn-${tabName}`).className = "px-3 py-2 border-b-2 border-indigo-600 text-indigo-600 font-bold text-xs md:text-sm whitespace-nowrap";
-        }
+        <!-- Add Homework -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+          <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-rose-600">
+            <i class="fa-solid fa-plus-circle ml-1"></i> رفع واجب جديد
+          </h3>
+          <form onsubmit="handleAddHomework(event)" class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold mb-1">الصف المستهدف:</label>
+              <select id="hwTargetGrade" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+                <option value="1m">الأول متوسط</option>
+                <option value="2m">الثاني متوسط</option>
+                <option value="3m">الثالث متوسط</option>
+                <option value="4h">الرابع إعدادي</option>
+                <option value="5h">الخامس إعدادي</option>
+                <option value="6h">السادس إعدادي</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">المادة الدراسية:</label>
+              <input type="text" id="hwSubject" required placeholder="مثال: الرياضيات" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">تفاصيل الواجب:</label>
+              <textarea id="hwDesc" required placeholder="اكتب المطلوب حله والملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">تاريخ التسليم النهائي (يحذف تلقائياً الساعة 12:00 ظهراً لهذا اليوم):</label>
+              <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+            </div>
+            <button type="submit" class="w-full bg-rose-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-rose-700 transition">
+              نشر الواجب
+            </button>
+          </form>
+        </div>
 
-        function sendMessage() {
-            const input = document.getElementById('message-input');
-            if (!input.value.trim()) return;
+        <!-- Add Lecture -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+          <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-indigo-600">
+            <i class="fa-solid fa-upload ml-1"></i> رفع محاضرة / ملخص
+          </h3>
+          <form onsubmit="handleAddLecture(event)" class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold mb-1">الصف المستهدف:</label>
+              <select id="lecTargetGrade" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+                <option value="1m">الأول متوسط</option>
+                <option value="2m">الثاني متوسط</option>
+                <option value="3m">الثالث متوسط</option>
+                <option value="4h">الرابع إعدادي</option>
+                <option value="5h">الخامس إعدادي</option>
+                <option value="6h">السادس إعدادي</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">عنوان المحاضرة:</label>
+              <input type="text" id="lecTitle" required placeholder="مثال: حل معادل الفصل الأول" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">المادة:</label>
+              <input type="text" id="lecSubject" required placeholder="مثال: الفيزياء" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold mb-1">رابط المحاضرة أو الملف (YouTube / PDF):</label>
+              <input type="url" id="lecLink" placeholder="https://..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-indigo-700 transition">
+              رفع المحاضرة
+            </button>
+          </form>
+        </div>
 
-            const chatMessages = document.getElementById('chat-messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = "flex items-start gap-2 justify-end";
-            messageDiv.innerHTML = `
-                <div class="bg-indigo-600 text-white p-2.5 rounded-2xl shadow-sm max-w-[80%] relative group">
-                    <p class="text-xs md:text-sm">${input.value}</p>
-                    <div class="flex justify-between items-center mt-1 gap-2">
-                        <span class="text-[9px] text-indigo-200">الآن</span>
-                        <div class="space-x-1 space-x-reverse text-[10px]">
-                            <button onclick="this.closest('.group').querySelector('p').contentEditable=true;this.closest('.group').querySelector('p').focus()" class="hover:underline text-indigo-100">تعديل</button>
-                            <button onclick="this.closest('.flex.items-start').remove()" class="hover:underline text-red-200">حذف</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            chatMessages.appendChild(messageDiv);
-            input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+      </div>
 
-        function recordVoice() {
-            alert("تم بدء تسجيل البصمة الصوتية وإرسالها بنجاح (محاكاة واتساب).");
-        }
-    </script>
+    </section>
+
+  </main>
+
+  <script>
+    // System Days
+    const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+    const GRADES = {
+      '1m': 'الأول متوسط',
+      '2m': 'الثاني متوسط',
+      '3m': 'الثالث متوسط',
+      '4h': 'الرابع إعدادي',
+      '5h': 'الخامس إعدادي',
+      '6h': 'السادس إعدادي'
+    };
+
+    // State Management
+    let db = {
+      schedules: JSON.parse(localStorage.getItem('sec_schedules')) || {},
+      homeworks: JSON.parse(localStorage.getItem('sec_homeworks')) || [],
+      lectures: JSON.parse(localStorage.getItem('sec_lectures')) || []
+    };
+
+    let selectedDayFilter = getCurrentDayName();
+
+    function saveDB() {
+      localStorage.setItem('sec_schedules', JSON.stringify(db.schedules));
+      localStorage.setItem('sec_homeworks', JSON.stringify(db.homeworks));
+      localStorage.setItem('sec_lectures', JSON.stringify(db.lectures));
+    }
+
+    function getCurrentDayName() {
+      const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+      const today = daysMap[new Date().getDay()];
+      return DAYS.includes(today) ? today : 'الأحد';
+    }
+
+    // Switch between Student and Admin tabs
+    function switchTab(tab) {
+      const studentView = document.getElementById('studentView');
+      const adminView = document.getElementById('adminView');
+      const studentBtn = document.getElementById('tabStudentBtn');
+      const adminBtn = document.getElementById('tabAdminBtn');
+
+      if (tab === 'student') {
+        studentView.classList.remove('hidden');
+        adminView.classList.add('hidden');
+        studentBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow";
+        adminBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white";
+        renderStudentDashboard();
+      } else {
+        studentView.classList.add('hidden');
+        adminView.classList.remove('hidden');
+        adminBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow";
+        studentBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white";
+        renderAdminScheduleTable();
+      }
+    }
+
+    // Default Initialization
+    function initData() {
+      document.getElementById('currentDayName').innerText = getCurrentDayName();
+      document.getElementById('hwDueDate').valueAsDate = new Date();
+      
+      // Auto-cleanup expired homeworks right away
+      cleanupExpiredHomeworks();
+      
+      // Build filter tabs for student
+      const filterTabsContainer = document.getElementById('dayFilterTabs');
+      filterTabsContainer.innerHTML = DAYS.map(day => `
+        <button onclick="changeStudentDayFilter('${day}')" class="px-3 py-1 rounded-full border ${selectedDayFilter === day ? 'bg-indigo-900 text-white border-indigo-900' : 'bg-slate-100 text-slate-600 border-slate-200'} whitespace-nowrap">
+          ${day}
+        </button>
+      `).join('');
+
+      renderStudentDashboard();
+    }
+
+    function changeStudentDayFilter(day) {
+      selectedDayFilter = day;
+      initData();
+    }
+
+    // Render Student Dashboard
+    function renderStudentDashboard() {
+      cleanupExpiredHomeworks();
+      const grade = document.getElementById('studentGradeSelect').value;
+
+      // Render Schedule
+      const scheduleContainer = document.getElementById('studentScheduleContainer');
+      const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
+
+      if (daySchedule.every(slot => !slot.trim())) {
+        scheduleContainer.innerHTML = `
+          <div class="col-span-full py-8 text-center text-slate-400">
+            <i class="fa-solid fa-calendar-xmark text-3xl mb-2"></i>
+            <p class="text-sm">لم يتم إضافة تحضير أو جدول لهذا اليوم بعد.</p>
+          </div>
+        `;
+      } else {
+        scheduleContainer.innerHTML = daySchedule.map((subject, idx) => `
+          <div class="p-3 rounded-lg border ${subject ? 'bg-indigo-50/50 border-indigo-100' : 'bg-slate-50 border-slate-100 opacity-60'}">
+            <div class="flex justify-between text-xs text-indigo-500 font-bold mb-1">
+              <span>الحصة ${idx + 1}</span>
+            </div>
+            <div class="font-bold text-slate-800 text-sm">
+              ${subject || 'فراغ'}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Render Homeworks for selected grade
+      const hwContainer = document.getElementById('studentHwList');
+      const filteredHws = db.homeworks.filter(h => h.grade === grade);
+      document.getElementById('hwCountBadge').innerText = filteredHws.length;
+
+      if (filteredHws.length === 0) {
+        hwContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد واجبات منزلية مطلوبة حالياً.</p>`;
+      } else {
+        hwContainer.innerHTML = filteredHws.map(hw => `
+          <div class="p-3 bg-rose-50/40 rounded-lg border border-rose-100 space-y-1">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold bg-rose-200 text-rose-800 px-2 py-0.5 rounded">${hw.subject}</span>
+              <span class="text-[10px] text-slate-500"><i class="fa-solid fa-clock ml-1"></i>ينتهي: ${hw.dueDate} (12:00 ظهراً)</span>
+            </div>
+            <p class="text-xs text-slate-700 font-semibold mt-1">${hw.desc}</p>
+          </div>
+        `).join('');
+      }
+
+      // Render Lectures
+      const lecContainer = document.getElementById('studentLecList');
+      const filteredLecs = db.lectures.filter(l => l.grade === grade);
+      document.getElementById('lecCountBadge').innerText = filteredLecs.length;
+
+      if (filteredLecs.length === 0) {
+        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد محاضرات مرفوعة حالياً.</p>`;
+      } else {
+        lecContainer.innerHTML = filteredLecs.map(lec => `
+          <div class="p-3 bg-indigo-50/40 rounded-lg border border-indigo-100 flex justify-between items-center">
+            <div>
+              <span class="text-[10px] font-bold bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded">${lec.subject}</span>
+              <h4 class="text-xs font-bold text-slate-800 mt-1">${lec.title}</h4>
+            </div>
+            ${lec.link ? `<a href="${lec.link}" target="_blank" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded hover:bg-indigo-700 transition"><i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>عرض</a>` : ''}
+          </div>
+        `).join('');
+      }
+    }
+
+    // Render Admin Schedule Table
+    function renderAdminScheduleTable() {
+      const grade = document.getElementById('adminGradeSelect').value;
+      const tbody = document.getElementById('adminScheduleTbody');
+      
+      tbody.innerHTML = DAYS.map(day => {
+        const row = (db.schedules[grade] && db.schedules[grade][day]) || ['', '', '', '', '', ''];
+        return `
+          <tr class="bg-white border-b hover:bg-slate-50">
+            <td class="p-2 font-bold text-indigo-900 border">${day}</td>
+            ${row.map((slot, idx) => `
+              <td class="p-1 border">
+                <input type="text" id="slot_${day}_${idx}" value="${slot}" placeholder="المادة" class="w-full text-xs p-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-indigo-500">
+              </td>
+            `).join('')}
+            <td class="p-2 border text-center">
+              <button onclick="saveAdminRow('${grade}', '${day}')" class="bg-emerald-600 text-white text-xs px-2.5 py-1.5 rounded hover:bg-emerald-700 transition">
+                <i class="fa-solid fa-floppy-disk"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function saveAdminRow(grade, day) {
+      if (!db.schedules[grade]) db.schedules[grade] = {};
+      
+      const newSlots = [];
+      for (let i = 0; i < 6; i++) {
+        const val = document.getElementById(`slot_${day}_${i}`).value;
+        newSlots.push(val);
+      }
+      db.schedules[grade][day] = newSlots;
+      saveDB();
+      alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]}`);
+    }
+
+    // Handlers for Add Homework / Lecture
+    function handleAddHomework(e) {
+      e.preventDefault();
+      const grade = document.getElementById('hwTargetGrade').value;
+      const subject = document.getElementById('hwSubject').value;
+      const desc = document.getElementById('hwDesc').value;
+      const dueDate = document.getElementById('hwDueDate').value;
+
+      db.homeworks.push({ id: Date.now(), grade, subject, desc, dueDate });
+      saveDB();
+
+      document.getElementById('hwSubject').value = '';
+      document.getElementById('hwDesc').value = '';
+      alert('تم إدراج الواجب بنجاح');
+    }
+
+    function handleAddLecture(e) {
+      e.preventDefault();
+      const grade = document.getElementById('lecTargetGrade').value;
+      const title = document.getElementById('lecTitle').value;
+      const subject = document.getElementById('lecSubject').value;
+      const link = document.getElementById('lecLink').value;
+
+      db.lectures.push({ id: Date.now(), grade, title, subject, link });
+      saveDB();
+
+      document.getElementById('lecTitle').value = '';
+      document.getElementById('lecSubject').value = '';
+      document.getElementById('lecLink').value = '';
+      alert('تم رفع المحاضرة بنجاح');
+    }
+
+    // Auto-Delete Logic for Homeworks past 12:00 PM
+    function cleanupExpiredHomeworks() {
+      const now = new Date();
+      
+      db.homeworks = db.homeworks.filter(hw => {
+        if (!hw.dueDate) return true;
+        
+        // Expiration threshold: 12:00:00 PM of the target due date
+        const expirationDate = new Date(`${hw.dueDate}T12:00:00`);
+        
+        // If current time is past 12:00 PM on/after expiration date, remove it
+        return now < expirationDate;
+      });
+
+      saveDB();
+    }
+
+    // Reset All Data
+    function resetAllData() {
+      if (confirm('هل أنت تأكد من إزاحة كافة البيانات والجداول من النظام؟')) {
+        localStorage.clear();
+        db = { schedules: {}, homeworks: [], lectures: [] };
+        initData();
+        renderAdminScheduleTable();
+      }
+    }
+
+    // Automatic Cron Check Every Minute
+    setInterval(cleanupExpiredHomeworks, 60000);
+
+    // Initial Load
+    initData();
+  </script>
 </body>
 </html>
