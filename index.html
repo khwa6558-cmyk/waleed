@@ -563,8 +563,9 @@
       
       db.homeworks = db.homeworks.filter(hw => {
         if (!hw.dueDate) return true;
-        const expirationDate = new Date(`${hw.dueDate}T12:00:00`);
-        return nowIraq < expirationDate;
+        // تعديل مقارنة الحذف لتعتمد على تاريخ التسليم فقط لكي لا يُحذف الواجب خطأً في نفس اليوم
+        const expDate = new Date(`${hw.dueDate}T23:59:59`);
+        return nowIraq < expDate;
       });
       saveDB();
     }
