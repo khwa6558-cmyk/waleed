@@ -7,45 +7,69 @@
   <!-- Tailwind CSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Cairo', sans-serif; }
+    @keyframes pulseGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3); }
+      50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.5); }
+    }
+    .neon-text {
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- PROFESSIONAL MOVING BANNER -->
+  <div class="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 text-indigo-950 py-3 shadow-md overflow-hidden border-b-2 border-amber-400 relative z-50">
+    <div class="absolute right-0 top-0 bottom-0 bg-gradient-to-l from-amber-500 to-transparent w-12 z-10 pointer-events-none"></div>
+    <div class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-amber-500 to-transparent w-12 z-10 pointer-events-none"></div>
+    <marquee behavior="scroll" direction="right" scrollamount="6" class="font-black text-base sm:text-lg tracking-wider neon-text flex items-center">
+      <span class="mx-6 inline-flex items-center gap-2">
+        <i class="fa-solid fa-code text-indigo-950"></i> إعداد و برمجة: WALEED ALSHAMMARI <i class="fa-solid fa-laptop-code text-indigo-950"></i>
+      </span>
+      <span class="mx-6 inline-flex items-center gap-2 text-white">
+        ★ منصة ثانوية المتفوقين الثانية للتحضير اليومي والجدول المدرسي ★
+      </span>
+      <span class="mx-6 inline-flex items-center gap-2">
+        <i class="fa-solid fa-code text-indigo-950"></i> إعداد و برمجة: WALEED ALSHAMMARI <i class="fa-solid fa-laptop-code text-indigo-950"></i>
+      </span>
+    </marquee>
+  </div>
 
   <!-- Header -->
-  <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center flex-col sm:flex-row gap-3">
+  <header class="bg-gradient-to-r from-indigo-950 via-indigo-900 to-slate-900 text-white shadow-xl sticky top-0 z-40 border-b border-indigo-800">
+    <div class="container mx-auto px-4 py-3.5 flex flex-wrap justify-between items-center flex-col sm:flex-row gap-4">
       
       <!-- Logo & Title -->
       <div class="flex items-center space-x-3 space-x-reverse">
-        <img src="https://i.ibb.co/3m63K3B/image.png" alt="شعار ثانوية المتفوقين" class="w-12 h-12 rounded-full object-cover bg-white p-0.5 shadow">
+        <img src="https://i.ibb.co/3m63K3B/image.png" alt="شعار ثانوية المتفوقين" class="w-12 h-12 rounded-full object-cover bg-white p-0.5 shadow-md border-2 border-amber-400">
         <div>
-          <h1 class="text-xl font-bold">منصة ثانوية المتفوقين الثانية</h1>
+          <h1 class="text-xl font-extrabold tracking-wide">منصة ثانوية المتفوقين الثانية</h1>
           <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (من الأول متوسط إلى السادس إعدادي)</p>
         </div>
       </div>
 
       <!-- Tab Controls -->
-      <div class="flex items-center gap-2 bg-indigo-950 p-1 rounded-lg">
-        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow">
-          <i class="fa-solid fa-user-graduate ml-1"></i> واجهة الطالب
+      <div class="flex items-center gap-2 bg-indigo-950/80 p-1.5 rounded-xl border border-indigo-800/60 shadow-inner">
+        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
+          <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
         </button>
-        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white">
-          <i class="fa-solid fa-circle-plus ml-1"></i> لوحة إضافة الواجب
+        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-slate-300 hover:text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات
         </button>
       </div>
     </div>
   </header>
 
   <!-- Notification Banner -->
-  <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-2.5 text-xs sm:text-sm text-center font-medium shadow-inner">
-    <i class="fa-solid fa-clock ml-1 text-amber-600"></i>
-    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً بتوقيت العراق من يوم التسليم.
+  <div class="bg-amber-50 border-b border-amber-200 text-amber-900 py-2.5 px-4 text-xs sm:text-sm text-center font-semibold shadow-sm flex items-center justify-center gap-2">
+    <i class="fa-solid fa-clock text-amber-600"></i>
+    <span>تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً بتوقيت العراق من يوم التسليم[span_0](start_span)[span_0](end_span).</span>
   </div>
 
-  <main class="container mx-auto px-4 py-6">
+  <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
 
     <!-- ========================================== -->
     <!-- STUDENT VIEW                               -->
@@ -53,10 +77,10 @@
     <section id="studentView" class="space-y-6">
       
       <!-- Student Grade Selection & Info -->
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <label for="studentGradeSelect" class="font-bold text-slate-700 whitespace-nowrap">اختر صفك الدراسي:</label>
-          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-slate-50 border border-slate-300 text-indigo-900 text-sm font-bold rounded-lg p-2.5 focus:ring-amber-500 focus:border-amber-500">
+          <label for="studentGradeSelect" class="font-extrabold text-slate-700 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
+          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-slate-50 border border-slate-300 text-indigo-950 text-sm font-bold rounded-xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-inner">
             <option value="1m">الأول متوسط</option>
             <option value="2m">الثاني متوسط</option>
             <option value="3m">الثالث متوسط</option>
@@ -67,33 +91,38 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-full border border-slate-200">
-            <i class="fa-solid fa-calendar-day ml-1 text-indigo-600"></i>اليوم الحالي: <strong id="currentDayName" class="text-indigo-900"></strong>
+          <span class="text-xs bg-indigo-50 text-indigo-900 font-semibold px-4 py-2 rounded-xl border border-indigo-100 flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-calendar-day text-indigo-600"></i>اليوم الحالي: <strong id="currentDayName" class="text-indigo-950"></strong>
           </span>
         </div>
       </div>
 
       <!-- Schedule & Homework Combined (6 Lessons) -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-        <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3 flex-wrap gap-2">
-          <h2 class="text-lg font-bold text-indigo-950 flex items-center gap-2">
-            <i class="fa-solid fa-book-open text-amber-500"></i>
-            جدول الحصص والواجبات اليومية (المادة وأمامها الواجب والملف)
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+        <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-4 flex-wrap gap-3">
+          <h2 class="text-base sm:text-lg font-extrabold text-indigo-950 flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm shadow-sm">
+              <i class="fa-solid fa-book-open"></i>
+            </span>
+            جدول الحصص والواجبات اليومية
           </h2>
           <!-- Day Filter -->
-          <div class="flex gap-1 overflow-x-auto text-xs" id="dayFilterTabs"></div>
+          <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
         </div>
 
-        <div id="studentScheduleContainer" class="space-y-3"></div>
+        <div id="studentScheduleContainer" class="space-y-4"></div>
       </div>
 
       <!-- Lectures -->
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-        <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-          <h3 class="font-bold text-indigo-950 flex items-center gap-2">
-            <i class="fa-solid fa-file-video text-indigo-600"></i> المحاضرات والملخصات الإضافية
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+        <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-4">
+          <h3 class="font-extrabold text-indigo-950 text-base sm:text-lg flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm shadow-sm">
+              <i class="fa-solid fa-file-video"></i>
+            </span>
+            المحاضرات والملخصات الإضافية
           </h3>
-          <span id="lecCountBadge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
+          <span id="lecCountBadge" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full">0</span>
         </div>
         <div id="studentLecList" class="space-y-3"></div>
       </div>
@@ -101,29 +130,32 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- ADD HOMEWORK / ADMIN VIEW                  -->
+    <!-- ADD & MANAGE HOMEWORK / ADMIN VIEW         -->
     <!-- ========================================== -->
     <section id="adminView" class="hidden space-y-6">
 
-      <div class="bg-indigo-900 text-white p-4 rounded-xl shadow-md flex justify-between items-center flex-wrap gap-3">
+      <div class="bg-gradient-to-r from-indigo-950 to-indigo-900 text-white p-5 rounded-2xl shadow-md flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
-          <h2 class="font-bold text-lg">لوحة إضافة الواجب وإدارة الجداول - ثانوية المتفوقين الثانية</h2>
-          <p class="text-xs text-indigo-200">إدارة الجداول للـ 6 حصص، ورفع الواجبات والمحاضرات لكل مادة</p>
+          <h2 class="font-extrabold text-lg">لوحة الإدارة وإدارة الواجبات والجداول</h2>
+          <p class="text-xs text-indigo-200 mt-1">إدارة الجداول، نشر الواجبات، وتعديل أو حذف الواجبات الحالية بسهولة</p>
         </div>
-        <button onclick="resetAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow transition">
-          <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات
+        <button onclick="resetAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+          <i class="fa-solid fa-rotate-left"></i> إعادة ضبط البيانات
         </button>
       </div>
 
       <!-- SCHEDULE TABLE FOR 6 LESSONS -->
-      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-slate-100 pb-3">
-          <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
-            <i class="fa-solid fa-table text-indigo-600"></i> تنظيم وتعديل جدول الـ 6 حصص لكل صف
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-5 border-b border-slate-100 pb-4">
+          <h3 class="font-extrabold text-slate-800 text-base flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-table"></i>
+            </span>
+            تنظيم وتعديل جدول الـ 6 حصص لكل صف
           </h3>
           <div class="flex items-center gap-2">
-            <label class="text-xs font-semibold text-slate-600">اختر الصف:</label>
-            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-slate-50 border border-slate-300 text-xs font-bold rounded-lg p-2">
+            <label class="text-xs font-bold text-slate-600">اختر الصف:</label>
+            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-slate-50 border border-slate-300 text-xs font-extrabold text-indigo-950 rounded-xl p-2.5 shadow-inner focus:outline-none">
               <option value="1m">الأول متوسط</option>
               <option value="2m">الثاني متوسط</option>
               <option value="3m">الثالث متوسط</option>
@@ -136,19 +168,19 @@
 
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-right text-slate-600 border-collapse">
-            <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+            <thead class="text-xs text-slate-700 uppercase bg-slate-100/80">
               <tr>
-                <th class="p-2 border">اليوم</th>
-                <th class="p-2 border">الحصة 1</th>
-                <th class="p-2 border">الحصة 2</th>
-                <th class="p-2 border">الحصة 3</th>
-                <th class="p-2 border">الحصة 4</th>
-                <th class="p-2 border">الحصة 5</th>
-                <th class="p-2 border">الحصة 6</th>
-                <th class="p-2 border text-center">حفظ</th>
+                <th class="p-3 border rounded-r-xl">اليوم</th>
+                <th class="p-3 border">الحصة 1</th>
+                <th class="p-3 border">الحصة 2</th>
+                <th class="p-3 border">الحصة 3</th>
+                <th class="p-3 border">الحصة 4</th>
+                <th class="p-3 border">الحصة 5</th>
+                <th class="p-3 border">الحصة 6</th>
+                <th class="p-3 border text-center rounded-l-xl">حفظ</th>
               </tr>
             </thead>
-            <tbody id="adminScheduleTbody"></tbody>
+            <tbody id="adminScheduleTbody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
       </div>
@@ -156,97 +188,138 @@
       <!-- ADD HOMEWORK & LECTURE FORMS -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <!-- Add Homework -->
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-          <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-rose-600">
-            <i class="fa-solid fa-circle-plus ml-1"></i> لوحة إضافة الواجب (يحذف 12 ظهراً بتوقيت العراق)
-          </h3>
-          <form onsubmit="handleAddHomework(event)" class="space-y-3">
-            <div>
-              <label class="block text-xs font-semibold mb-1">الصف المستهدف:</label>
-              <select id="hwTargetGrade" onchange="updateHwSubjectsDropdown()" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-                <option value="1m">الأول متوسط</option>
-                <option value="2m">الثاني متوسط</option>
-                <option value="3m">الثالث متوسط</option>
-                <option value="4h">الرابع إعدادي</option>
-                <option value="5h">الخامس إعدادي</option>
-                <option value="6h">السادس إعدادي</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">تحديد اليوم المرتبط بالواجب:</label>
-              <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-                <option value="الأحد">الأحد</option>
-                <option value="الإثنين">الإثنين</option>
-                <option value="الثلاثاء">الثلاثاء</option>
-                <option value="الأربعاء">الأربعاء</option>
-                <option value="الخميس">الخميس</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">اختر المادة (من جدول الحصص المسجل):</label>
-              <select id="hwSubjectSelect" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded font-bold text-indigo-900">
-                <!-- Populated dynamically -->
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">تفاصيل الواجب (كتابة - اختيارية):</label>
-              <textarea id="hwDesc" placeholder="اكتب المطلوب حله أو الملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">رفع ملف الواجب (اختياري - صورة أو PDF):</label>
-              <input type="file" id="hwFile" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-300 text-xs p-1.5 rounded cursor-pointer">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">تاريخ التسليم النهائي:</label>
-              <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-            </div>
-            <button type="submit" class="w-full bg-rose-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-rose-700 transition">
-              نشر الواجب للمادة
-            </button>
-          </form>
+        <!-- Add / Edit Homework -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+          <div>
+            <h3 id="hwFormTitle" class="font-extrabold text-slate-800 mb-4 border-b border-slate-100 pb-3 text-rose-600 flex items-center gap-2 text-base">
+              <i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة
+            </h3>
+            <form onsubmit="handleSaveHomework(event)" class="space-y-4">
+              <input type="hidden" id="editHwId">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">الصف المستهدف:</label>
+                <select id="hwTargetGrade" onchange="updateHwSubjectsDropdown()" class="w-full bg-slate-50 border border-slate-300 text-xs font-bold p-2.5 rounded-xl focus:outline-none">
+                  <option value="1m">الأول متوسط</option>
+                  <option value="2m">الثاني متوسط</option>
+                  <option value="3m">الثالث متوسط</option>
+                  <option value="4h">الرابع إعدادي</option>
+                  <option value="5h">الخامس إعدادي</option>
+                  <option value="6h">السادس إعدادي</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">تحديد اليوم المرتبط بالواجب:</label>
+                <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-slate-50 border border-slate-300 text-xs font-bold p-2.5 rounded-xl focus:outline-none">
+                  <option value="الأحد">الأحد</option>
+                  <option value="الإثنين">الإثنين</option>
+                  <option value="الثلاثاء">الثلاثاء</option>
+                  <option value="الأربعاء">الأربعاء</option>
+                  <option value="الخميس">الخميس</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر المادة (من جدول الحصص المسجل):</label>
+                <select id="hwSubjectSelect" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl font-extrabold text-indigo-950 focus:outline-none">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">تفاصيل الواجب (كتابة - اختياري):</label>
+                <textarea id="hwDesc" placeholder="اكتب المطلوب حله أو الملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl h-24 focus:outline-none shadow-inner"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">إرفاق ملف الواجب (صورة أو PDF):</label>
+                <input type="file" id="hwFile" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded-xl cursor-pointer file:ml-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">تاريخ التسليم النهائي:</label>
+                <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl focus:outline-none">
+              </div>
+              
+              <div class="flex gap-2">
+                <button type="submit" id="hwSubmitBtn" class="flex-grow bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> نشر الواجب للمادة
+                </button>
+                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-400 hover:bg-slate-500 text-white font-bold text-xs px-4 py-3 rounded-xl transition">
+                  إلغاء
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <!-- Add Lecture -->
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-          <h3 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2 text-indigo-600">
-            <i class="fa-solid fa-upload ml-1"></i> رفع محاضرة / ملخص
-          </h3>
-          <form onsubmit="handleAddLecture(event)" class="space-y-3">
-            <div>
-              <label class="block text-xs font-semibold mb-1">الصف المستهدف:</label>
-              <select id="lecTargetGrade" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-                <option value="1m">الأول متوسط</option>
-                <option value="2m">الثاني متوسط</option>
-                <option value="3m">الثالث متوسط</option>
-                <option value="4h">الرابع إعدادي</option>
-                <option value="5h">الخامس إعدادي</option>
-                <option value="6h">السادس إعدادي</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">عنوان المحاضرة:</label>
-              <input type="text" id="lecTitle" required placeholder="مثال: حل مسائل الفصل الأول" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">المادة:</label>
-              <input type="text" id="lecSubject" required placeholder="مثال: الفيزياء" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold mb-1">رابط المحاضرة أو الملف (YouTube / PDF):</label>
-              <input type="url" id="lecLink" placeholder="https://..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-indigo-700 transition">
-              رفع المحاضرة
-            </button>
-          </form>
+        <!-- Add Lecture or File -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between">
+          <div>
+            <h3 class="font-extrabold text-slate-800 mb-4 border-b border-slate-100 pb-3 text-indigo-600 flex items-center gap-2 text-base">
+              <i class="fa-solid fa-upload"></i> رفع محاضرة أو ملخص (كتابة أو ملف)
+            </h3>
+            <form onsubmit="handleAddLecture(event)" class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">الصف المستهدف:</label>
+                <select id="lecTargetGrade" class="w-full bg-slate-50 border border-slate-300 text-xs font-bold p-2.5 rounded-xl focus:outline-none">
+                  <option value="1m">الأول متوسط</option>
+                  <option value="2m">الثاني متوسط</option>
+                  <option value="3m">الثالث متوسط</option>
+                  <option value="4h">الرابع إعدادي</option>
+                  <option value="5h">الخامس إعدادي</option>
+                  <option value="6h">السادس إعدادي</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">عنوان المحاضرة أو الملخص:</label>
+                <input type="text" id="lecTitle" required placeholder="مثال: ملخص الفصل الاول" class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">المادة:</label>
+                <input type="text" id="lecSubject" required placeholder="مثال: الفيزياء" class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">طريقة الإضافة (اختر نوع المحتوى):</label>
+                <select id="lecType" onchange="toggleLecInputType()" class="w-full bg-slate-50 border border-slate-300 text-xs font-bold p-2.5 rounded-xl focus:outline-none mb-2">
+                  <option value="link">رابط (YouTube أو خارجي)</option>
+                  <option value="file">رفع ملف (صورة أو PDF)</option>
+                  <option value="text">كتابة نص / ملخص مباشر</option>
+                </select>
+              </div>
+
+              <div id="lecInputContainer">
+                <div id="lecLinkGroup">
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط المحاضرة:</label>
+                  <input type="url" id="lecLinkVal" placeholder="https://..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات إضافية (اختياري):</label>
+                <textarea id="lecDesc" placeholder="اكتب وصفاً مختصراً..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl h-16 focus:outline-none"></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-cloud-arrow-up"></i> رفع المحاضرة / الملخص
+              </button>
+            </form>
+          </div>
         </div>
 
+      </div>
+
+      <!-- ACTIVE HOMEWORKS MANAGEMENT TABLE (إدارة الواجبات الحالية) -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 mt-6">
+        <h3 class="font-extrabold text-slate-800 mb-4 border-b border-slate-100 pb-3 text-indigo-950 flex items-center gap-2 text-base">
+          <i class="fa-solid fa-list-check text-indigo-600"></i> قائمة الواجبات النشطة (إدارة، تعديل، أو حذف)
+        </h3>
+        <div id="adminHomeworksList" class="space-y-3"></div>
       </div>
 
     </section>
 
   </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200/80 py-4 text-center text-xs text-slate-500 font-medium">
+    جميع الحقوق محفوظة © ثانوية المتفوقين الثانية 2026 | تصميم وإعداد: WALEED ALSHAMMARI
+  </footer>
 
   <script>
     const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
@@ -303,16 +376,17 @@
       if (tab === 'student') {
         studentView.classList.remove('hidden');
         adminView.classList.add('hidden');
-        studentBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow";
-        adminBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white";
+        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
+        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-slate-300 hover:text-white flex items-center gap-1.5";
         renderStudentDashboard();
       } else {
         studentView.classList.add('hidden');
         adminView.classList.remove('hidden');
-        adminBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow";
-        studentBtn.className = "px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white";
+        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
+        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-slate-300 hover:text-white flex items-center gap-1.5";
         renderAdminScheduleTable();
         updateHwSubjectsDropdown();
+        renderAdminHomeworksList();
       }
     }
 
@@ -324,7 +398,7 @@
 
       const filterTabsContainer = document.getElementById('dayFilterTabs');
       filterTabsContainer.innerHTML = DAYS.map(day => `
-        <button onclick="changeStudentDayFilter('${day}')" class="px-3 py-1 rounded-full border ${selectedDayFilter === day ? 'bg-indigo-900 text-white border-indigo-900' : 'bg-slate-100 text-slate-600 border-slate-200'} whitespace-nowrap">
+        <button onclick="changeStudentDayFilter('${day}')" class="px-3.5 py-1.5 rounded-xl font-bold transition-all ${selectedDayFilter === day ? 'bg-indigo-900 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} whitespace-nowrap">
           ${day}
         </button>
       `).join('');
@@ -353,9 +427,31 @@
       }
 
       if (allSubjects.size === 0) {
-        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا الصف في الجدول (يرجى حفظ الجدول أولاً)</option>`;
+        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا الصف (يرجى حفظ الجدول أولاً)</option>`;
       } else {
         selectEl.innerHTML = Array.from(allSubjects).map(sub => `<option value="${sub}">${sub}</option>`).join('');
+      }
+    }
+
+    function toggleLecInputType() {
+      const type = document.getElementById('lecType').value;
+      const container = document.getElementById('lecInputContainer');
+
+      if (type === 'link') {
+        container.innerHTML = `
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">رابط المحاضرة:</label>
+          <input type="url" id="lecLinkVal" placeholder="https://..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl focus:outline-none" required>
+        `;
+      } else if (type === 'file') {
+        container.innerHTML = `
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">اختر ملف المحاضرة (صورة أو PDF):</label>
+          <input type="file" id="lecFileVal" accept="image/*,.pdf" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded-xl cursor-pointer" required>
+        `;
+      } else {
+        container.innerHTML = `
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">نص الملخص / المحاضرة:</label>
+          <textarea id="lecTextVal" placeholder="اكتب المحتوى أو الملخص هنا..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2.5 rounded-xl h-24 focus:outline-none" required></textarea>
+        `;
       }
     }
 
@@ -370,18 +466,18 @@
 
       if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
-          <div class="py-8 text-center text-slate-400">
-            <i class="fa-solid fa-calendar-xmark text-3xl mb-2"></i>
-            <p class="text-sm">لم يتم إضافة جدول حصص لهذا اليوم (${selectedDayFilter}) بعد.</p>
+          <div class="py-12 text-center text-slate-400">
+            <i class="fa-solid fa-calendar-xmark text-4xl mb-3 text-indigo-200"></i>
+            <p class="text-sm font-semibold">لم يتم إضافة جدول حصص لهذا اليوم (${selectedDayFilter}) بعد.</p>
           </div>
         `;
       } else {
         scheduleContainer.innerHTML = daySchedule.map((subject, idx) => {
           if (!subject || !subject.trim()) {
             return `
-              <div class="p-3 rounded-lg border bg-slate-50 border-slate-100 opacity-60 flex justify-between items-center">
+              <div class="p-3.5 rounded-xl border bg-slate-50/60 border-slate-100 opacity-60 flex justify-between items-center">
                 <span class="text-xs font-bold text-slate-400">الحصة ${idx + 1}</span>
-                <span class="text-xs text-slate-400">فراغ</span>
+                <span class="text-xs text-slate-400 font-medium">فراغ</span>
               </div>
             `;
           }
@@ -390,27 +486,27 @@
           const matchHw = gradeHws.find(h => h.subject.trim().toLowerCase() === cleanSubject);
 
           return `
-            <div class="p-4 rounded-xl border bg-indigo-50/40 border-indigo-100 space-y-2">
+            <div class="p-4 rounded-2xl border bg-indigo-50/30 border-indigo-100/80 space-y-3 transition hover:shadow-sm">
               <div class="flex justify-between items-center flex-wrap gap-2">
-                <div class="flex items-center gap-2">
-                  <span class="bg-indigo-900 text-white text-xs font-bold px-2.5 py-1 rounded-md">الحصة ${idx + 1}</span>
+                <div class="flex items-center gap-2.5">
+                  <span class="bg-indigo-900 text-white text-xs font-extrabold px-3 py-1 rounded-lg shadow-sm">الحصة ${idx + 1}</span>
                   <span class="font-extrabold text-indigo-950 text-base">${subject}</span>
                 </div>
-                ${matchHw ? `<span class="text-[11px] bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-pen-ruler ml-1"></i>يوجد واجب</span>` : `<span class="text-[11px] text-slate-400">لا يوجد واجب</span>`}
+                ${matchHw ? `<span class="text-xs bg-rose-100 text-rose-700 font-extrabold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm"><i class="fa-solid fa-pen-ruler"></i>يوجد واجب</span>` : `<span class="text-xs text-slate-400 font-medium bg-slate-100 px-3 py-1 rounded-full">لا يوجد واجب</span>`}
               </div>
 
               ${matchHw ? `
-                <div class="mt-2 p-3 bg-white rounded-lg border border-rose-100 space-y-2">
-                  ${matchHw.desc ? `<p class="text-xs text-slate-700 font-semibold"><strong class="text-rose-600">الواجب المطلوب:</strong> ${matchHw.desc}</p>` : ''}
+                <div class="mt-2 p-4 bg-white rounded-xl border border-rose-100 shadow-sm space-y-3">
+                  ${matchHw.desc ? `<p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed"><strong class="text-rose-600 block mb-1">الواجب المطلوب:</strong> ${matchHw.desc}</p>` : ''}
                   ${matchHw.fileData ? `
                     <div>
-                      <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded transition shadow-sm">
-                        <i class="fa-solid fa-file-arrow-down"></i> فتح ملف الواجب
+                      <a href="${matchHw.fileData}" target="_blank" download="واجب_${subject}" class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold px-4 py-2 rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-file-arrow-down text-sm"></i> فتح / تحميل ملف الواجب
                       </a>
                     </div>
                   ` : ''}
-                  <div class="text-[10px] text-slate-400 flex items-center gap-1">
-                    <i class="fa-solid fa-clock"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (تاريخ التسليم: ${matchHw.dueDate})
+                  <div class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5 pt-1 border-t border-slate-100">
+                    <i class="fa-solid fa-clock text-rose-500"></i> يحذف تلقائياً الساعة 12:00 ظهراً بتوقيت العراق (التسليم: ${matchHw.dueDate})[span_1](start_span)[span_1](end_span)
                   </div>
                 </div>
               ` : ''}
@@ -419,21 +515,37 @@
         }).join('');
       }
 
-      // Lectures
+      // Lectures & Summaries
       const lecContainer = document.getElementById('studentLecList');
       const filteredLecs = db.lectures.filter(l => l.grade === grade);
       document.getElementById('lecCountBadge').innerText = filteredLecs.length;
 
       if (filteredLecs.length === 0) {
-        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد محاضرات مرفوعة حالياً.</p>`;
+        lecContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 font-medium">لا يوجد محاضرات أو ملخصات مرفوعة حالياً.</p>`;
       } else {
         lecContainer.innerHTML = filteredLecs.map(lec => `
-          <div class="p-3 bg-indigo-50/40 rounded-lg border border-indigo-100 flex justify-between items-center flex-wrap gap-2">
-            <div>
-              <span class="text-[10px] font-bold bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded">${lec.subject}</span>
-              <h4 class="text-xs font-bold text-slate-800 mt-1">${lec.title}</h4>
+          <div class="p-4 bg-indigo-50/40 rounded-2xl border border-indigo-100 flex justify-between items-center flex-wrap gap-3">
+            <div class="space-y-1">
+              <span class="text-[10px] font-extrabold bg-indigo-200/80 text-indigo-900 px-2.5 py-0.5 rounded-md">${lec.subject}</span>
+              <h4 class="text-sm font-extrabold text-slate-800">${lec.title}</h4>
+              ${lec.desc ? `<p class="text-xs text-slate-600 font-medium">${lec.desc}</p>` : ''}
             </div>
-            ${lec.link ? `<a href="${lec.link}" target="_blank" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded hover:bg-indigo-700 transition"><i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>عرض المحاضرة</a>` : ''}
+            
+            <div>
+              ${lec.type === 'link' ? `
+                <a href="${lec.content}" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> عرض الرابط
+                </a>
+              ` : lec.type === 'file' ? `
+                <a href="${lec.content}" target="_blank" download="${lec.title}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-file-arrow-down"></i> تحميل الملف
+                </a>
+              ` : `
+                <button onclick="alert('${lec.content.replace(/'/g, "\\'")}')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-note-sticky"></i> قراءة الملخص
+                </button>
+              `}
+            </div>
           </div>
         `).join('');
       }
@@ -446,15 +558,15 @@
       tbody.innerHTML = DAYS.map(day => {
         const row = (db.schedules[grade] && db.schedules[grade][day]) || ['', '', '', '', '', ''];
         return `
-          <tr class="bg-white border-b hover:bg-slate-50">
-            <td class="p-2 font-bold text-indigo-900 border">${day}</td>
+          <tr class="bg-white hover:bg-slate-50 transition">
+            <td class="p-3 font-extrabold text-indigo-950 border">${day}</td>
             ${row.map((slot, idx) => `
-              <td class="p-1 border">
-                <input type="text" id="slot_${day}_${idx}" value="${slot || ''}" placeholder="المادة ${idx + 1}" class="w-full text-xs p-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-indigo-500">
+              <td class="p-2 border">
+                <input type="text" id="slot_${day}_${idx}" value="${slot || ''}" placeholder="المادة ${idx + 1}" class="w-full text-xs p-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
               </td>
             `).join('')}
-            <td class="p-2 border text-center">
-              <button onclick="saveAdminRow('${grade}', '${day}')" class="bg-emerald-600 text-white text-xs px-2.5 py-1.5 rounded hover:bg-emerald-700 transition">
+            <td class="p-3 border text-center">
+              <button onclick="saveAdminRow('${grade}', '${day}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
                 <i class="fa-solid fa-floppy-disk"></i> حفظ
               </button>
             </td>
@@ -468,7 +580,10 @@
       
       const newSlots = [];
       for (let i = 0; i < 6; i++) {
-        const val = document.getElementById(`slot_${day}_${i}`).value;
+        let val = document.getElementById(`slot_${day}_${i}`).value.trim();
+        if (val.includes('حاسوبحاسوب')) {
+          val = 'حاسوب';
+        }
         newSlots.push(val);
       }
       db.schedules[grade][day] = newSlots;
@@ -478,8 +593,10 @@
       }
     }
 
-    function handleAddHomework(e) {
+    // إدارة وحفظ الواجبات (إضافة وتعديل)
+    function handleSaveHomework(e) {
       e.preventDefault();
+      const editId = document.getElementById('editHwId').value;
       const grade = document.getElementById('hwTargetGrade').value;
       const subjectSelect = document.getElementById('hwSubjectSelect');
       const subject = subjectSelect ? subjectSelect.value : '';
@@ -493,15 +610,27 @@
         return;
       }
 
-      if (!desc.trim() && !fileInput.files.length) {
+      if (!desc.trim() && !fileInput.files.length && !editId) {
         alert('يرجى إدخال تفاصيل كتابية أو اختيار ملف للواجب على الأقل.');
         return;
       }
 
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function(uploadEvent) {
+      const processSave = (fileData) => {
+        if (editId) {
+          // تعديل واجب موجود
+          const hw = db.homeworks.find(h => h.id == editId);
+          if (hw) {
+            hw.grade = grade;
+            hw.subject = subject;
+            hw.day = day;
+            hw.desc = desc;
+            hw.dueDate = dueDate;
+            if (fileData) hw.fileData = fileData;
+          }
+          alert('تم تعديل الواجب بنجاح!');
+          cancelEditHomework();
+        } else {
+          // إضافة واجب جديد (يمكن رفعه مكان القديم أو كواجب جديد)
           db.homeworks.push({
             id: Date.now(),
             grade,
@@ -509,36 +638,97 @@
             day,
             desc,
             dueDate,
-            fileData: uploadEvent.target.result
+            fileData: fileData || null
           });
-          if (saveDB()) {
-            resetHwForm();
-            alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً الساعة 12:00 ظهراً بتوقيت العراق!');
-            renderStudentDashboard();
-          }
+          alert('تم نشر الواجب بنجاح ويمكن للطلاب رؤيته فوراً!');
+          resetHwForm();
+        }
+        saveDB();
+        renderAdminHomeworksList();
+        renderStudentDashboard();
+      };
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(uploadEvent) {
+          processSave(uploadEvent.target.result);
         };
         reader.readAsDataURL(file);
       } else {
-        db.homeworks.push({
-          id: Date.now(),
-          grade,
-          subject,
-          day,
-          desc,
-          dueDate,
-          fileData: null
-        });
-        if (saveDB()) {
-          resetHwForm();
-          alert('تم إدراج الواجب للمادة بنجاح وسيتم حذفه تلقائياً الساعة 12:00 ظهراً بتوقيت العراق!');
-          renderStudentDashboard();
-        }
+        const existingHw = editId ? db.homeworks.find(h => h.id == editId) : null;
+        processSave(existingHw ? existingHw.fileData : null);
       }
     }
 
     function resetHwForm() {
+      document.getElementById('editHwId').value = '';
       document.getElementById('hwDesc').value = '';
       document.getElementById('hwFile').value = '';
+      document.getElementById('hwFormTitle.innerHTML') = '<i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة';
+      document.getElementById('hwSubmitBtn').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> نشر الواجب للمادة';
+      document.getElementById('hwCancelEditBtn').classList.add('hidden');
+    }
+
+    function cancelEditHomework() {
+      resetHwForm();
+    }
+
+    function editHomework(id) {
+      const hw = db.homeworks.find(h => h.id == id);
+      if (!hw) return;
+
+      document.getElementById('editHwId').value = hw.id;
+      document.getElementById('hwTargetGrade').value = hw.grade;
+      updateHwSubjectsDropdown();
+      document.getElementById('hwDay').value = hw.day;
+      document.getElementById('hwSubjectSelect').value = hw.subject;
+      document.getElementById('hwDesc').value = hw.desc || '';
+      document.getElementById('hwDueDate').value = hw.dueDate || '';
+
+      document.getElementById('hwFormTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل الواجب الحالي';
+      document.getElementById('hwSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> حفظ التعديلات';
+      document.getElementById('hwCancelEditBtn').classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteHomework(id) {
+      if (confirm('هل أنت متأكد من حذف هذا الواجب؟ سيتم إزالته فوراً ويمكنك رفع واجب آخر مكانه.')) {
+        db.homeworks = db.homeworks.filter(h => h.id != id);
+        saveDB();
+        renderAdminHomeworksList();
+        renderStudentDashboard();
+        alert('تم حذف الواجب بنجاح. يمكنك الآن رفع واجب جديد مكانه.');
+      }
+    }
+
+    function renderAdminHomeworksList() {
+      const container = document.getElementById('adminHomeworksList');
+      if (db.homeworks.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا توجد واجبات نشطة حالياً.</p>`;
+        return;
+      }
+
+      container.innerHTML = db.homeworks.map(hw => `
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center flex-wrap gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-extrabold bg-indigo-900 text-white px-2.5 py-0.5 rounded">${GRADES[hw.grade] || hw.grade}</span>
+              <span class="text-xs font-bold text-indigo-950">${hw.subject} (${hw.day})</span>
+            </div>
+            <p class="text-xs text-slate-600 font-medium">${hw.desc ? hw.desc : '(ملف مرفق بدون نص)'}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="editHomework(${hw.id})" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+              <i class="fa-solid fa-pen ml-1"></i> تعديل
+            </button>
+            <button onclick="deleteHomework(${hw.id})" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+              <i class="fa-solid fa-trash ml-1"></i> حذف
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
     function handleAddLecture(e) {
@@ -546,14 +736,39 @@
       const grade = document.getElementById('lecTargetGrade').value;
       const title = document.getElementById('lecTitle').value;
       const subject = document.getElementById('lecSubject').value;
-      const link = document.getElementById('lecLink').value;
+      const type = document.getElementById('lecType').value;
+      const desc = document.getElementById('lecDesc').value;
 
-      db.lectures.push({ id: Date.now(), grade, title, subject, link });
+      let content = '';
+
+      if (type === 'link') {
+        content = document.getElementById('lecLinkVal').value;
+        saveLectureToDb(grade, title, subject, type, content, desc);
+      } else if (type === 'text') {
+        content = document.getElementById('lecTextVal').value;
+        saveLectureToDb(grade, title, subject, type, content, desc);
+      } else if (type === 'file') {
+        const fileInput = document.getElementById('lecFileVal');
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          reader.onload = function(uploadEvent) {
+            content = uploadEvent.target.result;
+            saveLectureToDb(grade, title, subject, type, content, desc);
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+
+    function saveLectureToDb(grade, title, subject, type, content, desc) {
+      db.lectures.push({ id: Date.now(), grade, title, subject, type, content, desc });
       if (saveDB()) {
         document.getElementById('lecTitle').value = '';
         document.getElementById('lecSubject').value = '';
-        document.getElementById('lecLink').value = '';
-        alert('تم رفع المحاضرة بنجاح!');
+        document.getElementById('lecDesc').value = '';
+        toggleLecInputType();
+        alert('تم رفع المحاضرة أو الملخص بنجاح!');
         renderStudentDashboard();
       }
     }
@@ -563,15 +778,14 @@
       
       db.homeworks = db.homeworks.filter(hw => {
         if (!hw.dueDate) return true;
-        // تعديل مقارنة الحذف لتعتمد على تاريخ التسليم فقط لكي لا يُحذف الواجب خطأً في نفس اليوم
-        const expDate = new Date(`${hw.dueDate}T23:59:59`);
-        return nowIraq < expDate;
+        const expirationDate = new Date(`${hw.dueDate}T12:00:00`);
+        return nowIraq < expirationDate;
       });
       saveDB();
     }
 
     function resetAllData() {
-      if (confirm('هل أنت تأكد من مسح كافة الجداول والبيانات من النظام؟')) {
+      if (confirm('هل أنت متأكد من مسح كافة الجداول والبيانات من النظام؟')) {
         localStorage.clear();
         db = { schedules: {}, homeworks: [], lectures: [] };
         initData();
@@ -581,6 +795,7 @@
 
     setInterval(cleanupExpiredHomeworks, 60000);
     initData();
+    toggleLecInputType();
   </script>
 </body>
 </html>
