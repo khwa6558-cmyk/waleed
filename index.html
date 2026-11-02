@@ -83,7 +83,7 @@
   <!-- Notification Banner -->
   <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200 text-amber-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
     <i class="fa-solid fa-clock text-amber-600 text-base animate-pulse"></i>
-    <span>تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً بتوقيت العراق من يوم التسليم.</span>
+    <span>تُحذف الواجبات اليومية تلقائياً بعد انتهاء تاريخ التسليم المحدد.</span>
   </div>
 
   <main class="container mx-auto px-4 py-6 flex-grow max-w-6xl">
@@ -373,15 +373,6 @@
       return DAYS.includes(today) ? today : 'الأحد';
     }
 
-    function getIraqCurrentDate() {
-      const options = { timeZone: 'Asia/Baghdad', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-      const formatter = new Intl.DateTimeFormat([], options);
-      const parts = formatter.formatToParts(new Date());
-      let p = {};
-      parts.forEach(el => p[el.type] = el.value);
-      return new Date(`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`);
-    }
-
     function switchTab(tab) {
       const studentView = document.getElementById('studentView');
       const adminView = document.getElementById('adminView');
@@ -518,7 +509,7 @@
                     </div>
                   ` : ''}
                   <div class="text-[10px] text-slate-400 font-medium flex items-center gap-1 pt-1 border-t border-slate-100">
-                    <i class="fa-solid fa-clock text-rose-500"></i> التسليم: ${matchHw.dueDate}
+                    <i class="fa-solid fa-clock text-rose-500"></i> تاريخ التسليم: ${matchHw.dueDate}
                   </div>
                 </div>
               ` : ''}
@@ -625,8 +616,7 @@
 
       const processSave = (fileData) => {
         if (editIdInput) {
-          // تعديل واجب موجود مسبقاً
-          const hwIndex = db.homeworks.findIndex(h => h.id == editIdInput);
+          const hwIndex = db.homeworks.findIndex(h => String(h.id) === String(editIdInput));
           if (hwIndex !== -1) {
             db.homeworks[hwIndex].grade = grade;
             db.homeworks[hwIndex].subject = subject;
@@ -640,7 +630,6 @@
           alert('تم تعديل الواجب بنجاح!');
           cancelEditHomework();
         } else {
-          // إضافة واجب جديد
           db.homeworks.push({
             id: Date.now(),
             grade,
@@ -669,7 +658,7 @@
       } else {
         let existingFile = null;
         if (editIdInput) {
-          const hw = db.homeworks.find(h => h.id == editIdInput);
+          const hw = db.homeworks.find(h => String(h.id) === String(editIdInput));
           if (hw) existingFile = hw.fileData;
         }
         processSave(existingFile);
@@ -690,7 +679,7 @@
     }
 
     function editHomework(id) {
-      const hw = db.homeworks.find(h => h.id == id);
+      const hw = db.homeworks.find(h => String(h.id) === String(id));
       if (!hw) return;
 
       document.getElementById('editHwId').value = hw.id;
@@ -710,7 +699,7 @@
 
     function deleteHomework(id) {
       if (confirm('هل أنت متأكد من حذف هذا الواجب؟ سيتم إزالته فوراً.')) {
-        db.homeworks = db.homeworks.filter(h => h.id != id);
+        db.homeworks = db.homeworks.filter(h => String(h.id) !== String(id));
         saveDB();
         renderAdminHomeworksList();
         renderStudentDashboard();
@@ -735,10 +724,10 @@
             <p class="text-xs text-slate-600 font-medium">${hw.desc ? hw.desc : '(ملف مرفق بدون نص)'}</p>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="editHomework(${hw.id})" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
+            <button type="button" onclick="editHomework('${hw.id}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
               <i class="fa-solid fa-pen ml-1"></i> تعديل
             </button>
-            <button type="button" onclick="deleteHomework(${hw.id})" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
+            <button type="button" onclick="deleteHomework('${hw.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
               <i class="fa-solid fa-trash ml-1"></i> حذف
             </button>
           </div>
@@ -789,12 +778,10 @@
     }
 
     function cleanupExpiredHomeworks() {
-      const nowIraq = getIraqCurrentDate();
-      
+      const todayStr = new Date().toISOString().split('T')[0];
       db.homeworks = db.homeworks.filter(hw => {
         if (!hw.dueDate) return true;
-        const expirationDate = new Date(`${hw.dueDate}T12:00:00`);
-        return nowIraq < expirationDate;
+        return hw.dueDate >= todayStr;
       });
       saveDB();
     }
@@ -808,7 +795,6 @@
       }
     }
 
-    setInterval(cleanupExpiredHomeworks, 60000);
     initData();
     toggleLecInputType();
   </script>
