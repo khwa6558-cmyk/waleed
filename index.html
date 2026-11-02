@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة الثانوية - التحضير اليومي والواجبات</title>
+  <title>منصة الثانوية - التحضير والجدول الذكي</title>
   <!-- Tailwind CSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,30 +16,30 @@
 
   <!-- Header -->
   <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-items flex-col sm:flex-row gap-3">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center flex-col sm:flex-row gap-3">
       <div class="flex items-center space-x-3 space-x-reverse">
         <i class="fa-solid fa-graduation-cap text-3xl text-amber-400"></i>
         <div>
           <h1 class="text-xl font-bold">منصة الثانوية الإلكترونية</h1>
-          <p class="text-xs text-indigo-200">متابعة التحضير والواجبات والمحاضرات (المنهج الثانوي)</p>
+          <p class="text-xs text-indigo-200">الجدول الذكي والتحضير اليومي (من الأول متوسط إلى السادس إعدادي)</p>
         </div>
       </div>
       <!-- Tab Controls -->
-      <div class="flex items-center gap-2 bg-indigo-950 p-1 rounded-lg self-center">
+      <div class="flex items-center gap-2 bg-indigo-950 p-1 rounded-lg">
         <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-sm font-semibold rounded-md transition bg-amber-500 text-indigo-950 shadow">
           <i class="fa-solid fa-user-graduate ml-1"></i> واجهة الطالب
         </button>
         <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-sm font-semibold rounded-md transition text-slate-300 hover:text-white">
-          <i class="fa-solid fa-[#1e1b4b] fa-user-tie ml-1"></i> لوحة الإدارة والمعلمين
+          <i class="fa-solid fa-user-tie ml-1"></i> لوحة الإدارة والمعلمين
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Notification Banner for Auto-delete -->
-  <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-3 text-xs sm:text-sm text-center font-medium shadow-inner">
-    <i class="fa-solid fa-clock-history ml-1 text-amber-600"></i>
-    ملاحظة: تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً من كل يوم.
+  <!-- Notification Banner -->
+  <div class="bg-amber-100 border-r-4 border-amber-500 text-amber-900 p-2.5 text-xs sm:text-sm text-center font-medium shadow-inner">
+    <i class="fa-solid fa-clock ml-1 text-amber-600"></i>
+    تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً لكل يوم.
   </div>
 
   <main class="container mx-auto px-4 py-6">
@@ -49,7 +49,7 @@
     <!-- ========================================== -->
     <section id="studentView" class="space-y-6">
       
-      <!-- Student Controls -->
+      <!-- Student Grade Selection & Info -->
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <label for="studentGradeSelect" class="font-bold text-slate-700 whitespace-nowrap">اختر الصف الدراسي:</label>
@@ -70,41 +70,35 @@
         </div>
       </div>
 
-      <!-- Schedule / Preparation for Today -->
+      <!-- Schedule / Daily Preparation -->
       <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
         <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
           <h2 class="text-lg font-bold text-indigo-950 flex items-center gap-2">
             <i class="fa-solid fa-book-open text-amber-500"></i>
             جدول التحضير اليومي
           </h2>
-          <!-- Day filter -->
-          <div class="flex gap-1 overflow-x-auto text-xs" id="dayFilterTabs">
-            <!-- Populated JS -->
-          </div>
+          <!-- Day Filter -->
+          <div class="flex gap-1 overflow-x-auto text-xs" id="dayFilterTabs"></div>
         </div>
 
-        <div id="studentScheduleContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Populated by JS -->
-        </div>
+        <div id="studentScheduleContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3"></div>
       </div>
 
-      <!-- Active Homeworks & Lectures -->
+      <!-- Homework & Lectures -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        <!-- Homeworks Section -->
+        <!-- Homework List -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
           <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
             <h3 class="font-bold text-indigo-950 flex items-center gap-2">
-              <i class="fa-solid fa-pen-ruler text-rose-500"></i> الواجبات المنزلية النشطة
+              <i class="fa-solid fa-pen-ruler text-rose-500"></i> الواجبات المنزلية
             </h3>
             <span id="hwCountBadge" class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
           </div>
-          <div id="studentHwList" class="space-y-3">
-            <!-- Homework cards -->
-          </div>
+          <div id="studentHwList" class="space-y-3"></div>
         </div>
 
-        <!-- Lectures Section -->
+        <!-- Lectures List -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
           <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
             <h3 class="font-bold text-indigo-950 flex items-center gap-2">
@@ -112,13 +106,10 @@
             </h3>
             <span id="lecCountBadge" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
           </div>
-          <div id="studentLecList" class="space-y-3">
-            <!-- Lecture cards -->
-          </div>
+          <div id="studentLecList" class="space-y-3"></div>
         </div>
 
       </div>
-
     </section>
 
     <!-- ========================================== -->
@@ -126,25 +117,51 @@
     <!-- ========================================== -->
     <section id="adminView" class="hidden space-y-6">
 
-      <div class="bg-indigo-900 text-white p-4 rounded-xl shadow-md flex justify-between items-center">
+      <div class="bg-indigo-900 text-white p-4 rounded-xl shadow-md flex justify-between items-center flex-wrap gap-3">
         <div>
           <h2 class="font-bold text-lg">لوحة التحكم وإدارة كافة الصفوف الثانوية</h2>
-          <p class="text-xs text-indigo-200">إضافة الجداول والواجبات والمحاضرات لجميع الصفوف الدراسية</p>
+          <p class="text-xs text-indigo-200">رفع وقراءة الجداول بالذكاء الاصطناعي وإدارة المحاضرات والواجبات</p>
         </div>
         <button onclick="resetAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow transition">
           <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات
         </button>
       </div>
 
-      <!-- ALL GRADES SCHEDULE MANAGEMENT -->
+      <!-- AI SCHEDULE UPLOADER & OCR -->
+      <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-5 rounded-xl shadow-md space-y-4">
+        <div class="flex items-center gap-2 border-b border-slate-700 pb-2">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xl"></i>
+          <h3 class="font-bold text-base">استخراج الجدول الذكي من الصورة / PDF (كافة الصفوف)</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+          <div>
+            <label class="block text-xs text-slate-300 font-semibold mb-1">مفتاح Gemini API (مطلوب للتحليل الذكي):</label>
+            <input type="password" id="apiKeyInput" placeholder="أدخل API Key..." class="w-full bg-slate-800 border border-slate-700 text-white text-xs p-2 rounded focus:outline-none focus:border-amber-400">
+          </div>
+          
+          <div>
+            <label class="block text-xs text-slate-300 font-semibold mb-1">اختر ملف الجدول (صورة أو PDF):</label>
+            <input type="file" id="scheduleFileInput" accept="image/*,.pdf" class="w-full bg-slate-800 border border-slate-700 text-xs text-slate-300 rounded p-1.5 cursor-pointer">
+          </div>
+
+          <div>
+            <button onclick="analyzeScheduleWithAI()" id="aiAnalyzeBtn" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs py-2.5 px-4 rounded shadow flex items-center justify-center gap-2 transition">
+              <i class="fa-solid fa-brain"></i> تحليل وتعبئة كافة الصفوف
+            </button>
+          </div>
+        </div>
+        <p id="aiStatus" class="text-xs text-amber-300 hidden font-semibold"></p>
+      </div>
+
+      <!-- ALL GRADES SCHEDULE TABLE -->
       <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-4 border-b border-slate-100 pb-3">
           <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
-            <i class="fa-solid fa-table text-indigo-600"></i> جدول التحضير لكافة الصفوف
+            <i class="fa-solid fa-table text-indigo-600"></i> جدول الحصص اليدوي لكل صف
           </h3>
-          <!-- Admin Grade Selector -->
           <div class="flex items-center gap-2">
-            <label class="text-xs font-semibold text-slate-600">اختر الصف:</label>
+            <label class="text-xs font-semibold text-slate-600">عرض جدول صف:</label>
             <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-slate-50 border border-slate-300 text-xs font-bold rounded-lg p-2">
               <option value="1m">الأول متوسط</option>
               <option value="2m">الثاني متوسط</option>
@@ -156,7 +173,6 @@
           </div>
         </div>
 
-        <!-- Schedule Editor Form -->
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-right text-slate-600 border-collapse">
             <thead class="text-xs text-slate-700 uppercase bg-slate-100">
@@ -171,9 +187,7 @@
                 <th class="p-2 border text-center">حفظ</th>
               </tr>
             </thead>
-            <tbody id="adminScheduleTbody">
-              <!-- JS Populated table rows for days -->
-            </tbody>
+            <tbody id="adminScheduleTbody"></tbody>
           </table>
         </div>
       </div>
@@ -204,10 +218,10 @@
             </div>
             <div>
               <label class="block text-xs font-semibold mb-1">تفاصيل الواجب:</label>
-              <textarea id="hwDesc" required placeholder="اكتب المطلوب حله والملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
+              <textarea id="hwDesc" required placeholder="اكتب المطلوبة حله والملاحظات..." class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded h-20"></textarea>
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1">تاريخ التسليم النهائي (يحذف تلقائياً الساعة 12:00 ظهراً لهذا اليوم):</label>
+              <label class="block text-xs font-semibold mb-1">تاريخ الواجب (يحذف تلقائياً 12:00 ظهراً لهذا اليوم):</label>
               <input type="date" id="hwDueDate" required class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
             </div>
             <button type="submit" class="w-full bg-rose-600 text-white font-bold text-xs py-2.5 rounded shadow hover:bg-rose-700 transition">
@@ -235,7 +249,7 @@
             </div>
             <div>
               <label class="block text-xs font-semibold mb-1">عنوان المحاضرة:</label>
-              <input type="text" id="lecTitle" required placeholder="مثال: حل معادل الفصل الأول" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
+              <input type="text" id="lecTitle" required placeholder="مثال: حل مسائل الفصل الأول" class="w-full bg-slate-50 border border-slate-300 text-xs p-2 rounded">
             </div>
             <div>
               <label class="block text-xs font-semibold mb-1">المادة:</label>
@@ -258,7 +272,6 @@
   </main>
 
   <script>
-    // System Days
     const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
     const GRADES = {
       '1m': 'الأول متوسط',
@@ -269,7 +282,6 @@
       '6h': 'السادس إعدادي'
     };
 
-    // State Management
     let db = {
       schedules: JSON.parse(localStorage.getItem('sec_schedules')) || {},
       homeworks: JSON.parse(localStorage.getItem('sec_homeworks')) || [],
@@ -290,7 +302,6 @@
       return DAYS.includes(today) ? today : 'الأحد';
     }
 
-    // Switch between Student and Admin tabs
     function switchTab(tab) {
       const studentView = document.getElementById('studentView');
       const adminView = document.getElementById('adminView');
@@ -312,15 +323,15 @@
       }
     }
 
-    // Default Initialization
     function initData() {
       document.getElementById('currentDayName').innerText = getCurrentDayName();
       document.getElementById('hwDueDate').valueAsDate = new Date();
       
-      // Auto-cleanup expired homeworks right away
+      const storedKey = localStorage.getItem('gemini_api_key');
+      if (storedKey) document.getElementById('apiKeyInput').value = storedKey;
+
       cleanupExpiredHomeworks();
-      
-      // Build filter tabs for student
+
       const filterTabsContainer = document.getElementById('dayFilterTabs');
       filterTabsContainer.innerHTML = DAYS.map(day => `
         <button onclick="changeStudentDayFilter('${day}')" class="px-3 py-1 rounded-full border ${selectedDayFilter === day ? 'bg-indigo-900 text-white border-indigo-900' : 'bg-slate-100 text-slate-600 border-slate-200'} whitespace-nowrap">
@@ -336,16 +347,14 @@
       initData();
     }
 
-    // Render Student Dashboard
     function renderStudentDashboard() {
       cleanupExpiredHomeworks();
       const grade = document.getElementById('studentGradeSelect').value;
 
-      // Render Schedule
       const scheduleContainer = document.getElementById('studentScheduleContainer');
       const daySchedule = (db.schedules[grade] && db.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
 
-      if (daySchedule.every(slot => !slot.trim())) {
+      if (daySchedule.every(slot => !slot || !slot.trim())) {
         scheduleContainer.innerHTML = `
           <div class="col-span-full py-8 text-center text-slate-400">
             <i class="fa-solid fa-calendar-xmark text-3xl mb-2"></i>
@@ -354,37 +363,31 @@
         `;
       } else {
         scheduleContainer.innerHTML = daySchedule.map((subject, idx) => `
-          <div class="p-3 rounded-lg border ${subject ? 'bg-indigo-50/50 border-indigo-100' : 'bg-slate-50 border-slate-100 opacity-60'}">
-            <div class="flex justify-between text-xs text-indigo-500 font-bold mb-1">
-              <span>الحصة ${idx + 1}</span>
-            </div>
-            <div class="font-bold text-slate-800 text-sm">
-              ${subject || 'فراغ'}
-            </div>
+          <div class="p-3 rounded-lg border ${subject ? 'bg-indigo-50/60 border-indigo-100' : 'bg-slate-50 border-slate-100 opacity-50'}">
+            <div class="text-[11px] text-indigo-600 font-bold mb-1">الحصة ${idx + 1}</div>
+            <div class="font-bold text-slate-800 text-sm">${subject || 'فراغ'}</div>
           </div>
         `).join('');
       }
 
-      // Render Homeworks for selected grade
       const hwContainer = document.getElementById('studentHwList');
       const filteredHws = db.homeworks.filter(h => h.grade === grade);
       document.getElementById('hwCountBadge').innerText = filteredHws.length;
 
       if (filteredHws.length === 0) {
-        hwContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد واجبات منزلية مطلوبة حالياً.</p>`;
+        hwContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">لا يوجد واجبات نشطة لهذا الصف.</p>`;
       } else {
         hwContainer.innerHTML = filteredHws.map(hw => `
           <div class="p-3 bg-rose-50/40 rounded-lg border border-rose-100 space-y-1">
             <div class="flex justify-between items-center">
               <span class="text-xs font-bold bg-rose-200 text-rose-800 px-2 py-0.5 rounded">${hw.subject}</span>
-              <span class="text-[10px] text-slate-500"><i class="fa-solid fa-clock ml-1"></i>ينتهي: ${hw.dueDate} (12:00 ظهراً)</span>
+              <span class="text-[10px] text-slate-500"><i class="fa-solid fa-clock ml-1"></i>ينتهي 12:00 ظهراً (${hw.dueDate})</span>
             </div>
             <p class="text-xs text-slate-700 font-semibold mt-1">${hw.desc}</p>
           </div>
         `).join('');
       }
 
-      // Render Lectures
       const lecContainer = document.getElementById('studentLecList');
       const filteredLecs = db.lectures.filter(l => l.grade === grade);
       document.getElementById('lecCountBadge').innerText = filteredLecs.length;
@@ -404,7 +407,6 @@
       }
     }
 
-    // Render Admin Schedule Table
     function renderAdminScheduleTable() {
       const grade = document.getElementById('adminGradeSelect').value;
       const tbody = document.getElementById('adminScheduleTbody');
@@ -416,7 +418,7 @@
             <td class="p-2 font-bold text-indigo-900 border">${day}</td>
             ${row.map((slot, idx) => `
               <td class="p-1 border">
-                <input type="text" id="slot_${day}_${idx}" value="${slot}" placeholder="المادة" class="w-full text-xs p-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-indigo-500">
+                <input type="text" id="slot_${day}_${idx}" value="${slot || ''}" placeholder="المادة" class="w-full text-xs p-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-indigo-500">
               </td>
             `).join('')}
             <td class="p-2 border text-center">
@@ -442,7 +444,80 @@
       alert(`تم حفظ جدول يوم ${day} لصف ${GRADES[grade]}`);
     }
 
-    // Handlers for Add Homework / Lecture
+    // AI Vision Table Analysis
+    async function analyzeScheduleWithAI() {
+      const apiKey = document.getElementById('apiKeyInput').value.trim();
+      const fileInput = document.getElementById('scheduleFileInput');
+      const statusEl = document.getElementById('aiStatus');
+      const btn = document.getElementById('aiAnalyzeBtn');
+
+      if (!apiKey) { alert('يرجى أدخال مفتاح Gemini API أولاً.'); return; }
+      if (!fileInput.files.length) { alert('يرجى اختيار ملف الصورة أو PDF الخاص بالجدول.'); return; }
+
+      localStorage.setItem('gemini_api_key', apiKey);
+      const file = fileInput.files[0];
+
+      statusEl.classList.remove('hidden');
+      statusEl.innerText = 'جاري تحليل الصورة واستخراج جدول الحصص لكافة الصفوف بالذكاء الاصطناعي...';
+      btn.disabled = true;
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        try {
+          const base64Data = reader.result.split(',')[1];
+          const mimeType = file.type || 'image/png';
+
+          const promptText = `
+          أنت خبير قراءة جداول مدرسية. حلل الصورة المرفقة واستخرج جدول الحصص لكافة الصفوف التالية:
+          1m (الأول متوسط), 2m (الثاني متوسط), 3m (الثالث متوسط), 4h (الرابع إعدادي), 5h (الخامس إعدادي), 6h (السادس إعدادي).
+          أيام الأسبوع هي: "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس".
+          لكل يوم هناك 6 حصص.
+
+          أرجع الإجابة فقط كـ JSON خالص بدون أي نص إضافي أو علامات مقتبسة بسيطة بالشكل التالي:
+          {
+            "1m": { "الأحد": ["مادة1", "مادة2", "مادة3", "مادة4", "مادة5", "مادة6"], "الإثنين": [...] },
+            "2m": { ... },
+            "3m": { ... },
+            "4h": { ... },
+            "5h": { ... },
+            "6h": { ... }
+          }
+          `;
+
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [
+                  { text: promptText },
+                  { inline_data: { mime_type: mimeType, data: base64Data } }
+                ]
+              }]
+            })
+          });
+
+          const result = await response.json();
+          const rawText = result.candidates[0].content.parts[0].text;
+          const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+          const extractedSchedules = JSON.parse(cleanJson);
+
+          db.schedules = extractedSchedules;
+          saveDB();
+
+          statusEl.innerText = 'تم تحليل الجدول وتحديث حصص كافة الصفوف بنجاح!';
+          renderAdminScheduleTable();
+          renderStudentDashboard();
+        } catch (err) {
+          console.error(err);
+          statusEl.innerText = 'حدث خطأ أثناء التحليل. تأكد من صحة المفتاح وملف الجدول.';
+        } finally {
+          btn.disabled = false;
+        }
+      };
+    }
+
     function handleAddHomework(e) {
       e.preventDefault();
       const grade = document.getElementById('hwTargetGrade').value;
@@ -456,6 +531,7 @@
       document.getElementById('hwSubject').value = '';
       document.getElementById('hwDesc').value = '';
       alert('تم إدراج الواجب بنجاح');
+      renderStudentDashboard();
     }
 
     function handleAddLecture(e) {
@@ -472,28 +548,21 @@
       document.getElementById('lecSubject').value = '';
       document.getElementById('lecLink').value = '';
       alert('تم رفع المحاضرة بنجاح');
+      renderStudentDashboard();
     }
 
-    // Auto-Delete Logic for Homeworks past 12:00 PM
     function cleanupExpiredHomeworks() {
       const now = new Date();
-      
       db.homeworks = db.homeworks.filter(hw => {
         if (!hw.dueDate) return true;
-        
-        // Expiration threshold: 12:00:00 PM of the target due date
         const expirationDate = new Date(`${hw.dueDate}T12:00:00`);
-        
-        // If current time is past 12:00 PM on/after expiration date, remove it
         return now < expirationDate;
       });
-
       saveDB();
     }
 
-    // Reset All Data
     function resetAllData() {
-      if (confirm('هل أنت تأكد من إزاحة كافة البيانات والجداول من النظام؟')) {
+      if (confirm('هل أنت تأكد من مسح كافة البيانات والجداول من النظام؟')) {
         localStorage.clear();
         db = { schedules: {}, homeworks: [], lectures: [] };
         initData();
@@ -501,10 +570,7 @@
       }
     }
 
-    // Automatic Cron Check Every Minute
     setInterval(cleanupExpiredHomeworks, 60000);
-
-    // Initial Load
     initData();
   </script>
 </body>
