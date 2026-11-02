@@ -80,7 +80,7 @@
     </div>
   </header>
 
-  <!-- Notification Banner -->
+  <!-- Notification Banner (نظيف وخالي من أي رموز) -->
   <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200 text-amber-900 py-3 px-4 text-xs sm:text-sm text-center font-bold shadow-sm flex items-center justify-center gap-2">
     <i class="fa-solid fa-clock text-amber-600 text-base animate-pulse"></i>
     <span>تُحذف الواجبات اليومية تلقائياً عند تمام الساعة 12:00 ظهراً بتوقيت العراق من يوم التسليم[span_0](start_span)[span_0](end_span).</span>
@@ -687,11 +687,10 @@
       const hw = db.homeworks.find(h => h.id == id);
       if (!hw) return;
 
-      document.getElementById('editHwId').value = hw.grade;
+      document.getElementById('editHwId').value = hw.id;
       document.getElementById('hwTargetGrade').value = hw.grade;
       document.getElementById('hwDay').value = hw.day;
       updateHwSubjectsDropdown();
-      document.getElementById('editHwId').value = hw.id;
       document.getElementById('hwSubjectSelect').value = hw.subject;
       document.getElementById('hwDesc').value = hw.desc || '';
       document.getElementById('hwDueDate').value = hw.dueDate || '';
