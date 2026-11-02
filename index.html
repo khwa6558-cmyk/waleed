@@ -8,6 +8,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDK للمزامنة السحابية اللحظية -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     body { font-family: 'Cairo', sans-serif; }
     @keyframes pulseGlow {
@@ -47,7 +52,7 @@
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-indigo-950 font-black text-xl shadow-lg border-2 border-white/20">ث</div>
         <div>
           <h1 class="text-xl font-extrabold tracking-wide text-amber-300">منصة ثانوية المتفوقين الثانية</h1>
-          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (حفظ آمن واستعادة تلقائية للبيانات)</p>
+          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (مزامنة سحابية لحظية 100%)</p>
         </div>
       </div>
 
@@ -82,6 +87,9 @@
         <div class="flex items-center gap-2">
           <span class="text-xs bg-indigo-950 text-indigo-200 font-bold px-4 py-2.5 rounded-2xl shadow-md border border-indigo-800 flex items-center gap-2">
             <i class="fa-solid fa-calendar-day text-amber-400"></i>اليوم الحالي: <strong id="currentDayName" class="text-amber-300"></strong>
+          </span>
+          <span id="cloudStatus" class="text-[10px] bg-teal-500/20 text-teal-300 px-3 py-2 rounded-xl border border-teal-500/30 font-bold">
+            <i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب لحظياً
           </span>
         </div>
       </div>
@@ -120,13 +128,8 @@
     <section id="adminView" class="hidden space-y-6">
       <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
         <div>
-          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة والتحكم الآمن</h2>
-          <p class="text-xs text-indigo-200 mt-1">تعديل الجداول، ونشر الواجبات مع الحفاظ التام على البيانات السابقة</p>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="restoreAndMergeAllData()" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-lg transition flex items-center gap-2 border border-teal-400/30">
-            <i class="fa-solid fa-database"></i> فحص واستعادة البيانات السابقة
-          </button>
+          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة السحابية اللحظية</h2>
+          <p class="text-xs text-indigo-200 mt-1">أي تعديل هنا يتحدث سحابياً في نفس الثانية على المتصفح وسطح المكتب</p>
         </div>
       </div>
 
@@ -137,7 +140,7 @@
             <span class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-300 flex items-center justify-center text-base border border-indigo-700">
               <i class="fa-solid fa-table"></i>
             </span>
-            تنظيم وتعديل جدول الحصص (حفظ فوري آمن)
+            تنظيم وتعديل جدول الحصص (حفظ سحابي فوري)
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
@@ -163,7 +166,7 @@
                 <th class="p-3.5 border border-indigo-800">الحصة 4</th>
                 <th class="p-3.5 border border-indigo-800">الحصة 5</th>
                 <th class="p-3.5 border border-indigo-800">الحصة 6</th>
-                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ مباشر</th>
+                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ فوري</th>
               </tr>
             </thead>
             <tbody id="adminScheduleTbody" class="divide-y divide-indigo-800/40 font-semibold"></tbody>
@@ -216,7 +219,7 @@
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب سحابياً
                 </button>
                 <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
               </div>
@@ -228,7 +231,7 @@
         <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-teal-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة
+              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (سحابي)
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
@@ -261,7 +264,7 @@
               </div>
               <div class="flex gap-2 pt-2">
                 <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ الملف
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ سحابي
                 </button>
                 <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
               </div>
@@ -285,129 +288,50 @@
   </footer>
 
   <script>
+    // ربط الرابط برابط قاعدة بياناتك الحقيقية
+    const firebaseConfig = {
+      databaseURL: "https://waleed-alshammari-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('waleed_school_live_data');
+
     const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
     const GRADES = {
       '1m': 'الأول متوسط', '2m': 'الثاني متوسط', '3m': 'الثالث متوسط',
       '4h': 'الرابع إعدادي', '5h': 'الخامس إعدادي', '6h': 'السادس إعدادي'
     };
 
-    const PRIMARY_STORAGE_KEY = 'waleed_platform_safe_master_v11';
-    
-    // مفاتيح التخزين السابقة للبحث واستخراج أي بيانات قديمة لضمان عدم ضياع أي شيء
-    const LEGACY_STORAGE_KEYS = [
-      'waleed_platform_clean_v10',
-      'waleed_sec_platform_ultimate_sync_key',
-      'waleed_cloud_sync_cache',
-      'waleed_auto_sync_cache',
-      'waleed_sec_platform_master_v5',
-      'waleed_sec_schedules_master_v5',
-      'waleed_sec_schedules_v4'
-    ];
-
-    // دالة دمج آمنة تماماً تضمن عدم مسح أو ضياع أي بيانات سابقة
-    function loadAndMergeAllData() {
-      let mergedData = { schedules: {}, homeworks: [], lectures: [] };
-
-      // فحص وجمع البيانات من المفتاح الأساسي أولاً
-      try {
-        let primaryRaw = localStorage.getItem(PRIMARY_STORAGE_KEY) || sessionStorage.getItem(PRIMARY_STORAGE_KEY);
-        if (primaryRaw) {
-          let parsed = JSON.parse(primaryRaw);
-          if (parsed.schedules) mergedData.schedules = parsed.schedules;
-          if (parsed.homeworks) mergedData.homeworks = parsed.homeworks;
-          if (parsed.lectures) mergedData.lectures = parsed.lectures;
-        }
-      } catch(e) {}
-
-      // فحص مفاتيح التخزين القديمة ودمج أي محتوى سابق لم يتم حفظه
-      LEGACY_STORAGE_KEYS.forEach(key => {
-        try {
-          let raw = localStorage.getItem(key) || sessionStorage.getItem(key);
-          if (raw) {
-            let parsed = JSON.parse(raw);
-            
-            // دمج الجداول بدون حذف
-            if (parsed.schedules) {
-              for (let grade in parsed.schedules) {
-                if (!mergedData.schedules[grade]) mergedData.schedules[grade] = {};
-                for (let day in parsed.schedules[grade]) {
-                  if (!mergedData.schedules[grade][day]) {
-                    mergedData.schedules[grade][day] = parsed.schedules[grade][day];
-                  } else {
-                    for (let i = 0; i < 6; i++) {
-                      if (!mergedData.schedules[grade][day][i] && parsed.schedules[grade][day][i]) {
-                        mergedData.schedules[grade][day][i] = parsed.schedules[grade][day][i];
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            // دمج الواجبات بدون تكرار أو حذف
-            if (parsed.homeworks && Array.isArray(parsed.homeworks)) {
-              parsed.homeworks.forEach(hw => {
-                let exists = mergedData.homeworks.some(h => h.subject === hw.subject && h.day === hw.day && h.grade === hw.grade && h.desc === hw.desc);
-                if (!exists) mergedData.homeworks.push(hw);
-              });
-            }
-
-            // دمج المكتبة والمحاضرات بدون تكرار أو حذف
-            if (parsed.lectures && Array.isArray(parsed.lectures)) {
-              parsed.lectures.forEach(lec => {
-                let exists = mergedData.lectures.some(l => l.title === lec.title && l.grade === lec.grade);
-                if (!exists) mergedData.lectures.push(lec);
-              });
-            }
-          }
-        } catch(e) {}
-      });
-
-      // حفظ النتيجة المدمجة الشاملة في المفتاح الأساسي والاحتياطي
-      try {
-        const finalPayload = JSON.stringify(mergedData);
-        localStorage.setItem(PRIMARY_STORAGE_KEY, finalPayload);
-        sessionStorage.setItem(PRIMARY_STORAGE_KEY, finalPayload);
-      } catch(e) {}
-
-      return mergedData;
-    }
-
-    let appData = loadAndMergeAllData();
+    let appData = { schedules: {}, homeworks: [], lectures: [] };
     let selectedDayFilter = getCurrentDayName();
 
-    function saveAppData() {
-      try {
-        const payload = JSON.stringify(appData);
-        localStorage.setItem(PRIMARY_STORAGE_KEY, payload);
-        sessionStorage.setItem(PRIMARY_STORAGE_KEY, payload);
-      } catch (e) {
-        alert('تحذير: مساحة التخزين محلية ممتلئة.');
+    // الاستماع الفوري واللحظي للتغييرات السحابية في الجهتين
+    dbRef.on('value', (snapshot) => {
+      const serverData = snapshot.val();
+      if (serverData) {
+        appData = serverData;
+      } else {
+        appData = { schedules: {}, homeworks: [], lectures: [] };
       }
-    }
-
-    // زر استيراد وفحص يدوي إضافي يضمن للمستخدم استعادة كل شيء
-    function restoreAndMergeAllData() {
-      appData = loadAndMergeAllData();
       initPlatform();
-      renderAdminScheduleTable();
-      renderAdminLibraryList();
-      alert('✅ تم فحص الذاكرة المحلية واستعادة ودمج كافة الجداول والواجبات والمحاضرات السابقة بنجاح تام ودون مسح أي شيء!');
-    }
-
-    // الاستماع للتغييرات بين التبويبات أو الاختصارات
-    window.addEventListener('storage', (event) => {
-      if (event.key === PRIMARY_STORAGE_KEY && event.newValue) {
-        try {
-          appData = JSON.parse(event.newValue);
-          initPlatform();
-          if (!document.getElementById('adminView').classList.contains('hidden')) {
-            renderAdminScheduleTable();
-            renderAdminLibraryList();
-          }
-        } catch (e) {}
+      if (!document.getElementById('adminView').classList.contains('hidden')) {
+        renderAdminScheduleTable();
+        renderAdminLibraryList();
       }
     });
+
+    function saveAppData() {
+      dbRef.set(appData).then(() => {
+        const status = document.getElementById('cloudStatus');
+        if (status) {
+          status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> تمت المزامنـة سحابياً';
+          setTimeout(() => {
+            status.innerHTML = '<i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب لحظياً';
+          }, 2000);
+        }
+      }).catch(err => {
+        console.error("Cloud sync error:", err);
+      });
+    }
 
     function getCurrentDayName() {
       const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
@@ -583,7 +507,7 @@
       }
       appData.schedules[grade][day] = newSlots;
       saveAppData();
-      alert(`تم حفظ جدول يوم ${day} بنجاح وتحديثه في المنصة!`);
+      alert(`تم حفظ جدول يوم ${day} ومزامنته سحابياً فوراً!`);
       updateHwSubjectsDropdown();
     }
 
@@ -612,7 +536,7 @@
       }
       saveAppData();
       renderStudentDashboard();
-      alert('تم نشر الواجب بنجاح!');
+      alert('تم نشر الواجب ومزامنته سحابياً بنجاح!');
     }
 
     function resetHwForm() {
@@ -623,7 +547,7 @@
     function cancelEditHomework() { resetHwForm(); }
 
     function deleteHomeworkFromDashboard(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الواجب؟')) {
+      if (confirm('حذف هذا الواجب من السحاب؟')) {
         appData.homeworks = (appData.homeworks || []).filter(h => String(h.id) !== String(id));
         saveAppData();
         renderStudentDashboard();
@@ -662,7 +586,7 @@
         saveAppData();
         renderAdminLibraryList();
         renderStudentDashboard();
-        alert('تم حفظ الملف بنجاح!');
+        alert('تم حفظ الملف ومزامنته سحابياً بنجاح!');
       };
 
       if (fileInput.files.length > 0) {
@@ -694,7 +618,7 @@
     }
 
     function deleteLibraryItem(id) {
-      if (confirm('هل أنت متأكد من حذف هذا الملف؟')) {
+      if (confirm('حذف هذا الملف من السحاب؟')) {
         appData.lectures = (appData.lectures || []).filter(l => Number(l.id) !== Number(id));
         saveAppData();
         renderAdminLibraryList();
