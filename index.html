@@ -129,7 +129,7 @@
 
         textarea {
             resize: vertical;
-            height: 100px;
+            height: 110px;
         }
 
         .student-box {
@@ -273,11 +273,11 @@
 <body>
 
 <div class="container">
-    <h2>منصة الامتحان الشفهي الذكية والمطورة 🎓</h2>
+    <h2>منصة الامتحان الشفهي الذكية والمطورة (الإصدار النهائي v2) 🎓</h2>
     
-    <!-- واجهة الفقاعات التفاعلية للغرف -->
+    <!-- واجهة فقاعات الغرف التفاعلية -->
     <div id="rooms-view">
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 18px; font-weight: 600;">انقر على فقاعة الغرفة للدخول إلى القاعة واختبار الطلاب:</p>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 18px; font-weight: 600;">انقر على فقاعة الغرفة للدخول (تنطلق عبارة هلاووو مع اسم الغرفة):</p>
         <div class="bubbles-container">
             <div class="bubble" onclick="clickBubble(this, 'غرفة الرابع أ', 'الرابع', 'أ')">
                 <h3>الرابع أ</h3>
@@ -298,7 +298,7 @@
         </div>
     </div>
 
-    <!-- واجهة الإعدادات المستقلة لكل غرفة -->
+    <!-- واجهة الإعدادات والأسماء والأسئلة -->
     <div class="section-box hidden" id="setup-view">
         <h3 id="room-title-setup" style="color: var(--primary); text-align: center; margin-bottom: 20px; font-size: 22px;"></h3>
         
@@ -401,11 +401,10 @@
         }
     }
 
-    // دوال الأصوات: تصفيق عند النجاح، ونطق "أووووو لا لا لا" عند الخطأ
+    // المؤثرات الصوتية: تصفيق للصح، ونطق "أووووو لا لا لا" للخطأ
     function playSoundEffect(isCorrect) {
         try {
             if (isCorrect) {
-                // صوت تصفيق مدمج عبر Web Audio API (توليد أصوات ضوضائية متسلسلة تحاكي التصفيق)
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 for (let i = 0; i < 5; i++) {
                     setTimeout(() => {
@@ -430,7 +429,6 @@
                     }, i * 80);
                 }
             } else {
-                // نطق "أووووو لا لا لا" بصوت بشري تفاعلي
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance("أووووو... لا لا لا!");
@@ -517,15 +515,23 @@
 
         let qList = [];
         const qText = document.getElementById("questions-textarea").value.trim();
-        if (qText.length > 10) {
-            let parts = qText.split('س:').filter(p => p.trim().length > 10);
+        if (qText.length > 5) {
+            let parts = qText.split('س:').filter(p => p.trim().length > 5);
+            if (parts.length === 0) parts = qText.split('\n').filter(p => p.trim().length > 5);
             qList = parts.map(p => {
                 let lines = p.split('\n').map(l => l.trim()).filter(l => l.length > 2);
-                let questionTitle = lines[0] || "سؤال شفهي منهجى";
+                let questionTitle = lines[0] || p;
                 let opts = lines.slice(1, 5);
-                if (opts.length < 4) opts = ["الخيار الأول", "الخيار الثاني", "الخيار الثالث", "الخيار الرابع"];
+                if (opts.length < 4) {
+                    opts = [
+                        questionTitle.substring(0, 30) + " (صحيح)",
+                        "خيار مضلل أول للاختبار",
+                        "خيار مضلل ثانٍ للاختبار",
+                        "خيار مضلل ثالث للاختبار"
+                    ];
+                }
                 return {
-                    q: questionTitle,
+                    q: "س: " + questionTitle,
                     correct: opts[0],
                     options: [...opts]
                 };
