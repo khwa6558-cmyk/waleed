@@ -1,705 +1,654 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة ثانوية المتفوقين الثانية - التحضير اليومي</title>
-  <!-- Tailwind CSS & FontAwesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- Firebase SDK للمزامنة السحابية اللحظية -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الامتحان الشفهي الذكية والمطورة</title>
+    <!-- مكتبة قراءة ملفات الـ PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
 
-  <style>
-    body { font-family: 'Cairo', sans-serif; }
-    @keyframes pulseGlow {
-      0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3); }
-      50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.5); }
-    }
-    .neon-text { animation: pulseGlow 2s infinite ease-in-out; }
-    @keyframes marqueeLeftToRight {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    .marquee-container { display: flex; width: 100%; overflow: hidden; white-space: nowrap; }
-    .marquee-text { display: inline-flex; animation: marqueeLeftToRight 22s linear infinite; }
-    .page-gradient-bg { background: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #0f172a 100%); }
-  </style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .room-card {
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+            transition: 0.2s;
+        }
+
+        .room-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+        }
+
+        .section-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 700;
+            color: var(--text-main);
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        textarea, input[type="text"], input[type="file"], button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .student-box {
+            background: #eef2ff;
+            border: 2px dashed var(--primary);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .student-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .editable-name-input {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            border: 2px solid transparent;
+            background: transparent;
+            border-radius: 8px;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .editable-name-input:focus {
+            border-color: var(--primary);
+            background: white;
+            outline: none;
+        }
+
+        .question-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 22px;
+            border-radius: 16px;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+            color: #b45309;
+            line-height: 1.6;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            color: var(--text-main);
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 18px;
+            color: var(--danger);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .btn-start { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
+        .btn-start:hover { background-color: var(--primary-hover); }
+
+        .btn-action { background-color: var(--success); color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
+        .btn-action:hover { background-color: #059669; }
+
+        .btn-back { background-color: #64748b; color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
+        .btn-back:hover { background-color: #475569; }
+
+        #alert-banner {
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 17px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .alert-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+        th, td {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 12px;
+            text-align: center;
+            font-size: 15px;
+        }
+        th { background-color: #f8fafc; color: var(--text-muted); font-weight: 700; }
+        
+        .table-name-input {
+            border: 1px solid transparent;
+            background: transparent;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+            padding: 4px;
+            border-radius: 6px;
+        }
+        .table-name-input:focus {
+            border-color: var(--primary);
+            background: #f8fafc;
+            outline: none;
+        }
+
+        .hidden { display: none; }
+    </style>
 </head>
-<body class="page-gradient-bg text-slate-100 min-h-screen flex flex-col justify-between">
+<body>
 
-  <!-- MOVING BANNER -->
-  <div class="bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-950 text-amber-300 py-3 shadow-md overflow-hidden border-b-2 border-amber-500/30 relative z-50">
-    <div class="marquee-container">
-      <div class="marquee-text font-black text-base sm:text-lg tracking-wider neon-text items-center">
-        <span class="mx-8 inline-flex items-center gap-2">
-          <i class="fa-solid fa-code text-amber-400"></i> إعداد و برمجة: WALEED ALSHAMMARI <i class="fa-solid fa-laptop-code text-amber-400"></i>
-        </span>
-        <span class="mx-8 inline-flex items-center gap-2 text-white">
-          ★ منصة ثانوية المتفوقين الثانية للتحضير اليومي والجدول المدرسي ★
-        </span>
-      </div>
+<div class="container">
+    <h2>منصة الامتحان الشفهي الذكية والمطورة</h2>
+    
+    <div id="rooms-view">
+        <h3 style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 18px;">اختر غرفة الشعبة لبدء جلسة الاختبار:</h3>
+        <div class="rooms-grid">
+            <div class="room-card" onclick="openRoom('الرابع (أ)', 'الرابع', 'أ')">غرفة الرابع أ 🏫</div>
+            <div class="room-card" onclick="openRoom('الرابع (ب)', 'الرابع', 'ب')">غرفة الرابع ب 🏫</div>
+            <div class="room-card" onclick="openRoom('الخامس (أ)', 'الخامس', 'أ')">غرفة الخامس أ 🏫</div>
+            <div class="room-card" onclick="openRoom('الخامس (ب)', 'الخامس', 'ب')">غرفة الخامس ب 🏫</div>
+        </div>
     </div>
-  </div>
 
-  <!-- Header -->
-  <header class="bg-indigo-950/80 backdrop-blur-md text-white shadow-xl sticky top-0 z-40 border-b border-indigo-800/50">
-    <div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center flex-col sm:flex-row gap-4">
-      <div class="flex items-center space-x-3 space-x-reverse">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-indigo-950 font-black text-xl shadow-lg border-2 border-white/20">ث</div>
-        <div>
-          <h1 class="text-xl font-extrabold tracking-wide text-amber-300">منصة ثانوية المتفوقين الثانية</h1>
-          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (مزامنة سحابية لحظية 100%)</p>
-        </div>
-      </div>
+    <div class="section-box hidden" id="setup-view">
+        <h3 id="room-title-setup" style="color: var(--primary); text-align: center; margin-bottom: 15px;"></h3>
+        
+        <label>📋 الصق أسماء الطلاب هنا (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
+        <textarea id="students-textarea" placeholder="مثال:&#10;ابراهيم زيد عبد العزيز&#10;ابو عبيدة احمد جبار&#10;احمد إبراهيم مصطفى"></textarea>
 
-      <div class="flex items-center gap-2 bg-indigo-900/90 p-1.5 rounded-2xl border border-indigo-700 shadow-inner">
-        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
-          <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
-        </button>
-        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5">
-          <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات
-        </button>
-      </div>
+        <label>📚 ملف أو نص الأسئلة والأجوبة (بحيث يكون الجواب الصحيح مميزاً لتعرفه أنت):</label>
+        <input type="file" id="q-file" accept=".pdf, .txt" onchange="handleQFile(event)">
+        <textarea id="questions-textarea" placeholder="أو الصق الأسئلة هنا..."></textarea>
+
+        <button class="btn-start" onclick="startExamSession()">بدء الجلسة الامتحانية (طالب بطالب) 🚀</button>
+        <button class="btn-back" onclick="backToRooms()">العودة لاختيار الغرف 🔙</button>
     </div>
-  </header>
 
-  <main class="container mx-auto px-4 py-6 flex-grow max-w-5xl">
-
-    <!-- STUDENT VIEW -->
-    <section id="studentView" class="space-y-6">
-      <div class="bg-indigo-900/60 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <label for="studentGradeSelect" class="font-extrabold text-amber-300 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
-          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-indigo-950 border border-indigo-600 text-white text-sm font-extrabold rounded-2xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-sm">
-            <option value="1m">الأول متوسط</option>
-            <option value="2m">الثاني متوسط</option>
-            <option value="3m">الثالث متوسط</option>
-            <option value="4h">الرابع إعدادي</option>
-            <option value="5h">الخامس إعدادي</option>
-            <option value="6h">السادس إعدادي</option>
-          </select>
+    <div id="exam-view" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px;">
+            <h4 id="exam-room-title" style="margin: 0; color: var(--primary);"></h4>
+            <div class="timer" id="timer-display" style="margin: 0;">الوقت: 45 ثانية</div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <span class="text-xs bg-indigo-950 text-indigo-200 font-bold px-4 py-2.5 rounded-2xl shadow-md border border-indigo-800 flex items-center gap-2">
-            <i class="fa-solid fa-calendar-day text-amber-400"></i>اليوم الحالي: <strong id="currentDayName" class="text-amber-300"></strong>
-          </span>
-          <span id="cloudStatus" class="text-[10px] bg-teal-500/20 text-teal-300 px-3 py-2 rounded-xl border border-teal-500/30 font-bold">
-            <i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب لحظياً
-          </span>
-        </div>
-      </div>
+        <div id="alert-banner"></div>
 
-      <!-- Schedule & Homework -->
-      <div class="bg-indigo-900/50 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-700/50 p-6">
-        <div class="flex justify-between items-center mb-6 border-b border-indigo-800/60 pb-4 flex-wrap gap-3">
-          <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
-            <span class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base shadow-sm border border-amber-500/30">
-              <i class="fa-solid fa-book-open"></i>
-            </span>
-            جدول الحصص والواجبات اليومية الملونة
-          </h2>
-          <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
+        <div class="student-box">
+            <h3>الطالب المستهدف (يمكنك تعديل الاسم هنا مباشرة):</h3>
+            <input type="text" id="current-student-input" class="editable-name-input" oninput="updateCurrentStudentName(this.value)">
         </div>
 
-        <div id="studentScheduleContainer" class="space-y-4"></div>
-      </div>
+        <div class="question-box" id="current-question">السؤال: --</div>
 
-      <!-- LIBRARY -->
-      <div class="bg-indigo-900/50 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-700/50 p-6">
-        <div class="flex justify-between items-center mb-5 border-b border-indigo-800/60 pb-4">
-          <h3 class="font-extrabold text-white text-base sm:text-lg flex items-center gap-2.5">
-            <span class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-base shadow-sm border border-teal-500/30">
-              <i class="fa-solid fa-folder-open"></i>
-            </span>
-            المحاضرات والملخصات الإضافية
-          </h3>
-          <span id="lecCountBadge" class="bg-indigo-950 text-amber-300 text-xs font-black px-3.5 py-1.5 rounded-full border border-indigo-700 shadow-inner">0</span>
-        </div>
-        <div id="studentLecList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      </div>
-    </section>
+        <div class="options-container" id="options-container"></div>
 
-    <!-- ADMIN VIEW -->
-    <section id="adminView" class="hidden space-y-6">
-      
-      <!-- زر استعادة البيانات القديمة من المتصفح -->
-      <div class="bg-gradient-to-r from-rose-900 via-red-900 to-indigo-950 p-5 rounded-3xl shadow-xl border-2 border-rose-500 flex justify-between items-center flex-wrap gap-4">
-        <div>
-          <h3 class="font-extrabold text-amber-300 text-base"><i class="fa-solid fa-triangle-exclamation"></i> هل فقدت بياناتك القديمة؟</h3>
-          <p class="text-xs text-indigo-100 mt-1">اضغط هنا لسحب المعلومات المخزنة سابقاً في ذاكرة متصفحك ورفعها فوراً للسحاب لتعود للكل!</p>
-        </div>
-        <button onclick="recoverOldDataFromLocalStorage()" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-black text-xs px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
-          <i class="fa-solid fa-cloud-arrow-up text-sm"></i> استيراد بياناتي القديمة من المتصفح للسحاب
-        </button>
-      </div>
+        <button class="btn-back" style="background-color: var(--text-muted); margin-top: 5px;" onclick="nextStudentSkip()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
 
-      <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
-        <div>
-          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة السحابية اللحظية</h2>
-          <p class="text-xs text-indigo-200 mt-1">أي تعديل هنا يتحدث سحابياً في نفس الثانية على المتصفح وسطح المكتب</p>
-        </div>
-      </div>
-
-      <!-- SCHEDULE TABLE -->
-      <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50">
-        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6 border-b border-indigo-800/60 pb-4">
-          <h3 class="font-extrabold text-white text-base flex items-center gap-2.5">
-            <span class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-300 flex items-center justify-center text-base border border-indigo-700">
-              <i class="fa-solid fa-table"></i>
-            </span>
-            تنظيم وتعديل جدول الحصص (حفظ سحابي فوري)
-          </h3>
-          <div class="flex items-center gap-2">
-            <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
-            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-indigo-950 border border-indigo-700 text-xs font-extrabold text-white rounded-2xl p-2.5 shadow-sm focus:outline-none">
-              <option value="1m">الأول متوسط</option>
-              <option value="2m">الثاني متوسط</option>
-              <option value="3m">الثالث متوسط</option>
-              <option value="4h">الرابع إعدادي</option>
-              <option value="5h">الخامس إعدادي</option>
-              <option value="6h">السادس إعدادي</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm text-right text-indigo-100 border-collapse">
-            <thead class="text-xs text-amber-300 uppercase bg-indigo-950 font-black">
-              <tr>
-                <th class="p-3.5 border border-indigo-800 rounded-r-2xl">اليوم</th>
-                <th class="p-3.5 border border-indigo-800">الحصة 1</th>
-                <th class="p-3.5 border border-indigo-800">الحصة 2</th>
-                <th class="p-3.5 border border-indigo-800">الحصة 3</th>
-                <th class="p-3.5 border border-indigo-800">الحصة 4</th>
-                <th class="p-3.5 border border-indigo-800">الحصة 5</th>
-                <th class="p-3.5 border border-indigo-800">الحصة 6</th>
-                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ فوري</th>
-              </tr>
+        <h3 style="font-size: 16px; color: var(--text-main); margin-top: 25px;">سجل الدرجات النهائي (الاسم، الصف، الشعبة، الدرجة من 10):</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>اسم الطالب (قابل للتعديل)</th>
+                    <th>الصف</th>
+                    <th>الشعبة</th>
+                    <th>الدرجة من 10</th>
+                </tr>
             </thead>
-            <tbody id="adminScheduleTbody" class="divide-y divide-indigo-800/40 font-semibold"></tbody>
-          </table>
-        </div>
-      </div>
+            <tbody id="grades-table-body"></tbody>
+        </table>
 
-      <!-- FORMS -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Homework Form -->
-        <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
-          <div>
-            <h3 id="hwFormTitle" class="font-extrabold text-amber-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة
-            </h3>
-            <form onsubmit="handleSaveHomework(event)" class="space-y-4">
-              <input type="hidden" id="editHwId" value="">
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">الصف المستهدف:</label>
-                <select id="hwTargetGrade" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
-                  <option value="1m">الأول متوسط</option>
-                  <option value="2m">الثاني متوسط</option>
-                  <option value="3m">الثالث متوسط</option>
-                  <option value="4h">الرابع إعدادي</option>
-                  <option value="5h">الخامس إعدادي</option>
-                  <option value="6h">السادس إعدادي</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تحديد اليوم:</label>
-                <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
-                  <option value="الأحد">الأحد</option>
-                  <option value="الإثنين">الإثنين</option>
-                  <option value="الثلاثاء">الثلاثاء</option>
-                  <option value="الأربعاء">الأربعاء</option>
-                  <option value="الخميس">الخميس</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر المادة:</label>
-                <select id="hwSubjectSelect" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl font-extrabold text-amber-300 focus:outline-none"></select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تفاصيل الواجب (بخط كبير وملون):</label>
-                <textarea id="hwDesc" placeholder="اكتب المطلوب حله..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-24 text-white focus:outline-none shadow-inner"></textarea>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تاريخ التسليم النهائي:</label>
-                <input type="date" id="hwDueDate" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
-              </div>
-              <div class="flex gap-2 pt-2">
-                <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب سحابياً
-                </button>
-                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <button class="btn-action" onclick="exportExcelSheet()">📊 تصدير السجل إلى Excel</button>
+        <button class="btn-back" onclick="resetAndBackToRooms()">🔄 إنهاء الجلسة والعودة للغرف</button>
+    </div>
+</div>
 
-        <!-- Library Form -->
-        <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
-          <div>
-            <h3 id="lecFormTitle" class="font-extrabold text-teal-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (سحابي)
-            </h3>
-            <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
-              <input type="hidden" id="editLecId" value="">
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">الصف المستهدف:</label>
-                <select id="lecTargetGrade" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
-                  <option value="1m">الأول متوسط</option>
-                  <option value="2m">الثاني متوسط</option>
-                  <option value="3m">الثالث متوسط</option>
-                  <option value="4h">الرابع إعدادي</option>
-                  <option value="5h">الخامس إعدادي</option>
-                  <option value="6h">السادس إعدادي</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">عنوان الملف:</label>
-                <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفصل الأول" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">المادة:</label>
-                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر الملف:</label>
-                <input type="file" id="lecFileInput" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-2.5 rounded-2xl text-white cursor-pointer">
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">ملاحظات إضافية:</label>
-                <textarea id="lecDesc" placeholder="وصف موجز..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-16 text-white focus:outline-none"></textarea>
-              </div>
-              <div class="flex gap-2 pt-2">
-                <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ سحابي
-                </button>
-                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+<script>
+    let currentRoomName = "";
+    let currentGrade = "";
+    let currentSection = "";
+    let studentsList = [];
+    let studentPointer = 0;
+    let studentRecords = {};
+    let questionsList = [];
+    let activeQuestionObj = null;
+    let examTimer = null;
+    let secondsLeft = 45;
 
-      <!-- LIBRARY TABLE -->
-      <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 mt-6">
-        <h3 class="font-extrabold text-white mb-4 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-folder-open text-teal-400"></i> إدارة مكتبة الملفات
-        </h3>
-        <div id="adminLibraryList" class="space-y-3"></div>
-      </div>
-    </section>
-  </main>
+    const defaultQuestionBank = [
+        {
+            q: "ما المقصود بالصيانة الوقائية للبرمجيات (Software Preventive Maintenance)؟",
+            correct: "إجراءات وقائية تعتمد لتجنب حدوث مشكلة محتملة في تطبيق ما أو عدم توافقه.",
+            options: [
+                "إجراءات وقائية تعتمد لتجنب حدوث مشكلة محتملة في تطبيق ما أو عدم توافقه.",
+                "إجراءات تركز على استبدال القطع التالفة في اللوحة الأم.",
+                "حذف نظام التشغيل بالكامل وإعادة تثبيته من جديد.",
+                "زيادة سرعة معالج الحاسوب عبر رفع حرارته."
+            ]
+        },
+        {
+            q: "ما هي الغاية الأساسية من خدمة تحديث نظام التشغيل Windows بشكل منتظم؟",
+            correct: "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية وعامة.",
+            options: [
+                "زيادة مساحة القرص الصلب وتوليد مساحة فارغة.",
+                "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية وعامة.",
+                "مسح الملفات المؤقتة الخاصة بمتصفح الإنترنت.",
+                "إيقاف عمل مروحة المعالج لتبريد النظام."
+            ]
+        },
+        {
+            q: "ما هو السبب الرئيسي لنقص المساحة الخزنية بعد ترقية نظام Windows إلى نسخة أحدث؟",
+            correct: "احتفاظ النظام الجديد بنسخة احتياطية من ملفات نظام التشغيل القديم.",
+            options: [
+                "امتلاء صندوق التدوير (Recycle Bin) بالكامل.",
+                "تثبيت برامج الألعاب ذات الحجم الكبير جداً.",
+                "احتفاظ النظام الجديد بنسخة احتياطية من ملفات نظام التشغيل القديم.",
+                "وجود فيروسات خبيثة تحجز مساحة القرص."
+            ]
+        },
+        {
+            q: "ما الفرق الأساسي بين ترقية البرمجيات (Upgrade) وتحديثها (Update)؟",
+            correct: "الترقية توفر تحسينات جوهرية بإصدار جديد، بينما التحديث يقدم تصحيحات وسد ثغرات.",
+            options: [
+                "الترقية توفر تحسينات جوهرية بإصدار جديد، بينما التحديث يقدم تصحيحات وسد ثغرات.",
+                "التحديث يكون عبر شراء قرص ليزري جديد فقط.",
+                "الترقية تخص أجهزة الهواتف المحمولة والتحديث للحواسيب.",
+                "لا يوجد أي فرق بينهما تقنياً."
+            ]
+        }
+    ];
 
-  <footer class="bg-indigo-950/90 border-t border-indigo-800/50 py-4 text-center text-xs text-indigo-300 font-bold shadow-inner">
-    جميع الحقوق محفوظة © ثانوية المتفوقين الثانية 2026 | تصميم وإعداد: WALEED ALSHAMMARI
-  </footer>
+    // دالة إطلاق النغمات الصوتية التنبيهية (الصح والخطأ)
+    function playSound(isCorrect) {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
 
-  <script>
-    const firebaseConfig = {
-      databaseURL: "https://waleed-alshammari-default-rtdb.firebaseio.com/"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const dbRef = firebase.database().ref('waleed_school_live_data');
-
-    const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
-    const GRADES = {
-      '1m': 'الأول متوسط', '2m': 'الثاني متوسط', '3m': 'الثالث متوسط',
-      '4h': 'الرابع إعدادي', '5h': 'الخامس إعدادي', '6h': 'السادس إعدادي'
-    };
-
-    let appData = { schedules: {}, homeworks: [], lectures: [] };
-    let selectedDayFilter = getCurrentDayName();
-
-    // دالة استعادة البيانات القديمة من ذاكرة المتصفح ورفعها للسحاب
-    function recoverOldDataFromLocalStorage() {
-      try {
-        // البحث عن أي مفاتيح قديمة محتملة في الـ LocalStorage
-        let oldRaw = localStorage.getItem('school_platform_data') || localStorage.getItem('appData') || localStorage.getItem('schoolData');
-        if (!oldRaw) {
-          // جرب البحث في كل مفاتيح الـ LocalStorage
-          for (let i = 0; i < localStorage.length; i++) {
-            let key = localStorage.key(i);
-            let val = localStorage.getItem(key);
-            if (val && (val.includes('schedules') || val.includes('homeworks') || val.includes('lectures'))) {
-              oldRaw = val;
-              break;
+            if (isCorrect) {
+                // رنة نجاح تصاعدية (صح)
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15); // E5
+                osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.3); // G5
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            } else {
+                // رنة تنبيهية منخفضة (خطأ)
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
             }
-          }
-        }
-
-        if (oldRaw) {
-          const parsed = JSON.parse(oldRaw);
-          if (parsed && typeof parsed === 'object') {
-            appData = parsed;
-            saveAppData(); // رفعها مباشرة لقاعدة بيانات Firebase
-            alert('تم استيراد بياناتك القديمة ورفعها بنجاح إلى السحاب!');
-            initPlatform();
-            renderAdminScheduleTable();
-            renderAdminLibraryList();
-            return;
-          }
-        }
-        alert('لم يتم العثور على بيانات قديمة مخزنة في هذا المتصفح. تأكد من فتح المنصة من المتصفح الذي كنت تدخل منه سابقاً.');
-      } catch (err) {
-        console.error(err);
-        alert('حدث خطأ أثناء محاولة استرجاع البيانات.');
-      }
+        } catch(e) { console.log("Audio error", e); }
     }
 
-    dbRef.on('value', (snapshot) => {
-      const serverData = snapshot.val();
-      if (serverData) {
-        appData = serverData;
-      }
-      initPlatform();
-      if (!document.getElementById('adminView').classList.contains('hidden')) {
-        renderAdminScheduleTable();
-        renderAdminLibraryList();
-      }
-    });
-
-    function saveAppData() {
-      dbRef.set(appData).then(() => {
-        const status = document.getElementById('cloudStatus');
-        if (status) {
-          status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> تمت المزامنـة سحابياً';
-          setTimeout(() => {
-            status.innerHTML = '<i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب لحظياً';
-          }, 2000);
-        }
-      }).catch(err => {
-        console.error("Cloud sync error:", err);
-      });
+    function openRoom(roomTitle, grade, section) {
+        currentRoomName = roomTitle;
+        currentGrade = grade;
+        currentSection = section;
+        document.getElementById("room-title-setup").innerText = `إدارة غرفة: ${roomTitle}`;
+        document.getElementById("rooms-view").classList.add("hidden");
+        document.getElementById("setup-view").classList.remove("hidden");
     }
 
-    function getCurrentDayName() {
-      const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-      const today = daysMap[new Date().getDay()];
-      return DAYS.includes(today) ? today : 'الأحد';
-    }
-
-    function switchTab(tab) {
-      const studentView = document.getElementById('studentView');
-      const adminView = document.getElementById('adminView');
-      const studentBtn = document.getElementById('tabStudentBtn');
-      const adminBtn = document.getElementById('tabAdminBtn');
-
-      if (tab === 'student') {
-        studentView.classList.remove('hidden');
-        adminView.classList.add('hidden');
-        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
-        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
-        renderStudentDashboard();
-      } else {
-        studentView.classList.add('hidden');
-        adminView.classList.remove('hidden');
-        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
-        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
-        renderAdminScheduleTable();
-        updateHwSubjectsDropdown();
-        renderAdminLibraryList();
-      }
-    }
-
-    function initPlatform() {
-      document.getElementById('currentDayName').innerText = getCurrentDayName();
-      if(document.getElementById('hwDueDate')) document.getElementById('hwDueDate').valueAsDate = new Date();
-      cleanupExpiredHomeworks();
-
-      const filterTabsContainer = document.getElementById('dayFilterTabs');
-      if(filterTabsContainer) {
-        filterTabsContainer.innerHTML = DAYS.map(day => `
-          <button onclick="changeStudentDayFilter('${day}')" class="px-4 py-2 rounded-2xl font-extrabold transition-all ${selectedDayFilter === day ? 'bg-amber-500 text-indigo-950 shadow-md scale-105 shadow-amber-500/20' : 'bg-indigo-950 text-indigo-200 hover:bg-indigo-800 border border-indigo-800'} whitespace-nowrap">
-            ${day}
-          </button>
-        `).join('');
-      }
-      renderStudentDashboard();
-    }
-
-    function changeStudentDayFilter(day) {
-      selectedDayFilter = day;
-      initPlatform();
-    }
-
-    function updateHwSubjectsDropdown() {
-      const grade = document.getElementById('hwTargetGrade').value;
-      const day = document.getElementById('hwDay').value;
-      const selectEl = document.getElementById('hwSubjectSelect');
-      
-      let daySubjects = [];
-      if (appData.schedules && appData.schedules[grade] && appData.schedules[grade][day]) {
-        appData.schedules[grade][day].forEach(s => {
-          if (s && s.trim()) daySubjects.push(s.trim());
-        });
-      }
-
-      if (daySubjects.length === 0) {
-        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا اليوم (${day}) (يرجى حفظ الجدول أولاً)</option>`;
-      } else {
-        selectEl.innerHTML = daySubjects.map(sub => `<option value="${sub}">${sub}</option>`).join('');
-      }
-    }
-
-    function renderStudentDashboard() {
-      cleanupExpiredHomeworks();
-      const grade = document.getElementById('studentGradeSelect').value;
-      const scheduleContainer = document.getElementById('studentScheduleContainer');
-      const daySchedule = (appData.schedules && appData.schedules[grade] && appData.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
-      const gradeHws = (appData.homeworks || []).filter(h => h.grade === grade && h.day === selectedDayFilter);
-      const gradeLecs = (appData.lectures || []).filter(l => l.grade === grade);
-
-      if (daySchedule.every(slot => !slot || !slot.trim())) {
-        scheduleContainer.innerHTML = `
-          <div class="py-12 text-center text-indigo-300">
-            <i class="fa-solid fa-calendar-xmark text-4xl mb-3 text-indigo-400"></i>
-            <p class="text-sm font-semibold">لم يتم إضافة جدول حصص لهذا اليوم (${selectedDayFilter}) بعد.</p>
-          </div>
-        `;
-      } else {
-        scheduleContainer.innerHTML = daySchedule.map((subject, idx) => {
-          if (!subject || !subject.trim()) {
-            return `
-              <div class="p-4 rounded-2xl border bg-indigo-950/40 border-indigo-800/40 opacity-60 flex justify-between items-center shadow-sm">
-                <span class="text-xs font-bold text-indigo-400">الحصة ${idx + 1}</span>
-                <span class="text-xs text-indigo-400 font-medium">فراغ</span>
-              </div>
-            `;
-          }
-
-          const cleanSub = subject.trim().replace(/\s+/g, ' ');
-          const matchHw = gradeHws.find(h => h.subject.trim().replace(/\s+/g, ' ') === cleanSub);
-          const matchLec = gradeLecs.find(l => l.subject.trim().replace(/\s+/g, ' ') === cleanSub);
-
-          return `
-            <div class="p-4 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl border border-indigo-700/60 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div class="flex items-center gap-3 w-full sm:w-auto">
-                <span class="bg-amber-500 text-indigo-950 text-xs font-black px-3.5 py-2 rounded-2xl shadow-md whitespace-nowrap">الحصة ${idx + 1}</span>
-                <h3 class="font-black text-white text-lg sm:text-xl tracking-wide">${subject}</h3>
-              </div>
-              <div class="w-full sm:w-auto flex flex-wrap items-center gap-2 justify-end">
-                ${matchHw ? `
-                  <div class="bg-amber-500/10 border-2 border-amber-400/60 text-amber-200 px-5 py-3 rounded-2xl text-sm sm:text-base font-extrabold shadow-md flex items-center gap-3 flex-grow sm:flex-grow-0">
-                    <i class="fa-solid fa-pen-ruler text-amber-400 text-lg"></i>
-                    <div>
-                      <span class="text-amber-400 block text-xs">الواجب المطلوب:</span>
-                      <span class="text-white text-base sm:text-lg tracking-wide">${matchHw.desc}</span>
-                      <span class="text-indigo-300 text-[11px] block mt-0.5">التسليم: ${matchHw.dueDate}</span>
-                    </div>
-                    <button type="button" onclick="deleteHomeworkFromDashboard('${matchHw.id}')" class="text-rose-400 hover:text-rose-300 mr-2 p-1"><i class="fa-solid fa-trash text-base"></i></button>
-                  </div>
-                ` : `<span class="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-4 py-2.5 rounded-2xl border border-indigo-800">لا يوجد واجب</span>`}
-                ${matchLec ? `<a href="${matchLec.fileData || '#'}" target="_blank" download="${matchLec.title}" class="bg-teal-600 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-md inline-flex items-center gap-2"><i class="fa-solid fa-folder-open"></i> ${matchLec.title}</a>` : ''}
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      const lecContainer = document.getElementById('studentLecList');
-      document.getElementById('lecCountBadge').innerText = gradeLecs.length;
-      if (gradeLecs.length === 0) {
-        lecContainer.innerHTML = `<p class="text-xs text-indigo-300 text-center py-6 col-span-full font-medium">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
-      } else {
-        lecContainer.innerHTML = gradeLecs.map(lec => `
-          <div class="p-4 bg-indigo-950/60 rounded-3xl border border-indigo-800 flex flex-col justify-between shadow-md space-y-3">
-            <div>
-              <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30">${lec.subject}</span>
-              <h4 class="text-sm font-black text-white mt-2">${lec.title}</h4>
-              ${lec.desc ? `<p class="text-xs text-indigo-200 mt-1">${lec.desc}</p>` : ''}
-            </div>
-            <a href="${lec.fileData || '#'}" target="_blank" download="${lec.title}" class="bg-teal-600 text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center inline-flex items-center justify-center gap-1.5"><i class="fa-solid fa-folder-open"></i> فتح الملف</a>
-          </div>
-        `).join('');
-      }
-    }
-
-    function renderAdminScheduleTable() {
-      const grade = document.getElementById('adminGradeSelect').value;
-      const tbody = document.getElementById('adminScheduleTbody');
-      tbody.innerHTML = DAYS.map(day => {
-        const row = (appData.schedules && appData.schedules[grade] && appData.schedules[grade][day]) || ['', '', '', '', '', ''];
-        return `
-          <tr class="bg-indigo-950/40 hover:bg-indigo-900/60 transition">
-            <td class="p-3.5 font-extrabold text-white border border-indigo-800">${day}</td>
-            ${row.map((slot, idx) => `
-              <td class="p-2.5 border border-indigo-800">
-                <input type="text" id="slot_${day}_${idx}" value="${slot || ''}" placeholder="المادة ${idx + 1}" class="w-full text-xs p-2.5 border border-indigo-700 bg-indigo-950 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none font-bold text-white">
-              </td>
-            `).join('')}
-            <td class="p-3.5 border border-indigo-800 text-center">
-              <button onclick="saveAdminRowDirect('${grade}', '${day}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
-                <i class="fa-solid fa-check"></i> حفظ
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function saveAdminRowDirect(grade, day) {
-      if (!appData.schedules) appData.schedules = {};
-      if (!appData.schedules[grade]) appData.schedules[grade] = {};
-      const newSlots = [];
-      for (let i = 0; i < 6; i++) {
-        newSlots.push(document.getElementById(`slot_${day}_${i}`).value.trim());
-      }
-      appData.schedules[grade][day] = newSlots;
-      saveAppData();
-      alert(`تم حفظ جدول يوم ${day} ومزامنته سحابياً فوراً!`);
-      updateHwSubjectsDropdown();
-    }
-
-    function handleSaveHomework(e) {
-      e.preventDefault();
-      const editId = document.getElementById('editHwId').value;
-      const grade = document.getElementById('hwTargetGrade').value;
-      const subject = document.getElementById('hwSubjectSelect').value;
-      const day = document.getElementById('hwDay').value;
-      const desc = document.getElementById('hwDesc').value;
-      const dueDate = document.getElementById('hwDueDate').value;
-
-      if (!subject || subject.includes('لا توجد مواد')) {
-        alert('يرجى حفظ الجدول أولاً لتظهر المواد.');
-        return;
-      }
-
-      if (!appData.homeworks) appData.homeworks = [];
-      if (editId) {
-        const idx = appData.homeworks.findIndex(h => String(h.id) === String(editId));
-        if (idx !== -1) appData.homeworks[idx] = { id: Number(editId), grade, subject, day, desc, dueDate };
-        cancelEditHomework();
-      } else {
-        appData.homeworks.push({ id: Date.now(), grade, subject, day, desc, dueDate });
-        resetHwForm();
-      }
-      saveAppData();
-      renderStudentDashboard();
-      alert('تم نشر الواجب ومزامنته سحابياً بنجاح!');
-    }
-
-    function resetHwForm() {
-      document.getElementById('editHwId').value = '';
-      document.getElementById('hwDesc').value = '';
-    }
-
-    function cancelEditHomework() { resetHwForm(); }
-
-    function deleteHomeworkFromDashboard(id) {
-      if (confirm('حذف هذا الواجب من السحاب؟')) {
-        appData.homeworks = (appData.homeworks || []).filter(h => String(h.id) !== String(id));
-        saveAppData();
-        renderStudentDashboard();
-      }
-    }
-
-    function handleAddOrUpdateLecture(e) {
-      e.preventDefault();
-      const editId = document.getElementById('editLecId').value;
-      const grade = document.getElementById('lecTargetGrade').value;
-      const title = document.getElementById('lecTitle').value;
-      const subject = document.getElementById('lecSubject').value;
-      const desc = document.getElementById('lecDesc').value;
-      const fileInput = document.getElementById('lecFileInput');
-
-      const processSave = (fileBase64) => {
-        if (!appData.lectures) appData.lectures = [];
-        const recordId = editId ? Number(editId) : Date.now();
-        let existingFile = fileBase64;
-        if (editId && !existingFile) {
-          const ex = appData.lectures.find(l => Number(l.id) === Number(editId));
-          existingFile = ex ? ex.fileData : '';
-        }
-        const lecObj = { id: recordId, grade, title, subject, desc, fileData: existingFile };
-        if (editId) {
-          const idx = appData.lectures.findIndex(l => Number(l.id) === Number(editId));
-          if (idx !== -1) appData.lectures[idx] = lecObj;
-          cancelEditLecture();
+    async function handleQFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (file.type === "application/pdf") {
+            const text = await parsePDFFile(file);
+            document.getElementById("questions-textarea").value = text;
         } else {
-          appData.lectures.push(lecObj);
-          document.getElementById('lecTitle').value = '';
-          document.getElementById('lecSubject').value = '';
-          document.getElementById('lecDesc').value = '';
-          document.getElementById('lecFileInput').value = '';
+            const reader = new FileReader();
+            reader.onload = (e) => { document.getElementById("questions-textarea").value = e.target.result; };
+            reader.readAsText(file, "UTF-8");
         }
-        saveAppData();
-        renderAdminLibraryList();
-        renderStudentDashboard();
-        alert('تم حفظ الملف ومزامنته سحابياً بنجاح!');
-      };
-
-      if (fileInput.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = ev => processSave(ev.target.result);
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        processSave(null);
-      }
     }
 
-    function editLibraryItem(id) {
-      const lec = (appData.lectures || []).find(l => Number(l.id) === Number(id));
-      if (!lec) return;
-      document.getElementById('editLecId').value = lec.id;
-      document.getElementById('lecTargetGrade').value = lec.grade;
-      document.getElementById('lecTitle').value = lec.title;
-      document.getElementById('lecSubject').value = lec.subject;
-      document.getElementById('lecDesc').value = lec.desc || '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    async function parsePDFFile(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const typedarray = new Uint8Array(this.result);
+                pdfjsLib.getDocument(typedarray).promise.then(async function(pdfDoc) {
+                    let fullText = "";
+                    for (let j = 1; j <= pdfDoc.numPages; j++) {
+                        const page = await pdfDoc.getPage(j);
+                        const textContent = await page.getTextContent();
+                        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
+                    }
+                    resolve(fullText);
+                }).catch(() => resolve(""));
+            };
+            reader.readAsArrayBuffer(file);
+        });
     }
 
-    function cancelEditLecture() {
-      document.getElementById('editLecId').value = '';
-      document.getElementById('lecTitle').value = '';
-      document.getElementById('lecSubject').value = '';
-      document.getElementById('lecDesc').value = '';
-      document.getElementById('lecFileInput').value = '';
+    function startExamSession() {
+        const manualText = document.getElementById("students-textarea").value.trim();
+        if (!manualText) {
+            alert("يرجى إدخال أسماء الطلاب في خانة النص (نسخ ولصق) أولاً!");
+            return;
+        }
+
+        studentsList = manualText.split('\n').map(s => s.trim()).filter(s => s.length > 2);
+        studentsList = [...new Set(studentsList)];
+
+        if (studentsList.length === 0) {
+            alert("لم يتم العثور على أسماء صحيحة. يرجى التأكد من كتابة كل اسم في سطر.");
+            return;
+        }
+
+        studentRecords = {};
+        studentsList.forEach(s => {
+            studentRecords[s] = { name: s, grade: 10, status: 0 };
+        });
+
+        const qText = document.getElementById("questions-textarea").value.trim();
+        if (qText.length > 10) {
+            let parts = qText.split('س:').filter(p => p.trim().length > 10);
+            questionsList = parts.map(p => {
+                let lines = p.split('\n').map(l => l.trim()).filter(l => l.length > 2);
+                let questionTitle = lines[0] || "سؤال شفهي منهجى";
+                let opts = lines.slice(1, 5);
+                if (opts.length < 4) opts = ["الخيار الأول المنهجي", "الخيار الثاني المنهجي", "الخيار الثالث المنهجي", "الخيار الرابع المنهجي"];
+                return {
+                    q: questionTitle,
+                    correct: opts[0],
+                    options: [...opts]
+                };
+            });
+        }
+        if (questionsList.length === 0) {
+            questionsList = defaultQuestionBank;
+        }
+
+        document.getElementById("setup-view").classList.add("hidden");
+        document.getElementById("exam-view").classList.remove("hidden");
+        document.getElementById("exam-room-title").innerText = `غرفة امتحان: ${currentRoomName}`;
+
+        studentPointer = 0;
+        updateGradesTable();
+        loadNextStudent();
     }
 
-    function deleteLibraryItem(id) {
-      if (confirm('حذف هذا الملف من السحاب؟')) {
-        appData.lectures = (appData.lectures || []).filter(l => Number(l.id) !== Number(id));
-        saveAppData();
-        renderAdminLibraryList();
-        renderStudentDashboard();
-      }
+    function runTimer() {
+        clearInterval(examTimer);
+        secondsLeft = 45;
+        document.getElementById("timer-display").innerText = `الوقت: ${secondsLeft} ثانية`;
+        
+        examTimer = setInterval(() => {
+            secondsLeft--;
+            document.getElementById("timer-display").innerText = `الوقت: ${secondsLeft} ثانية`;
+            if (secondsLeft <= 0) {
+                clearInterval(examTimer);
+                playSound(false); // رنة خطأ عند انتهاء الوقت
+                recordAnswer(false);
+            }
+        }, 1000);
     }
 
-    function renderAdminLibraryList() {
-      const container = document.getElementById('adminLibraryList');
-      const lecs = appData.lectures || [];
-      if (lecs.length === 0) {
-        container.innerHTML = `<p class="text-xs text-indigo-300 text-center py-4">لا توجد ملفات مرفوعة حالياً.</p>`;
-        return;
-      }
-      container.innerHTML = lecs.map(lec => `
-        <div class="p-4 bg-indigo-950/60 rounded-2xl border border-indigo-800 flex justify-between items-center flex-wrap gap-3">
-          <div>
-            <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-3 py-0.5 rounded-lg">${GRADES[lec.grade]}</span>
-            <span class="text-xs font-extrabold text-white ml-2">${lec.subject}: ${lec.title}</span>
-          </div>
-          <div class="flex gap-2">
-            <a href="${lec.fileData || '#'}" target="_blank" class="bg-teal-600 text-white text-xs font-bold px-3 py-2 rounded-xl"><i class="fa-solid fa-folder-open"></i> فتح</a>
-            <button onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl">تعديل</button>
-            <button onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl">حذف</button>
-          </div>
-        </div>
-      `).join('');
+    function loadNextStudent() {
+        if (studentPointer >= studentsList.length) {
+            document.getElementById("current-student-input").value = "انتهت قائمة الطلاب بنجاح! 🎓";
+            document.getElementById("current-question").innerText = "اكتملت الجلسة الامتحانية لجميع طلاب الشعبة.";
+            document.getElementById("options-container").innerHTML = "";
+            document.getElementById("alert-banner").style.display = "none";
+            clearInterval(examTimer);
+            return;
+        }
+
+        const studentKey = studentsList[studentPointer];
+        const currentData = studentRecords[studentKey];
+        
+        activeQuestionObj = questionsList[Math.floor(Math.random() * questionsList.length)];
+        let shuffledOptions = [...activeQuestionObj.options].sort(() => Math.random() - 0.5);
+
+        document.getElementById("current-student-input").value = currentData.name;
+        document.getElementById("current-question").innerText = activeQuestionObj.q;
+        document.getElementById("alert-banner").style.display = "none";
+
+        const optContainer = document.getElementById("options-container");
+        optContainer.innerHTML = "";
+        
+        shuffledOptions.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerHTML = `<strong>${['أ', 'ب', 'ج', 'د'][idx]})</strong> ${opt}`;
+            btn.onclick = function() {
+                const isCorrect = (opt === activeQuestionObj.correct);
+                recordAnswer(isCorrect);
+            };
+            optContainer.appendChild(btn);
+        });
+
+        runTimer();
     }
 
-    function cleanupExpiredHomeworks() {
-      const todayStr = new Date().toISOString().split('T')[0];
-      if (appData.homeworks) {
-        appData.homeworks = appData.homeworks.filter(hw => !hw.dueDate || hw.dueDate >= todayStr);
-      }
+    function updateCurrentStudentName(newVal) {
+        if (studentPointer < studentsList.length) {
+            const oldKey = studentsList[studentPointer];
+            studentRecords[oldKey].name = newVal;
+            studentsList[studentPointer] = newVal;
+            updateGradesTable();
+        }
     }
 
-    initPlatform();
-  </script>
+    function updateTableName(index, newVal) {
+        const oldKey = studentsList[index];
+        studentsList[index] = newVal;
+        studentRecords[newVal] = studentRecords[oldKey];
+        if (oldKey !== newVal) delete studentRecords[oldKey];
+        if (index === studentPointer) {
+            document.getElementById("current-student-input").value = newVal;
+        }
+    }
+
+    function nextStudentSkip() {
+        clearInterval(examTimer);
+        playSound(false); // رنة خطأ عند التخطي
+        recordAnswer(false);
+    }
+
+    function recordAnswer(isCorrect) {
+        clearInterval(examTimer);
+        if (studentPointer >= studentsList.length) return;
+
+        const studentKey = studentsList[studentPointer];
+        const banner = document.getElementById("alert-banner");
+
+        // تشغيل صوت الصح أو الخطأ فوراً
+        playSound(isCorrect);
+
+        if (isCorrect) {
+            studentRecords[studentKey].grade = 10;
+            studentRecords[studentKey].status = 1;
+            banner.className = "alert-success";
+            banner.innerHTML = `✔️ إجابة صحيحة! تم رصد (10 / 10) للطالب.`;
+        } else {
+            studentRecords[studentKey].grade = 0;
+            studentRecords[studentKey].status = 2;
+            banner.className = "alert-danger";
+            banner.innerHTML = `❌ إجابة خاطئة!<br><b>الإجابة الصحيحة كانت:</b> ${activeQuestionObj.correct}`;
+        }
+        banner.style.display = "block";
+
+        updateGradesTable();
+
+        studentPointer++;
+        setTimeout(() => {
+            loadNextStudent();
+        }, 3200);
+    }
+
+    function updateGradesTable() {
+        const tbody = document.getElementById("grades-table-body");
+        tbody.innerHTML = "";
+        studentsList.forEach((stuKey, idx) => {
+            const rec = studentRecords[stuKey];
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><input type="text" class="table-name-input" value="${rec.name}" oninput="updateTableName(${idx}, this.value)"></td>
+                <td><b>${currentGrade}</b></td>
+                <td><b>${currentSection}</b></td>
+                <td><b>${rec.grade} / 10</b></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function exportExcelSheet() {
+        const tableHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم الطالب</th>
+                        <th>الصف</th>
+                        <th>الشعبة</th>
+                        <th>الدرجة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${studentsList.map(stuKey => {
+                        const rec = studentRecords[stuKey];
+                        return `<tr><td>${rec.name}</td><td>${currentGrade}</td><td>${currentSection}</td><td>${rec.grade} / 10</td></tr>`;
+                    }).join('')}
+                </tbody>
+            </table>
+        `;
+        const blob = new Blob(['\ufeff' + tableHTML], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `سجل_درجات_شعبة_${currentSection}_امتحان_شفهي.xls`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    function backToRooms() {
+        clearInterval(examTimer);
+        document.getElementById("setup-view").classList.add("hidden");
+        document.getElementById("rooms-view").classList.remove("hidden");
+        document.getElementById("students-textarea").value = "";
+        document.getElementById("questions-textarea").value = "";
+    }
+
+    function resetAndReturnRooms() {
+        backToRooms();
+        document.getElementById("grades-table-body").innerHTML = "";
+        document.getElementById("alert-banner").style.display = "none";
+    }
+</script>
+
 </body>
 </html>
