@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الامتحان الشفهي الذكية</title>
+    <title>منصة الامتحان الشفهي الذكية والمطورة</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
@@ -70,7 +70,6 @@
             width: 100%; padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; background: white;
         }
         
-        /* تصميم زر رفع الملفات بوضوح تام */
         .file-upload-box {
             background: #eef2ff;
             border: 2px dashed var(--primary);
@@ -106,7 +105,7 @@
 <body>
 
 <div class="container">
-    <h2>منصة الامتحان الشفهي الذكية 🎓</h2>
+    <h2>منصة الامتحان الشفهي الذكية والمطورة 🎓</h2>
     
     <!-- واجهة الفقاعات -->
     <div id="rooms-view">
@@ -138,6 +137,7 @@
         <label>📋 أسماء الطلاب (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
         <textarea id="students-input" placeholder="اكتب أو الصق أسماء الطلاب هنا..."></textarea>
 
+        <!-- زر رفع ملف الأسئلة والأجوبة -->
         <label>📚 رفع ملف الأسئلة والأجوبة (PDF أو TXT):</label>
         <div class="file-upload-box">
             <input type="file" id="pdf-file" accept=".pdf, .txt" onchange="loadFile(event)" style="background:transparent; border:none; padding:5px;">
