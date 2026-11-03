@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الامتحان الشفهي الذكية والمطورة</title>
-    <!-- مكتبة قراءة ملفات الـ PDF -->
+    <title>منصة الامتحان الشفهي الذكية والمطورة - الإصدار الأخير</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
+            --primary: #6366f1;
             --success: #10b981;
             --danger: #ef4444;
-            --bg-gradient: linear-gradient(135deg, #0f172a 10%, #1e1b4b 90%);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             --card-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-gradient);
@@ -29,40 +26,29 @@
             justify-content: center;
             align-items: center;
         }
-
         .container {
             width: 100%;
-            max-width: 950px;
+            max-width: 900px;
             background: var(--card-bg);
-            padding: 40px;
+            padding: 35px;
             border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
-
-        h2 {
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 35px;
-            font-size: 30px;
-            font-weight: 800;
-        }
-
-        .bubbles-container {
+        h2 { text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 28px; font-weight: 800; }
+        
+        /* فقاعات الغرف */
+        .bubbles-box {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 25px;
-            margin: 30px 0;
+            margin: 40px 0;
         }
-
         .bubble {
-            width: 160px;
-            height: 160px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
             color: white;
             display: flex;
             flex-direction: column;
@@ -70,669 +56,356 @@
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            user-select: none;
+            box-shadow: 0 10px 20px rgba(79,70,229,0.4);
+            transition: 0.3s;
+            border: 4px solid rgba(255,255,255,0.3);
         }
+        .bubble:hover { transform: scale(1.1); box-shadow: 0 15px 30px rgba(147,51,234,0.6); }
+        .bubble.pop { transform: scale(1.5); opacity: 0; transition: 0.3s; }
+        .bubble h3 { margin: 0; font-size: 20px; font-weight: 800; }
+        .bubble span { font-size: 12px; opacity: 0.85; margin-top: 5px; }
 
-        .bubble:hover {
-            transform: scale(1.1) rotate(3deg);
-            box-shadow: 0 15px 35px rgba(168, 85, 247, 0.6);
-        }
-
-        .bubble.pop-animation {
-            transform: scale(1.4);
-            opacity: 0;
-            transition: all 0.3s ease-out;
-        }
-
-        .bubble h3 {
-            margin: 0;
-            font-size: 19px;
-            font-weight: 800;
-        }
-
-        .bubble span {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-
-        .section-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-weight: 700;
-            color: var(--text-main);
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
+        .section-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 18px; margin-bottom: 20px; }
+        label { font-weight: 700; display: block; margin-top: 15px; margin-bottom: 6px; font-size: 15px; }
         textarea, input[type="text"], input[type="file"], button {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            border-radius: 14px;
-            border: 1px solid #cbd5e1;
-            box-sizing: border-box;
-            background: white;
+            width: 100%; padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; background: white;
         }
+        textarea { resize: vertical; height: 100px; }
 
-        textarea {
-            resize: vertical;
-            height: 110px;
-        }
+        .student-box { background: #eef2ff; border: 2px dashed var(--primary); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
+        .editable-input { font-size: 26px; font-weight: 800; color: var(--primary); text-align: center; border: 2px solid transparent; background: transparent; width: 100%; }
+        .editable-input:focus { border-color: var(--primary); background: white; outline: none; }
 
-        .student-box {
-            background: #eef2ff;
-            border: 2px dashed var(--primary);
-            padding: 22px;
-            border-radius: 18px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        .question-box { background: #fffbeb; border: 2px solid #fde68a; padding: 20px; border-radius: 16px; font-size: 20px; margin-bottom: 20px; text-align: center; font-weight: 800; color: #b45309; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .opt-btn { background: white; border: 2px solid #cbd5e1; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s; }
+        .opt-btn:hover { border-color: var(--primary); background: #eef2ff; }
 
-        .student-box h3 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-            color: var(--text-muted);
-        }
+        .btn-main { background-color: var(--primary); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        .btn-success { background-color: var(--success); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        .btn-secondary { background-color: #64748b; color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 15px; }
 
-        .editable-name-input {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary);
-            text-align: center;
-            border: 2px solid transparent;
-            background: transparent;
-            border-radius: 10px;
-            padding: 6px;
-            width: 100%;
-        }
-
-        .editable-name-input:focus {
-            border-color: var(--primary);
-            background: white;
-            outline: none;
-        }
-
-        .question-box {
-            background: #fffbeb;
-            border: 2px solid #fde68a;
-            padding: 25px;
-            border-radius: 18px;
-            font-size: 22px;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 800;
-            color: #b45309;
-            line-height: 1.6;
-        }
-
-        .options-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .option-btn {
-            background: #ffffff;
-            border: 2px solid #cbd5e1;
-            padding: 18px;
-            border-radius: 14px;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            color: var(--text-main);
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-
-        .option-btn:hover {
-            border-color: var(--primary);
-            background: #eef2ff;
-            transform: translateY(-2px);
-        }
-
-        .timer {
-            text-align: center;
-            font-size: 19px;
-            color: var(--danger);
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-
-        .btn-start { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
-        .btn-start:hover { background-color: var(--primary-hover); }
-
-        .btn-action { background-color: var(--success); color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
-        .btn-action:hover { background-color: #059669; }
-
-        .btn-back { background-color: #64748b; color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
-        .btn-back:hover { background-color: #475569; }
-
-        #alert-banner {
-            text-align: center;
-            padding: 16px;
-            border-radius: 14px;
-            font-weight: 800;
-            font-size: 18px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        .alert-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-        .alert-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-        th, td {
-            border-bottom: 1px solid #f1f5f9;
-            padding: 14px;
-            text-align: center;
-            font-size: 16px;
-        }
-        th { background-color: #f8fafc; color: var(--text-muted); font-weight: 700; }
-        
-        .table-name-input {
-            border: 1px solid transparent;
-            background: transparent;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            width: 100%;
-            padding: 6px;
-            border-radius: 8px;
-        }
-        .table-name-input:focus {
-            border-color: var(--primary);
-            background: #f8fafc;
-            outline: none;
-        }
-
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 12px; overflow: hidden; }
+        th, td { border-bottom: 1px solid #f1f5f9; padding: 12px; text-align: center; font-size: 15px; }
+        th { background: #f8fafc; color: var(--text-muted); font-weight: 700; }
+        .table-input { border: 1px solid transparent; background: transparent; font-size: 15px; font-weight: 700; text-align: center; width: 100%; }
+        .table-input:focus { border-color: var(--primary); background: #f8fafc; outline: none; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>منصة الامتحان الشفهي الذكية والمطورة (الإصدار النهائي v2) 🎓</h2>
+    <h2>منصة الامتحان الشفهي الذكية والمطورة 🎓</h2>
     
-    <!-- واجهة فقاعات الغرف التفاعلية -->
+    <!-- واجهة الفقاعات -->
     <div id="rooms-view">
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 18px; font-weight: 600;">انقر على فقاعة الغرفة للدخول (تنطلق عبارة هلاووو مع اسم الغرفة):</p>
-        <div class="bubbles-container">
-            <div class="bubble" onclick="clickBubble(this, 'غرفة الرابع أ', 'الرابع', 'أ')">
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 16px;">اضغط على فقاعة الغرفة للدخول:</p>
+        <div class="bubbles-box">
+            <div class="bubble" onclick="selectRoom(this, 'الرابع أ', 'الرابع', 'أ')">
                 <h3>الرابع أ</h3>
-                <span>اضغط للانفجار 🎈</span>
+                <span>انفجار 🎈</span>
             </div>
-            <div class="bubble" onclick="clickBubble(this, 'غرفة الرابع ب', 'الرابع', 'ب')">
+            <div class="bubble" onclick="selectRoom(this, 'الرابع ب', 'الرابع', 'ب')">
                 <h3>الرابع ب</h3>
-                <span>اضغط للانفجار 🎈</span>
+                <span>انفجار 🎈</span>
             </div>
-            <div class="bubble" onclick="clickBubble(this, 'غرفة الخامس أ', 'الخامس', 'أ')">
+            <div class="bubble" onclick="selectRoom(this, 'الخامس أ', 'الخامس', 'أ')">
                 <h3>الخامس أ</h3>
-                <span>اضغط للانفجار 🎈</span>
+                <span>انفجار 🎈</span>
             </div>
-            <div class="bubble" onclick="clickBubble(this, 'غرفة الخامس ب', 'الخامس', 'ب')">
+            <div class="bubble" onclick="selectRoom(this, 'الخامس ب', 'الخامس', 'ب')">
                 <h3>الخامس ب</h3>
-                <span>اضغط للانفجار 🎈</span>
+                <span>انفجار 🎈</span>
             </div>
         </div>
     </div>
 
-    <!-- واجهة الإعدادات والأسماء والأسئلة -->
+    <!-- إعدادات الغرفة -->
     <div class="section-box hidden" id="setup-view">
-        <h3 id="room-title-setup" style="color: var(--primary); text-align: center; margin-bottom: 20px; font-size: 22px;"></h3>
-        
-        <label>📋 الصق أسماء طلاب هذه الغرفة هنا (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
-        <textarea id="students-textarea" placeholder="مثال:&#10;ابراهيم زيد عبد العزيز&#10;ابو عبيدة احمد جبار&#10;احمد إبراهيم مصطفى"></textarea>
+        <h3 id="setup-title" style="color: var(--primary); text-align: center; margin-bottom: 15px;"></h3>
+        <label>📋 أسماء الطلاب (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
+        <textarea id="students-input" placeholder="اكتب أو الصق أسماء الطلاب هنا..."></textarea>
 
-        <label>📚 رفع ملف الأسئلة والأجوبة (PDF أو TXT) أو إدخالها يدوياً:</label>
-        <input type="file" id="q-file" accept=".pdf, .txt" onchange="handleQFile(event)">
-        <textarea id="questions-textarea" placeholder="أو الصق محتوى الأسئلة والأجوبة هنا مباشرة..."></textarea>
+        <label>📚 ملف أو نص الأسئلة والأجوبة:</label>
+        <input type="file" id="pdf-file" accept=".pdf, .txt" onchange="loadFile(event)">
+        <textarea id="questions-input" placeholder="أو الصق الأسئلة والخيارات هنا..."></textarea>
 
-        <button class="btn-start" onclick="startExamSession()">بدء الجلسة الامتحانية لهذه الغرفة 🚀</button>
-        <button class="btn-back" onclick="backToRooms()">العودة لاختيار الغرف 🔙</button>
+        <button class="btn-main" onclick="startExam()">بدء الامتحان الشفهي 🚀</button>
+        <button class="btn-secondary" onclick="goHome()">العودة للغرف 🔙</button>
     </div>
 
-    <!-- واجهة الامتحان الخاصة بالغرفة -->
+    <!-- شاشة الامتحان -->
     <div id="exam-view" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 18px 25px; border-radius: 16px; margin-bottom: 25px;">
-            <h4 id="exam-room-title" style="margin: 0; color: var(--primary); font-size: 20px;"></h4>
-            <div class="timer" id="timer-display" style="margin: 0;">الوقت: 45 ثانية</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 15px 20px; border-radius: 14px; margin-bottom: 20px;">
+            <h4 id="exam-title" style="margin:0; color:var(--primary);"></h4>
+            <div id="timer" style="color:var(--danger); font-weight:800;">45 ثانية</div>
         </div>
 
-        <div id="alert-banner"></div>
+        <div id="banner" style="text-align:center; padding:12px; border-radius:10px; font-weight:800; margin-bottom:15px; display:none;"></div>
 
         <div class="student-box">
-            <h3>الطالب المستهدف (يمكنك تعديل الاسم هنا مباشرة أو في الجدول):</h3>
-            <input type="text" id="current-student-input" class="editable-name-input" oninput="updateCurrentStudentName(this.value)">
+            <h3 style="margin:0 0 8px 0; color:var(--text-muted);">الطالب المستهدف (قابل للتعديل):</h3>
+            <input type="text" id="active-student" class="editable-input" oninput="updateStudentName(this.value)">
         </div>
 
-        <div class="question-box" id="current-question">السؤال: --</div>
+        <div class="question-box" id="active-question">السؤال: --</div>
+        <div class="options-grid" id="options-grid"></div>
 
-        <div class="options-container" id="options-container"></div>
+        <button class="btn-secondary" onclick="skipStudent()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
 
-        <button class="btn-back" style="background-color: var(--text-muted); margin-top: 5px; padding: 14px;" onclick="nextStudentSkip()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
-
-        <h3 style="font-size: 18px; color: var(--text-main); margin-top: 30px;">سجل درجات هذه الغرفة حصرياً:</h3>
+        <h3 style="font-size: 16px; margin-top: 25px;">سجل درجات هذه الغرفة حصرياً:</h3>
         <table>
             <thead>
                 <tr>
-                    <th>اسم الطالب (قابل للتعديل)</th>
+                    <th>اسم الطالب (تعديل)</th>
                     <th>الصف</th>
                     <th>الشعبة</th>
                     <th>الدرجة من 10</th>
                 </tr>
             </thead>
-            <tbody id="grades-table-body"></tbody>
+            <tbody id="table-body"></tbody>
         </table>
 
-        <button class="btn-action" onclick="exportExcelSheet()">📊 تصدير سجل درجات هذه الغرفة إلى Excel</button>
-        <button class="btn-back" onclick="resetAndReturnRooms()">🔄 إنهاء الجلسة والعودة للغرف</button>
+        <button class="btn-success" onclick="exportExcel()">📊 تصدير السجل إلى Excel</button>
+        <button class="btn-secondary" onclick="goHome()">🔄 إنهاء الجلسة والعودة للغرف</button>
     </div>
 </div>
 
 <script>
-    let currentRoomKey = "";
-    let currentRoomName = "";
-    let currentGrade = "";
-    let currentSection = "";
-    
-    let roomDataStore = {};
+    let currentKey = "", roomName = "", gradeStr = "", secStr = "";
+    let roomDB = {};
 
-    const defaultQuestionBank = [
-        {
-            q: "ما المقصود بالصيانة الوقائية للبرمجيات (Software Preventive Maintenance)؟",
-            correct: "إجراءات وقائية تعتمد لتجنب مشكلة محتملة.",
-            options: [
-                "إجراءات وقائية تعتمد لتجنب مشكلة محتملة.",
-                "إجراءات تركز على استبدال القطع التالفة.",
-                "حذف نظام التشغيل بالكامل وإعادة تثبيته.",
-                "زيادة سرعة المعالج عبر رفع الحرارة."
-            ]
-        },
-        {
-            q: "ما هي الغاية الأساسية من خدمة تحديث نظام التشغيل Windows بشكل منتظم؟",
-            correct: "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية.",
-            options: [
-                "زيادة مساحة القرص الصلب وتوليد مساحة فارغة.",
-                "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية.",
-                "مسح الملفات المؤقتة الخاصة بمتصفح الإنترنت.",
-                "إيقاف عمل مروحة المعالج لتبريد النظام."
-            ]
-        }
+    const defaultQ = [
+        { q: "ما المقصود بالصيانة الوقائية؟", correct: "إجراءات لتجنب المشاكل المحتملة.", options: ["إجراءات لتجنب المشاكل المحتملة.", "استبدال القطع التالفة.", "حذف نظام التشغيل.", "زيادة حرارة المعالج."] },
+        { q: "ما هي غاية تحديث نظام التشغيل؟", correct: "إضافة خصائص جديدة وتحسينات أمنية.", options: ["إضافة خصائص جديدة وتحسينات أمنية.", "زيادة مساحة القرص.", "مسح متصفح الإنترنت.", "إيقاف المروحة."] }
     ];
 
-    function clickBubble(element, roomTitle, grade, section) {
-        element.classList.add('pop-animation');
-        speakHelloRoom(roomTitle);
-
+    function selectRoom(el, name, grade, sec) {
+        el.classList.add('pop');
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.speak(new SpeechSynthesisUtterance(`هلاووووو، ${name}`));
+        }
         setTimeout(() => {
-            element.classList.remove('pop-animation');
-            openRoom(roomTitle, grade, section);
+            el.classList.remove('pop');
+            currentKey = sec + "_" + grade;
+            roomName = name; gradeStr = grade; secStr = sec;
+            if (!roomDB[currentKey]) {
+                roomDB[currentKey] = { students: [], records: {}, questions: [], pointer: 0 };
+            }
+            document.getElementById("setup-title").innerText = `إدارة ${name}`;
+            document.getElementById("rooms-view").classList.add("hidden");
+            document.getElementById("setup-view").classList.remove("hidden");
         }, 300);
     }
 
-    function speakHelloRoom(roomTitle) {
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(`هلاووووو، ${roomTitle}`);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 1.0;
-            window.speechSynthesis.speak(utterance);
-        }
-    }
-
-    // المؤثرات الصوتية: تصفيق للصح، ونطق "أووووو لا لا لا" للخطأ
-    function playSoundEffect(isCorrect) {
-        try {
-            if (isCorrect) {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        let bufferSize = audioCtx.sampleRate * 0.1;
-                        let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                        let data = buffer.getChannelData(0);
-                        for (let j = 0; j < bufferSize; j++) {
-                            data[j] = Math.random() * 2 - 1;
-                        }
-                        let noise = audioCtx.createBufferSource();
-                        noise.buffer = buffer;
-                        let filter = audioCtx.createBiquadFilter();
-                        filter.type = 'bandpass';
-                        filter.frequency.value = 1000;
-                        let gain = audioCtx.createGain();
-                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                        noise.connect(filter);
-                        filter.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        noise.start();
-                    }, i * 80);
-                }
-            } else {
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance("أووووو... لا لا لا!");
-                    utterance.lang = 'ar-SA';
-                    utterance.rate = 0.9;
-                    utterance.pitch = 0.8;
-                    window.speechSynthesis.speak(utterance);
-                }
-            }
-        } catch(e) { console.log("Sound error", e); }
-    }
-
-    function openRoom(roomTitle, grade, section) {
-        currentRoomKey = section + "_" + grade;
-        currentRoomName = roomTitle;
-        currentGrade = grade;
-        currentSection = section;
-
-        if (!roomDataStore[currentRoomKey]) {
-            roomDataStore[currentRoomKey] = {
-                studentsList: [],
-                studentRecords: {},
-                questionsList: [],
-                studentPointer: 0
-            };
-        }
-
-        document.getElementById("room-title-setup").innerText = `إدارة ${roomTitle}`;
-        document.getElementById("rooms-view").classList.add("hidden");
-        document.getElementById("setup-view").classList.remove("hidden");
-    }
-
-    async function handleQFile(event) {
-        const file = event.target.files[0];
+    async function loadFile(e) {
+        const file = e.target.files[0];
         if (!file) return;
         if (file.type === "application/pdf") {
-            const text = await parsePDFFile(file);
-            document.getElementById("questions-textarea").value = text;
+            const reader = new FileReader();
+            reader.onload = function() {
+                pdfjsLib.getDocument(new Uint8Array(this.result)).promise.then(async pdf => {
+                    let txt = "";
+                    for(let i=1; i<=pdf.numPages; i++) {
+                        let page = await pdf.getPage(i);
+                        let content = await page.getTextContent();
+                        txt += content.items.map(item => item.str).join(' ') + '\n';
+                    }
+                    document.getElementById("questions-input").value = txt;
+                });
+            };
+            reader.readAsArrayBuffer(file);
         } else {
             const reader = new FileReader();
-            reader.onload = (e) => { document.getElementById("questions-textarea").value = e.target.result; };
+            reader.onload = (ev) => { document.getElementById("questions-input").value = ev.target.result; };
             reader.readAsText(file, "UTF-8");
         }
     }
 
-    async function parsePDFFile(file) {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const typedarray = new Uint8Array(this.result);
-                pdfjsLib.getDocument(typedarray).promise.then(async function(pdfDoc) {
-                    let fullText = "";
-                    for (let j = 1; j <= pdfDoc.numPages; j++) {
-                        const page = await pdfDoc.getPage(j);
-                        const textContent = await page.getTextContent();
-                        fullText += textContent.items.map(item => item.str).join(' ') + '\n';
-                    }
-                    resolve(fullText);
-                }).catch(() => resolve(""));
-            };
-            reader.readAsArrayBuffer(file);
-        });
+    function playSound(isCorrect) {
+        if (isCorrect) {
+            // تصفيق
+            try {
+                let ctx = new (window.AudioContext || window.webkitAudioContext)();
+                for(let i=0; i<4; i++) {
+                    setTimeout(() => {
+                        let buf = ctx.createBuffer(1, ctx.sampleRate*0.08, ctx.sampleRate);
+                        let data = buf.getChannelData(0);
+                        for(let j=0; j<data.length; j++) data[j] = Math.random()*2-1;
+                        let src = ctx.createBufferSource(); src.buffer = buf;
+                        let g = ctx.createGain(); g.gain.value = 0.2;
+                        src.connect(g); g.connect(ctx.destination); src.start();
+                    }, i*70);
+                }
+            } catch(e) {}
+        } else {
+            // أوووووو لا لا لا
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance("أووووو... لا لا لا!"));
+            }
+        }
     }
 
-    function startExamSession() {
-        const manualText = document.getElementById("students-textarea").value.trim();
-        if (!manualText) {
-            alert("يرجى إدخال أسماء الطلاب في خانة النص (نسخ ولصق) أولاً!");
-            return;
-        }
+    function startExam() {
+        const raw = document.getElementById("students-input").value.trim();
+        if (!raw) { alert("يرجى إدخال أسماء الطلاب!"); return; }
+        let list = [...new Set(raw.split('\n').map(s => s.trim()).filter(s => s.length > 2))];
+        if (list.length === 0) { alert("أدخل أسماء صحيحة."); return; }
 
-        let sList = manualText.split('\n').map(s => s.trim()).filter(s => s.length > 2);
-        sList = [...new Set(sList)];
+        let recs = {};
+        list.forEach(s => recs[s] = { name: s, grade: 10 });
 
-        if (sList.length === 0) {
-            alert("لم يتم العثور على أسماء صحيحة. يرجى التأكد من كتابة كل اسم في سطر.");
-            return;
-        }
-
-        let records = {};
-        sList.forEach(s => {
-            records[s] = { name: s, grade: 10, status: 0 };
-        });
-
-        let qList = [];
-        const qText = document.getElementById("questions-textarea").value.trim();
+        let qText = document.getElementById("questions-input").value.trim();
+        let qArr = defaultQ;
         if (qText.length > 5) {
             let parts = qText.split('س:').filter(p => p.trim().length > 5);
-            if (parts.length === 0) parts = qText.split('\n').filter(p => p.trim().length > 5);
-            qList = parts.map(p => {
-                let lines = p.split('\n').map(l => l.trim()).filter(l => l.length > 2);
-                let questionTitle = lines[0] || p;
-                let opts = lines.slice(1, 5);
-                if (opts.length < 4) {
-                    opts = [
-                        questionTitle.substring(0, 30) + " (صحيح)",
-                        "خيار مضلل أول للاختبار",
-                        "خيار مضلل ثانٍ للاختبار",
-                        "خيار مضلل ثالث للاختبار"
-                    ];
-                }
-                return {
-                    q: "س: " + questionTitle,
-                    correct: opts[0],
-                    options: [...opts]
-                };
-            });
-        }
-        if (qList.length === 0) {
-            qList = defaultQuestionBank;
+            if(parts.length > 0) {
+                qArr = parts.map(p => {
+                    let lines = p.split('\n').map(l => l.trim()).filter(l => l.length > 2);
+                    let qTitle = lines[0] || p;
+                    let opts = lines.slice(1, 5);
+                    if(opts.length < 4) opts = [qTitle.substring(0,25)+" (صحيح)", "خيار مضلل 1", "خيار مضلل 2", "خيار مضلل 3"];
+                    return { q: "س: " + qTitle, correct: opts[0], options: opts };
+                });
+            }
         }
 
-        roomDataStore[currentRoomKey] = {
-            studentsList: sList,
-            studentRecords: records,
-            questionsList: qList,
-            studentPointer: 0
-        };
-
+        roomDB[currentKey] = { students: list, records: recs, questions: qArr, pointer: 0 };
         document.getElementById("setup-view").classList.add("hidden");
         document.getElementById("exam-view").classList.remove("hidden");
-        document.getElementById("exam-room-title").innerText = `غرفة امتحان: ${currentRoomName}`;
-
-        updateGradesTable();
-        loadNextStudent();
+        document.getElementById("exam-title").innerText = `غرفة: ${roomName}`;
+        renderTable();
+        loadStudent();
     }
 
-    let examTimer = null;
-    let secondsLeft = 45;
+    let timer = null, leftTime = 45, currentQ = null;
 
-    function runTimer() {
-        clearInterval(examTimer);
-        secondsLeft = 45;
-        document.getElementById("timer-display").innerText = `الوقت: ${secondsLeft} ثانية`;
-        
-        examTimer = setInterval(() => {
-            secondsLeft--;
-            document.getElementById("timer-display").innerText = `الوقت: ${secondsLeft} ثانية`;
-            if (secondsLeft <= 0) {
-                clearInterval(examTimer);
-                playSoundEffect(false);
-                recordAnswer(false);
-            }
+    function loadStudent() {
+        let db = roomDB[currentKey];
+        if (db.pointer >= db.students.length) {
+            document.getElementById("active-student").value = "انتهت القائمة بنجاح! 🎓";
+            document.getElementById("active-question").innerText = "اكتملت الجلسة الامتحانية.";
+            document.getElementById("options-grid").innerHTML = "";
+            document.getElementById("banner").style.display = "none";
+            clearInterval(timer);
+            return;
+        }
+
+        let stu = db.students[db.pointer];
+        currentQ = db.questions[Math.floor(Math.random() * db.questions.length)];
+        let opts = [...currentQ.options].sort(() => Math.random() - 0.5);
+
+        document.getElementById("active-student").value = db.records[stu].name;
+        document.getElementById("active-question").innerText = currentQ.q;
+        document.getElementById("banner").style.display = "none";
+
+        let grid = document.getElementById("options-grid");
+        grid.innerHTML = "";
+        opts.forEach((op, idx) => {
+            let b = document.createElement("button");
+            b.className = "opt-btn";
+            b.innerHTML = `<strong>${['أ', 'ب', 'ج', 'د'][idx]})</strong> ${op}`;
+            b.onclick = () => answer(op === currentQ.correct);
+            grid.appendChild(b);
+        });
+
+        clearInterval(timer);
+        leftTime = 45;
+        document.getElementById("timer").innerText = `الوقت: ${leftTime} ث`;
+        timer = setInterval(() => {
+            leftTime--;
+            document.getElementById("timer").innerText = `الوقت: ${leftTime} ث`;
+            if (leftTime <= 0) { clearInterval(timer); playSound(false); answer(false); }
         }, 1000);
     }
 
-    let activeQuestionObj = null;
-
-    function loadNextStudent() {
-        let store = roomDataStore[currentRoomKey];
-        if (store.studentPointer >= store.studentsList.length) {
-            document.getElementById("current-student-input").value = "انتهت قائمة طلاب هذه الغرفة بنجاح! 🎓";
-            document.getElementById("current-question").innerText = "اكتملت الجلسة الامتحانية لجميع طلاب الغرفة.";
-            document.getElementById("options-container").innerHTML = "";
-            document.getElementById("alert-banner").style.display = "none";
-            clearInterval(examTimer);
-            return;
-        }
-
-        const studentKey = store.studentsList[store.studentPointer];
-        const currentData = store.studentRecords[studentKey];
-        
-        activeQuestionObj = store.questionsList[Math.floor(Math.random() * store.questionsList.length)];
-        let shuffledOptions = [...activeQuestionObj.options].sort(() => Math.random() - 0.5);
-
-        document.getElementById("current-student-input").value = currentData.name;
-        document.getElementById("current-question").innerText = activeQuestionObj.q;
-        document.getElementById("alert-banner").style.display = "none";
-
-        const optContainer = document.getElementById("options-container");
-        optContainer.innerHTML = "";
-        
-        shuffledOptions.forEach((opt, idx) => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn";
-            btn.innerHTML = `<strong>${['أ', 'ب', 'ج', 'د'][idx]})</strong> ${opt}`;
-            btn.onclick = function() {
-                const isCorrect = (opt === activeQuestionObj.correct);
-                recordAnswer(isCorrect);
-            };
-            optContainer.appendChild(btn);
-        });
-
-        runTimer();
-    }
-
-    function updateCurrentStudentName(newVal) {
-        let store = roomDataStore[currentRoomKey];
-        if (store.studentPointer < store.studentsList.length) {
-            const oldKey = store.studentsList[store.studentPointer];
-            store.studentRecords[oldKey].name = newVal;
-            store.studentsList[store.studentPointer] = newVal;
-            updateGradesTable();
+    function updateStudentName(val) {
+        let db = roomDB[currentKey];
+        if (db.pointer < db.students.length) {
+            let old = db.students[db.pointer];
+            db.records[old].name = val;
+            db.students[db.pointer] = val;
+            renderTable();
         }
     }
 
-    function updateTableName(index, newVal) {
-        let store = roomDataStore[currentRoomKey];
-        const oldKey = store.studentsList[index];
-        store.studentsList[index] = newVal;
-        store.studentRecords[newVal] = store.studentRecords[oldKey];
-        if (oldKey !== newVal) delete store.studentRecords[oldKey];
-        if (index === store.studentPointer) {
-            document.getElementById("current-student-input").value = newVal;
-        }
+    function updateTableName(idx, val) {
+        let db = roomDB[currentKey];
+        let old = db.students[idx];
+        db.students[idx] = val;
+        db.records[val] = db.records[old];
+        if(old !== val) delete db.records[old];
+        if(idx === db.pointer) document.getElementById("active-student").value = val;
     }
 
-    function nextStudentSkip() {
-        clearInterval(examTimer);
-        playSoundEffect(false);
-        recordAnswer(false);
-    }
+    function skipStudent() { clearInterval(timer); playSound(false); answer(false); }
 
-    function recordAnswer(isCorrect) {
-        clearInterval(examTimer);
-        let store = roomDataStore[currentRoomKey];
-        if (store.studentPointer >= store.studentsList.length) return;
+    function answer(isCorr) {
+        clearInterval(timer);
+        let db = roomDB[currentKey];
+        if(db.pointer >= db.students.length) return;
+        let stu = db.students[db.pointer];
+        let ban = document.getElementById("banner");
 
-        const studentKey = store.studentsList[store.studentPointer];
-        const banner = document.getElementById("alert-banner");
+        playSound(isCorr);
 
-        playSoundEffect(isCorrect);
-
-        if (isCorrect) {
-            store.studentRecords[studentKey].grade = 10;
-            store.studentRecords[studentKey].status = 1;
-            banner.className = "alert-success";
-            banner.innerHTML = `✔️ إجابة صحيحة (تصفيق)! تم رصد (10 / 10) للطالب.`;
+        if(isCorr) {
+            db.records[stu].grade = 10;
+            ban.className = "alert-success";
+            ban.style.background = "#d1fae5"; ban.style.color = "#065f46";
+            ban.innerHTML = "✔️ إجابة صحيحة (تصفيق)! تم رصد (10/10).";
         } else {
-            store.studentRecords[studentKey].grade = 0;
-            store.studentRecords[studentKey].status = 2;
-            banner.className = "alert-danger";
-            banner.innerHTML = `❌ إجابة خاطئة!<br><b>الإجابة الصحيحة كانت:</b> ${activeQuestionObj.correct}`;
+            db.records[stu].grade = 0;
+            ban.className = "alert-danger";
+            ban.style.background = "#fee2e2"; ban.style.color = "#991b1b";
+            ban.innerHTML = `❌ إجابة خاطئة (أووووو لا لا لا)! الصحيحة: ${currentQ.correct}`;
         }
-        banner.style.display = "block";
+        ban.style.display = "block";
+        renderTable();
 
-        updateGradesTable();
-
-        store.studentPointer++;
-        setTimeout(() => {
-            loadNextStudent();
-        }, 3500);
+        db.pointer++;
+        setTimeout(() => loadStudent(), 3500);
     }
 
-    function updateGradesTable() {
-        let store = roomDataStore[currentRoomKey];
-        const tbody = document.getElementById("grades-table-body");
+    function renderTable() {
+        let db = roomDB[currentKey];
+        let tbody = document.getElementById("table-body");
         tbody.innerHTML = "";
-        store.studentsList.forEach((stuKey, idx) => {
-            const rec = store.studentRecords[stuKey];
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td><input type="text" class="table-name-input" value="${rec.name}" oninput="updateTableName(${idx}, this.value)"></td>
-                <td><b>${currentGrade}</b></td>
-                <td><b>${currentSection}</b></td>
-                <td><b>${rec.grade} / 10</b></td>
+        db.students.forEach((sKey, idx) => {
+            let r = db.records[sKey];
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><input type="text" class="table-input" value="${r.name}" oninput="updateTableName(${idx}, this.value)"></td>
+                <td><b>${gradeStr}</b></td>
+                <td><b>${secStr}</b></td>
+                <td><b>${r.grade} / 10</b></td>
             `;
-            tbody.appendChild(row);
+            tbody.appendChild(tr);
         });
     }
 
-    function exportExcelSheet() {
-        let store = roomDataStore[currentRoomKey];
-        const tableHTML = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>اسم الطالب</th>
-                        <th>الصف</th>
-                        <th>الشعبة</th>
-                        <th>الدرجة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${store.studentsList.map(stuKey => {
-                        const rec = store.studentRecords[stuKey];
-                        return `<tr><td>${rec.name}</td><td>${currentGrade}</td><td>${currentSection}</td><td>${rec.grade} / 10</td></tr>`;
-                    }).join('')}
-                </tbody>
-            </table>
-        `;
-        const blob = new Blob(['\ufeff' + tableHTML], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `سجل_درجات_غرفة_${currentRoomName}.xls`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    function exportExcel() {
+        let db = roomDB[currentKey];
+        let html = `<table><tr><th>اسم الطالب</th><th>الصف</th><th>الشعبة</th><th>الدرجة</th></tr>`;
+        db.students.forEach(sKey => {
+            let r = db.records[sKey];
+            html += `<tr><td>${r.name}</td><td>${gradeStr}</td><td>${secStr}</td><td>${r.grade}/10</td></tr>`;
+        });
+        html += `</table>`;
+        let blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+        let a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `درجات_غرفة_${roomName}.xls`; a.click();
     }
 
-    function backToRooms() {
-        clearInterval(examTimer);
+    function goHome() {
+        clearInterval(timer);
         document.getElementById("setup-view").classList.add("hidden");
+        document.getElementById("exam-view").classList.add("hidden");
         document.getElementById("rooms-view").classList.remove("hidden");
-        document.getElementById("students-textarea").value = "";
-        document.getElementById("questions-textarea").value = "";
-        document.getElementById("q-file").value = "";
-    }
-
-    function resetAndReturnRooms() {
-        backToRooms();
-        document.getElementById("grades-table-body").innerHTML = "";
-        document.getElementById("alert-banner").style.display = "none";
+        document.getElementById("students-input").value = "";
+        document.getElementById("questions-input").value = "";
     }
 </script>
 
