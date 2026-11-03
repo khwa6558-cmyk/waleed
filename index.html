@@ -99,7 +99,7 @@
 
         textarea {
             resize: vertical;
-            height: 120px;
+            height: 100px;
         }
 
         .student-box {
@@ -244,8 +244,9 @@
 <div class="container">
     <h2>منصة الامتحان الشفهي الذكية والمطورة</h2>
     
+    <!-- واجهة اختيار الغرف المستقلة -->
     <div id="rooms-view">
-        <h3 style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 18px;">اختر غرفة الشعبة لبدء جلسة الاختبار:</h3>
+        <h3 style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 18px;">اختر غرفة الشعبة لبدء جلسة الاختبار المستقلة:</h3>
         <div class="rooms-grid">
             <div class="room-card" onclick="openRoom('الرابع (أ)', 'الرابع', 'أ')">غرفة الرابع أ 🏫</div>
             <div class="room-card" onclick="openRoom('الرابع (ب)', 'الرابع', 'ب')">غرفة الرابع ب 🏫</div>
@@ -254,20 +255,22 @@
         </div>
     </div>
 
+    <!-- واجهة الإعدادات لكل غرفة على حدة -->
     <div class="section-box hidden" id="setup-view">
         <h3 id="room-title-setup" style="color: var(--primary); text-align: center; margin-bottom: 15px;"></h3>
         
-        <label>📋 الصق أسماء الطلاب هنا (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
+        <label>📋 الصق أسماء طلاب هذه الغرفة هنا (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
         <textarea id="students-textarea" placeholder="مثال:&#10;ابراهيم زيد عبد العزيز&#10;ابو عبيدة احمد جبار&#10;احمد إبراهيم مصطفى"></textarea>
 
-        <label>📚 ملف أو نص الأسئلة والأجوبة (بحيث يكون الجواب الصحيح مميزاً لتعرفه أنت):</label>
+        <label>📚 رفع ملف الأسئلة والأجوبة (PDF أو TXT) أو إدخالها يدوياً:</label>
         <input type="file" id="q-file" accept=".pdf, .txt" onchange="handleQFile(event)">
-        <textarea id="questions-textarea" placeholder="أو الصق الأسئلة هنا..."></textarea>
+        <textarea id="questions-textarea" placeholder="أو الصق محتوى الأسئلة والأجوبة هنا مباشرة..."></textarea>
 
-        <button class="btn-start" onclick="startExamSession()">بدء الجلسة الامتحانية (طالب بطالب) 🚀</button>
+        <button class="btn-start" onclick="startExamSession()">بدء الجلسة الامتحانية لهذه الغرفة 🚀</button>
         <button class="btn-back" onclick="backToRooms()">العودة لاختيار الغرف 🔙</button>
     </div>
 
+    <!-- واجهة الامتحان الخاصة بالغرفة -->
     <div id="exam-view" class="hidden">
         <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px;">
             <h4 id="exam-room-title" style="margin: 0; color: var(--primary);"></h4>
@@ -287,7 +290,7 @@
 
         <button class="btn-back" style="background-color: var(--text-muted); margin-top: 5px;" onclick="nextStudentSkip()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
 
-        <h3 style="font-size: 16px; color: var(--text-main); margin-top: 25px;">سجل الدرجات النهائي (الاسم، الصف، الشعبة، الدرجة من 10):</h3>
+        <h3 style="font-size: 16px; color: var(--text-main); margin-top: 25px;">سجل درجات هذه الغرفة حصرياً (الاسم، الصف، الشعبة، الدرجة من 10):</h3>
         <table>
             <thead>
                 <tr>
@@ -300,22 +303,19 @@
             <tbody id="grades-table-body"></tbody>
         </table>
 
-        <button class="btn-action" onclick="exportExcelSheet()">📊 تصدير السجل إلى Excel</button>
+        <button class="btn-action" onclick="exportExcelSheet()">📊 تصدير سجل درجات هذه الغرفة إلى Excel</button>
         <button class="btn-back" onclick="resetAndBackToRooms()">🔄 إنهاء الجلسة والعودة للغرف</button>
     </div>
 </div>
 
 <script>
+    let currentRoomKey = "";
     let currentRoomName = "";
     let currentGrade = "";
     let currentSection = "";
-    let studentsList = [];
-    let studentPointer = 0;
-    let studentRecords = {};
-    let questionsList = [];
-    let activeQuestionObj = null;
-    let examTimer = null;
-    let secondsLeft = 45;
+    
+    // حفظ بيانات كل غرفة بشكل مستقل تماماً
+    let roomDataStore = {};
 
     const defaultQuestionBank = [
         {
@@ -347,20 +347,9 @@
                 "احتفاظ النظام الجديد بنسخة احتياطية من ملفات نظام التشغيل القديم.",
                 "وجود فيروسات خبيثة تحجز مساحة القرص."
             ]
-        },
-        {
-            q: "ما الفرق الأساسي بين ترقية البرمجيات (Upgrade) وتحديثها (Update)؟",
-            correct: "الترقية توفر تحسينات جوهرية بإصدار جديد، بينما التحديث يقدم تصحيحات وسد ثغرات.",
-            options: [
-                "الترقية توفر تحسينات جوهرية بإصدار جديد، بينما التحديث يقدم تصحيحات وسد ثغرات.",
-                "التحديث يكون عبر شراء قرص ليزري جديد فقط.",
-                "الترقية تخص أجهزة الهواتف المحمولة والتحديث للحواسيب.",
-                "لا يوجد أي فرق بينهما تقنياً."
-            ]
         }
     ];
 
-    // دالة إطلاق النغمات الصوتية التنبيهية (الصح والخطأ)
     function playSound(isCorrect) {
         try {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -370,17 +359,15 @@
             gain.connect(audioCtx.destination);
 
             if (isCorrect) {
-                // رنة نجاح تصاعدية (صح)
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-                osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15); // E5
-                osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.3); // G5
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15); 
+                osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.3); 
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.5);
             } else {
-                // رنة تنبيهية منخفضة (خطأ)
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(180, audioCtx.currentTime);
                 osc.frequency.setValueAtTime(120, audioCtx.currentTime + 0.2);
@@ -393,9 +380,20 @@
     }
 
     function openRoom(roomTitle, grade, section) {
+        currentRoomKey = section + "_" + grade;
         currentRoomName = roomTitle;
         currentGrade = grade;
         currentSection = section;
+
+        if (!roomDataStore[currentRoomKey]) {
+            roomDataStore[currentRoomKey] = {
+                studentsList: [],
+                studentRecords: {},
+                questionsList: [],
+                studentPointer: 0
+            };
+        }
+
         document.getElementById("room-title-setup").innerText = `إدارة غرفة: ${roomTitle}`;
         document.getElementById("rooms-view").classList.add("hidden");
         document.getElementById("setup-view").classList.remove("hidden");
@@ -440,27 +438,29 @@
             return;
         }
 
-        studentsList = manualText.split('\n').map(s => s.trim()).filter(s => s.length > 2);
-        studentsList = [...new Set(studentsList)];
+        let sList = manualText.split('\n').map(s => s.trim()).filter(s => s.length > 2);
+        sList = [...new Set(sList)];
 
-        if (studentsList.length === 0) {
+        if (sList.length === 0) {
             alert("لم يتم العثور على أسماء صحيحة. يرجى التأكد من كتابة كل اسم في سطر.");
             return;
         }
 
-        studentRecords = {};
-        studentsList.forEach(s => {
-            studentRecords[s] = { name: s, grade: 10, status: 0 };
+        let records = {};
+        sList.forEach(s => {
+            records[s] = { name: s, grade: 10, status: 0 };
         });
 
+        // قراءة الأسئلة
+        let qList = [];
         const qText = document.getElementById("questions-textarea").value.trim();
         if (qText.length > 10) {
             let parts = qText.split('س:').filter(p => p.trim().length > 10);
-            questionsList = parts.map(p => {
+            qList = parts.map(p => {
                 let lines = p.split('\n').map(l => l.trim()).filter(l => l.length > 2);
                 let questionTitle = lines[0] || "سؤال شفهي منهجى";
                 let opts = lines.slice(1, 5);
-                if (opts.length < 4) opts = ["الخيار الأول المنهجي", "الخيار الثاني المنهجي", "الخيار الثالث المنهجي", "الخيار الرابع المنهجي"];
+                if (opts.length < 4) opts = ["الخيار الأول", "الخيار الثاني", "الخيار الثالث", "الخيار الرابع"];
                 return {
                     q: questionTitle,
                     correct: opts[0],
@@ -468,18 +468,27 @@
                 };
             });
         }
-        if (questionsList.length === 0) {
-            questionsList = defaultQuestionBank;
+        if (qList.length === 0) {
+            qList = defaultQuestionBank;
         }
+
+        roomDataStore[currentRoomKey] = {
+            studentsList: sList,
+            studentRecords: records,
+            questionsList: qList,
+            studentPointer: 0
+        };
 
         document.getElementById("setup-view").classList.add("hidden");
         document.getElementById("exam-view").classList.remove("hidden");
         document.getElementById("exam-room-title").innerText = `غرفة امتحان: ${currentRoomName}`;
 
-        studentPointer = 0;
         updateGradesTable();
         loadNextStudent();
     }
+
+    let examTimer = null;
+    let secondsLeft = 45;
 
     function runTimer() {
         clearInterval(examTimer);
@@ -491,26 +500,29 @@
             document.getElementById("timer-display").innerText = `الوقت: ${secondsLeft} ثانية`;
             if (secondsLeft <= 0) {
                 clearInterval(examTimer);
-                playSound(false); // رنة خطأ عند انتهاء الوقت
+                playSound(false);
                 recordAnswer(false);
             }
         }, 1000);
     }
 
+    let activeQuestionObj = null;
+
     function loadNextStudent() {
-        if (studentPointer >= studentsList.length) {
-            document.getElementById("current-student-input").value = "انتهت قائمة الطلاب بنجاح! 🎓";
-            document.getElementById("current-question").innerText = "اكتملت الجلسة الامتحانية لجميع طلاب الشعبة.";
+        let store = roomDataStore[currentRoomKey];
+        if (store.studentPointer >= store.studentsList.length) {
+            document.getElementById("current-student-input").value = "انتهت قائمة طلاب هذه الغرفة بنجاح! 🎓";
+            document.getElementById("current-question").innerText = "اكتملت الجلسة الامتحانية لجميع طلاب الغرفة.";
             document.getElementById("options-container").innerHTML = "";
             document.getElementById("alert-banner").style.display = "none";
             clearInterval(examTimer);
             return;
         }
 
-        const studentKey = studentsList[studentPointer];
-        const currentData = studentRecords[studentKey];
+        const studentKey = store.studentsList[store.studentPointer];
+        const currentData = store.studentRecords[studentKey];
         
-        activeQuestionObj = questionsList[Math.floor(Math.random() * questionsList.length)];
+        activeQuestionObj = store.questionsList[Math.floor(Math.random() * store.questionsList.length)];
         let shuffledOptions = [...activeQuestionObj.options].sort(() => Math.random() - 0.5);
 
         document.getElementById("current-student-input").value = currentData.name;
@@ -535,48 +547,50 @@
     }
 
     function updateCurrentStudentName(newVal) {
-        if (studentPointer < studentsList.length) {
-            const oldKey = studentsList[studentPointer];
-            studentRecords[oldKey].name = newVal;
-            studentsList[studentPointer] = newVal;
+        let store = roomDataStore[currentRoomKey];
+        if (store.studentPointer < store.studentsList.length) {
+            const oldKey = store.studentsList[store.studentPointer];
+            store.studentRecords[oldKey].name = newVal;
+            store.studentsList[store.studentPointer] = newVal;
             updateGradesTable();
         }
     }
 
     function updateTableName(index, newVal) {
-        const oldKey = studentsList[index];
-        studentsList[index] = newVal;
-        studentRecords[newVal] = studentRecords[oldKey];
-        if (oldKey !== newVal) delete studentRecords[oldKey];
-        if (index === studentPointer) {
+        let store = roomDataStore[currentRoomKey];
+        const oldKey = store.studentsList[index];
+        store.studentsList[index] = newVal;
+        store.studentRecords[newVal] = store.studentRecords[oldKey];
+        if (oldKey !== newVal) delete store.studentRecords[oldKey];
+        if (index === store.studentPointer) {
             document.getElementById("current-student-input").value = newVal;
         }
     }
 
     function nextStudentSkip() {
         clearInterval(examTimer);
-        playSound(false); // رنة خطأ عند التخطي
+        playSound(false);
         recordAnswer(false);
     }
 
     function recordAnswer(isCorrect) {
         clearInterval(examTimer);
-        if (studentPointer >= studentsList.length) return;
+        let store = roomDataStore[currentRoomKey];
+        if (store.studentPointer >= store.studentsList.length) return;
 
-        const studentKey = studentsList[studentPointer];
+        const studentKey = store.studentsList[store.studentPointer];
         const banner = document.getElementById("alert-banner");
 
-        // تشغيل صوت الصح أو الخطأ فوراً
         playSound(isCorrect);
 
         if (isCorrect) {
-            studentRecords[studentKey].grade = 10;
-            studentRecords[studentKey].status = 1;
+            store.studentRecords[studentKey].grade = 10;
+            store.studentRecords[studentKey].status = 1;
             banner.className = "alert-success";
             banner.innerHTML = `✔️ إجابة صحيحة! تم رصد (10 / 10) للطالب.`;
         } else {
-            studentRecords[studentKey].grade = 0;
-            studentRecords[studentKey].status = 2;
+            store.studentRecords[studentKey].grade = 0;
+            store.studentRecords[studentKey].status = 2;
             banner.className = "alert-danger";
             banner.innerHTML = `❌ إجابة خاطئة!<br><b>الإجابة الصحيحة كانت:</b> ${activeQuestionObj.correct}`;
         }
@@ -584,17 +598,18 @@
 
         updateGradesTable();
 
-        studentPointer++;
+        store.studentPointer++;
         setTimeout(() => {
             loadNextStudent();
         }, 3200);
     }
 
     function updateGradesTable() {
+        let store = roomDataStore[currentRoomKey];
         const tbody = document.getElementById("grades-table-body");
         tbody.innerHTML = "";
-        studentsList.forEach((stuKey, idx) => {
-            const rec = studentRecords[stuKey];
+        store.studentsList.forEach((stuKey, idx) => {
+            const rec = store.studentRecords[stuKey];
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td><input type="text" class="table-name-input" value="${rec.name}" oninput="updateTableName(${idx}, this.value)"></td>
@@ -607,6 +622,7 @@
     }
 
     function exportExcelSheet() {
+        let store = roomDataStore[currentRoomKey];
         const tableHTML = `
             <table>
                 <thead>
@@ -618,8 +634,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    ${studentsList.map(stuKey => {
-                        const rec = studentRecords[stuKey];
+                    ${store.studentsList.map(stuKey => {
+                        const rec = store.studentRecords[stuKey];
                         return `<tr><td>${rec.name}</td><td>${currentGrade}</td><td>${currentSection}</td><td>${rec.grade} / 10</td></tr>`;
                     }).join('')}
                 </tbody>
@@ -629,7 +645,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `سجل_درجات_شعبة_${currentSection}_امتحان_شفهي.xls`;
+        a.download = `سجل_درجات_غرفة_${currentRoomName}.xls`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -641,6 +657,7 @@
         document.getElementById("rooms-view").classList.remove("hidden");
         document.getElementById("students-textarea").value = "";
         document.getElementById("questions-textarea").value = "";
+        document.getElementById("q-file").value = "";
     }
 
     function resetAndReturnRooms() {
