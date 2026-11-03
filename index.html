@@ -1,429 +1,705 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الامتحان الشفهي الذكية والمطورة</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: var(--card-bg);
-            padding: 35px;
-            border-radius: 28px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-        }
-        h2 { text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 28px; font-weight: 800; }
-        
-        .bubbles-box {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin: 40px 0;
-        }
-        .bubble {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4f46e5, #9333ea);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(79,70,229,0.4);
-            transition: 0.3s;
-            border: 4px solid rgba(255,255,255,0.3);
-        }
-        .bubble:hover { transform: scale(1.1); box-shadow: 0 15px 30px rgba(147,51,234,0.6); }
-        .bubble.pop { transform: scale(1.5); opacity: 0; transition: 0.3s; }
-        .bubble h3 { margin: 0; font-size: 20px; font-weight: 800; }
-        .bubble span { font-size: 12px; opacity: 0.85; margin-top: 5px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة ثانوية المتفوقين الثانية - التحضير اليومي</title>
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDK للمزامنة السحابية اللحظية -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-        .section-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 18px; margin-bottom: 20px; }
-        label { font-weight: 700; display: block; margin-top: 15px; margin-bottom: 6px; font-size: 15px; }
-        textarea, input[type="text"], button {
-            width: 100%; padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; background: white;
-        }
-        
-        .file-upload-box {
-            background: #eef2ff;
-            border: 2px dashed var(--primary);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        textarea { resize: vertical; height: 100px; }
-
-        .student-box { background: #eef2ff; border: 2px dashed var(--primary); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
-        .editable-input { font-size: 26px; font-weight: 800; color: var(--primary); text-align: center; border: 2px solid transparent; background: transparent; width: 100%; }
-        .editable-input:focus { border-color: var(--primary); background: white; outline: none; }
-
-        .question-box { background: #fffbeb; border: 2px solid #fde68a; padding: 20px; border-radius: 16px; font-size: 20px; margin-bottom: 20px; text-align: center; font-weight: 800; color: #b45309; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .opt-btn { background: white; border: 2px solid #cbd5e1; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; transition: 0.2s; }
-        .opt-btn:hover { border-color: var(--primary); background: #eef2ff; }
-
-        .btn-main { background-color: var(--primary); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 15px; }
-        .btn-success { background-color: var(--success); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 15px; }
-        .btn-secondary { background-color: #64748b; color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 15px; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 12px; overflow: hidden; }
-        th, td { border-bottom: 1px solid #f1f5f9; padding: 12px; text-align: center; font-size: 15px; }
-        th { background: #f8fafc; color: var(--text-muted); font-weight: 700; }
-        .table-input { border: 1px solid transparent; background: transparent; font-size: 15px; font-weight: 700; text-align: center; width: 100%; }
-        .table-input:focus { border-color: var(--primary); background: #f8fafc; outline: none; }
-        .hidden { display: none; }
-    </style>
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    @keyframes pulseGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3); }
+      50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.5); }
+    }
+    .neon-text { animation: pulseGlow 2s infinite ease-in-out; }
+    @keyframes marqueeLeftToRight {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .marquee-container { display: flex; width: 100%; overflow: hidden; white-space: nowrap; }
+    .marquee-text { display: inline-flex; animation: marqueeLeftToRight 22s linear infinite; }
+    .page-gradient-bg { background: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #0f172a 100%); }
+  </style>
 </head>
-<body>
+<body class="page-gradient-bg text-slate-100 min-h-screen flex flex-col justify-between">
 
-<div class="container">
-    <h2>منصة الامتحان الشفهي الذكية والمطورة 🎓</h2>
-    
-    <!-- واجهة الفقاعات -->
-    <div id="rooms-view">
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 16px;">اضغط على فقاعة الغرفة للدخول:</p>
-        <div class="bubbles-box">
-            <div class="bubble" onclick="selectRoom(this, 'الرابع أ', 'الرابع', 'أ')">
-                <h3>الرابع أ</h3>
-                <span>انفجار 🎈</span>
-            </div>
-            <div class="bubble" onclick="selectRoom(this, 'الرابع ب', 'الرابع', 'ب')">
-                <h3>الرابع ب</h3>
-                <span>انفجار 🎈</span>
-            </div>
-            <div class="bubble" onclick="selectRoom(this, 'الخامس أ', 'الخامس', 'أ')">
-                <h3>الخامس أ</h3>
-                <span>انفجار 🎈</span>
-            </div>
-            <div class="bubble" onclick="selectRoom(this, 'الخامس ب', 'الخامس', 'ب')">
-                <h3>الخامس ب</h3>
-                <span>انفجار 🎈</span>
-            </div>
-        </div>
+  <!-- MOVING BANNER -->
+  <div class="bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-950 text-amber-300 py-3 shadow-md overflow-hidden border-b-2 border-amber-500/30 relative z-50">
+    <div class="marquee-container">
+      <div class="marquee-text font-black text-base sm:text-lg tracking-wider neon-text items-center">
+        <span class="mx-8 inline-flex items-center gap-2">
+          <i class="fa-solid fa-code text-amber-400"></i> إعداد و برمجة: WALEED ALSHAMMARI <i class="fa-solid fa-laptop-code text-amber-400"></i>
+        </span>
+        <span class="mx-8 inline-flex items-center gap-2 text-white">
+          ★ منصة ثانوية المتفوقين الثانية للتحضير اليومي والجدول المدرسي ★
+        </span>
+      </div>
     </div>
+  </div>
 
-    <!-- إعدادات الغرفة -->
-    <div class="section-box hidden" id="setup-view">
-        <h3 id="setup-title" style="color: var(--primary); text-align: center; margin-bottom: 15px;"></h3>
-        
-        <label>📋 أسماء الطلاب (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
-        <textarea id="students-input" placeholder="اكتب أو الصق أسماء الطلاب هنا..."></textarea>
-
-        <!-- زر رفع ملف الأسئلة والأجوبة -->
-        <label>📚 رفع ملف الأسئلة والأجوبة (PDF أو TXT):</label>
-        <div class="file-upload-box">
-            <input type="file" id="pdf-file" accept=".pdf, .txt" onchange="loadFile(event)" style="background:transparent; border:none; padding:5px;">
-            <span style="font-size: 13px; color: var(--primary); display: block; margin-top: 5px;">اختر ملف PDF أو TXT الخاص بالأسئلة</span>
+  <!-- Header -->
+  <header class="bg-indigo-950/80 backdrop-blur-md text-white shadow-xl sticky top-0 z-40 border-b border-indigo-800/50">
+    <div class="container mx-auto px-4 py-4 flex flex-wrap justify-between items-center flex-col sm:flex-row gap-4">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-indigo-950 font-black text-xl shadow-lg border-2 border-white/20">ث</div>
+        <div>
+          <h1 class="text-xl font-extrabold tracking-wide text-amber-300">منصة ثانوية المتفوقين الثانية</h1>
+          <p class="text-xs text-indigo-200">التحضير اليومي والجدول المدرسي (مزامنة سحابية لحظية 100%)</p>
         </div>
+      </div>
 
-        <label style="margin-top: 15px;">أو الصق محتوى الأسئلة يدوياً هنا:</label>
-        <textarea id="questions-input" placeholder="الصق الأسئلة والخيارات هنا..."></textarea>
-
-        <button class="btn-main" onclick="startExam()">بدء الامتحان الشفهي 🚀</button>
-        <button class="btn-secondary" onclick="goHome()">العودة للغرف 🔙</button>
+      <div class="flex items-center gap-2 bg-indigo-900/90 p-1.5 rounded-2xl border border-indigo-700 shadow-inner">
+        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
+          <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
+        </button>
+        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات
+        </button>
+      </div>
     </div>
+  </header>
 
-    <!-- شاشة الامتحان -->
-    <div id="exam-view" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 15px 20px; border-radius: 14px; margin-bottom: 20px;">
-            <h4 id="exam-title" style="margin:0; color:var(--primary);"></h4>
-            <div id="timer" style="color:var(--danger); font-weight:800;">45 ثانية</div>
+  <main class="container mx-auto px-4 py-6 flex-grow max-w-5xl">
+
+    <!-- STUDENT VIEW -->
+    <section id="studentView" class="space-y-6">
+      <div class="bg-indigo-900/60 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <label for="studentGradeSelect" class="font-extrabold text-amber-300 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
+          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-indigo-950 border border-indigo-600 text-white text-sm font-extrabold rounded-2xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-sm">
+            <option value="1m">الأول متوسط</option>
+            <option value="2m">الثاني متوسط</option>
+            <option value="3m">الثالث متوسط</option>
+            <option value="4h">الرابع إعدادي</option>
+            <option value="5h">الخامس إعدادي</option>
+            <option value="6h">السادس إعدادي</option>
+          </select>
         </div>
 
-        <div id="banner" style="text-align:center; padding:12px; border-radius:10px; font-weight:800; margin-bottom:15px; display:none;"></div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs bg-indigo-950 text-indigo-200 font-bold px-4 py-2.5 rounded-2xl shadow-md border border-indigo-800 flex items-center gap-2">
+            <i class="fa-solid fa-calendar-day text-amber-400"></i>اليوم الحالي: <strong id="currentDayName" class="text-amber-300"></strong>
+          </span>
+          <span id="cloudStatus" class="text-[10px] bg-teal-500/20 text-teal-300 px-3 py-2 rounded-xl border border-teal-500/30 font-bold">
+            <i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب لحظياً
+          </span>
+        </div>
+      </div>
 
-        <div class="student-box">
-            <h3 style="margin:0 0 8px 0; color:var(--text-muted);">الطالب المستهدف (قابل للتعديل):</h3>
-            <input type="text" id="active-student" class="editable-input" oninput="updateStudentName(this.value)">
+      <!-- Schedule & Homework -->
+      <div class="bg-indigo-900/50 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-700/50 p-6">
+        <div class="flex justify-between items-center mb-6 border-b border-indigo-800/60 pb-4 flex-wrap gap-3">
+          <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base shadow-sm border border-amber-500/30">
+              <i class="fa-solid fa-book-open"></i>
+            </span>
+            جدول الحصص والواجبات اليومية الملونة
+          </h2>
+          <div class="flex gap-1.5 overflow-x-auto text-xs pb-1" id="dayFilterTabs"></div>
         </div>
 
-        <div class="question-box" id="active-question">السؤال: --</div>
-        <div class="options-grid" id="options-grid"></div>
+        <div id="studentScheduleContainer" class="space-y-4"></div>
+      </div>
 
-        <button class="btn-secondary" onclick="skipStudent()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
+      <!-- LIBRARY -->
+      <div class="bg-indigo-900/50 backdrop-blur-md rounded-3xl shadow-xl border border-indigo-700/50 p-6">
+        <div class="flex justify-between items-center mb-5 border-b border-indigo-800/60 pb-4">
+          <h3 class="font-extrabold text-white text-base sm:text-lg flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-base shadow-sm border border-teal-500/30">
+              <i class="fa-solid fa-folder-open"></i>
+            </span>
+            المحاضرات والملخصات الإضافية
+          </h3>
+          <span id="lecCountBadge" class="bg-indigo-950 text-amber-300 text-xs font-black px-3.5 py-1.5 rounded-full border border-indigo-700 shadow-inner">0</span>
+        </div>
+        <div id="studentLecList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+    </section>
 
-        <h3 style="font-size: 16px; margin-top: 25px;">سجل درجات هذه الغرفة حصرياً:</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>اسم الطالب (تعديل)</th>
-                    <th>الصف</th>
-                    <th>الشعبة</th>
-                    <th>الدرجة من 10</th>
-                </tr>
+    <!-- ADMIN VIEW -->
+    <section id="adminView" class="hidden space-y-6">
+      
+      <!-- زر استعادة البيانات القديمة من المتصفح -->
+      <div class="bg-gradient-to-r from-rose-900 via-red-900 to-indigo-950 p-5 rounded-3xl shadow-xl border-2 border-rose-500 flex justify-between items-center flex-wrap gap-4">
+        <div>
+          <h3 class="font-extrabold text-amber-300 text-base"><i class="fa-solid fa-triangle-exclamation"></i> هل فقدت بياناتك القديمة؟</h3>
+          <p class="text-xs text-indigo-100 mt-1">اضغط هنا لسحب المعلومات المخزنة سابقاً في ذاكرة متصفحك ورفعها فوراً للسحاب لتعود للكل!</p>
+        </div>
+        <button onclick="recoverOldDataFromLocalStorage()" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-black text-xs px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up text-sm"></i> استيراد بياناتي القديمة من المتصفح للسحاب
+        </button>
+      </div>
+
+      <div class="bg-indigo-950 text-white p-6 rounded-3xl shadow-xl flex justify-between items-center flex-wrap gap-4 border border-indigo-800">
+        <div>
+          <h2 class="font-extrabold text-lg sm:text-xl text-amber-300">لوحة الإدارة السحابية اللحظية</h2>
+          <p class="text-xs text-indigo-200 mt-1">أي تعديل هنا يتحدث سحابياً في نفس الثانية على المتصفح وسطح المكتب</p>
+        </div>
+      </div>
+
+      <!-- SCHEDULE TABLE -->
+      <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6 border-b border-indigo-800/60 pb-4">
+          <h3 class="font-extrabold text-white text-base flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-300 flex items-center justify-center text-base border border-indigo-700">
+              <i class="fa-solid fa-table"></i>
+            </span>
+            تنظيم وتعديل جدول الحصص (حفظ سحابي فوري)
+          </h3>
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
+            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-indigo-950 border border-indigo-700 text-xs font-extrabold text-white rounded-2xl p-2.5 shadow-sm focus:outline-none">
+              <option value="1m">الأول متوسط</option>
+              <option value="2m">الثاني متوسط</option>
+              <option value="3m">الثالث متوسط</option>
+              <option value="4h">الرابع إعدادي</option>
+              <option value="5h">الخامس إعدادي</option>
+              <option value="6h">السادس إعدادي</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-right text-indigo-100 border-collapse">
+            <thead class="text-xs text-amber-300 uppercase bg-indigo-950 font-black">
+              <tr>
+                <th class="p-3.5 border border-indigo-800 rounded-r-2xl">اليوم</th>
+                <th class="p-3.5 border border-indigo-800">الحصة 1</th>
+                <th class="p-3.5 border border-indigo-800">الحصة 2</th>
+                <th class="p-3.5 border border-indigo-800">الحصة 3</th>
+                <th class="p-3.5 border border-indigo-800">الحصة 4</th>
+                <th class="p-3.5 border border-indigo-800">الحصة 5</th>
+                <th class="p-3.5 border border-indigo-800">الحصة 6</th>
+                <th class="p-3.5 border border-indigo-800 text-center rounded-l-2xl">حفظ فوري</th>
+              </tr>
             </thead>
-            <tbody id="table-body"></tbody>
-        </table>
+            <tbody id="adminScheduleTbody" class="divide-y divide-indigo-800/40 font-semibold"></tbody>
+          </table>
+        </div>
+      </div>
 
-        <button class="btn-success" onclick="exportExcel()">📊 تصدير السجل إلى Excel</button>
-        <button class="btn-secondary" onclick="goHome()">🔄 إنهاء الجلسة والعودة للغرف</button>
-    </div>
-</div>
+      <!-- FORMS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Homework Form -->
+        <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
+          <div>
+            <h3 id="hwFormTitle" class="font-extrabold text-amber-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
+              <i class="fa-solid fa-circle-plus"></i> إضافة واجب جديد للمادة
+            </h3>
+            <form onsubmit="handleSaveHomework(event)" class="space-y-4">
+              <input type="hidden" id="editHwId" value="">
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">الصف المستهدف:</label>
+                <select id="hwTargetGrade" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
+                  <option value="1m">الأول متوسط</option>
+                  <option value="2m">الثاني متوسط</option>
+                  <option value="3m">الثالث متوسط</option>
+                  <option value="4h">الرابع إعدادي</option>
+                  <option value="5h">الخامس إعدادي</option>
+                  <option value="6h">السادس إعدادي</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تحديد اليوم:</label>
+                <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
+                  <option value="الأحد">الأحد</option>
+                  <option value="الإثنين">الإثنين</option>
+                  <option value="الثلاثاء">الثلاثاء</option>
+                  <option value="الأربعاء">الأربعاء</option>
+                  <option value="الخميس">الخميس</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر المادة:</label>
+                <select id="hwSubjectSelect" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl font-extrabold text-amber-300 focus:outline-none"></select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تفاصيل الواجب (بخط كبير وملون):</label>
+                <textarea id="hwDesc" placeholder="اكتب المطلوب حله..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-24 text-white focus:outline-none shadow-inner"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">تاريخ التسليم النهائي:</label>
+                <input type="date" id="hwDueDate" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
+              </div>
+              <div class="flex gap-2 pt-2">
+                <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب سحابياً
+                </button>
+                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-<script>
-    let currentKey = "", roomName = "", gradeStr = "", secStr = "";
-    let roomDB = {};
+        <!-- Library Form -->
+        <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
+          <div>
+            <h3 id="lecFormTitle" class="font-extrabold text-teal-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
+              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (سحابي)
+            </h3>
+            <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
+              <input type="hidden" id="editLecId" value="">
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">الصف المستهدف:</label>
+                <select id="lecTargetGrade" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
+                  <option value="1m">الأول متوسط</option>
+                  <option value="2m">الثاني متوسط</option>
+                  <option value="3m">الثالث متوسط</option>
+                  <option value="4h">الرابع إعدادي</option>
+                  <option value="5h">الخامس إعدادي</option>
+                  <option value="6h">السادس إعدادي</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">عنوان الملف:</label>
+                <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفصل الأول" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">المادة:</label>
+                <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر الملف:</label>
+                <input type="file" id="lecFileInput" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-2.5 rounded-2xl text-white cursor-pointer">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">ملاحظات إضافية:</label>
+                <textarea id="lecDesc" placeholder="وصف موجز..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-16 text-white focus:outline-none"></textarea>
+              </div>
+              <div class="flex gap-2 pt-2">
+                <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ سحابي
+                </button>
+                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
-    const defaultQ = [
-        { q: "ما المقصود بالصيانة الوقائية؟", correct: "إجراءات لتجنب المشاكل المحتملة.", options: ["إجراءات لتجنب المشاكل المحتملة.", "استبدال القطع التالفة.", "حذف نظام التشغيل.", "زيادة حرارة المعالج."] },
-        { q: "ما هي غاية تحديث نظام التشغيل؟", correct: "إضافة خصائص جديدة وتحسينات أمنية.", options: ["إضافة خصائص جديدة وتحسينات أمنية.", "زيادة مساحة القرص.", "مسح متصفح الإنترنت.", "إيقاف المروحة."] }
-    ];
+      <!-- LIBRARY TABLE -->
+      <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 mt-6">
+        <h3 class="font-extrabold text-white mb-4 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
+          <i class="fa-solid fa-folder-open text-teal-400"></i> إدارة مكتبة الملفات
+        </h3>
+        <div id="adminLibraryList" class="space-y-3"></div>
+      </div>
+    </section>
+  </main>
 
-    function selectRoom(el, name, grade, sec) {
-        el.classList.add('pop');
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(new SpeechSynthesisUtterance(`هلاووووو، ${name}`));
-        }
-        setTimeout(() => {
-            el.classList.remove('pop');
-            currentKey = sec + "_" + grade;
-            roomName = name; gradeStr = grade; secStr = sec;
-            if (!roomDB[currentKey]) {
-                roomDB[currentKey] = { students: [], records: {}, questions: [], pointer: 0 };
+  <footer class="bg-indigo-950/90 border-t border-indigo-800/50 py-4 text-center text-xs text-indigo-300 font-bold shadow-inner">
+    جميع الحقوق محفوظة © ثانوية المتفوقين الثانية 2026 | تصميم وإعداد: WALEED ALSHAMMARI
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      databaseURL: "https://waleed-alshammari-default-rtdb.firebaseio.com/"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const dbRef = firebase.database().ref('waleed_school_live_data');
+
+    const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+    const GRADES = {
+      '1m': 'الأول متوسط', '2m': 'الثاني متوسط', '3m': 'الثالث متوسط',
+      '4h': 'الرابع إعدادي', '5h': 'الخامس إعدادي', '6h': 'السادس إعدادي'
+    };
+
+    let appData = { schedules: {}, homeworks: [], lectures: [] };
+    let selectedDayFilter = getCurrentDayName();
+
+    // دالة استعادة البيانات القديمة من ذاكرة المتصفح ورفعها للسحاب
+    function recoverOldDataFromLocalStorage() {
+      try {
+        // البحث عن أي مفاتيح قديمة محتملة في الـ LocalStorage
+        let oldRaw = localStorage.getItem('school_platform_data') || localStorage.getItem('appData') || localStorage.getItem('schoolData');
+        if (!oldRaw) {
+          // جرب البحث في كل مفاتيح الـ LocalStorage
+          for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            let val = localStorage.getItem(key);
+            if (val && (val.includes('schedules') || val.includes('homeworks') || val.includes('lectures'))) {
+              oldRaw = val;
+              break;
             }
-            document.getElementById("setup-title").innerText = `إدارة ${name}`;
-            document.getElementById("rooms-view").classList.add("hidden");
-            document.getElementById("setup-view").classList.remove("hidden");
-        }, 300);
-    }
-
-    async function loadFile(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.type === "application/pdf") {
-            const reader = new FileReader();
-            reader.onload = function() {
-                pdfjsLib.getDocument(new Uint8Array(this.result)).promise.then(async pdf => {
-                    let txt = "";
-                    for(let i=1; i<=pdf.numPages; i++) {
-                        let page = await pdf.getPage(i);
-                        let content = await page.getTextContent();
-                        txt += content.items.map(item => item.str).join(' ') + '\n';
-                    }
-                    document.getElementById("questions-input").value = txt;
-                });
-            };
-            reader.readAsArrayBuffer(file);
-        } else {
-            const reader = new FileReader();
-            reader.onload = (ev) => { document.getElementById("questions-input").value = ev.target.result; };
-            reader.readAsText(file, "UTF-8");
-        }
-    }
-
-    function playSound(isCorrect) {
-        if (isCorrect) {
-            try {
-                let ctx = new (window.AudioContext || window.webkitAudioContext)();
-                for(let i=0; i<4; i++) {
-                    setTimeout(() => {
-                        let buf = ctx.createBuffer(1, ctx.sampleRate*0.08, ctx.sampleRate);
-                        let data = buf.getChannelData(0);
-                        for(let j=0; j<data.length; j++) data[j] = Math.random()*2-1;
-                        let src = ctx.createBufferSource(); src.buffer = buf;
-                        let g = ctx.createGain(); g.gain.value = 0.2;
-                        src.connect(g); g.connect(ctx.destination); src.start();
-                    }, i*70);
-                }
-            } catch(e) {}
-        } else {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance("أووووو... لا لا لا!"));
-            }
-        }
-    }
-
-    function startExam() {
-        const raw = document.getElementById("students-input").value.trim();
-        if (!raw) { alert("يرجى إدخال أسماء الطلاب!"); return; }
-        let list = [...new Set(raw.split('\n').map(s => s.trim()).filter(s => s.length > 2))];
-        if (list.length === 0) { alert("أدخل أسماء صحيحة."); return; }
-
-        let recs = {};
-        list.forEach(s => recs[s] = { name: s, grade: 10 });
-
-        let qText = document.getElementById("questions-input").value.trim();
-        let qArr = defaultQ;
-        if (qText.length > 5) {
-            let parts = qText.split('س:').filter(p => p.trim().length > 5);
-            if(parts.length > 0) {
-                qArr = parts.map(p => {
-                    let lines = p.split('\n').map(l => l.trim()).filter(l => l.length > 2);
-                    let qTitle = lines[0] || p;
-                    let opts = lines.slice(1, 5);
-                    if(opts.length < 4) opts = [qTitle.substring(0,25)+" (صحيح)", "خيار مضلل 1", "خيار مضلل 2", "خيار مضلل 3"];
-                    return { q: "س: " + qTitle, correct: opts[0], options: opts };
-                });
-            }
+          }
         }
 
-        roomDB[currentKey] = { students: list, records: recs, questions: qArr, pointer: 0 };
-        document.getElementById("setup-view").classList.add("hidden");
-        document.getElementById("exam-view").classList.remove("hidden");
-        document.getElementById("exam-title").innerText = `غرفة: ${roomName}`;
-        renderTable();
-        loadStudent();
-    }
-
-    let timer = null, leftTime = 45, currentQ = null;
-
-    function loadStudent() {
-        let db = roomDB[currentKey];
-        if (db.pointer >= db.students.length) {
-            document.getElementById("active-student").value = "انتهت القائمة بنجاح! 🎓";
-            document.getElementById("active-question").innerText = "اكتملت الجلسة الامتحانية.";
-            document.getElementById("options-grid").innerHTML = "";
-            document.getElementById("banner").style.display = "none";
-            clearInterval(timer);
+        if (oldRaw) {
+          const parsed = JSON.parse(oldRaw);
+          if (parsed && typeof parsed === 'object') {
+            appData = parsed;
+            saveAppData(); // رفعها مباشرة لقاعدة بيانات Firebase
+            alert('تم استيراد بياناتك القديمة ورفعها بنجاح إلى السحاب!');
+            initPlatform();
+            renderAdminScheduleTable();
+            renderAdminLibraryList();
             return;
+          }
         }
+        alert('لم يتم العثور على بيانات قديمة مخزنة في هذا المتصفح. تأكد من فتح المنصة من المتصفح الذي كنت تدخل منه سابقاً.');
+      } catch (err) {
+        console.error(err);
+        alert('حدث خطأ أثناء محاولة استرجاع البيانات.');
+      }
+    }
 
-        let stu = db.students[db.pointer];
-        currentQ = db.questions[Math.floor(Math.random() * db.questions.length)];
-        let opts = [...currentQ.options].sort(() => Math.random() - 0.5);
+    dbRef.on('value', (snapshot) => {
+      const serverData = snapshot.val();
+      if (serverData) {
+        appData = serverData;
+      }
+      initPlatform();
+      if (!document.getElementById('adminView').classList.contains('hidden')) {
+        renderAdminScheduleTable();
+        renderAdminLibraryList();
+      }
+    });
 
-        document.getElementById("active-student").value = db.records[stu].name;
-        document.getElementById("active-question").innerText = currentQ.q;
-        document.getElementById("banner").style.display = "none";
+    function saveAppData() {
+      dbRef.set(appData).then(() => {
+        const status = document.getElementById('cloudStatus');
+        if (status) {
+          status.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-amber-400"></i> تمت المزامنـة سحابياً';
+          setTimeout(() => {
+            status.innerHTML = '<i class="fa-solid fa-cloud text-teal-400"></i> متصل بالسحاب لحظياً';
+          }, 2000);
+        }
+      }).catch(err => {
+        console.error("Cloud sync error:", err);
+      });
+    }
 
-        let grid = document.getElementById("options-grid");
-        grid.innerHTML = "";
-        opts.forEach((op, idx) => {
-            let b = document.createElement("button");
-            b.className = "opt-btn";
-            b.innerHTML = `<strong>${['أ', 'ب', 'ج', 'د'][idx]})</strong> ${op}`;
-            b.onclick = () => answer(op === currentQ.correct);
-            grid.appendChild(b);
+    function getCurrentDayName() {
+      const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+      const today = daysMap[new Date().getDay()];
+      return DAYS.includes(today) ? today : 'الأحد';
+    }
+
+    function switchTab(tab) {
+      const studentView = document.getElementById('studentView');
+      const adminView = document.getElementById('adminView');
+      const studentBtn = document.getElementById('tabStudentBtn');
+      const adminBtn = document.getElementById('tabAdminBtn');
+
+      if (tab === 'student') {
+        studentView.classList.remove('hidden');
+        adminView.classList.add('hidden');
+        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
+        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
+        renderStudentDashboard();
+      } else {
+        studentView.classList.add('hidden');
+        adminView.classList.remove('hidden');
+        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
+        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
+        renderAdminScheduleTable();
+        updateHwSubjectsDropdown();
+        renderAdminLibraryList();
+      }
+    }
+
+    function initPlatform() {
+      document.getElementById('currentDayName').innerText = getCurrentDayName();
+      if(document.getElementById('hwDueDate')) document.getElementById('hwDueDate').valueAsDate = new Date();
+      cleanupExpiredHomeworks();
+
+      const filterTabsContainer = document.getElementById('dayFilterTabs');
+      if(filterTabsContainer) {
+        filterTabsContainer.innerHTML = DAYS.map(day => `
+          <button onclick="changeStudentDayFilter('${day}')" class="px-4 py-2 rounded-2xl font-extrabold transition-all ${selectedDayFilter === day ? 'bg-amber-500 text-indigo-950 shadow-md scale-105 shadow-amber-500/20' : 'bg-indigo-950 text-indigo-200 hover:bg-indigo-800 border border-indigo-800'} whitespace-nowrap">
+            ${day}
+          </button>
+        `).join('');
+      }
+      renderStudentDashboard();
+    }
+
+    function changeStudentDayFilter(day) {
+      selectedDayFilter = day;
+      initPlatform();
+    }
+
+    function updateHwSubjectsDropdown() {
+      const grade = document.getElementById('hwTargetGrade').value;
+      const day = document.getElementById('hwDay').value;
+      const selectEl = document.getElementById('hwSubjectSelect');
+      
+      let daySubjects = [];
+      if (appData.schedules && appData.schedules[grade] && appData.schedules[grade][day]) {
+        appData.schedules[grade][day].forEach(s => {
+          if (s && s.trim()) daySubjects.push(s.trim());
         });
+      }
 
-        clearInterval(timer);
-        leftTime = 45;
-        document.getElementById("timer").innerText = `الوقت: ${leftTime} ث`;
-        timer = setInterval(() => {
-            leftTime--;
-            document.getElementById("timer").innerText = `الوقت: ${leftTime} ث`;
-            if (leftTime <= 0) { clearInterval(timer); playSound(false); answer(false); }
-        }, 1000);
+      if (daySubjects.length === 0) {
+        selectEl.innerHTML = `<option value="">لا توجد مواد مسجلة لهذا اليوم (${day}) (يرجى حفظ الجدول أولاً)</option>`;
+      } else {
+        selectEl.innerHTML = daySubjects.map(sub => `<option value="${sub}">${sub}</option>`).join('');
+      }
     }
 
-    function updateStudentName(val) {
-        let db = roomDB[currentKey];
-        if (db.pointer < db.students.length) {
-            let old = db.students[db.pointer];
-            db.records[old].name = val;
-            db.students[db.pointer] = val;
-            renderTable();
-        }
-    }
+    function renderStudentDashboard() {
+      cleanupExpiredHomeworks();
+      const grade = document.getElementById('studentGradeSelect').value;
+      const scheduleContainer = document.getElementById('studentScheduleContainer');
+      const daySchedule = (appData.schedules && appData.schedules[grade] && appData.schedules[grade][selectedDayFilter]) || ['', '', '', '', '', ''];
+      const gradeHws = (appData.homeworks || []).filter(h => h.grade === grade && h.day === selectedDayFilter);
+      const gradeLecs = (appData.lectures || []).filter(l => l.grade === grade);
 
-    function updateTableName(idx, val) {
-        let db = roomDB[currentKey];
-        let old = db.students[idx];
-        db.students[idx] = val;
-        db.records[val] = db.records[old];
-        if(old !== val) delete db.records[old];
-        if(idx === db.pointer) document.getElementById("active-student").value = val;
-    }
-
-    function skipStudent() { clearInterval(timer); playSound(false); answer(false); }
-
-    function answer(isCorr) {
-        clearInterval(timer);
-        let db = roomDB[currentKey];
-        if(db.pointer >= db.students.length) return;
-        let stu = db.students[db.pointer];
-        let ban = document.getElementById("banner");
-
-        playSound(isCorr);
-
-        if(isCorr) {
-            db.records[stu].grade = 10;
-            ban.className = "alert-success";
-            ban.style.background = "#d1fae5"; ban.style.color = "#065f46";
-            ban.innerHTML = "✔️ إجابة صحيحة (تصفيق)! تم رصد (10/10).";
-        } else {
-            db.records[stu].grade = 0;
-            ban.className = "alert-danger";
-            ban.style.background = "#fee2e2"; ban.style.color = "#991b1b";
-            ban.innerHTML = `❌ إجابة خاطئة (أووووو لا لا لا)! الصحيحة: ${currentQ.correct}`;
-        }
-        ban.style.display = "block";
-        renderTable();
-
-        db.pointer++;
-        setTimeout(() => loadStudent(), 3500);
-    }
-
-    function renderTable() {
-        let db = roomDB[currentKey];
-        let tbody = document.getElementById("table-body");
-        tbody.innerHTML = "";
-        db.students.forEach((sKey, idx) => {
-            let r = db.records[sKey];
-            let tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><input type="text" class="table-input" value="${r.name}" oninput="updateTableName(${idx}, this.value)"></td>
-                <td><b>${gradeStr}</b></td>
-                <td><b>${secStr}</b></td>
-                <td><b>${r.grade} / 10</b></td>
+      if (daySchedule.every(slot => !slot || !slot.trim())) {
+        scheduleContainer.innerHTML = `
+          <div class="py-12 text-center text-indigo-300">
+            <i class="fa-solid fa-calendar-xmark text-4xl mb-3 text-indigo-400"></i>
+            <p class="text-sm font-semibold">لم يتم إضافة جدول حصص لهذا اليوم (${selectedDayFilter}) بعد.</p>
+          </div>
+        `;
+      } else {
+        scheduleContainer.innerHTML = daySchedule.map((subject, idx) => {
+          if (!subject || !subject.trim()) {
+            return `
+              <div class="p-4 rounded-2xl border bg-indigo-950/40 border-indigo-800/40 opacity-60 flex justify-between items-center shadow-sm">
+                <span class="text-xs font-bold text-indigo-400">الحصة ${idx + 1}</span>
+                <span class="text-xs text-indigo-400 font-medium">فراغ</span>
+              </div>
             `;
-            tbody.appendChild(tr);
-        });
+          }
+
+          const cleanSub = subject.trim().replace(/\s+/g, ' ');
+          const matchHw = gradeHws.find(h => h.subject.trim().replace(/\s+/g, ' ') === cleanSub);
+          const matchLec = gradeLecs.find(l => l.subject.trim().replace(/\s+/g, ' ') === cleanSub);
+
+          return `
+            <div class="p-4 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl border border-indigo-700/60 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div class="flex items-center gap-3 w-full sm:w-auto">
+                <span class="bg-amber-500 text-indigo-950 text-xs font-black px-3.5 py-2 rounded-2xl shadow-md whitespace-nowrap">الحصة ${idx + 1}</span>
+                <h3 class="font-black text-white text-lg sm:text-xl tracking-wide">${subject}</h3>
+              </div>
+              <div class="w-full sm:w-auto flex flex-wrap items-center gap-2 justify-end">
+                ${matchHw ? `
+                  <div class="bg-amber-500/10 border-2 border-amber-400/60 text-amber-200 px-5 py-3 rounded-2xl text-sm sm:text-base font-extrabold shadow-md flex items-center gap-3 flex-grow sm:flex-grow-0">
+                    <i class="fa-solid fa-pen-ruler text-amber-400 text-lg"></i>
+                    <div>
+                      <span class="text-amber-400 block text-xs">الواجب المطلوب:</span>
+                      <span class="text-white text-base sm:text-lg tracking-wide">${matchHw.desc}</span>
+                      <span class="text-indigo-300 text-[11px] block mt-0.5">التسليم: ${matchHw.dueDate}</span>
+                    </div>
+                    <button type="button" onclick="deleteHomeworkFromDashboard('${matchHw.id}')" class="text-rose-400 hover:text-rose-300 mr-2 p-1"><i class="fa-solid fa-trash text-base"></i></button>
+                  </div>
+                ` : `<span class="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-4 py-2.5 rounded-2xl border border-indigo-800">لا يوجد واجب</span>`}
+                ${matchLec ? `<a href="${matchLec.fileData || '#'}" target="_blank" download="${matchLec.title}" class="bg-teal-600 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-md inline-flex items-center gap-2"><i class="fa-solid fa-folder-open"></i> ${matchLec.title}</a>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const lecContainer = document.getElementById('studentLecList');
+      document.getElementById('lecCountBadge').innerText = gradeLecs.length;
+      if (gradeLecs.length === 0) {
+        lecContainer.innerHTML = `<p class="text-xs text-indigo-300 text-center py-6 col-span-full font-medium">لا توجد ملفات مرفوعة في المكتبة حالياً.</p>`;
+      } else {
+        lecContainer.innerHTML = gradeLecs.map(lec => `
+          <div class="p-4 bg-indigo-950/60 rounded-3xl border border-indigo-800 flex flex-col justify-between shadow-md space-y-3">
+            <div>
+              <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-2.5 py-1 rounded-xl border border-teal-500/30">${lec.subject}</span>
+              <h4 class="text-sm font-black text-white mt-2">${lec.title}</h4>
+              ${lec.desc ? `<p class="text-xs text-indigo-200 mt-1">${lec.desc}</p>` : ''}
+            </div>
+            <a href="${lec.fileData || '#'}" target="_blank" download="${lec.title}" class="bg-teal-600 text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center inline-flex items-center justify-center gap-1.5"><i class="fa-solid fa-folder-open"></i> فتح الملف</a>
+          </div>
+        `).join('');
+      }
     }
 
-    function exportExcel() {
-        let db = roomDB[currentKey];
-        let html = `<table><tr><th>اسم الطالب</th><th>الصف</th><th>الشعبة</th><th>الدرجة</th></tr>`;
-        db.students.forEach(sKey => {
-            let r = db.records[sKey];
-            html += `<tr><td>${r.name}</td><td>${gradeStr}</td><td>${secStr}</td><td>${r.grade}/10</td></tr>`;
-        });
-        html += `</table>`;
-        let blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-        let a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `درجات_غرفة_${roomName}.xls`; a.click();
+    function renderAdminScheduleTable() {
+      const grade = document.getElementById('adminGradeSelect').value;
+      const tbody = document.getElementById('adminScheduleTbody');
+      tbody.innerHTML = DAYS.map(day => {
+        const row = (appData.schedules && appData.schedules[grade] && appData.schedules[grade][day]) || ['', '', '', '', '', ''];
+        return `
+          <tr class="bg-indigo-950/40 hover:bg-indigo-900/60 transition">
+            <td class="p-3.5 font-extrabold text-white border border-indigo-800">${day}</td>
+            ${row.map((slot, idx) => `
+              <td class="p-2.5 border border-indigo-800">
+                <input type="text" id="slot_${day}_${idx}" value="${slot || ''}" placeholder="المادة ${idx + 1}" class="w-full text-xs p-2.5 border border-indigo-700 bg-indigo-950 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none font-bold text-white">
+              </td>
+            `).join('')}
+            <td class="p-3.5 border border-indigo-800 text-center">
+              <button onclick="saveAdminRowDirect('${grade}', '${day}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
+                <i class="fa-solid fa-check"></i> حفظ
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    function goHome() {
-        clearInterval(timer);
-        document.getElementById("setup-view").classList.add("hidden");
-        document.getElementById("exam-view").classList.add("hidden");
-        document.getElementById("rooms-view").classList.remove("hidden");
-        document.getElementById("students-input").value = "";
-        document.getElementById("questions-input").value = "";
-        document.getElementById("pdf-file").value = "";
+    function saveAdminRowDirect(grade, day) {
+      if (!appData.schedules) appData.schedules = {};
+      if (!appData.schedules[grade]) appData.schedules[grade] = {};
+      const newSlots = [];
+      for (let i = 0; i < 6; i++) {
+        newSlots.push(document.getElementById(`slot_${day}_${i}`).value.trim());
+      }
+      appData.schedules[grade][day] = newSlots;
+      saveAppData();
+      alert(`تم حفظ جدول يوم ${day} ومزامنته سحابياً فوراً!`);
+      updateHwSubjectsDropdown();
     }
-</script>
 
+    function handleSaveHomework(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editHwId').value;
+      const grade = document.getElementById('hwTargetGrade').value;
+      const subject = document.getElementById('hwSubjectSelect').value;
+      const day = document.getElementById('hwDay').value;
+      const desc = document.getElementById('hwDesc').value;
+      const dueDate = document.getElementById('hwDueDate').value;
+
+      if (!subject || subject.includes('لا توجد مواد')) {
+        alert('يرجى حفظ الجدول أولاً لتظهر المواد.');
+        return;
+      }
+
+      if (!appData.homeworks) appData.homeworks = [];
+      if (editId) {
+        const idx = appData.homeworks.findIndex(h => String(h.id) === String(editId));
+        if (idx !== -1) appData.homeworks[idx] = { id: Number(editId), grade, subject, day, desc, dueDate };
+        cancelEditHomework();
+      } else {
+        appData.homeworks.push({ id: Date.now(), grade, subject, day, desc, dueDate });
+        resetHwForm();
+      }
+      saveAppData();
+      renderStudentDashboard();
+      alert('تم نشر الواجب ومزامنته سحابياً بنجاح!');
+    }
+
+    function resetHwForm() {
+      document.getElementById('editHwId').value = '';
+      document.getElementById('hwDesc').value = '';
+    }
+
+    function cancelEditHomework() { resetHwForm(); }
+
+    function deleteHomeworkFromDashboard(id) {
+      if (confirm('حذف هذا الواجب من السحاب؟')) {
+        appData.homeworks = (appData.homeworks || []).filter(h => String(h.id) !== String(id));
+        saveAppData();
+        renderStudentDashboard();
+      }
+    }
+
+    function handleAddOrUpdateLecture(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editLecId').value;
+      const grade = document.getElementById('lecTargetGrade').value;
+      const title = document.getElementById('lecTitle').value;
+      const subject = document.getElementById('lecSubject').value;
+      const desc = document.getElementById('lecDesc').value;
+      const fileInput = document.getElementById('lecFileInput');
+
+      const processSave = (fileBase64) => {
+        if (!appData.lectures) appData.lectures = [];
+        const recordId = editId ? Number(editId) : Date.now();
+        let existingFile = fileBase64;
+        if (editId && !existingFile) {
+          const ex = appData.lectures.find(l => Number(l.id) === Number(editId));
+          existingFile = ex ? ex.fileData : '';
+        }
+        const lecObj = { id: recordId, grade, title, subject, desc, fileData: existingFile };
+        if (editId) {
+          const idx = appData.lectures.findIndex(l => Number(l.id) === Number(editId));
+          if (idx !== -1) appData.lectures[idx] = lecObj;
+          cancelEditLecture();
+        } else {
+          appData.lectures.push(lecObj);
+          document.getElementById('lecTitle').value = '';
+          document.getElementById('lecSubject').value = '';
+          document.getElementById('lecDesc').value = '';
+          document.getElementById('lecFileInput').value = '';
+        }
+        saveAppData();
+        renderAdminLibraryList();
+        renderStudentDashboard();
+        alert('تم حفظ الملف ومزامنته سحابياً بنجاح!');
+      };
+
+      if (fileInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = ev => processSave(ev.target.result);
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        processSave(null);
+      }
+    }
+
+    function editLibraryItem(id) {
+      const lec = (appData.lectures || []).find(l => Number(l.id) === Number(id));
+      if (!lec) return;
+      document.getElementById('editLecId').value = lec.id;
+      document.getElementById('lecTargetGrade').value = lec.grade;
+      document.getElementById('lecTitle').value = lec.title;
+      document.getElementById('lecSubject').value = lec.subject;
+      document.getElementById('lecDesc').value = lec.desc || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelEditLecture() {
+      document.getElementById('editLecId').value = '';
+      document.getElementById('lecTitle').value = '';
+      document.getElementById('lecSubject').value = '';
+      document.getElementById('lecDesc').value = '';
+      document.getElementById('lecFileInput').value = '';
+    }
+
+    function deleteLibraryItem(id) {
+      if (confirm('حذف هذا الملف من السحاب؟')) {
+        appData.lectures = (appData.lectures || []).filter(l => Number(l.id) !== Number(id));
+        saveAppData();
+        renderAdminLibraryList();
+        renderStudentDashboard();
+      }
+    }
+
+    function renderAdminLibraryList() {
+      const container = document.getElementById('adminLibraryList');
+      const lecs = appData.lectures || [];
+      if (lecs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-indigo-300 text-center py-4">لا توجد ملفات مرفوعة حالياً.</p>`;
+        return;
+      }
+      container.innerHTML = lecs.map(lec => `
+        <div class="p-4 bg-indigo-950/60 rounded-2xl border border-indigo-800 flex justify-between items-center flex-wrap gap-3">
+          <div>
+            <span class="text-[10px] font-extrabold bg-teal-500/20 text-teal-300 px-3 py-0.5 rounded-lg">${GRADES[lec.grade]}</span>
+            <span class="text-xs font-extrabold text-white ml-2">${lec.subject}: ${lec.title}</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="${lec.fileData || '#'}" target="_blank" class="bg-teal-600 text-white text-xs font-bold px-3 py-2 rounded-xl"><i class="fa-solid fa-folder-open"></i> فتح</a>
+            <button onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl">تعديل</button>
+            <button onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl">حذف</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function cleanupExpiredHomeworks() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      if (appData.homeworks) {
+        appData.homeworks = appData.homeworks.filter(hw => !hw.dueDate || hw.dueDate >= todayStr);
+      }
+    }
+
+    initPlatform();
+  </script>
 </body>
 </html>
