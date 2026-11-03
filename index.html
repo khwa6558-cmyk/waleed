@@ -12,7 +12,7 @@
             --primary-hover: #4338ca;
             --success: #10b981;
             --danger: #ef4444;
-            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --bg-gradient: linear-gradient(135deg, #0f172a 10%, #1e1b4b 90%);
             --card-bg: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -25,56 +25,86 @@
             margin: 0;
             padding: 20px;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            max-width: 900px;
-            margin: 20px auto;
+            width: 100%;
+            max-width: 950px;
             background: var(--card-bg);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
         h2 {
             text-align: center;
             color: var(--primary);
-            margin-bottom: 25px;
-            font-size: 28px;
+            margin-bottom: 35px;
+            font-size: 30px;
             font-weight: 800;
         }
 
-        .rooms-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+        .bubbles-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
         }
 
-        .room-card {
-            background: linear-gradient(135deg, var(--primary), #6366f1);
+        .bubble {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
             color: white;
-            padding: 24px;
-            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-size: 18px;
-            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-            transition: 0.2s;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            user-select: none;
         }
 
-        .room-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+        .bubble:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 15px 35px rgba(168, 85, 247, 0.6);
+        }
+
+        .bubble.pop-animation {
+            transform: scale(1.4);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+
+        .bubble h3 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .bubble span {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 5px;
         }
 
         .section-box {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 25px;
-            border-radius: 16px;
+            padding: 30px;
+            border-radius: 20px;
             margin-bottom: 20px;
         }
 
@@ -83,15 +113,15 @@
             color: var(--text-main);
             display: block;
             margin-top: 15px;
-            margin-bottom: 5px;
-            font-size: 15px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
 
         textarea, input[type="text"], input[type="file"], button {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             font-size: 16px;
-            border-radius: 12px;
+            border-radius: 14px;
             border: 1px solid #cbd5e1;
             box-sizing: border-box;
             background: white;
@@ -105,27 +135,27 @@
         .student-box {
             background: #eef2ff;
             border: 2px dashed var(--primary);
-            padding: 20px;
-            border-radius: 16px;
+            padding: 22px;
+            border-radius: 18px;
             text-align: center;
             margin-bottom: 20px;
         }
 
         .student-box h3 {
             margin: 0 0 10px 0;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--text-muted);
         }
 
         .editable-name-input {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             color: var(--primary);
             text-align: center;
             border: 2px solid transparent;
             background: transparent;
-            border-radius: 8px;
-            padding: 5px;
+            border-radius: 10px;
+            padding: 6px;
             width: 100%;
         }
 
@@ -137,11 +167,11 @@
 
         .question-box {
             background: #fffbeb;
-            border: 1px solid #fde68a;
-            padding: 22px;
-            border-radius: 16px;
-            font-size: 20px;
-            margin-bottom: 20px;
+            border: 2px solid #fde68a;
+            padding: 25px;
+            border-radius: 18px;
+            font-size: 22px;
+            margin-bottom: 25px;
             text-align: center;
             font-weight: 800;
             color: #b45309;
@@ -151,35 +181,36 @@
         .options-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .option-btn {
             background: #ffffff;
             border: 2px solid #cbd5e1;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 18px;
+            border-radius: 14px;
+            font-size: 17px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
             color: var(--text-main);
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         .option-btn:hover {
             border-color: var(--primary);
-            background: #f1f5f9;
+            background: #eef2ff;
+            transform: translateY(-2px);
         }
 
         .timer {
             text-align: center;
-            font-size: 18px;
+            font-size: 19px;
             color: var(--danger);
             margin-bottom: 15px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .btn-start { background-color: var(--primary); color: white; border: none; cursor: pointer; font-weight: 700; margin-top: 15px; }
@@ -193,10 +224,10 @@
 
         #alert-banner {
             text-align: center;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 14px;
             font-weight: 800;
-            font-size: 17px;
+            font-size: 18px;
             margin-bottom: 20px;
             display: none;
         }
@@ -208,27 +239,27 @@
             border-collapse: collapse;
             margin-top: 20px;
             background: white;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
         th, td {
             border-bottom: 1px solid #f1f5f9;
-            padding: 12px;
+            padding: 14px;
             text-align: center;
-            font-size: 15px;
+            font-size: 16px;
         }
         th { background-color: #f8fafc; color: var(--text-muted); font-weight: 700; }
         
         .table-name-input {
             border: 1px solid transparent;
             background: transparent;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             text-align: center;
             width: 100%;
-            padding: 4px;
-            border-radius: 6px;
+            padding: 6px;
+            border-radius: 8px;
         }
         .table-name-input:focus {
             border-color: var(--primary);
@@ -242,22 +273,34 @@
 <body>
 
 <div class="container">
-    <h2>منصة الامتحان الشفهي الذكية والمطورة</h2>
+    <h2>منصة الامتحان الشفهي الذكية والمطورة 🎓</h2>
     
-    <!-- واجهة اختيار الغرف المستقلة -->
+    <!-- واجهة الفقاعات التفاعلية للغرف -->
     <div id="rooms-view">
-        <h3 style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 18px;">اختر غرفة الشعبة لبدء جلسة الاختبار المستقلة:</h3>
-        <div class="rooms-grid">
-            <div class="room-card" onclick="openRoom('الرابع (أ)', 'الرابع', 'أ')">غرفة الرابع أ 🏫</div>
-            <div class="room-card" onclick="openRoom('الرابع (ب)', 'الرابع', 'ب')">غرفة الرابع ب 🏫</div>
-            <div class="room-card" onclick="openRoom('الخامس (أ)', 'الخامس', 'أ')">غرفة الخامس أ 🏫</div>
-            <div class="room-card" onclick="openRoom('الخامس (ب)', 'الخامس', 'ب')">غرفة الخامس ب 🏫</div>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 18px; font-weight: 600;">انقر على فقاعة الغرفة للدخول إلى القاعة واختبار الطلاب:</p>
+        <div class="bubbles-container">
+            <div class="bubble" onclick="clickBubble(this, 'غرفة الرابع أ', 'الرابع', 'أ')">
+                <h3>الرابع أ</h3>
+                <span>اضغط للانفجار 🎈</span>
+            </div>
+            <div class="bubble" onclick="clickBubble(this, 'غرفة الرابع ب', 'الرابع', 'ب')">
+                <h3>الرابع ب</h3>
+                <span>اضغط للانفجار 🎈</span>
+            </div>
+            <div class="bubble" onclick="clickBubble(this, 'غرفة الخامس أ', 'الخامس', 'أ')">
+                <h3>الخامس أ</h3>
+                <span>اضغط للانفجار 🎈</span>
+            </div>
+            <div class="bubble" onclick="clickBubble(this, 'غرفة الخامس ب', 'الخامس', 'ب')">
+                <h3>الخامس ب</h3>
+                <span>اضغط للانفجار 🎈</span>
+            </div>
         </div>
     </div>
 
-    <!-- واجهة الإعدادات لكل غرفة على حدة -->
+    <!-- واجهة الإعدادات المستقلة لكل غرفة -->
     <div class="section-box hidden" id="setup-view">
-        <h3 id="room-title-setup" style="color: var(--primary); text-align: center; margin-bottom: 15px;"></h3>
+        <h3 id="room-title-setup" style="color: var(--primary); text-align: center; margin-bottom: 20px; font-size: 22px;"></h3>
         
         <label>📋 الصق أسماء طلاب هذه الغرفة هنا (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
         <textarea id="students-textarea" placeholder="مثال:&#10;ابراهيم زيد عبد العزيز&#10;ابو عبيدة احمد جبار&#10;احمد إبراهيم مصطفى"></textarea>
@@ -272,15 +315,15 @@
 
     <!-- واجهة الامتحان الخاصة بالغرفة -->
     <div id="exam-view" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px;">
-            <h4 id="exam-room-title" style="margin: 0; color: var(--primary);"></h4>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 18px 25px; border-radius: 16px; margin-bottom: 25px;">
+            <h4 id="exam-room-title" style="margin: 0; color: var(--primary); font-size: 20px;"></h4>
             <div class="timer" id="timer-display" style="margin: 0;">الوقت: 45 ثانية</div>
         </div>
 
         <div id="alert-banner"></div>
 
         <div class="student-box">
-            <h3>الطالب المستهدف (يمكنك تعديل الاسم هنا مباشرة):</h3>
+            <h3>الطالب المستهدف (يمكنك تعديل الاسم هنا مباشرة أو في الجدول):</h3>
             <input type="text" id="current-student-input" class="editable-name-input" oninput="updateCurrentStudentName(this.value)">
         </div>
 
@@ -288,9 +331,9 @@
 
         <div class="options-container" id="options-container"></div>
 
-        <button class="btn-back" style="background-color: var(--text-muted); margin-top: 5px;" onclick="nextStudentSkip()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
+        <button class="btn-back" style="background-color: var(--text-muted); margin-top: 5px; padding: 14px;" onclick="nextStudentSkip()">تخطي هذا الطالب والانتقال لغيره ⏭️</button>
 
-        <h3 style="font-size: 16px; color: var(--text-main); margin-top: 25px;">سجل درجات هذه الغرفة حصرياً (الاسم، الصف، الشعبة، الدرجة من 10):</h3>
+        <h3 style="font-size: 18px; color: var(--text-main); margin-top: 30px;">سجل درجات هذه الغرفة حصرياً:</h3>
         <table>
             <thead>
                 <tr>
@@ -304,7 +347,7 @@
         </table>
 
         <button class="btn-action" onclick="exportExcelSheet()">📊 تصدير سجل درجات هذه الغرفة إلى Excel</button>
-        <button class="btn-back" onclick="resetAndBackToRooms()">🔄 إنهاء الجلسة والعودة للغرف</button>
+        <button class="btn-back" onclick="resetAndReturnRooms()">🔄 إنهاء الجلسة والعودة للغرف</button>
     </div>
 </div>
 
@@ -314,69 +357,90 @@
     let currentGrade = "";
     let currentSection = "";
     
-    // حفظ بيانات كل غرفة بشكل مستقل تماماً
     let roomDataStore = {};
 
     const defaultQuestionBank = [
         {
             q: "ما المقصود بالصيانة الوقائية للبرمجيات (Software Preventive Maintenance)؟",
-            correct: "إجراءات وقائية تعتمد لتجنب حدوث مشكلة محتملة في تطبيق ما أو عدم توافقه.",
+            correct: "إجراءات وقائية تعتمد لتجنب مشكلة محتملة.",
             options: [
-                "إجراءات وقائية تعتمد لتجنب حدوث مشكلة محتملة في تطبيق ما أو عدم توافقه.",
-                "إجراءات تركز على استبدال القطع التالفة في اللوحة الأم.",
-                "حذف نظام التشغيل بالكامل وإعادة تثبيته من جديد.",
-                "زيادة سرعة معالج الحاسوب عبر رفع حرارته."
+                "إجراءات وقائية تعتمد لتجنب مشكلة محتملة.",
+                "إجراءات تركز على استبدال القطع التالفة.",
+                "حذف نظام التشغيل بالكامل وإعادة تثبيته.",
+                "زيادة سرعة المعالج عبر رفع الحرارة."
             ]
         },
         {
             q: "ما هي الغاية الأساسية من خدمة تحديث نظام التشغيل Windows بشكل منتظم؟",
-            correct: "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية وعامة.",
+            correct: "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية.",
             options: [
                 "زيادة مساحة القرص الصلب وتوليد مساحة فارغة.",
-                "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية وعامة.",
+                "إضافة خصائص جديدة أو تصحيح عمله بإجراء تحسينات أمنية.",
                 "مسح الملفات المؤقتة الخاصة بمتصفح الإنترنت.",
                 "إيقاف عمل مروحة المعالج لتبريد النظام."
-            ]
-        },
-        {
-            q: "ما هو السبب الرئيسي لنقص المساحة الخزنية بعد ترقية نظام Windows إلى نسخة أحدث؟",
-            correct: "احتفاظ النظام الجديد بنسخة احتياطية من ملفات نظام التشغيل القديم.",
-            options: [
-                "امتلاء صندوق التدوير (Recycle Bin) بالكامل.",
-                "تثبيت برامج الألعاب ذات الحجم الكبير جداً.",
-                "احتفاظ النظام الجديد بنسخة احتياطية من ملفات نظام التشغيل القديم.",
-                "وجود فيروسات خبيثة تحجز مساحة القرص."
             ]
         }
     ];
 
-    function playSound(isCorrect) {
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+    function clickBubble(element, roomTitle, grade, section) {
+        element.classList.add('pop-animation');
+        speakHelloRoom(roomTitle);
 
+        setTimeout(() => {
+            element.classList.remove('pop-animation');
+            openRoom(roomTitle, grade, section);
+        }, 300);
+    }
+
+    function speakHelloRoom(roomTitle) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(`هلاووووو، ${roomTitle}`);
+            utterance.lang = 'ar-SA';
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // دوال الأصوات: تصفيق عند النجاح، ونطق "أووووو لا لا لا" عند الخطأ
+    function playSoundEffect(isCorrect) {
+        try {
             if (isCorrect) {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
-                osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15); 
-                osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.3); 
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.5);
+                // صوت تصفيق مدمج عبر Web Audio API (توليد أصوات ضوضائية متسلسلة تحاكي التصفيق)
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        let bufferSize = audioCtx.sampleRate * 0.1;
+                        let buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                        let data = buffer.getChannelData(0);
+                        for (let j = 0; j < bufferSize; j++) {
+                            data[j] = Math.random() * 2 - 1;
+                        }
+                        let noise = audioCtx.createBufferSource();
+                        noise.buffer = buffer;
+                        let filter = audioCtx.createBiquadFilter();
+                        filter.type = 'bandpass';
+                        filter.frequency.value = 1000;
+                        let gain = audioCtx.createGain();
+                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                        noise.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        noise.start();
+                    }, i * 80);
+                }
             } else {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(120, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
+                // نطق "أووووو لا لا لا" بصوت بشري تفاعلي
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance("أووووو... لا لا لا!");
+                    utterance.lang = 'ar-SA';
+                    utterance.rate = 0.9;
+                    utterance.pitch = 0.8;
+                    window.speechSynthesis.speak(utterance);
+                }
             }
-        } catch(e) { console.log("Audio error", e); }
+        } catch(e) { console.log("Sound error", e); }
     }
 
     function openRoom(roomTitle, grade, section) {
@@ -394,7 +458,7 @@
             };
         }
 
-        document.getElementById("room-title-setup").innerText = `إدارة غرفة: ${roomTitle}`;
+        document.getElementById("room-title-setup").innerText = `إدارة ${roomTitle}`;
         document.getElementById("rooms-view").classList.add("hidden");
         document.getElementById("setup-view").classList.remove("hidden");
     }
@@ -451,7 +515,6 @@
             records[s] = { name: s, grade: 10, status: 0 };
         });
 
-        // قراءة الأسئلة
         let qList = [];
         const qText = document.getElementById("questions-textarea").value.trim();
         if (qText.length > 10) {
@@ -500,7 +563,7 @@
             document.getElementById("timer-display").innerText = `الوقت: ${secondsLeft} ثانية`;
             if (secondsLeft <= 0) {
                 clearInterval(examTimer);
-                playSound(false);
+                playSoundEffect(false);
                 recordAnswer(false);
             }
         }, 1000);
@@ -569,7 +632,7 @@
 
     function nextStudentSkip() {
         clearInterval(examTimer);
-        playSound(false);
+        playSoundEffect(false);
         recordAnswer(false);
     }
 
@@ -581,13 +644,13 @@
         const studentKey = store.studentsList[store.studentPointer];
         const banner = document.getElementById("alert-banner");
 
-        playSound(isCorrect);
+        playSoundEffect(isCorrect);
 
         if (isCorrect) {
             store.studentRecords[studentKey].grade = 10;
             store.studentRecords[studentKey].status = 1;
             banner.className = "alert-success";
-            banner.innerHTML = `✔️ إجابة صحيحة! تم رصد (10 / 10) للطالب.`;
+            banner.innerHTML = `✔️ إجابة صحيحة (تصفيق)! تم رصد (10 / 10) للطالب.`;
         } else {
             store.studentRecords[studentKey].grade = 0;
             store.studentRecords[studentKey].status = 2;
@@ -601,7 +664,7 @@
         store.studentPointer++;
         setTimeout(() => {
             loadNextStudent();
-        }, 3200);
+        }, 3500);
     }
 
     function updateGradesTable() {
