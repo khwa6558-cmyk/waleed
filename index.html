@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الامتحان الشفهي الذكية والمطورة - الإصدار الأخير</title>
+    <title>منصة الامتحان الشفهي الذكية</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         :root {
-            --primary: #6366f1;
+            --primary: #4f46e5;
             --success: #10b981;
             --danger: #ef4444;
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
@@ -36,7 +36,6 @@
         }
         h2 { text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 28px; font-weight: 800; }
         
-        /* فقاعات الغرف */
         .bubbles-box {
             display: flex;
             flex-wrap: wrap;
@@ -67,9 +66,20 @@
 
         .section-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 18px; margin-bottom: 20px; }
         label { font-weight: 700; display: block; margin-top: 15px; margin-bottom: 6px; font-size: 15px; }
-        textarea, input[type="text"], input[type="file"], button {
+        textarea, input[type="text"], button {
             width: 100%; padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid #cbd5e1; box-sizing: border-box; background: white;
         }
+        
+        /* تصميم زر رفع الملفات بوضوح تام */
+        .file-upload-box {
+            background: #eef2ff;
+            border: 2px dashed var(--primary);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
         textarea { resize: vertical; height: 100px; }
 
         .student-box { background: #eef2ff; border: 2px dashed var(--primary); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
@@ -96,7 +106,7 @@
 <body>
 
 <div class="container">
-    <h2>منصة الامتحان الشفهي الذكية والمطورة 🎓</h2>
+    <h2>منصة الامتحان الشفهي الذكية 🎓</h2>
     
     <!-- واجهة الفقاعات -->
     <div id="rooms-view">
@@ -124,12 +134,18 @@
     <!-- إعدادات الغرفة -->
     <div class="section-box hidden" id="setup-view">
         <h3 id="setup-title" style="color: var(--primary); text-align: center; margin-bottom: 15px;"></h3>
+        
         <label>📋 أسماء الطلاب (نسخ ولصق دفعة واحدة، كل اسم في سطر):</label>
         <textarea id="students-input" placeholder="اكتب أو الصق أسماء الطلاب هنا..."></textarea>
 
-        <label>📚 ملف أو نص الأسئلة والأجوبة:</label>
-        <input type="file" id="pdf-file" accept=".pdf, .txt" onchange="loadFile(event)">
-        <textarea id="questions-input" placeholder="أو الصق الأسئلة والخيارات هنا..."></textarea>
+        <label>📚 رفع ملف الأسئلة والأجوبة (PDF أو TXT):</label>
+        <div class="file-upload-box">
+            <input type="file" id="pdf-file" accept=".pdf, .txt" onchange="loadFile(event)" style="background:transparent; border:none; padding:5px;">
+            <span style="font-size: 13px; color: var(--primary); display: block; margin-top: 5px;">اختر ملف PDF أو TXT الخاص بالأسئلة</span>
+        </div>
+
+        <label style="margin-top: 15px;">أو الصق محتوى الأسئلة يدوياً هنا:</label>
+        <textarea id="questions-input" placeholder="الصق الأسئلة والخيارات هنا..."></textarea>
 
         <button class="btn-main" onclick="startExam()">بدء الامتحان الشفهي 🚀</button>
         <button class="btn-secondary" onclick="goHome()">العودة للغرف 🔙</button>
@@ -184,6 +200,7 @@
     function selectRoom(el, name, grade, sec) {
         el.classList.add('pop');
         if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
             window.speechSynthesis.speak(new SpeechSynthesisUtterance(`هلاووووو، ${name}`));
         }
         setTimeout(() => {
@@ -225,7 +242,6 @@
 
     function playSound(isCorrect) {
         if (isCorrect) {
-            // تصفيق
             try {
                 let ctx = new (window.AudioContext || window.webkitAudioContext)();
                 for(let i=0; i<4; i++) {
@@ -240,7 +256,6 @@
                 }
             } catch(e) {}
         } else {
-            // أوووووو لا لا لا
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(new SpeechSynthesisUtterance("أووووو... لا لا لا!"));
@@ -406,6 +421,7 @@
         document.getElementById("rooms-view").classList.remove("hidden");
         document.getElementById("students-input").value = "";
         document.getElementById("questions-input").value = "";
+        document.getElementById("pdf-file").value = "";
     }
 </script>
 
