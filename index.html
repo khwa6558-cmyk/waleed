@@ -57,10 +57,10 @@
       </div>
 
       <div class="flex items-center gap-2 bg-indigo-900/90 p-1.5 rounded-2xl border border-indigo-700 shadow-inner">
-        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5">
+        <button id="tabStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-user-graduate"></i> واجهة الطالب
         </button>
-        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5">
+        <button id="tabAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-circle-plus"></i> لوحة الإدارة والواجبات
         </button>
       </div>
@@ -74,7 +74,7 @@
       <div class="bg-indigo-900/60 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <label for="studentGradeSelect" class="font-extrabold text-amber-300 text-sm whitespace-nowrap">اختر صفك الدراسي:</label>
-          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-indigo-950 border border-indigo-600 text-white text-sm font-extrabold rounded-2xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-sm">
+          <select id="studentGradeSelect" onchange="renderStudentDashboard()" class="bg-indigo-950 border border-indigo-600 text-white text-sm font-extrabold rounded-2xl p-2.5 focus:ring-2 focus:ring-amber-500 focus:outline-none transition shadow-sm cursor-pointer">
             <option value="1m">الأول متوسط</option>
             <option value="2m">الثاني متوسط</option>
             <option value="3m">الثالث متوسط</option>
@@ -116,7 +116,7 @@
             <span class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-base shadow-sm border border-teal-500/30">
               <i class="fa-solid fa-folder-open"></i>
             </span>
-            المحاضرات والملخصات الإضافية
+            المحاضرات والملخصات الإضافية (فتح وعرض غير محدود)
           </h3>
           <span id="lecCountBadge" class="bg-indigo-950 text-amber-300 text-xs font-black px-3.5 py-1.5 rounded-full border border-indigo-700 shadow-inner">0</span>
         </div>
@@ -133,7 +133,7 @@
           <h3 class="font-extrabold text-amber-300 text-base"><i class="fa-solid fa-triangle-exclamation"></i> هل فقدت بياناتك القديمة؟</h3>
           <p class="text-xs text-indigo-100 mt-1">اضغط هنا لسحب المعلومات المخزنة سابقاً في ذاكرة متصفحك ورفعها فوراً للسحاب لتعود للكل!</p>
         </div>
-        <button onclick="recoverOldDataFromLocalStorage()" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-black text-xs px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
+        <button onclick="recoverOldDataFromLocalStorage()" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-black text-xs px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2 cursor-pointer">
           <i class="fa-solid fa-cloud-arrow-up text-sm"></i> استيراد بياناتي القديمة من المتصفح للسحاب
         </button>
       </div>
@@ -156,7 +156,7 @@
           </h3>
           <div class="flex items-center gap-2">
             <label class="text-xs font-extrabold text-indigo-200">اختر الصف:</label>
-            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-indigo-950 border border-indigo-700 text-xs font-extrabold text-white rounded-2xl p-2.5 shadow-sm focus:outline-none">
+            <select id="adminGradeSelect" onchange="renderAdminScheduleTable()" class="bg-indigo-950 border border-indigo-700 text-xs font-extrabold text-white rounded-2xl p-2.5 shadow-sm focus:outline-none cursor-pointer">
               <option value="1m">الأول متوسط</option>
               <option value="2m">الثاني متوسط</option>
               <option value="3m">الثالث متوسط</option>
@@ -198,7 +198,7 @@
               <input type="hidden" id="editHwId" value="">
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">الصف المستهدف:</label>
-                <select id="hwTargetGrade" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
+                <select id="hwTargetGrade" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none cursor-pointer">
                   <option value="1m">الأول متوسط</option>
                   <option value="2m">الثاني متوسط</option>
                   <option value="3m">الثالث متوسط</option>
@@ -209,7 +209,7 @@
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">تحديد اليوم:</label>
-                <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
+                <select id="hwDay" onchange="updateHwSubjectsDropdown()" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none cursor-pointer">
                   <option value="الأحد">الأحد</option>
                   <option value="الإثنين">الإثنين</option>
                   <option value="الثلاثاء">الثلاثاء</option>
@@ -219,7 +219,7 @@
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر المادة:</label>
-                <select id="hwSubjectSelect" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl font-extrabold text-amber-300 focus:outline-none"></select>
+                <select id="hwSubjectSelect" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl font-extrabold text-amber-300 focus:outline-none cursor-pointer"></select>
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">تفاصيل الواجب (بخط كبير وملون):</label>
@@ -230,10 +230,10 @@
                 <input type="date" id="hwDueDate" required class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
               </div>
               <div class="flex gap-2 pt-2">
-                <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
+                <button type="submit" id="hwSubmitBtn" class="flex-grow bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
                   <i class="fa-solid fa-cloud-arrow-up text-sm"></i> نشر الواجب سحابياً
                 </button>
-                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
+                <button type="button" id="hwCancelEditBtn" onclick="cancelEditHomework()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl cursor-pointer">إلغاء</button>
               </div>
             </form>
           </div>
@@ -243,13 +243,13 @@
         <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 flex flex-col justify-between">
           <div>
             <h3 id="lecFormTitle" class="font-extrabold text-teal-300 mb-5 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-              <i class="fa-solid fa-upload"></i> رفع ملف أو مقطع للمكتبة (سحابي)
+              <i class="fa-solid fa-upload"></i> رفع ملف أو صورة (بجميع الصيغ للاستخدام غير المحدود)
             </h3>
             <form onsubmit="handleAddOrUpdateLecture(event)" class="space-y-4">
               <input type="hidden" id="editLecId" value="">
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">الصف المستهدف:</label>
-                <select id="lecTargetGrade" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none">
+                <select id="lecTargetGrade" class="w-full bg-indigo-950 border border-indigo-700 text-xs font-bold text-white p-3 rounded-2xl focus:outline-none cursor-pointer">
                   <option value="1m">الأول متوسط</option>
                   <option value="2m">الثاني متوسط</option>
                   <option value="3m">الثالث متوسط</option>
@@ -259,26 +259,27 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">عنوان الملف:</label>
-                <input type="text" id="lecTitle" required placeholder="مثال: محاضرة الفصل الأول" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
+                <label class="block text-xs font-bold text-indigo-200 mb-1.5">عنوان الملف / الملزمة:</label>
+                <input type="text" id="lecTitle" required placeholder="مثال: ملزمة الحاسوب الفصل الأول" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">المادة:</label>
                 <input type="text" id="lecSubject" required placeholder="مثال: الحاسوب / الرياضيات" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl text-white focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-bold text-indigo-200 mb-1.5">اختر الملف:</label>
-                <input type="file" id="lecFileInput" class="w-full bg-indigo-950 border border-indigo-700 text-xs p-2.5 rounded-2xl text-white cursor-pointer">
+                <label class="block text-xs font-bold text-amber-300 mb-1.5">اختر الملف أو الصورة من جهازك (PDF, صور, Word, Excel, إلخ):</label>
+                <input type="file" id="lecFileInput" required class="w-full bg-indigo-950 border-2 border-amber-500/50 text-xs p-2.5 rounded-2xl text-white cursor-pointer">
+                <p class="text-[10px] text-indigo-300 mt-1">يمكن فتح وإغلاق هذا الملف آلاف المرات في نفس اللحظة دون أي مشاكل.</p>
               </div>
               <div>
                 <label class="block text-xs font-bold text-indigo-200 mb-1.5">ملاحظات إضافية:</label>
-                <textarea id="lecDesc" placeholder="وصف موجز..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-16 text-white focus:outline-none"></textarea>
+                <textarea id="lecDesc" placeholder="وصف موجز للملف..." class="w-full bg-indigo-950 border border-indigo-700 text-xs p-3 rounded-2xl h-16 text-white focus:outline-none"></textarea>
               </div>
               <div class="flex gap-2 pt-2">
-                <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ سحابي
+                <button type="submit" id="lecSubmitBtn" class="flex-grow bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                  <i class="fa-solid fa-cloud-arrow-up text-sm"></i> حفظ ورفع الملف للسحاب
                 </button>
-                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl">إلغاء</button>
+                <button type="button" id="lecCancelEditBtn" onclick="cancelEditLecture()" class="hidden bg-slate-600 text-white font-bold text-xs px-4 py-3.5 rounded-2xl cursor-pointer">إلغاء</button>
               </div>
             </form>
           </div>
@@ -288,7 +289,7 @@
       <!-- LIBRARY TABLE -->
       <div class="bg-indigo-900/50 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-indigo-700/50 mt-6">
         <h3 class="font-extrabold text-white mb-4 border-b border-indigo-800/60 pb-3 flex items-center gap-2 text-base">
-          <i class="fa-solid fa-folder-open text-teal-400"></i> إدارة مكتبة الملفات
+          <i class="fa-solid fa-folder-open text-teal-400"></i> إدارة مكتبة الملفات المرفوعة
         </h3>
         <div id="adminLibraryList" class="space-y-3"></div>
       </div>
@@ -315,13 +316,10 @@
     let appData = { schedules: {}, homeworks: [], lectures: [] };
     let selectedDayFilter = getCurrentDayName();
 
-    // دالة استعادة البيانات القديمة من ذاكرة المتصفح ورفعها للسحاب
     function recoverOldDataFromLocalStorage() {
       try {
-        // البحث عن أي مفاتيح قديمة محتملة في الـ LocalStorage
         let oldRaw = localStorage.getItem('school_platform_data') || localStorage.getItem('appData') || localStorage.getItem('schoolData');
         if (!oldRaw) {
-          // جرب البحث في كل مفاتيح الـ LocalStorage
           for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
             let val = localStorage.getItem(key);
@@ -336,7 +334,7 @@
           const parsed = JSON.parse(oldRaw);
           if (parsed && typeof parsed === 'object') {
             appData = parsed;
-            saveAppData(); // رفعها مباشرة لقاعدة بيانات Firebase
+            saveAppData();
             alert('تم استيراد بياناتك القديمة ورفعها بنجاح إلى السحاب!');
             initPlatform();
             renderAdminScheduleTable();
@@ -344,7 +342,7 @@
             return;
           }
         }
-        alert('لم يتم العثور على بيانات قديمة مخزنة في هذا المتصفح. تأكد من فتح المنصة من المتصفح الذي كنت تدخل منه سابقاً.');
+        alert('لم يتم العثور على بيانات قديمة مخزنة في هذا المتصفح.');
       } catch (err) {
         console.error(err);
         alert('حدث خطأ أثناء محاولة استرجاع البيانات.');
@@ -392,14 +390,14 @@
       if (tab === 'student') {
         studentView.classList.remove('hidden');
         adminView.classList.add('hidden');
-        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
-        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
+        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5 cursor-pointer";
+        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5 cursor-pointer";
         renderStudentDashboard();
       } else {
         studentView.classList.add('hidden');
         adminView.classList.remove('hidden');
-        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5";
-        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5";
+        adminBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-amber-500 text-indigo-950 shadow-md flex items-center gap-1.5 cursor-pointer";
+        studentBtn.className = "px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 text-indigo-200 hover:text-white flex items-center gap-1.5 cursor-pointer";
         renderAdminScheduleTable();
         updateHwSubjectsDropdown();
         renderAdminLibraryList();
@@ -414,7 +412,7 @@
       const filterTabsContainer = document.getElementById('dayFilterTabs');
       if(filterTabsContainer) {
         filterTabsContainer.innerHTML = DAYS.map(day => `
-          <button onclick="changeStudentDayFilter('${day}')" class="px-4 py-2 rounded-2xl font-extrabold transition-all ${selectedDayFilter === day ? 'bg-amber-500 text-indigo-950 shadow-md scale-105 shadow-amber-500/20' : 'bg-indigo-950 text-indigo-200 hover:bg-indigo-800 border border-indigo-800'} whitespace-nowrap">
+          <button onclick="changeStudentDayFilter('${day}')" class="px-4 py-2 rounded-2xl font-extrabold transition-all ${selectedDayFilter === day ? 'bg-amber-500 text-indigo-950 shadow-md scale-105 shadow-amber-500/20' : 'bg-indigo-950 text-indigo-200 hover:bg-indigo-800 border border-indigo-800'} whitespace-nowrap cursor-pointer">
             ${day}
           </button>
         `).join('');
@@ -476,6 +474,11 @@
           const matchHw = gradeHws.find(h => h.subject.trim().replace(/\s+/g, ' ') === cleanSub);
           const matchLec = gradeLecs.find(l => l.subject.trim().replace(/\s+/g, ' ') === cleanSub);
 
+          let lecButtonHtml = '';
+          if (matchLec && matchLec.fileData) {
+            lecButtonHtml = `<button onclick="openFileModal('${matchLec.title}', '${matchLec.fileData}')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold px-4 py-3 rounded-2xl shadow-md inline-flex items-center gap-2 transition cursor-pointer"><i class="fa-solid fa-eye"></i> عرض الملف: ${matchLec.title}</button>`;
+          }
+
           return `
             <div class="p-4 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 rounded-3xl border border-indigo-700/60 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -491,10 +494,10 @@
                       <span class="text-white text-base sm:text-lg tracking-wide">${matchHw.desc}</span>
                       <span class="text-indigo-300 text-[11px] block mt-0.5">التسليم: ${matchHw.dueDate}</span>
                     </div>
-                    <button type="button" onclick="deleteHomeworkFromDashboard('${matchHw.id}')" class="text-rose-400 hover:text-rose-300 mr-2 p-1"><i class="fa-solid fa-trash text-base"></i></button>
+                    <button type="button" onclick="deleteHomeworkFromDashboard('${matchHw.id}')" class="text-rose-400 hover:text-rose-300 mr-2 p-1 cursor-pointer"><i class="fa-solid fa-trash text-base"></i></button>
                   </div>
                 ` : `<span class="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-4 py-2.5 rounded-2xl border border-indigo-800">لا يوجد واجب</span>`}
-                ${matchLec ? `<a href="${matchLec.fileData || '#'}" target="_blank" download="${matchLec.title}" class="bg-teal-600 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-md inline-flex items-center gap-2"><i class="fa-solid fa-folder-open"></i> ${matchLec.title}</a>` : ''}
+                ${lecButtonHtml}
               </div>
             </div>
           `;
@@ -513,7 +516,7 @@
               <h4 class="text-sm font-black text-white mt-2">${lec.title}</h4>
               ${lec.desc ? `<p class="text-xs text-indigo-200 mt-1">${lec.desc}</p>` : ''}
             </div>
-            <a href="${lec.fileData || '#'}" target="_blank" download="${lec.title}" class="bg-teal-600 text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center inline-flex items-center justify-center gap-1.5"><i class="fa-solid fa-folder-open"></i> فتح الملف</a>
+            <button onclick="openFileModal('${lec.title}', '${lec.fileData}')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center inline-flex items-center justify-center gap-1.5 transition cursor-pointer"><i class="fa-solid fa-eye"></i> فتح وعرض الملف</button>
           </div>
         `).join('');
       }
@@ -533,7 +536,7 @@
               </td>
             `).join('')}
             <td class="p-3.5 border border-indigo-800 text-center">
-              <button onclick="saveAdminRowDirect('${grade}', '${day}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm">
+              <button onclick="saveAdminRowDirect('${grade}', '${day}')" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm cursor-pointer">
                 <i class="fa-solid fa-check"></i> حفظ
               </button>
             </td>
@@ -607,15 +610,17 @@
       const desc = document.getElementById('lecDesc').value;
       const fileInput = document.getElementById('lecFileInput');
 
-      const processSave = (fileBase64) => {
+      const processSave = (fileDataResult) => {
         if (!appData.lectures) appData.lectures = [];
         const recordId = editId ? Number(editId) : Date.now();
-        let existingFile = fileBase64;
-        if (editId && !existingFile) {
+        
+        let finalData = fileDataResult;
+        if (!finalData && editId) {
           const ex = appData.lectures.find(l => Number(l.id) === Number(editId));
-          existingFile = ex ? ex.fileData : '';
+          finalData = ex ? ex.fileData : '';
         }
-        const lecObj = { id: recordId, grade, title, subject, desc, fileData: existingFile };
+
+        const lecObj = { id: recordId, grade, title, subject, desc, fileData: finalData };
         if (editId) {
           const idx = appData.lectures.findIndex(l => Number(l.id) === Number(editId));
           if (idx !== -1) appData.lectures[idx] = lecObj;
@@ -630,13 +635,14 @@
         saveAppData();
         renderAdminLibraryList();
         renderStudentDashboard();
-        alert('تم حفظ الملف ومزامنته سحابياً بنجاح!');
+        alert('تم رفع الملف وحفظه وعرضه للجميع بنجاح!');
       };
 
       if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
         const reader = new FileReader();
         reader.onload = ev => processSave(ev.target.result);
-        reader.readAsDataURL(fileInput.files[0]);
+        reader.readAsDataURL(file);
       } else {
         processSave(null);
       }
@@ -650,6 +656,7 @@
       document.getElementById('lecTitle').value = lec.title;
       document.getElementById('lecSubject').value = lec.subject;
       document.getElementById('lecDesc').value = lec.desc || '';
+      document.getElementById('lecFileInput').required = false;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -659,10 +666,11 @@
       document.getElementById('lecSubject').value = '';
       document.getElementById('lecDesc').value = '';
       document.getElementById('lecFileInput').value = '';
+      document.getElementById('lecFileInput').required = true;
     }
 
     function deleteLibraryItem(id) {
-      if (confirm('حذف هذا الملف من السحاب؟')) {
+      if (confirm('حذف هذا الملف من المنصة؟')) {
         appData.lectures = (appData.lectures || []).filter(l => Number(l.id) !== Number(id));
         saveAppData();
         renderAdminLibraryList();
@@ -684,9 +692,9 @@
             <span class="text-xs font-extrabold text-white ml-2">${lec.subject}: ${lec.title}</span>
           </div>
           <div class="flex gap-2">
-            <a href="${lec.fileData || '#'}" target="_blank" class="bg-teal-600 text-white text-xs font-bold px-3 py-2 rounded-xl"><i class="fa-solid fa-folder-open"></i> فتح</a>
-            <button onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl">تعديل</button>
-            <button onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl">حذف</button>
+            <button onclick="openFileModal('${lec.title}', '${lec.fileData}')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-2 rounded-xl cursor-pointer"><i class="fa-solid fa-eye"></i> عرض</button>
+            <button onclick="editLibraryItem('${lec.id}')" class="bg-amber-500 text-indigo-950 text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">تعديل</button>
+            <button onclick="deleteLibraryItem('${lec.id}')" class="bg-rose-700 text-white text-xs font-bold px-3 py-2 rounded-xl cursor-pointer">حذف</button>
           </div>
         </div>
       `).join('');
@@ -699,7 +707,39 @@
       }
     }
 
-    initPlatform();
+    // نافذة منبثقة (Modal) لفتح وإغلاق العرض آلاف المرات دون فتح علامات تبويب جديدة مزعجة
+    function openFileModal(title, fileData) {
+      let modal = document.getElementById('customFileModal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'customFileModal';
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4';
+        document.body.appendChild(modal);
+      }
+
+      modal.innerHTML = `
+        <div class="bg-indigo-950 border border-indigo-700 rounded-3xl w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fadeIn">
+          <div class="bg-indigo-900 px-6 py-4 flex justify-between items-center border-b border-indigo-800">
+            <h3 class="font-black text-amber-300 text-base sm:text-lg"><i class="fa-solid fa-file-lines ml-2"></i> ${title}</h3>
+            <button onclick="closeFileModal()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition cursor-pointer">
+              <i class="fa-solid fa-xmark text-sm ml-1"></i> إغلاق النافذة
+            </button>
+          </div>
+          <div class="flex-grow bg-slate-900 p-2 flex items-center justify-center overflow-auto">
+            <iframe src="${fileData}" class="w-full h-full rounded-2xl border border-indigo-800 bg-white" frameborder="0"></iframe>
+          </div>
+        </div>
+      `;
+      modal.style.display = 'flex';
+    }
+
+    function closeFileModal() {
+      const modal = document.getElementById('customFileModal');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.innerHTML = '';
+      }
+    }
   </script>
 </body>
 </html>
