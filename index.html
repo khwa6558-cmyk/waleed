@@ -35,14 +35,13 @@
             min-height: 100vh;
         }
 
-        /* ================= HERO BANNER ================= */
+        /* ================= HERO BANNER (TITLE TOP + LOGO CENTER) ================= */
         .hero-banner {
             background:
-                linear-gradient(90deg, rgba(6, 28, 58, 0.94) 0%, rgba(12, 53, 107, 0.82) 50%, rgba(6, 28, 58, 0.94) 100%),
-                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.25), transparent 40%),
-                radial-gradient(circle at 80% 50%, rgba(56, 189, 248, 0.22), transparent 45%);
+                linear-gradient(90deg, rgba(6, 28, 58, 0.94) 0%, rgba(12, 53, 107, 0.85) 50%, rgba(6, 28, 58, 0.94) 100%),
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.22), transparent 55%);
             color: var(--white);
-            padding: 12px 24px;
+            padding: 16px 24px 18px;
             border-bottom: 3px solid var(--gold);
         }
 
@@ -50,65 +49,53 @@
             max-width: 1420px;
             margin: 0 auto;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
         }
 
-        .hero-left-badges {
+        .hero-title-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 8px 14px;
-            font-size: 1.45rem;
-        }
-
-        .hero-center {
-            text-align: center;
-            flex: 1;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .hero-center h1 {
-            font-size: 2rem;
+            font-size: 2.05rem;
             font-weight: 900;
             text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+            line-height: 1.25;
         }
 
-        .hero-center .sub-city {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--gold-bright);
-            margin-top: 1px;
-        }
-
-        .hero-sub-pill {
-            display: inline-block;
-            margin-top: 5px;
-            background: linear-gradient(90deg, #061c3a, #164887, #061c3a);
-            border: 1.5px solid rgba(246, 213, 106, 0.75);
-            padding: 3px 26px;
-            border-radius: 20px;
-            font-size: 0.98rem;
-            font-weight: 800;
-            color: #ffffff;
+        .hero-badges-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 12px;
+            padding: 3px 10px;
+            font-size: 1.15rem;
         }
 
         .school-logo-circle {
-            width: 92px;
-            height: 92px;
+            width: 102px;
+            height: 102px;
             border-radius: 50%;
             background: #ffffff;
-            border: 2.5px solid var(--gold-bright);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+            border: 3px solid var(--gold-bright);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             padding: 3px;
             flex-shrink: 0;
+            margin: 2px 0;
         }
 
         .school-logo-circle img {
@@ -116,6 +103,25 @@
             height: 100%;
             object-fit: contain;
             border-radius: 50%;
+        }
+
+        .hero-center .sub-city {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--gold-bright);
+            margin-top: 1px;
+        }
+
+        .hero-sub-pill {
+            display: inline-block;
+            margin-top: 2px;
+            background: linear-gradient(90deg, #061c3a, #164887, #061c3a);
+            border: 1.5px solid rgba(246, 213, 106, 0.75);
+            padding: 3px 26px;
+            border-radius: 20px;
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: #ffffff;
         }
 
         /* ================= TOP ADMIN BAR ================= */
@@ -293,14 +299,14 @@
                 grid-template-columns: 1fr;
             }
             .hero-center h1 {
-                font-size: 1.35rem;
+                font-size: 1.4rem;
             }
             .welcome-strip h2 {
                 font-size: 1.1rem;
             }
             .school-logo-circle {
-                width: 72px;
-                height: 72px;
+                width: 82px;
+                height: 82px;
             }
         }
 
@@ -880,23 +886,24 @@
         </div>
     </div>
 
-    <!-- Hero Banner -->
+    <!-- Hero Banner (School Name Top + Logo Center) -->
     <header class="hero-banner">
         <div class="hero-inner">
-            <div class="hero-left-badges">
-                <span>🎓</span>
-                <span>📚</span>
-                <span>💻</span>
-            </div>
-
             <div class="hero-center">
-                <h1>ثانوية المتفوقين الثانية للبنين</h1>
-                <div class="sub-city">- الانبار -</div>
-                <div class="hero-sub-pill">منصة إدارة بيانات الطلبة</div>
+                <div class="hero-title-row">
+                    <span class="hero-badges-pill">🎓 📚</span>
+                    <h1>ثانوية المتفوقين الثانية للبنين</h1>
+                    <span class="hero-badges-pill">💻</span>
+                </div>
             </div>
 
             <div class="school-logo-circle" title="شعار ثانوية المتفوقين الثانية للبنين - الأنبار">
                 <img id="bannerSchoolLogo" src="" alt="شعار المدرسة">
+            </div>
+
+            <div class="hero-center">
+                <div class="sub-city">- الانبار -</div>
+                <div class="hero-sub-pill">منصة إدارة بيانات الطلبة</div>
             </div>
         </div>
     </header>
@@ -1209,9 +1216,9 @@
         let isInsideRoom = false;
         let currentPhotoBase64 = "";
 
-        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v10")) || {};
-        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v10") || DEFAULT_SECRET_CODE;
-        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v10") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v12")) || {};
+        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v12") || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v12") === "true";
 
         let useCloud = false;
         let db = null;
@@ -1259,7 +1266,7 @@
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V10", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V12", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1421,7 +1428,7 @@
                 savedAt: nowTime,
                 students: rows
             };
-            localStorage.setItem("mutafawiqeen_saved_sections_v10", JSON.stringify(savedSectionTables));
+            localStorage.setItem("mutafawiqeen_saved_sections_v12", JSON.stringify(savedSectionTables));
             renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
@@ -1623,7 +1630,7 @@
         // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v10", String(locked));
+            localStorage.setItem("mutafawiqeen_locked_v12", String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { isLocked: locked });
@@ -1716,7 +1723,7 @@
                 return;
             }
             adminSecret = nextCode;
-            localStorage.setItem("mutafawiqeen_secret_v10", nextCode);
+            localStorage.setItem("mutafawiqeen_secret_v12", nextCode);
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { adminCode: nextCode });
             }
