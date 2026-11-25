@@ -762,6 +762,8 @@
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+            flex: 1;
+            min-width: 260px;
         }
 
         .room-search-box {
@@ -787,18 +789,39 @@
             outline: none;
             font-weight: 700;
             font-size: 0.92rem;
-            width: 240px;
-            max-width: 65vw;
+            width: 230px;
+            max-width: 60vw;
             color: var(--text-main);
+        }
+
+        .btn-do-search {
+            background: linear-gradient(180deg, #1967c2, #083369);
+            color: #ffffff;
+            border: 1px solid #60a5fa;
+            border-radius: 9px;
+            padding: 7px 16px;
+            font-size: 0.88rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 3px 8px rgba(8, 51, 105, 0.25);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .btn-do-search:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
         }
 
         .btn-clear-search {
             background: #e2e8f0;
             color: #0f172a;
             border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 6px 11px;
-            font-size: 0.82rem;
+            border-radius: 9px;
+            padding: 7px 12px;
+            font-size: 0.84rem;
             font-weight: 800;
             cursor: pointer;
             transition: background 0.15s ease;
@@ -806,6 +829,72 @@
 
         .btn-clear-search:hover {
             background: #cbd5e1;
+        }
+
+        .export-format-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 4px 8px;
+        }
+
+        .export-format-select {
+            height: 33px;
+            padding: 2px 10px;
+            border: 1.5px solid var(--navy-800);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--navy-800);
+            font-size: 0.85rem;
+            font-weight: 900;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-export-selected {
+            background: linear-gradient(180deg, #0f766e, #115e59);
+            color: #ffffff;
+            border: 1px solid #5eead4;
+            border-radius: 8px;
+            padding: 6px 13px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .btn-export-selected:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
+        }
+
+        .btn-print-selected {
+            background: linear-gradient(180deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 6px 13px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .btn-print-selected:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
         }
 
         .search-mark {
@@ -908,6 +997,11 @@
         .mini-preview { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
         .mini-edit { background: linear-gradient(180deg, #16a34a, #15803d); }
         .mini-delete { background: linear-gradient(180deg, #dc2626, #b91c1c); }
+
+        /* ================= PRINTABLE SECTION REPORT ================= */
+        #printableSectionSheet {
+            display: none;
+        }
 
         /* ================= MODALS & ID CARD ================= */
         .modal-layer {
@@ -1036,9 +1130,10 @@
         }
 
         @media print {
-            body * { visibility: hidden; }
-            #printableIdCard, #printableIdCard * { visibility: visible; }
-            #printableIdCard {
+            body.printing-id-card * { visibility: hidden; }
+            body.printing-id-card #printableIdCard,
+            body.printing-id-card #printableIdCard * { visibility: visible; }
+            body.printing-id-card #printableIdCard {
                 position: fixed;
                 left: 50%;
                 top: 24px;
@@ -1047,6 +1142,21 @@
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
+
+            body.printing-section-sheet * { visibility: hidden; }
+            body.printing-section-sheet #printableSectionSheet,
+            body.printing-section-sheet #printableSectionSheet * { visibility: visible; }
+            body.printing-section-sheet #printableSectionSheet {
+                display: block !important;
+                position: static;
+                width: 100%;
+                padding: 12px;
+                color: #000000;
+                background: #ffffff;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
             .no-print { display: none !important; }
         }
     </style>
@@ -1260,18 +1370,35 @@
                 <div class="room-search-controls">
                     <div class="room-search-box">
                         <span>🔍</span>
-                        <input type="text" id="roomSearchInput" placeholder="اكتب الاسم للبحث وإظهاره في الجدول..." oninput="renderSectionRoomTable()">
+                        <input type="text" id="roomSearchInput" placeholder="اكتب الاسم للبحث وإظهاره في الجدول..." oninput="renderSectionRoomTable()" onkeydown="if(event.key==='Enter'){event.preventDefault();renderSectionRoomTable();}">
                     </div>
+                    <button type="button" class="btn-do-search" onclick="renderSectionRoomTable()">
+                        <span>🔍</span>
+                        <span>بحث</span>
+                    </button>
                     <button type="button" id="clearSearchBtn" class="btn-clear-search" style="display: none;" onclick="clearRoomSearch()">
                         ✕ مسح البحث
                     </button>
                 </div>
 
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" class="mini-act-btn mini-preview" style="padding: 6px 13px;" onclick="exportSectionWord()">
-                        📄 تصدير Word
-                    </button>
-                    <button type="button" class="mini-act-btn mini-delete" style="padding: 6px 13px;" onclick="deleteAllInActiveSection()">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                    <div class="export-format-group" title="اختر صيغة الملف للحفظ أو الطباعة">
+                        <span style="font-size: 0.82rem; font-weight: 800; color: var(--navy-800);">الصيغة:</span>
+                        <select id="fileFormatSelect" class="export-format-select">
+                            <option value="word">Word (.doc)</option>
+                            <option value="pdf">PDF (.pdf)</option>
+                        </select>
+                        <button type="button" class="btn-export-selected" onclick="handleFormatSave()">
+                            <span>💾</span>
+                            <span>حفظ الملف</span>
+                        </button>
+                        <button type="button" class="btn-print-selected" onclick="handleFormatPrint()">
+                            <span>🖨️</span>
+                            <span>طباعة</span>
+                        </button>
+                    </div>
+
+                    <button type="button" class="mini-act-btn mini-delete" style="padding: 7px 13px;" onclick="deleteAllInActiveSection()">
                         🗑️ حذف طلاب الشعبة
                     </button>
                 </div>
@@ -1297,6 +1424,9 @@
 
     </main>
 
+    <!-- Printable Section Sheet Container -->
+    <div id="printableSectionSheet"></div>
+
     <!-- Student ID Card Modal -->
     <div id="idCardModalLayer" class="modal-layer" onclick="if(event.target===this) hideModal('idCardModalLayer')">
         <div id="printableIdCard" class="id-card-box">
@@ -1306,7 +1436,7 @@
                     <span style="font-weight: 900; font-size: 1.05rem;">بطاقة تعريف الطالب</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;" class="no-print">
-                    <button type="button" class="mini-act-btn mini-preview" onclick="window.print()">🖨️</button>
+                    <button type="button" class="mini-act-btn mini-preview" onclick="printSingleIdCard()">🖨️</button>
                     <button type="button" style="background: transparent; border: none; color: #fff; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="hideModal('idCardModalLayer')">✕</button>
                 </div>
             </div>
@@ -1325,7 +1455,7 @@
             </div>
 
             <div style="padding: 0 16px 16px; display: flex; justify-content: center;" class="no-print">
-                <button type="button" class="btn-submit-student" onclick="window.print()">🖨️ طباعة البطاقة</button>
+                <button type="button" class="btn-submit-student" onclick="printSingleIdCard()">🖨️ طباعة البطاقة</button>
             </div>
         </div>
     </div>
@@ -1399,16 +1529,21 @@
         ];
         const SECTIONS = ["أ", "ب", "ج"];
 
-        let studentsList = [];
+        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v18";
+        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v18";
+        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v18";
+        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v18";
+
+        let studentsList = loadStudentsFromLocalStorage();
         let selectedGrade = null;
         let selectedSection = null;
         let isInsideRoom = false;
         let isRoomExpanded = false;
         let currentPhotoBase64 = "";
 
-        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v16")) || {};
-        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v16") || DEFAULT_SECRET_CODE;
-        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v16") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem(STORAGE_SAVED_SECTIONS_KEY)) || {};
+        let adminSecret = localStorage.getItem(STORAGE_SECRET_KEY) || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem(STORAGE_LOCKED_KEY) === "true";
 
         let useCloud = false;
         let db = null;
@@ -1421,6 +1556,24 @@
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
+
+        function loadStudentsFromLocalStorage() {
+            try {
+                const raw = localStorage.getItem(STORAGE_STUDENTS_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed)
+                    ? parsed.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0))
+                    : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function persistStudentsToLocalStorage(list) {
+            try {
+                localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(list));
+            } catch (e) {}
+        }
 
         initDateFields();
         renderGradesShelf();
@@ -1450,6 +1603,7 @@
 
             onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
                 studentsList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                persistStudentsToLocalStorage(studentsList);
                 if (isInsideRoom) renderSectionRoomTable();
             });
         } else {
@@ -1457,7 +1611,7 @@
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V16", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V18", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1471,10 +1625,20 @@
         }
 
         function loadLocalList() {
-            if (!localDb) return;
+            const lsList = loadStudentsFromLocalStorage();
+            if (!localDb) {
+                studentsList = lsList;
+                if (isInsideRoom) renderSectionRoomTable();
+                return;
+            }
             const tx = localDb.transaction("students", "readonly");
             tx.objectStore("students").getAll().onsuccess = (e) => {
-                studentsList = (e.target.result || []).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                const idbList = e.target.result || [];
+                const mergedMap = new Map();
+                lsList.forEach(item => mergedMap.set(item.id, item));
+                idbList.forEach(item => mergedMap.set(item.id, item));
+                studentsList = Array.from(mergedMap.values()).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                persistStudentsToLocalStorage(studentsList);
                 if (isInsideRoom) renderSectionRoomTable();
             };
         }
@@ -1589,26 +1753,40 @@
         }
 
         window.clearRoomSearch = function () {
-            document.getElementById("roomSearchInput").value = "";
+            const inp = document.getElementById("roomSearchInput");
+            inp.value = "";
             document.getElementById("clearSearchBtn").style.display = "none";
             renderSectionRoomTable();
+            inp.focus();
         };
 
-        function renderSectionRoomTable() {
+        function getCurrentSectionRows() {
+            if (!selectedGrade || !selectedSection) return [];
+            const rawQuery = document.getElementById("roomSearchInput")?.value || "";
+            const lowerTerm = rawQuery.trim().toLowerCase();
+            const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            return lowerTerm
+                ? sectionRows.filter(s =>
+                    (s.name && String(s.name).toLowerCase().includes(lowerTerm)) ||
+                    (s.mother && String(s.mother).toLowerCase().includes(lowerTerm))
+                )
+                : sectionRows;
+        }
+
+        window.renderSectionRoomTable = function () {
             if (!selectedGrade || !selectedSection) return;
-            const rawQuery = document.getElementById("roomSearchInput").value;
+            const searchInput = document.getElementById("roomSearchInput");
+            const rawQuery = searchInput ? searchInput.value : "";
             const searchTerm = rawQuery.trim();
             const lowerTerm = searchTerm.toLowerCase();
 
-            document.getElementById("clearSearchBtn").style.display = searchTerm ? "inline-block" : "none";
+            const clearBtn = document.getElementById("clearSearchBtn");
+            if (clearBtn) {
+                clearBtn.style.display = searchTerm ? "inline-block" : "none";
+            }
 
             const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
-            const filtered = lowerTerm
-                ? sectionRows.filter(s =>
-                    (s.name && s.name.toLowerCase().includes(lowerTerm)) ||
-                    (s.mother && s.mother.toLowerCase().includes(lowerTerm))
-                )
-                : sectionRows;
+            const filtered = getCurrentSectionRows();
 
             document.getElementById("roomHeadingTitle").innerText = `${selectedGrade} - شعبة (${selectedSection})`;
             document.getElementById("roomCountChip").innerText = lowerTerm
@@ -1649,10 +1827,11 @@
                     </td>
                 </tr>
             `).join("");
-        }
+        };
 
         window.saveFullSectionTable = function () {
             if (!selectedGrade || !selectedSection) return;
+            persistStudentsToLocalStorage(studentsList);
             const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
             const key = `${selectedGrade}__${selectedSection}`;
             const nowTime = new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
@@ -1663,10 +1842,139 @@
                 savedAt: nowTime,
                 students: rows
             };
-            localStorage.setItem("mutafawiqeen_saved_sections_v16", JSON.stringify(savedSectionTables));
+            localStorage.setItem(STORAGE_SAVED_SECTIONS_KEY, JSON.stringify(savedSectionTables));
             renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
+
+        // حفظ الملف حسب الصيغة المختارة (Word أو PDF)
+        window.handleFormatSave = function () {
+            if (!selectedGrade || !selectedSection) return;
+            const rows = getCurrentSectionRows();
+            if (rows.length === 0) {
+                alert("لا توجد بيانات لحفظها.");
+                return;
+            }
+            const format = document.getElementById("fileFormatSelect").value;
+            if (format === "word") {
+                downloadWordFile(rows);
+            } else {
+                triggerSectionPrintView(rows, "لحفظ الملف بصيغة PDF، اختر (حفظ بتنسيق PDF / Save as PDF) من نافذة الطباعة.");
+            }
+        };
+
+        // طباعة الملف حسب الصيغة المختارة (Word أو PDF)
+        window.handleFormatPrint = function () {
+            if (!selectedGrade || !selectedSection) return;
+            const rows = getCurrentSectionRows();
+            if (rows.length === 0) {
+                alert("لا توجد بيانات للطباعة.");
+                return;
+            }
+            const format = document.getElementById("fileFormatSelect").value;
+            if (format === "word") {
+                downloadWordFile(rows);
+                alert("📄 تم تحميل ملف Word، يمكنك فتحه وطباعته مباشرة من برنامج Word.");
+            } else {
+                triggerSectionPrintView(rows, "");
+            }
+        };
+
+        function triggerSectionPrintView(rows, noticeText) {
+            const bodyRows = rows.map((r, i) => `
+                <tr>
+                    <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;font-weight:700;">${i + 1}</td>
+                    <td style="border:1px solid #0b2e5e;padding:8px;font-weight:800;">${r.name}</td>
+                    <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;">${r.grade}</td>
+                    <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;">${r.section}</td>
+                    <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;" dir="ltr">${r.dob}</td>
+                    <td style="border:1px solid #0b2e5e;padding:8px;">${r.mother}</td>
+                </tr>
+            `).join("");
+
+            const sheet = document.getElementById("printableSectionSheet");
+            sheet.innerHTML = `
+                <div style="text-align:center;border-bottom:2px solid #0b2e5e;padding-bottom:10px;margin-bottom:14px;">
+                    <h2 style="font-size:1.35rem;color:#061c3a;margin-bottom:4px;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
+                    <h3 style="font-size:1.1rem;color:#0e4a99;">${selectedGrade} - شعبة (${selectedSection}) | العدد: ${rows.length}</h3>
+                    ${noticeText ? `<p style="font-size:0.85rem;color:#475569;margin-top:4px;">${noticeText}</p>` : ""}
+                </div>
+                <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
+                    <thead>
+                        <tr style="background:#0b2e5e;color:#ffffff;">
+                            <th style="border:1px solid #0b2e5e;padding:9px;">ت</th>
+                            <th style="border:1px solid #0b2e5e;padding:9px;">الاسم الرباعي</th>
+                            <th style="border:1px solid #0b2e5e;padding:9px;">الصف</th>
+                            <th style="border:1px solid #0b2e5e;padding:9px;">الشعبة</th>
+                            <th style="border:1px solid #0b2e5e;padding:9px;">المواليد</th>
+                            <th style="border:1px solid #0b2e5e;padding:9px;">اسم الام الثلاثي</th>
+                        </tr>
+                    </thead>
+                    <tbody>${bodyRows}</tbody>
+                </table>
+            `;
+
+            document.body.classList.remove("printing-id-card");
+            document.body.classList.add("printing-section-sheet");
+            window.print();
+            setTimeout(() => {
+                document.body.classList.remove("printing-section-sheet");
+                sheet.innerHTML = "";
+            }, 400);
+        }
+
+        window.printSingleIdCard = function () {
+            document.body.classList.remove("printing-section-sheet");
+            document.body.classList.add("printing-id-card");
+            window.print();
+            setTimeout(() => {
+                document.body.classList.remove("printing-id-card");
+            }, 400);
+        };
+
+        function downloadWordFile(rows) {
+            const bodyRows = rows.map((r, i) => `
+                <tr>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${i + 1}</td>
+                    <td style="border:1px solid #000;padding:7px;">${r.name}</td>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.grade}</td>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.section}</td>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.dob}</td>
+                    <td style="border:1px solid #000;padding:7px;">${r.mother}</td>
+                </tr>
+            `).join("");
+
+            const docHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>جدول الشعبة</title></head>
+                <body dir="rtl" style="font-family:Arial,sans-serif;">
+                    <h2 style="text-align:center;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
+                    <h3 style="text-align:center;">${selectedGrade} - شعبة (${selectedSection})</h3>
+                    <table style="width:100%;border-collapse:collapse;">
+                        <thead>
+                            <tr style="background:#0c2d57;color:#fff;">
+                                <th style="border:1px solid #000;padding:8px;">ت</th>
+                                <th style="border:1px solid #000;padding:8px;">الاسم الرباعي</th>
+                                <th style="border:1px solid #000;padding:8px;">الصف</th>
+                                <th style="border:1px solid #000;padding:8px;">الشعبة</th>
+                                <th style="border:1px solid #000;padding:8px;">المواليد</th>
+                                <th style="border:1px solid #000;padding:8px;">اسم الام الثلاثي</th>
+                            </tr>
+                        </thead>
+                        <tbody>${bodyRows}</tbody>
+                    </table>
+                </body></html>
+            `;
+            const blob = new Blob(["\ufeff", docHtml], { type: "application/msword" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `جدول_${selectedGrade}_شعبة_${selectedSection}.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
 
         // معالجة الصورة لتكون على خلفية بيضاء نقية
         window.handlePhotoUpload = function (e) {
@@ -1733,18 +2041,26 @@
                 createdAt: existing ? existing.createdAt : Date.now()
             };
 
+            const finalId = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+            const fullRecord = { id: finalId, ...record };
+
+            if (editId) {
+                studentsList = studentsList.map(s => s.id === editId ? fullRecord : s);
+            } else {
+                studentsList = [...studentsList, fullRecord].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+            }
+            persistStudentsToLocalStorage(studentsList);
+
             if (useCloud && studentsCol) {
                 if (editId) {
                     await updateDoc(doc(db, "students", editId), record);
                 } else {
                     await addDoc(studentsCol, record);
                 }
-            } else {
-                const id = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+            } else if (localDb) {
                 const tx = localDb.transaction("students", "readwrite");
-                tx.objectStore("students").put({ id, ...record });
+                tx.objectStore("students").put(fullRecord);
                 await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
-                loadLocalList();
             }
 
             resetStudentFormState();
@@ -1790,13 +2106,18 @@
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
             if (!confirm(`هل تريد حذف الطالب (${st.name})؟`)) return;
+
+            studentsList = studentsList.filter(s => s.id !== id);
+            persistStudentsToLocalStorage(studentsList);
+
             if (useCloud && studentsCol) {
                 await deleteDoc(doc(db, "students", id));
-            } else {
+            } else if (localDb) {
                 const tx = localDb.transaction("students", "readwrite");
                 tx.objectStore("students").delete(id);
-                tx.oncomplete = loadLocalList;
+                await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
             }
+            if (isInsideRoom) renderSectionRoomTable();
         };
 
         window.deleteAllInActiveSection = async function () {
@@ -1807,16 +2128,21 @@
                 return;
             }
             if (!confirm(`سيتم حذف جميع طلاب (${selectedGrade} - شعبة ${selectedSection}) وعددهم (${rows.length}). متابعة؟`)) return;
+
+            studentsList = studentsList.filter(s => !(s.grade === selectedGrade && s.section === selectedSection));
+            persistStudentsToLocalStorage(studentsList);
+
             if (useCloud && studentsCol) {
                 const batch = writeBatch(db);
                 rows.forEach(r => batch.delete(doc(db, "students", r.id)));
                 await batch.commit();
-            } else {
+            } else if (localDb) {
                 const tx = localDb.transaction("students", "readwrite");
                 const store = tx.objectStore("students");
                 rows.forEach(r => store.delete(r.id));
-                tx.oncomplete = loadLocalList;
+                await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
             }
+            if (isInsideRoom) renderSectionRoomTable();
         };
 
         window.showStudentCard = function (id) {
@@ -1831,60 +2157,10 @@
             document.getElementById("idCardModalLayer").style.display = "flex";
         };
 
-        window.exportSectionWord = function () {
-            if (!selectedGrade || !selectedSection) return;
-            const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
-            if (rows.length === 0) {
-                alert("لا توجد بيانات للتصدير.");
-                return;
-            }
-            const bodyRows = rows.map((r, i) => `
-                <tr>
-                    <td style="border:1px solid #000;padding:7px;text-align:center;">${i + 1}</td>
-                    <td style="border:1px solid #000;padding:7px;">${r.name}</td>
-                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.grade}</td>
-                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.section}</td>
-                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.dob}</td>
-                    <td style="border:1px solid #000;padding:7px;">${r.mother}</td>
-                </tr>
-            `).join("");
-
-            const docHtml = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head><meta charset='utf-8'><title>جدول الشعبة</title></head>
-                <body dir="rtl" style="font-family:Arial,sans-serif;">
-                    <h2 style="text-align:center;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
-                    <h3 style="text-align:center;">${selectedGrade} - شعبة (${selectedSection})</h3>
-                    <table style="width:100%;border-collapse:collapse;">
-                        <thead>
-                            <tr style="background:#0c2d57;color:#fff;">
-                                <th style="border:1px solid #000;padding:8px;">ت</th>
-                                <th style="border:1px solid #000;padding:8px;">الاسم الرباعي</th>
-                                <th style="border:1px solid #000;padding:8px;">الصف</th>
-                                <th style="border:1px solid #000;padding:8px;">الشعبة</th>
-                                <th style="border:1px solid #000;padding:8px;">المواليد</th>
-                                <th style="border:1px solid #000;padding:8px;">اسم الام الثلاثي</th>
-                            </tr>
-                        </thead>
-                        <tbody>${bodyRows}</tbody>
-                    </table>
-                </body></html>
-            `;
-            const blob = new Blob(["\ufeff", docHtml], { type: "application/msword" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `جدول_${selectedGrade}_شعبة_${selectedSection}.doc`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        };
-
         // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v16", String(locked));
+            localStorage.setItem(STORAGE_LOCKED_KEY, String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { isLocked: locked });
@@ -1977,7 +2253,7 @@
                 return;
             }
             adminSecret = nextCode;
-            localStorage.setItem("mutafawiqeen_secret_v16", nextCode);
+            localStorage.setItem(STORAGE_SECRET_KEY, nextCode);
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { adminCode: nextCode });
             }
