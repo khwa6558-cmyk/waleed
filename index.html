@@ -2321,17 +2321,18 @@
             var TEACHER_PIN_CODE = "A";
             var DEFAULT_SECRET_CODE = "وليد";
 
-            // إعدادات المزامنة السحابية عبر Firebase Firestore
-            // فعّل CLOUD_SYNC_ENABLED وضع بيانات مشروعك الحقيقي ليظهر التحديث على جميع الأجهزة
+            // إعدادات المزامنة السحابية عبر Firebase Firestore لمشروع std-information
             var CLOUD_SYNC_ENABLED = true;
-            var SCHOOL_CLOUD_DOC_ID = "mutafawiqeen_anbar_main_v1";
+            var SCHOOL_CLOUD_COLLECTION = "school_platforms";
+            var SCHOOL_CLOUD_DOC_ID = "platform";
             var firebaseConfig = {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_PROJECT.firebaseapp.com",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_PROJECT.appspot.com",
-                messagingSenderId: "YOUR_SENDER_ID",
-                appId: "YOUR_APP_ID"
+                apiKey: "AIzaSyDV8xl6gEF6eHvcA8Rut8INisrNuBciZcY",
+                authDomain: "std-information.firebaseapp.com",
+                projectId: "std-information",
+                storageBucket: "std-information.firebasestorage.app",
+                messagingSenderId: "25696034333",
+                appId: "1:25696034333:web:8d919984461f86503c30f4",
+                measurementId: "G-9NTNFXBE94"
             };
             var cloudDb = null;
             var cloudDocRef = null;
@@ -2481,15 +2482,17 @@
                     typeof firebase !== "undefined" &&
                     firebaseConfig &&
                     firebaseConfig.apiKey &&
-                    firebaseConfig.apiKey !== "YOUR_API_KEY" &&
-                    firebaseConfig.projectId &&
-                    firebaseConfig.projectId !== "YOUR_PROJECT_ID"
+                    firebaseConfig.projectId
                 );
             }
 
             function pushStateToCloud(skipSync) {
                 if (skipSync || isApplyingRemoteSync || !isFirebaseConfigReady() || !cloudDocRef) return;
                 try {
+                    var currentPrincipal = getCurrentPrincipalPhone();
+                    var currentSecret = getCurrentAdminSecret();
+                    var nowStamp = Date.now();
+
                     cloudDocRef.set({
                         students: sortStudentsAlphabetically(filterOutDeletedStudents(studentsList)),
                         deletedIds: deletedStudentIds.slice(),
@@ -2497,10 +2500,15 @@
                         passMark: Number(passMarkValue),
                         gradeScale: gradeScaleRules,
                         weights: gradeWeights,
-                        principalPhone: getCurrentPrincipalPhone(),
-                        adminSecret: getCurrentAdminSecret(),
+                        principalPhone: currentPrincipal,
+                        principalOverride: currentPrincipal,
+                        adminSecret: currentSecret,
+                        adminCode: currentSecret,
                         locked: Boolean(isPlatformLocked),
-                        updatedAt: Date.now()
+                        isLocked: Boolean(isPlatformLocked),
+                        principalUpdatedAt: nowStamp,
+                        secretUpdatedAt: nowStamp,
+                        updatedAt: nowStamp
                     }, { merge: true }).catch(function (err) {
                         console.warn("تعذر رفع التحديث إلى قاعدة البيانات السحابية:", err);
                     });
@@ -2516,7 +2524,7 @@
                         firebase.initializeApp(firebaseConfig);
                     }
                     cloudDb = firebase.firestore();
-                    cloudDocRef = cloudDb.collection("school_platforms").doc(SCHOOL_CLOUD_DOC_ID);
+                    cloudDocRef = cloudDb.collection(SCHOOL_CLOUD_COLLECTION).doc(SCHOOL_CLOUD_DOC_ID);
 
                     cloudDocRef.onSnapshot(function (docSnap) {
                         if (!docSnap.exists) {
@@ -2557,16 +2565,22 @@
                                 saveWeightsToStorage(true);
                             }
 
-                            if (remoteData.principalPhone && String(remoteData.principalPhone).trim()) {
-                                persistPrincipalPhone(String(remoteData.principalPhone).trim(), true);
+                            var remotePrincipal = remoteData.principalOverride || remoteData.principalPhone;
+                            if (remotePrincipal && String(remotePrincipal).trim()) {
+                                persistPrincipalPhone(String(remotePrincipal).trim(), true);
                             }
 
-                            if (remoteData.adminSecret && String(remoteData.adminSecret).trim()) {
-                                persistAdminSecret(String(remoteData.adminSecret).trim(), true);
+                            var remoteSecret = remoteData.adminSecret || remoteData.adminCode;
+                            if (remoteSecret && String(remoteSecret).trim()) {
+                                persistAdminSecret(String(remoteSecret).trim(), true);
                             }
 
-                            if (typeof remoteData.locked === "boolean") {
-                                isPlatformLocked = remoteData.locked;
+                            var remoteLocked = typeof remoteData.locked === "boolean"
+                                ? remoteData.locked
+                                : (typeof remoteData.isLocked === "boolean" ? remoteData.isLocked : null);
+
+                            if (remoteLocked !== null) {
+                                isPlatformLocked = remoteLocked;
                                 for (var i = 0; i < ALL_LOCKED_KEYS.length; i++) {
                                     safeStorageSet(ALL_LOCKED_KEYS[i], String(isPlatformLocked));
                                 }
