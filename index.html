@@ -757,6 +757,13 @@
             margin-bottom: 14px;
         }
 
+        .room-search-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .room-search-box {
             display: flex;
             align-items: center;
@@ -764,7 +771,7 @@
             background: #ffffff;
             border: 1.5px solid #94a3b8;
             border-radius: 10px;
-            padding: 5px 14px;
+            padding: 5px 12px;
             box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
@@ -783,6 +790,30 @@
             width: 240px;
             max-width: 65vw;
             color: var(--text-main);
+        }
+
+        .btn-clear-search {
+            background: #e2e8f0;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 6px 11px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .btn-clear-search:hover {
+            background: #cbd5e1;
+        }
+
+        .search-mark {
+            background: #fef08a;
+            color: #0f172a;
+            padding: 0 3px;
+            border-radius: 4px;
+            font-weight: 900;
         }
 
         .table-scroll-box {
@@ -1226,9 +1257,14 @@
             </div>
 
             <div class="room-subbar">
-                <div class="room-search-box">
-                    <span>🔍</span>
-                    <input type="text" id="roomSearchInput" placeholder="بحث داخل الشعبة بالاسم أو الأم..." oninput="renderSectionRoomTable()">
+                <div class="room-search-controls">
+                    <div class="room-search-box">
+                        <span>🔍</span>
+                        <input type="text" id="roomSearchInput" placeholder="اكتب الاسم للبحث وإظهاره في الجدول..." oninput="renderSectionRoomTable()">
+                    </div>
+                    <button type="button" id="clearSearchBtn" class="btn-clear-search" style="display: none;" onclick="clearRoomSearch()">
+                        ✕ مسح البحث
+                    </button>
                 </div>
 
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -1370,9 +1406,9 @@
         let isRoomExpanded = false;
         let currentPhotoBase64 = "";
 
-        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v15")) || {};
-        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v15") || DEFAULT_SECRET_CODE;
-        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v15") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v16")) || {};
+        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v16") || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v16") === "true";
 
         let useCloud = false;
         let db = null;
@@ -1421,7 +1457,7 @@
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V15", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V16", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1509,6 +1545,7 @@
             document.getElementById("gradeField").value = grade;
             document.getElementById("sectionField").value = sec;
             document.getElementById("roomSearchInput").value = "";
+            document.getElementById("clearSearchBtn").style.display = "none";
 
             document.getElementById("mainLobbyContainer").style.display = "none";
             document.getElementById("welcomeRibbonBanner").style.display = "none";
@@ -1540,20 +1577,43 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
         };
 
+        function escapeRegExp(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        function highlightText(text, query) {
+            if (!text) return "";
+            if (!query) return text;
+            const regex = new RegExp(`(${escapeRegExp(query)})`, "gi");
+            return String(text).replace(regex, `<mark class="search-mark">$1</mark>`);
+        }
+
+        window.clearRoomSearch = function () {
+            document.getElementById("roomSearchInput").value = "";
+            document.getElementById("clearSearchBtn").style.display = "none";
+            renderSectionRoomTable();
+        };
+
         function renderSectionRoomTable() {
             if (!selectedGrade || !selectedSection) return;
-            const searchTerm = document.getElementById("roomSearchInput").value.trim().toLowerCase();
+            const rawQuery = document.getElementById("roomSearchInput").value;
+            const searchTerm = rawQuery.trim();
+            const lowerTerm = searchTerm.toLowerCase();
+
+            document.getElementById("clearSearchBtn").style.display = searchTerm ? "inline-block" : "none";
 
             const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
-            const filtered = searchTerm
+            const filtered = lowerTerm
                 ? sectionRows.filter(s =>
-                    (s.name && s.name.toLowerCase().includes(searchTerm)) ||
-                    (s.mother && s.mother.toLowerCase().includes(searchTerm))
+                    (s.name && s.name.toLowerCase().includes(lowerTerm)) ||
+                    (s.mother && s.mother.toLowerCase().includes(lowerTerm))
                 )
                 : sectionRows;
 
             document.getElementById("roomHeadingTitle").innerText = `${selectedGrade} - شعبة (${selectedSection})`;
-            document.getElementById("roomCountChip").innerText = `عدد الطلاب: ${filtered.length}`;
+            document.getElementById("roomCountChip").innerText = lowerTerm
+                ? `نتائج البحث: ${filtered.length} من ${sectionRows.length}`
+                : `عدد الطلاب: ${filtered.length}`;
 
             const key = `${selectedGrade}__${selectedSection}`;
             const savedChip = document.getElementById("roomSavedStateChip");
@@ -1566,18 +1626,20 @@
 
             const tbody = document.getElementById("roomTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
+                tbody.innerHTML = lowerTerm
+                    ? `<tr><td colspan="7" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب مطابق للاسم (${searchTerm}) في هذه الشعبة</td></tr>`
+                    : `<tr><td colspan="7" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = filtered.map((st, idx) => `
                 <tr>
                     <td>${idx + 1}</td>
-                    <td><span class="student-link-name" onclick="showStudentCard('${st.id}')">${st.name}</span></td>
+                    <td><span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span></td>
                     <td>${st.grade}</td>
                     <td>${st.section}</td>
                     <td dir="ltr">${st.dob}</td>
-                    <td>${st.mother}</td>
+                    <td>${highlightText(st.mother, searchTerm)}</td>
                     <td>
                         <div class="cell-actions">
                             <button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>
@@ -1601,7 +1663,7 @@
                 savedAt: nowTime,
                 students: rows
             };
-            localStorage.setItem("mutafawiqeen_saved_sections_v15", JSON.stringify(savedSectionTables));
+            localStorage.setItem("mutafawiqeen_saved_sections_v16", JSON.stringify(savedSectionTables));
             renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
@@ -1822,7 +1884,7 @@
         // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v15", String(locked));
+            localStorage.setItem("mutafawiqeen_locked_v16", String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { isLocked: locked });
@@ -1915,7 +1977,7 @@
                 return;
             }
             adminSecret = nextCode;
-            localStorage.setItem("mutafawiqeen_secret_v15", nextCode);
+            localStorage.setItem("mutafawiqeen_secret_v16", nextCode);
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { adminCode: nextCode });
             }
