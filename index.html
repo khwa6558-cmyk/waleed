@@ -2326,8 +2326,9 @@
             ];
             const SECTIONS = ["أ", "ب", "ج"];
 
-            const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v26";
+            const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v27";
             const ALL_STUDENT_STORAGE_KEYS = [
+                "mutafawiqeen_students_list_v27",
                 "mutafawiqeen_students_list_v26",
                 "mutafawiqeen_students_list_v25",
                 "mutafawiqeen_students_list_v23",
@@ -2335,47 +2336,47 @@
                 "mutafawiqeen_students_list_v21",
                 "mutafawiqeen_students_list_v20"
             ];
-            const STORAGE_DELETED_IDS_KEY = "mutafawiqeen_deleted_student_ids_v26";
-            const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v26";
-            const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v26";
+            const STORAGE_DELETED_IDS_KEY = "mutafawiqeen_deleted_student_ids_v27";
+            const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v27";
+            const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v27";
             const ALL_SECRET_KEYS = [
+                "mutafawiqeen_secret_v27",
                 "mutafawiqeen_secret_v26",
                 "mutafawiqeen_secret_v25",
                 "mutafawiqeen_secret_v23",
                 "mutafawiqeen_secret_v22"
             ];
-            const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v26";
-            const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v26";
+            const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v27";
+            const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v27";
             const ALL_LOCKED_KEYS = [
+                "mutafawiqeen_locked_v27",
                 "mutafawiqeen_locked_v26",
                 "mutafawiqeen_locked_v25",
                 "mutafawiqeen_locked_v23"
             ];
-            const STORAGE_PRINCIPAL_OVERRIDE_KEY = "mutafawiqeen_principal_override_v26";
-            const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v26";
+            const STORAGE_PRINCIPAL_OVERRIDE_KEY = "mutafawiqeen_principal_override_v27";
+            const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v27";
             const ALL_PRINCIPAL_PHONE_KEYS = [
+                "mutafawiqeen_principal_override_v27",
+                "mutafawiqeen_principal_phone_v27",
                 "mutafawiqeen_principal_override_v26",
                 "mutafawiqeen_principal_phone_v26",
                 "mutafawiqeen_principal_override_v23",
                 "mutafawiqeen_principal_phone_v23"
             ];
-            const STORAGE_PRINCIPAL_UPDATED_AT_KEY = "mutafawiqeen_principal_updated_at_v26";
-            const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v26";
+            const STORAGE_PRINCIPAL_UPDATED_AT_KEY = "mutafawiqeen_principal_updated_at_v27";
+            const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v27";
             const ALL_OWNED_KEYS = [
+                "mutafawiqeen_owned_student_ids_v27",
                 "mutafawiqeen_owned_student_ids_v26",
                 "mutafawiqeen_owned_student_ids_v23",
                 "mutafawiqeen_owned_student_ids_v22"
             ];
-            const ALL_IDB_NAMES = [
-                "MutafawiqeenSchoolDB_V26",
-                "MutafawiqeenSchoolDB_V23",
-                "MutafawiqeenSchoolDB_V22"
-            ];
 
-            const STORAGE_SUBJECTS_KEY = "mutafawiqeen_subjects_v26";
-            const STORAGE_PASSMARK_KEY = "mutafawiqeen_passmark_v26";
-            const STORAGE_SCALE_KEY = "mutafawiqeen_grade_scale_v26";
-            const STORAGE_WEIGHTS_KEY = "mutafawiqeen_grade_weights_v26";
+            const STORAGE_SUBJECTS_KEY = "mutafawiqeen_subjects_v27";
+            const STORAGE_PASSMARK_KEY = "mutafawiqeen_passmark_v27";
+            const STORAGE_SCALE_KEY = "mutafawiqeen_grade_scale_v27";
+            const STORAGE_WEIGHTS_KEY = "mutafawiqeen_grade_weights_v27";
 
             const DEFAULT_SUBJECTS = [
                 "الحاسوب",
@@ -4944,7 +4945,7 @@
             function initIndexedDB() {
                 if (!window.indexedDB) return;
                 try {
-                    const req = window.indexedDB.open("MutafawiqeenSchoolDB_V26", 1);
+                    const req = window.indexedDB.open("MutafawiqeenSchoolDB_V27", 1);
                     req.onupgradeneeded = (e) => {
                         const database = e.target.result;
                         if (!database.objectStoreNames.contains("students")) {
