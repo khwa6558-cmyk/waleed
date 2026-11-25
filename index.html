@@ -1016,6 +1016,7 @@
 
         .mini-preview { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
         .mini-edit { background: linear-gradient(180deg, #16a34a, #15803d); }
+        .mini-admin-edit { background: linear-gradient(180deg, #0f4282, #061f42); border: 1px solid var(--gold-300); }
         .mini-delete { background: linear-gradient(180deg, #dc2626, #b91c1c); }
 
         /* ================= PRINTABLE SECTION REPORT ================= */
@@ -1136,6 +1137,18 @@
             box-shadow: 0 22px 48px rgba(0, 0, 0, 0.38);
             border-top: 5px solid var(--blue-600);
             position: relative;
+        }
+
+        .pin-error-msg {
+            color: #dc2626;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: none;
         }
 
         .lock-screen-layer {
@@ -1318,7 +1331,7 @@
 
                         <div class="input-group-box">
                             <label>🔑 رمز تعديلي</label>
-                            <input type="text" id="studentPinField" class="ctrl-field" placeholder="اختياري (يُنشأ تلقائياً)" maxlength="20">
+                            <input type="password" id="studentPinField" class="ctrl-field" placeholder="اختياري" maxlength="20" autocomplete="new-password">
                         </div>
 
                         <div class="input-group-box">
@@ -1424,7 +1437,7 @@
                     </div>
 
                     <button type="button" id="deleteAllSectionBtn" class="mini-act-btn mini-delete" style="padding: 7px 13px;" onclick="deleteAllInActiveSection()">
-                        🗑️ حذف طلاب الشعبة (أدمن)
+                        🗑️ حذف طلاب الشعبة
                     </button>
                 </div>
             </div>
@@ -1451,6 +1464,58 @@
 
     <!-- Printable Section Sheet Container -->
     <div id="printableSectionSheet"></div>
+
+    <!-- Student Edit PIN Verification Modal -->
+    <div id="editPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeEditPinModal()">
+        <div class="dialog-card">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeEditPinModal()">✕</button>
+            <h3 style="color: #0b2e5e; margin-bottom: 6px;">🔑 التحقق من رمز التعديل</h3>
+            <p id="editPinTargetLabel" style="color: #475569; font-size: 0.88rem; font-weight: 800; margin-bottom: 12px;"></p>
+
+            <div id="editPinErrorBox" class="pin-error-msg"></div>
+
+            <div class="input-group-box" style="margin-bottom: 14px;">
+                <label id="editPinFieldLabel">أدخل رمز التعديل:</label>
+                <input type="password" id="editPinVerifyInput" class="ctrl-field" placeholder="أدخل رمز التعديل..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmEditPinModal();}">
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmEditPinModal()">
+                    <span>✅</span>
+                    <span>تأكيد ومتابعة التعديل</span>
+                </button>
+                <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeEditPinModal()">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direct Admin Code Verification Modal (Edit / Delete All / Save / Print) -->
+    <div id="adminEditPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeAdminEditPinModal()">
+        <div class="dialog-card" style="border-top-color: var(--gold-500);">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeAdminEditPinModal()">✕</button>
+            <h3 id="adminPinModalTitle" style="color: #061c3a; margin-bottom: 6px;">🛡️ التحقق من رمز الأدمن</h3>
+            <p id="adminEditTargetLabel" style="color: #475569; font-size: 0.88rem; font-weight: 800; margin-bottom: 12px;"></p>
+
+            <div id="adminEditPinErrorBox" class="pin-error-msg"></div>
+
+            <div class="input-group-box" style="margin-bottom: 14px;">
+                <label>أدخل رمز الأدمن:</label>
+                <input type="password" id="adminEditPinInput" class="ctrl-field" placeholder="أدخل رمز الأدمن..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmAdminEditPinModal();}">
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmAdminEditPinModal()">
+                    <span>🔓</span>
+                    <span>تأكيد وتنفيذ</span>
+                </button>
+                <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeAdminEditPinModal()">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Student ID Card Modal -->
     <div id="idCardModalLayer" class="modal-layer" onclick="if(event.target===this) hideModal('idCardModalLayer')">
@@ -1506,7 +1571,7 @@
                 </div>
                 <div class="input-group-box" style="margin-bottom: 14px;">
                     <label>الرمز الجديد:</label>
-                    <input type="text" id="newCodeInput" class="ctrl-field" placeholder="أدخل الرمز الجديد...">
+                    <input type="password" id="newCodeInput" class="ctrl-field" placeholder="أدخل الرمز الجديد...">
                 </div>
                 <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="updateAdminPasscode()">💾 حفظ الرمز الجديد</button>
             </div>
@@ -1533,10 +1598,8 @@
             onSnapshot, query, orderBy, writeBatch
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        // مطابق تماماً لاسم الشعار المرفوع في المستودع
         const SCHOOL_LOGO_URL = "logo.PNG";
 
-        // إعدادات Firebase للمزامنة السحابية بين الأجهزة (مشروع std-information / تطبيق std-portal)
         const firebaseConfig = {
             apiKey: "AIzaSyDV8xl6gEF6eHvcA8Rut8INisrNuBciZcY",
             authDomain: "std-information.firebaseapp.com",
@@ -1567,6 +1630,8 @@
         let ownedStudentIds = loadOwnedStudentIds();
         let studentsList = loadStudentsFromLocalStorage();
         let isAdminLoggedIn = false;
+        let pendingEditStudentId = null;
+        let pendingAdminAction = null;
 
         let selectedGrade = null;
         let selectedSection = null;
@@ -1584,7 +1649,6 @@
         let settingsDoc = null;
         let localDb = null;
 
-        // صورة افتراضية بخلفية بيضاء نقية
         const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='56' r='26' fill='%2394a3b8'/><path d='M24 148 C24 108, 116 108, 116 148 Z' fill='%2394a3b8'/></svg>";
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
@@ -1646,13 +1710,12 @@
                 btn.classList.add("admin-active-badge");
                 tag.innerText = "نشط";
                 lbl.innerText = "وضع الأدمن";
-                if (delAllBtn) delAllBtn.style.display = "inline-flex";
             } else {
                 btn.classList.remove("admin-active-badge");
                 tag.innerText = "دخول";
                 lbl.innerText = "دخول الادمن";
-                if (delAllBtn) delAllBtn.style.display = "none";
             }
+            if (delAllBtn) delAllBtn.style.display = "inline-flex";
         }
 
         function loadStudentsFromLocalStorage() {
@@ -1765,7 +1828,6 @@
             };
         }
 
-        // السنوات من 2002 إلى 2080
         function initDateFields() {
             const dSel = document.getElementById("dayField");
             const mSel = document.getElementById("monthField");
@@ -1938,11 +2000,11 @@
                 const isMine = isOwnStudentRecord(st.id);
                 const canPreview = canPreviewStudentRecord(st.id);
 
-                // يظهر زر التعديل للجميع على السجل ليتمكن صاحب السجل من التعديل عبر جهازه أو عبر رمز التعديل الخاص به، مع رفض أي تعديل لغير صاحبه
                 const previewBtnHtml = canPreview
                     ? `<button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>`
                     : "";
                 const editBtnHtml = `<button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>`;
+                const adminEditBtnHtml = `<button type="button" class="mini-act-btn mini-admin-edit" onclick="startAdminEditStudent('${st.id}')">🛡️ تعديل (أدمن)</button>`;
                 const deleteBtnHtml = isAdminLoggedIn
                     ? `<button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>`
                     : "";
@@ -1966,6 +2028,7 @@
                             <div class="cell-actions">
                                 ${previewBtnHtml}
                                 ${editBtnHtml}
+                                ${adminEditBtnHtml}
                                 ${deleteBtnHtml}
                             </div>
                         </td>
@@ -1974,7 +2037,7 @@
             }).join("");
         };
 
-        window.saveFullSectionTable = function () {
+        function executeSaveFullSectionTable() {
             if (!selectedGrade || !selectedSection) return;
             persistStudentsToLocalStorage(studentsList);
             const rows = getAllSectionStudents(selectedGrade, selectedSection);
@@ -1990,10 +2053,14 @@
             localStorage.setItem(STORAGE_SAVED_SECTIONS_KEY, JSON.stringify(savedSectionTables));
             renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
+        }
+
+        window.saveFullSectionTable = function () {
+            if (!selectedGrade || !selectedSection) return;
+            requestAdminPinForAction({ type: "saveFull" }, "حفظ الجدول بالكامل");
         };
 
-        // حفظ الملف حسب الصيغة المختارة (Word أو PDF)
-        window.handleFormatSave = function () {
+        function executeFormatSave() {
             if (!selectedGrade || !selectedSection) return;
             const rows = getCurrentSectionRows();
             if (rows.length === 0) {
@@ -2006,10 +2073,14 @@
             } else {
                 triggerSectionPrintView(rows, "لحفظ الملف بصيغة PDF، اختر (حفظ بتنسيق PDF / Save as PDF) من نافذة الطباعة.");
             }
+        }
+
+        window.handleFormatSave = function () {
+            if (!selectedGrade || !selectedSection) return;
+            requestAdminPinForAction({ type: "saveFormat" }, "حفظ الملف");
         };
 
-        // طباعة الملف حسب الصيغة المختارة (Word أو PDF)
-        window.handleFormatPrint = function () {
+        function executeFormatPrint() {
             if (!selectedGrade || !selectedSection) return;
             const rows = getCurrentSectionRows();
             if (rows.length === 0) {
@@ -2023,6 +2094,11 @@
             } else {
                 triggerSectionPrintView(rows, "");
             }
+        }
+
+        window.handleFormatPrint = function () {
+            if (!selectedGrade || !selectedSection) return;
+            requestAdminPinForAction({ type: "printFormat" }, "طباعة الجدول");
         };
 
         function triggerSectionPrintView(rows, noticeText) {
@@ -2121,7 +2197,6 @@
             URL.revokeObjectURL(url);
         }
 
-        // معالجة الصورة لتكون على خلفية بيضاء نقية
         window.handlePhotoUpload = function (e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -2228,7 +2303,9 @@
 
             if (!editId) {
                 markStudentAsOwned(finalId);
-                alert(`✅ تم حفظ بيانات الطالب بنجاح.\n🔑 رمز التعديل الخاص بسجلك (احتفظ به للعودة للتعديل بعد مسح بيانات المتصفح): ${finalPin}`);
+                alert("✅ تم حفظ بيانات الطالب بنجاح.");
+            } else {
+                alert("✅ تم حفظ التعديلات بنجاح.");
             }
 
             resetStudentFormState();
@@ -2246,21 +2323,13 @@
             document.getElementById("cancelEditActionBtn").style.display = "none";
         };
 
-        window.startEditStudent = function (id) {
-            const st = studentsList.find(s => s.id === id);
-            if (!st) return;
-
-            // إذا لم يكن أدمن ولم يكن السجل محفوظاً على المتصفح الحالي، يطلب رمز التعديل الخاص بهذا السجل فقط
-            if (!canEditStudentRecord(id)) {
-                const pinInput = prompt("أدخل رمز التعديل الخاص بهذا السجل (إذا كان السجل خاصاً بك بعد مسح بيانات المتصفح):");
-                if (pinInput === null) return;
-                if (!st.editPin || pinInput.trim() !== String(st.editPin).trim()) {
-                    alert("⛔ رمز التعديل غير صحيح؛ لا يمكنك تعديل معلومات طالب آخر.");
-                    return;
-                }
-                markStudentAsOwned(id);
+        function openEditFormForStudent(st, asAdminMode = false) {
+            if (asAdminMode || isAdminLoggedIn) {
+                isAdminLoggedIn = true;
+                updateAdminBadgeUI();
+            } else {
+                markStudentAsOwned(st.id);
             }
-
             setRoomExpandedState(false);
             document.getElementById("editStudentIdField").value = st.id;
             document.getElementById("nameField").value = st.name;
@@ -2270,10 +2339,12 @@
             document.getElementById("monthField").value = st.month;
             document.getElementById("yearField").value = st.year;
             document.getElementById("motherField").value = st.mother;
-            document.getElementById("studentPinField").value = st.editPin || "";
+            document.getElementById("studentPinField").value = "";
             currentPhotoBase64 = st.photo || "";
             document.getElementById("photoPreviewHolder").innerHTML = `<img src="${st.photo || defaultAvatar}" alt="صورة الطالب">`;
-            document.getElementById("studentFormBadge").innerHTML = `<span>✏️</span><span>تعديل معلوماتي</span>`;
+            document.getElementById("studentFormBadge").innerHTML = (asAdminMode || isAdminLoggedIn)
+                ? `<span>🛡️</span><span>تعديل شامل (أدمن)</span>`
+                : `<span>✏️</span><span>تعديل معلوماتي</span>`;
             document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>حفظ التعديل</span>`;
             document.getElementById("cancelEditActionBtn").style.display = "inline-block";
 
@@ -2282,6 +2353,153 @@
             document.getElementById("welcomeRibbonBanner").style.display = "block";
             isInsideRoom = false;
             window.scrollTo({ top: 120, behavior: "smooth" });
+        }
+
+        window.closeEditPinModal = function () {
+            pendingEditStudentId = null;
+            document.getElementById("editPinVerifyInput").value = "";
+            const errBox = document.getElementById("editPinErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            hideModal("editPinModalLayer");
+        };
+
+        window.confirmEditPinModal = function () {
+            if (!pendingEditStudentId) return;
+            const st = studentsList.find(s => s.id === pendingEditStudentId);
+            if (!st) {
+                closeEditPinModal();
+                return;
+            }
+
+            const inputEl = document.getElementById("editPinVerifyInput");
+            const errBox = document.getElementById("editPinErrorBox");
+            const cleanInput = inputEl.value.trim();
+
+            if (!cleanInput) {
+                errBox.innerText = "⚠️ يرجى إدخال رمز التعديل أولاً.";
+                errBox.style.display = "block";
+                inputEl.focus();
+                return;
+            }
+
+            if (st.editPin) {
+                if (cleanInput !== String(st.editPin).trim()) {
+                    errBox.innerText = "⛔ رمز التعديل غير صحيح.";
+                    errBox.style.display = "block";
+                    inputEl.focus();
+                    return;
+                }
+                const targetStudent = st;
+                closeEditPinModal();
+                openEditFormForStudent(targetStudent, false);
+            } else {
+                st.editPin = cleanInput;
+                studentsList = studentsList.map(item => item.id === st.id ? st : item);
+                persistStudentsToLocalStorage(studentsList);
+                const targetStudent = st;
+                closeEditPinModal();
+                openEditFormForStudent(targetStudent, false);
+            }
+        };
+
+        window.startEditStudent = function (id) {
+            const st = studentsList.find(s => s.id === id);
+            if (!st) return;
+
+            if (isAdminLoggedIn) {
+                openEditFormForStudent(st, true);
+                return;
+            }
+
+            pendingEditStudentId = st.id;
+            document.getElementById("editPinTargetLabel").innerText = `الطالب: ${st.name}`;
+            document.getElementById("editPinFieldLabel").innerText = "أدخل رمز التعديل:";
+            document.getElementById("editPinVerifyInput").value = "";
+            const errBox = document.getElementById("editPinErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+
+            document.getElementById("editPinModalLayer").style.display = "flex";
+            setTimeout(() => document.getElementById("editPinVerifyInput").focus(), 60);
+        };
+
+        function requestAdminPinForAction(actionObj, actionLabel) {
+            if (isAdminLoggedIn) {
+                runVerifiedAdminAction(actionObj);
+                return;
+            }
+            pendingAdminAction = actionObj;
+            document.getElementById("adminPinModalTitle").innerText = `🛡️ ${actionLabel}`;
+            document.getElementById("adminEditTargetLabel").innerText = selectedGrade && selectedSection
+                ? `${selectedGrade} - شعبة (${selectedSection})`
+                : "";
+            document.getElementById("adminEditPinInput").value = "";
+            const errBox = document.getElementById("adminEditPinErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+
+            document.getElementById("adminEditPinModalLayer").style.display = "flex";
+            setTimeout(() => document.getElementById("adminEditPinInput").focus(), 60);
+        }
+
+        function runVerifiedAdminAction(actionObj) {
+            if (!actionObj) return;
+            if (actionObj.type === "edit") {
+                const st = studentsList.find(s => s.id === actionObj.studentId);
+                if (st) openEditFormForStudent(st, true);
+            } else if (actionObj.type === "deleteAll") {
+                executeDeleteAllInActiveSection();
+            } else if (actionObj.type === "saveFull") {
+                executeSaveFullSectionTable();
+            } else if (actionObj.type === "saveFormat") {
+                executeFormatSave();
+            } else if (actionObj.type === "printFormat") {
+                executeFormatPrint();
+            }
+        }
+
+        window.closeAdminEditPinModal = function () {
+            pendingAdminAction = null;
+            document.getElementById("adminEditPinInput").value = "";
+            const errBox = document.getElementById("adminEditPinErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            hideModal("adminEditPinModalLayer");
+        };
+
+        window.confirmAdminEditPinModal = function () {
+            if (!pendingAdminAction) return;
+
+            const inputEl = document.getElementById("adminEditPinInput");
+            const errBox = document.getElementById("adminEditPinErrorBox");
+            const cleanCode = inputEl.value.trim();
+
+            if (!cleanCode) {
+                errBox.innerText = "⚠️ يرجى إدخال رمز الأدمن أولاً.";
+                errBox.style.display = "block";
+                inputEl.focus();
+                return;
+            }
+
+            if (cleanCode !== adminSecret) {
+                errBox.innerText = "❌ رمز الأدمن غير صحيح.";
+                errBox.style.display = "block";
+                inputEl.focus();
+                return;
+            }
+
+            isAdminLoggedIn = true;
+            updateAdminBadgeUI();
+            const actionToRun = { ...pendingAdminAction };
+            closeAdminEditPinModal();
+            runVerifiedAdminAction(actionToRun);
+        };
+
+        window.startAdminEditStudent = function (id) {
+            const st = studentsList.find(s => s.id === id);
+            if (!st) return;
+            requestAdminPinForAction({ type: "edit", studentId: id }, `تعديل الطالب: ${st.name}`);
         };
 
         window.removeStudent = async function (id) {
@@ -2308,11 +2526,7 @@
             if (isInsideRoom) renderSectionRoomTable();
         };
 
-        window.deleteAllInActiveSection = async function () {
-            if (!isAdminLoggedIn) {
-                alert("⛔ حذف طلاب الشعبة متاح للأدمن فقط.");
-                return;
-            }
+        async function executeDeleteAllInActiveSection() {
             if (!selectedGrade || !selectedSection) return;
             const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
             if (rows.length === 0) {
@@ -2337,6 +2551,11 @@
                 await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
             }
             if (isInsideRoom) renderSectionRoomTable();
+        }
+
+        window.deleteAllInActiveSection = function () {
+            if (!selectedGrade || !selectedSection) return;
+            requestAdminPinForAction({ type: "deleteAll" }, "حذف طلاب الشعبة");
         };
 
         window.showStudentCard = function (id) {
@@ -2355,7 +2574,6 @@
             document.getElementById("idCardModalLayer").style.display = "flex";
         };
 
-        // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
             localStorage.setItem(STORAGE_LOCKED_KEY, String(locked));
