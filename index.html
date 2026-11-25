@@ -866,6 +866,43 @@
             justify-content: space-between;
         }
 
+        .inquiry-auth-card {
+            background: #ffffff;
+            border: 2px solid var(--blue-500);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 680px;
+            margin: 10px auto 18px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .inquiry-auth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        @media (max-width: 680px) {
+            .inquiry-auth-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .student-inquiry-banner {
+            background: linear-gradient(90deg, #0b2e5e 0%, #1565c0 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 11px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-weight: 800;
+        }
+
         .grade-num-input {
             width: 54px;
             height: 31px;
@@ -1686,7 +1723,7 @@
                         <span>⛶</span>
                         <span id="expandRoomLabel">تكبير الشعبة</span>
                     </button>
-                    <button type="button" class="btn-save-full-table" onclick="saveFullSectionTable()">
+                    <button type="button" id="saveFullTableBtn" class="btn-save-full-table" onclick="saveFullSectionTable()">
                         <span>💾</span>
                         <span>حفظ الجدول بالكامل</span>
                     </button>
@@ -1710,7 +1747,69 @@
                 </button>
             </div>
 
-            <div class="room-subbar">
+            <!-- غرفة استعلام الطالب: إدخال الاسم والرمز الخاص به وزر استعلام فقط، وعرض درجاته في كل المواد حتى نهاية السنة -->
+            <div id="studentInquiryRoomPanel" style="display: none;">
+                <div class="inquiry-auth-card">
+                    <h4 style="color: var(--navy-800); font-size: 1.05rem; font-weight: 900; margin-bottom: 12px;">
+                        🧑‍🎓 استعلام درجات الطالب في جميع المواد
+                    </h4>
+                    <div class="inquiry-auth-grid">
+                        <div class="input-group-box">
+                            <label>👤 اسم الطالب</label>
+                            <input type="text" id="inquiryStudentNameInput" class="ctrl-field" placeholder="أدخل اسم الطالب..." onkeydown="if(event.key==='Enter'){event.preventDefault();submitStudentInquiry();}">
+                        </div>
+                        <div class="input-group-box">
+                            <label>🔑 الرمز الخاص بالطالب</label>
+                            <input type="password" id="inquiryStudentPinInput" class="ctrl-field" placeholder="أدخل رمزك الخاص..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();submitStudentInquiry();}">
+                        </div>
+                        <button type="button" class="btn-submit-student" style="height: 39px; padding: 0 24px;" onclick="submitStudentInquiry()">
+                            <span>🔍</span>
+                            <span>استعلام</span>
+                        </button>
+                    </div>
+                    <div id="inquiryAuthErrorMsg" class="pin-error-msg" style="margin-top: 10px; margin-bottom: 0;"></div>
+                </div>
+
+                <div id="studentAllSubjectsResultBox" style="display: none;">
+                    <div class="student-inquiry-banner">
+                        <span id="inquiryMatchedStudentTitle"></span>
+                        <button type="button" class="btn-clear-search" onclick="resetStudentInquiryView()">🔄 استعلام جديد</button>
+                    </div>
+                    <div class="table-scroll-box">
+                        <table class="section-students-tbl">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">ت</th>
+                                    <th rowspan="2">المادة</th>
+                                    <th colspan="4" class="term-group-header">الفصل الأول</th>
+                                    <th class="midterm-header">نصف السنة</th>
+                                    <th colspan="4" class="term2-header">الفصل الثاني</th>
+                                    <th rowspan="2">السعي السنوي</th>
+                                    <th class="final-exam-header">النهائي</th>
+                                    <th rowspan="2">الدرجة النهائية</th>
+                                    <th rowspan="2">التقدير</th>
+                                    <th rowspan="2">الحالة</th>
+                                </tr>
+                                <tr>
+                                    <th>ش١</th>
+                                    <th>ش٢</th>
+                                    <th>ش٣</th>
+                                    <th>معدل ف١</th>
+                                    <th>درجة</th>
+                                    <th>ش١ (ف٢)</th>
+                                    <th>ش٢ (ف٢)</th>
+                                    <th>ش٣ (ف٢)</th>
+                                    <th>معدل ف٢</th>
+                                    <th>امتحان</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentAllSubjectsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="roomSubbarControls" class="room-subbar">
                 <div class="room-search-controls">
                     <div class="room-search-box">
                         <span>🔍</span>
@@ -2293,6 +2392,7 @@
         let pendingPinMode = "edit";
         let pendingAdminAction = null;
         let activeNotifyStudent = null;
+        let verifiedInquiryStudentId = null;
 
         let pickerGrade = null;
         let pickerSection = null;
@@ -2336,6 +2436,117 @@
             const clean = String(rawCode || "").trim();
             if (!clean) return false;
             return clean === getCurrentAdminSecret() || clean.toUpperCase() === TEACHER_PIN_CODE;
+        }
+
+        function normalizeArabicText(str) {
+            return String(str || "")
+                .trim()
+                .replace(/\s+/g, " ")
+                .replace(/[أإآ]/g, "ا")
+                .replace(/ى/g, "ي")
+                .replace(/ة/g, "ه")
+                .toLowerCase();
+        }
+
+        function formatScoreCell(val, isFloatAvg = false) {
+            if (val === "" || val === null || val === undefined || Number.isNaN(Number(val))) {
+                return `<span style="color:#94a3b8;">—</span>`;
+            }
+            const num = Number(val);
+            return isFloatAvg ? `<strong>${num.toFixed(1)}</strong>` : `<strong>${num}</strong>`;
+        }
+
+        window.submitStudentInquiry = function () {
+            if (!selectedGrade) return;
+            const nameInp = document.getElementById("inquiryStudentNameInput");
+            const pinInp = document.getElementById("inquiryStudentPinInput");
+            const errBox = document.getElementById("inquiryAuthErrorMsg");
+
+            const enteredName = nameInp.value.trim();
+            const enteredPin = pinInp.value.trim();
+
+            if (!enteredName || !enteredPin) {
+                errBox.innerText = "⚠️ يرجى إدخال الاسم والرمز الخاص بك ثم الضغط على استعلام.";
+                errBox.style.display = "block";
+                return;
+            }
+
+            const normEntered = normalizeArabicText(enteredName);
+            const gradeStudents = studentsList.filter(s => s.grade === selectedGrade);
+            const matched = gradeStudents.find(s =>
+                normalizeArabicText(s.name) === normEntered &&
+                String(s.editPin || "").trim() === enteredPin
+            );
+
+            if (!matched) {
+                errBox.innerText = "❌ الاسم أو الرمز الخاص غير صحيح في هذا الصف.";
+                errBox.style.display = "block";
+                return;
+            }
+
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            verifiedInquiryStudentId = matched.id;
+            renderVerifiedStudentAllSubjects(matched);
+        };
+
+        window.resetStudentInquiryView = function () {
+            verifiedInquiryStudentId = null;
+            document.getElementById("inquiryStudentNameInput").value = "";
+            document.getElementById("inquiryStudentPinInput").value = "";
+            document.getElementById("inquiryAuthErrorMsg").style.display = "none";
+            document.getElementById("studentAllSubjectsResultBox").style.display = "none";
+            document.getElementById("studentAllSubjectsTableBody").innerHTML = "";
+        };
+
+        function renderVerifiedStudentAllSubjects(student) {
+            const box = document.getElementById("studentAllSubjectsResultBox");
+            const titleEl = document.getElementById("inquiryMatchedStudentTitle");
+            const tbody = document.getElementById("studentAllSubjectsTableBody");
+
+            const allSubjectNames = Array.from(new Set([
+                ...subjectsList,
+                ...Object.keys(student.gradesBySubject || {})
+            ]));
+
+            titleEl.innerText = `الطالب: ${student.name} | ${student.grade} - شعبة (${student.section})`;
+
+            tbody.innerHTML = allSubjectNames.map((subj, idx) => {
+                const rec = getStudentSubjectRecord(student, subj);
+                const avg1 = calcTermBestTwoAverage(rec.m1, rec.m2, rec.m3);
+                const avg2 = calcTermBestTwoAverage(rec.t2_m1, rec.t2_m2, rec.t2_m3);
+                const pursuit = calcAnnualPursuit(rec);
+                const finalScore = calcFinalGrade(rec);
+                const evalLabel = getScoreEvaluationLabel(finalScore);
+                const passBadge = finalScore === null
+                    ? `<span style="color:#94a3b8;">—</span>`
+                    : (finalScore >= passMarkValue
+                        ? `<span class="badge-pass">ناجح</span>`
+                        : `<span class="badge-fail">راسب/مكمل</span>`);
+
+                return `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td><strong>${subj}</strong></td>
+                        <td>${formatScoreCell(rec.m1, false)}</td>
+                        <td>${formatScoreCell(rec.m2, false)}</td>
+                        <td>${formatScoreCell(rec.m3, false)}</td>
+                        <td>${formatScoreCell(avg1, true)}</td>
+                        <td>${formatScoreCell(rec.midterm, false)}</td>
+                        <td>${formatScoreCell(rec.t2_m1, false)}</td>
+                        <td>${formatScoreCell(rec.t2_m2, false)}</td>
+                        <td>${formatScoreCell(rec.t2_m3, false)}</td>
+                        <td>${formatScoreCell(avg2, true)}</td>
+                        <td>${formatScoreCell(pursuit, false)}</td>
+                        <td>${formatScoreCell(rec.finalExam, false)}</td>
+                        <td>${formatScoreCell(finalScore, false)}</td>
+                        <td><strong>${evalLabel}</strong></td>
+                        <td>${passBadge}</td>
+                    </tr>
+                `;
+            }).join("");
+
+            box.style.display = "block";
         }
 
         window.openTeacherLoginModal = function () {
@@ -2455,13 +2666,11 @@
             return Number.isNaN(n) ? null : n;
         }
 
-        /* تقريب كسر 0.5 فأكثر إلى العدد الصحيح الأعلى (مثال: 96.5 يحسب 97، و96.4 يحسب 96) */
         function roundHalfUpGrade(val) {
             if (val === null || val === undefined || Number.isNaN(val)) return null;
             return Math.floor(Number(val) + 0.5);
         }
 
-        /* حساب معدل الفصل: إذا وُجدت 3 أشهر يُؤخذ أعلى شهرين؛ وإذا وُجد شهر أو شهران يُحسب متوسط المتاح */
         function calcTermBestTwoAverage(m1, m2, m3) {
             const validScores = [m1, m2, m3]
                 .map(parseNumericScore)
@@ -2475,7 +2684,6 @@
             return validScores.reduce((acc, n) => acc + n, 0) / validScores.length;
         }
 
-        /* حساب السعي السنوي من (معدل الفصل الأول، نصف السنة، معدل الفصل الثاني) وتقريبه (96.5 -> 97) */
         function calcAnnualPursuit(rec) {
             const avg1 = calcTermBestTwoAverage(rec.m1, rec.m2, rec.m3);
             const midterm = parseNumericScore(rec.midterm);
@@ -2487,7 +2695,6 @@
             return roundHalfUpGrade(rawPursuit);
         }
 
-        /* حساب الدرجة النهائية وتقريب كسر 0.5 فأكثر للأعلى */
         function calcFinalGrade(rec) {
             const pursuit = calcAnnualPursuit(rec);
             const finalExam = parseNumericScore(rec.finalExam);
@@ -3218,12 +3425,22 @@
             isInquiryMode = true;
             isInsideRoom = true;
             activeRoomMode = "info";
+            verifiedInquiryStudentId = null;
 
             try { history.pushState({ inquiryRoom: true, grade }, "", window.location.href); } catch (e) {}
 
             document.getElementById("roomSearchInput").value = "";
             document.getElementById("clearSearchBtn").style.display = "none";
             document.getElementById("sectionInnerSwitch").style.display = "none";
+            document.getElementById("roomSubbarControls").style.display = "none";
+            document.getElementById("saveFullTableBtn").style.display = "none";
+            document.getElementById("infoRoomPanel").style.display = "none";
+            document.getElementById("gradesRoomPanel").style.display = "none";
+            document.getElementById("studentInquiryRoomPanel").style.display = "block";
+            document.getElementById("studentAllSubjectsResultBox").style.display = "none";
+            document.getElementById("inquiryStudentNameInput").value = "";
+            document.getElementById("inquiryStudentPinInput").value = "";
+            document.getElementById("inquiryAuthErrorMsg").style.display = "none";
 
             document.getElementById("mainLobbyContainer").style.display = "none";
             document.getElementById("welcomeRibbonBanner").style.display = "none";
@@ -3231,10 +3448,9 @@
             setRoomExpandedState(false);
 
             document.getElementById("roomCategoryBadge").innerText = "🔎 غرفة استعلام الطلاب";
-            document.getElementById("infoRoomPanel").style.display = "block";
-            document.getElementById("gradesRoomPanel").style.display = "none";
+            document.getElementById("roomHeadingTitle").innerText = `غرفة استعلام طلاب ${grade}`;
+            document.getElementById("roomCountChip").innerText = grade;
 
-            renderActiveRoomView();
             window.scrollTo({ top: 90, behavior: "smooth" });
         }
 
@@ -3243,6 +3459,7 @@
             selectedSection = sec;
             isInquiryMode = false;
             isInsideRoom = true;
+            verifiedInquiryStudentId = null;
 
             try { history.pushState({ sectionRoom: true, grade, sec }, "", window.location.href); } catch (e) {}
 
@@ -3251,6 +3468,9 @@
             document.getElementById("roomSearchInput").value = "";
             document.getElementById("clearSearchBtn").style.display = "none";
             document.getElementById("sectionInnerSwitch").style.display = "inline-flex";
+            document.getElementById("roomSubbarControls").style.display = "flex";
+            document.getElementById("saveFullTableBtn").style.display = "inline-flex";
+            document.getElementById("studentInquiryRoomPanel").style.display = "none";
 
             document.getElementById("mainLobbyContainer").style.display = "none";
             document.getElementById("welcomeRibbonBanner").style.display = "none";
@@ -3279,6 +3499,7 @@
         };
 
         window.switchSectionRoomMode = function (mode) {
+            if (isInquiryMode) return;
             if (mode === "grades" && !hasStaffAccess()) {
                 requestAdminPinForAction(
                     { type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection },
@@ -3300,7 +3521,14 @@
         window.renderActiveRoomView = function () {
             if (!selectedGrade) return;
             updateAdminBadgeUI();
-            if (!isInquiryMode && activeRoomMode === "grades") {
+            if (isInquiryMode) {
+                if (verifiedInquiryStudentId) {
+                    const st = studentsList.find(s => s.id === verifiedInquiryStudentId);
+                    if (st) renderVerifiedStudentAllSubjects(st);
+                }
+                return;
+            }
+            if (activeRoomMode === "grades") {
                 renderGradesRoomTable();
             } else {
                 renderSectionRoomTable();
@@ -3541,6 +3769,7 @@
 
         window.backFromSectionRoom = function () {
             setRoomExpandedState(false);
+            verifiedInquiryStudentId = null;
             document.getElementById("sectionRoomView").style.display = "none";
             document.getElementById("mainLobbyContainer").style.display = "flex";
             document.getElementById("welcomeRibbonBanner").style.display = "block";
@@ -3555,6 +3784,7 @@
 
         window.closeSectionRoom = function () {
             setRoomExpandedState(false);
+            verifiedInquiryStudentId = null;
             document.getElementById("sectionRoomView").style.display = "none";
             document.getElementById("mainLobbyContainer").style.display = "flex";
             document.getElementById("welcomeRibbonBanner").style.display = "block";
@@ -3616,9 +3846,7 @@
             const scopeRows = getScopeStudents();
             const filtered = getCurrentSectionRows();
 
-            document.getElementById("roomHeadingTitle").innerText = isInquiryMode
-                ? `استعلام طلاب ${selectedGrade} (جميع الشعب)`
-                : `${selectedGrade} - شعبة (${selectedSection}) | معلومات الطلاب`;
+            document.getElementById("roomHeadingTitle").innerText = `${selectedGrade} - شعبة (${selectedSection}) | معلومات الطلاب`;
 
             document.getElementById("roomCountChip").innerText = lowerTerm
                 ? `نتائج البحث: ${filtered.length} من ${scopeRows.length}`
@@ -4178,7 +4406,7 @@
 
             if (!editId) {
                 markStudentAsOwned(savedRec.id);
-                alert("✅ تم حفظ بيانات الطالب ورقم ولي الأمر بنجاح.");
+                alert(`✅ تم حفظ بيانات الطالب بنجاح.\nالاسم: ${savedRec.name}\nالرمز الخاص بالطالب: ${savedRec.editPin}`);
             } else {
                 alert("✅ تم حفظ التعديلات والرمز بنجاح.");
             }
