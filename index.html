@@ -2450,6 +2450,12 @@
             });
         }
 
+        function sortSubjectsAlphabetically(list) {
+            return [...(list || [])].sort((a, b) =>
+                arabicCollator.compare(normalizeArabicSortKey(a), normalizeArabicSortKey(b))
+            );
+        }
+
         function createEmptySubjectEntry() {
             return {
                 attendance: "حاضر",
@@ -2553,10 +2559,12 @@
             const titleEl = document.getElementById("inquiryMatchedStudentTitle");
             const tbody = document.getElementById("studentAllSubjectsTableBody");
 
-            const allSubjectNames = Array.from(new Set([
-                ...subjectsList,
-                ...Object.keys(student.gradesBySubject || {})
-            ]));
+            const allSubjectNames = sortSubjectsAlphabetically(
+                Array.from(new Set([
+                    ...subjectsList,
+                    ...Object.keys(student.gradesBySubject || {})
+                ]))
+            );
 
             titleEl.innerText = `الطالب: ${student.name} | ${student.grade} - شعبة (${student.section})`;
 
@@ -2666,12 +2674,13 @@
             try {
                 const raw = localStorage.getItem(STORAGE_SUBJECTS_KEY);
                 const parsed = raw ? JSON.parse(raw) : null;
-                if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                if (Array.isArray(parsed) && parsed.length > 0) return sortSubjectsAlphabetically(parsed);
             } catch (e) {}
-            return [...DEFAULT_SUBJECTS];
+            return sortSubjectsAlphabetically([...DEFAULT_SUBJECTS]);
         }
 
         function saveSubjectsToStorage() {
+            subjectsList = sortSubjectsAlphabetically(subjectsList);
             try {
                 localStorage.setItem(STORAGE_SUBJECTS_KEY, JSON.stringify(subjectsList));
             } catch (e) {}
@@ -3210,12 +3219,20 @@
                                 secretUpdatedAt: secretUpdatedAt || Date.now(),
                                 principalPhone: getCurrentPrincipalPhone(),
                                 principalOverride: getCurrentPrincipalPhone(),
-                                principalUpdatedAt: principalUpdatedAt || Date.now()
+                                principalUpdatedAt: principalUpdatedAt || Date.now(),
+                                subjectsList
                             });
                         } else {
                             const data = snap.data();
                             isPlatformLocked = Boolean(data.isLocked);
                             localStorage.setItem(STORAGE_LOCKED_KEY, String(isPlatformLocked));
+
+                            if (Array.isArray(data.subjectsList) && data.subjectsList.length > 0) {
+                                subjectsList = sortSubjectsAlphabetically(Array.from(new Set([...subjectsList, ...data.subjectsList])));
+                                saveSubjectsToStorage();
+                                populateRoomSubjectSelect();
+                                if (isInsideRoom) renderActiveRoomView();
+                            }
 
                             const remoteUpdatedAt = Number(data.secretUpdatedAt || 0);
                             const localUpdatedAt = Number(localStorage.getItem(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
@@ -3584,6 +3601,7 @@
             const sel = document.getElementById("roomSubjectSelect");
             if (!sel) return;
             const prev = sel.value;
+            subjectsList = sortSubjectsAlphabetically(subjectsList);
             sel.innerHTML = subjectsList.map(s => `<option value="${s}">${s}</option>`).join("");
             if (prev && subjectsList.includes(prev)) {
                 sel.value = prev;
@@ -3592,21 +3610,51 @@
 
         window.addRoomSubject = async function () {
             if (!hasStaffAccess()) {
-                requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة مادة");
+                requestAdminPinForAction(
+                    { type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection },
+                    "إضافة مادة"
+                );
                 return;
             }
             const inp = document.getElementById("newRoomSubjectInput");
             const name = inp.value.trim();
             if (!name) return;
+
             if (!subjectsList.includes(name)) {
-                subjectsList.push(name);
+                subjectsList = sortSubjectsAlphabetically([...subjectsList, name]);
                 saveSubjectsToStorage();
-                studentsList = studentsList.map(st => ({
-                    ...st,
-                    gradesBySubject: buildTeacherGradesMap(st.gradesBySubject || {})
-                }));
+
+                const nowTs = Date.now();
+                studentsList = sortStudentsAlphabetically(
+                    studentsList.map(st => {
+                        const updatedStudent = {
+                            ...st,
+                            gradesBySubject: buildTeacherGradesMap(st.gradesBySubject || {}),
+                            updatedAt: nowTs
+                        };
+                        writeStudentToIndexedDB(updatedStudent);
+                        return updatedStudent;
+                    })
+                );
                 persistStudentsToLocalStorage(studentsList);
+
+                if (useCloud && settingsDoc) {
+                    try {
+                        await setDoc(settingsDoc, { subjectsList }, { merge: true });
+                    } catch (err) {}
+                }
+
+                if (useCloud && studentsCol) {
+                    try {
+                        const batch = writeBatch(db);
+                        studentsList.forEach(st => {
+                            batch.set(doc(db, "students", st.id), st, { merge: true });
+                        });
+                        await batch.commit();
+                    } catch (err) {}
+                }
             }
+
             inp.value = "";
             populateRoomSubjectSelect();
             document.getElementById("roomSubjectSelect").value = name;
