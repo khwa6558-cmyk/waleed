@@ -225,6 +225,13 @@
             padding: 7px 14px;
         }
 
+        .btn-teacher-login {
+            background: linear-gradient(180deg, #b45309, #78350f);
+            border: 1px solid var(--gold-300);
+            border-radius: 8px;
+            padding: 7px 14px;
+        }
+
         .btn-quick-logout {
             background: linear-gradient(180deg, #dc2626, #991b1b);
             border: 1px solid #fca5a5;
@@ -563,72 +570,30 @@
             }
         }
 
-        .grade-column-card {
-            background: linear-gradient(180deg, #0f4282 0%, #061f42 100%);
-            border: 2px solid var(--gold-500);
-            border-radius: 14px;
-            padding: 10px;
-            box-shadow: 0 6px 14px rgba(6, 31, 66, 0.25);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .grade-column-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(6, 31, 66, 0.32);
-        }
-
-        .grade-column-card.active-grade-card {
-            border-color: var(--gold-300);
-            box-shadow: 0 0 0 2px rgba(246, 213, 106, 0.6), 0 10px 22px rgba(6, 31, 66, 0.36);
-        }
-
         .grade-open-btn {
-            background: linear-gradient(180deg, #1b59a8, #092e5e);
-            border: 1.5px solid var(--gold-300);
-            border-radius: 10px;
-            padding: 9px 10px;
+            width: 100%;
+            background: linear-gradient(180deg, #1656a3 0%, #07264f 100%);
+            border: 2px solid var(--gold-500);
+            border-radius: 13px;
+            padding: 13px 14px;
             color: #ffffff;
             font-weight: 900;
-            font-size: 0.98rem;
+            font-size: 1.02rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 6px;
-            transition: transform 0.16s ease, filter 0.16s ease;
+            gap: 8px;
+            box-shadow: 0 6px 14px rgba(6, 31, 66, 0.22);
+            transition: transform 0.16s ease, filter 0.16s ease, border-color 0.16s ease;
         }
 
         .grade-open-btn:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             filter: brightness(1.08);
+            border-color: var(--gold-300);
         }
 
-        .grade-quick-sec-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-        }
-
-        .sec-mini-chip {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(246, 213, 106, 0.65);
-            color: #ffffff;
-            border-radius: 7px;
-            padding: 4px 2px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .sec-mini-chip:hover {
-            background: #1967c2;
-        }
-
-        /* Styled Two-Room Choice Modal */
         .rooms-picker-card {
             width: 100%;
             max-width: 490px;
@@ -778,7 +743,6 @@
             border-color: var(--gold-300);
         }
 
-        /* Active Workspace Room View */
         .section-room-view {
             display: none;
             background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
@@ -1489,7 +1453,6 @@
 </head>
 <body>
 
-    <!-- Lock Overlay Screen -->
     <div id="lockScreenLayer" class="lock-screen-layer">
         <div class="dialog-card" style="text-align: center;">
             <div style="font-size: 3rem; margin-bottom: 8px;">🔒</div>
@@ -1502,7 +1465,6 @@
         </div>
     </div>
 
-    <!-- Hero Banner -->
     <header class="hero-banner">
         <div class="hero-inner">
             <div class="hero-center">
@@ -1524,7 +1486,6 @@
         </div>
     </header>
 
-    <!-- Admin Bar -->
     <nav class="admin-strip">
         <div class="admin-strip-inner">
             <div class="admin-actions-left">
@@ -1550,6 +1511,11 @@
                     <span>تغيير رمز الأدمن</span>
                 </button>
 
+                <button type="button" class="top-pill-btn btn-teacher-login" onclick="openTeacherLoginModal()">
+                    <span>👨‍🏫</span>
+                    <span>دخول الأساتذة</span>
+                </button>
+
                 <button type="button" id="topQuickLogoutBtn" class="top-pill-btn btn-quick-logout" style="display: none;" onclick="logoutAdminSession()">
                     <span>🚪</span>
                     <span>خروج سريع</span>
@@ -1563,7 +1529,6 @@
         </div>
     </nav>
 
-    <!-- Welcome Ribbon -->
     <div id="welcomeRibbonBanner" class="welcome-strip">
         <h2>
             <span>🎓</span>
@@ -1571,12 +1536,10 @@
         </h2>
     </div>
 
-    <!-- Main Page Content -->
     <main class="page-shell" id="mainPageShell">
 
         <div id="mainLobbyContainer" style="display: flex; flex-direction: column; gap: 16px;">
 
-            <!-- Add Student Box -->
             <section class="add-card-panel">
                 <div class="panel-ribbon-title">
                     <div class="ribbon-badge" id="studentFormBadge">
@@ -1667,7 +1630,6 @@
                 </form>
             </section>
 
-            <!-- Grades Shelf -->
             <section class="grades-shelf-box">
                 <div class="shelf-top-badge">
                     <div class="shelf-title-pill">
@@ -1681,7 +1643,6 @@
 
         </div>
 
-        <!-- Dedicated Section Room View -->
         <section id="sectionRoomView" class="section-room-view">
             <div class="room-top-banner">
                 <div class="room-identity-group">
@@ -1711,7 +1672,6 @@
                 </div>
             </div>
 
-            <!-- Sub-tab switcher when inside a section -->
             <div id="sectionInnerSwitch" class="room-mode-switch" style="display: none;">
                 <button type="button" id="tabInfoRoomBtn" class="room-mode-btn active-mode" onclick="switchSectionRoomMode('info')">
                     📋 معلومات الطلاب
@@ -1764,7 +1724,6 @@
                 </div>
             </div>
 
-            <!-- Panel 1: Info Room Table -->
             <div id="infoRoomPanel" class="table-scroll-box">
                 <table class="section-students-tbl">
                     <thead>
@@ -1783,7 +1742,6 @@
                 </table>
             </div>
 
-            <!-- Panel 2: Subjects, Teachers, Names & Grades Room -->
             <div id="gradesRoomPanel" style="display: none;">
                 <div class="grades-control-bar">
                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
@@ -1844,7 +1802,31 @@
 
     </main>
 
-    <!-- Grade Rooms Choice Modal (1: استعلام الطلاب | 2: الشعب) -->
+    <!-- Teacher Login Modal (رمز الدخول للمدرسين: A) -->
+    <div id="teacherLoginModalLayer" class="modal-layer" onclick="if(event.target===this) closeTeacherLoginModal()">
+        <div class="dialog-card" style="border-top-color: #d97706;">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeTeacherLoginModal()">✕</button>
+            <h3 style="color: #92400e; margin-bottom: 6px;">👨‍🏫 دخول الأساتذة والمدرسين</h3>
+            <p style="color: #475569; font-size: 0.86rem; font-weight: 700; margin-bottom: 12px;">
+                أدخل رمز دخول المدرسين للدخول إلى غرف المواد وإضافة الأسماء والدرجات.
+            </p>
+            <div id="teacherLoginErrorBox" class="pin-error-msg"></div>
+            <div class="input-group-box" style="margin-bottom: 14px;">
+                <label>رمز دخول المدرسين:</label>
+                <input type="password" id="teacherPinInput" class="ctrl-field" placeholder="أدخل الرمز..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmTeacherLogin();}">
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmTeacherLogin()">
+                    <span>🔓</span>
+                    <span>دخول الأستاذ</span>
+                </button>
+                <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeTeacherLoginModal()">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="gradeRoomsModalLayer" class="modal-layer" onclick="if(event.target===this) closeGradeRoomsModal()">
         <div class="rooms-picker-card">
             <div class="rooms-picker-header">
@@ -1874,7 +1856,6 @@
         </div>
     </div>
 
-    <!-- Sections Picker Modal (أ - ب - ج) -->
     <div id="sectionsPickerModalLayer" class="modal-layer" onclick="if(event.target===this) closeSectionsPickerModal()">
         <div class="rooms-picker-card">
             <div class="rooms-picker-header">
@@ -1888,7 +1869,6 @@
         </div>
     </div>
 
-    <!-- Section Two-Rooms Choice Modal (1: معلومات الطلاب | 2: المواد الدراسية) -->
     <div id="sectionTwoRoomsModalLayer" class="modal-layer" onclick="if(event.target===this) closeSectionTwoRoomsModal()">
         <div class="rooms-picker-card">
             <div class="rooms-picker-header">
@@ -1918,10 +1898,8 @@
         </div>
     </div>
 
-    <!-- Printable Section Sheet Container -->
     <div id="printableSectionSheet"></div>
 
-    <!-- Principal Phone Modal -->
     <div id="principalPhoneModalLayer" class="modal-layer" onclick="if(event.target===this) closePrincipalPhoneModal()">
         <div class="dialog-card" style="border-top-color: #0f766e;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closePrincipalPhoneModal()">✕</button>
@@ -1951,7 +1929,6 @@
         </div>
     </div>
 
-    <!-- Student Edit PIN Verification & Change Modal -->
     <div id="editPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeEditPinModal()">
         <div class="dialog-card">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeEditPinModal()">✕</button>
@@ -1982,7 +1959,6 @@
         </div>
     </div>
 
-    <!-- Direct Admin / Teacher Code Verification Modal -->
     <div id="adminEditPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeAdminEditPinModal()">
         <div class="dialog-card" style="border-top-color: var(--gold-500);">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeAdminEditPinModal()">✕</button>
@@ -2008,7 +1984,6 @@
         </div>
     </div>
 
-    <!-- Single WhatsApp Notification Modal -->
     <div id="whatsappNotifyModalLayer" class="modal-layer" onclick="if(event.target===this) closeWhatsappNotifyModal()">
         <div class="dialog-card" style="border-top-color: #16a34a; max-width: 480px;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeWhatsappNotifyModal()">✕</button>
@@ -2047,7 +2022,6 @@
         </div>
     </div>
 
-    <!-- Bulk WhatsApp Notification Modal -->
     <div id="bulkWhatsappModalLayer" class="modal-layer" onclick="if(event.target===this) closeBulkWhatsappModal()">
         <div class="dialog-card" style="border-top-color: #16a34a; max-width: 540px;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeBulkWhatsappModal()">✕</button>
@@ -2089,7 +2063,6 @@
         </div>
     </div>
 
-    <!-- Student ID Card Modal -->
     <div id="idCardModalLayer" class="modal-layer" onclick="if(event.target===this) hideModal('idCardModalLayer')">
         <div id="printableIdCard" class="id-card-box">
             <div class="id-card-head">
@@ -2123,7 +2096,6 @@
         </div>
     </div>
 
-    <!-- Admin Dialog Modal -->
     <div id="adminDialogLayer" class="modal-layer" onclick="if(event.target===this) hideModal('adminDialogLayer')">
         <div class="dialog-card">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="hideModal('adminDialogLayer')">✕</button>
@@ -2150,7 +2122,7 @@
             </div>
 
             <div id="adminMenuView" style="display: none;">
-                <p style="font-weight: 800; color: #15803d; margin-bottom: 12px;">✅ أنت داخل بصلاحية الأدمن ولن يُطلب منك رمز في أي إجراء.</p>
+                <p style="font-weight: 800; color: #15803d; margin-bottom: 12px;">✅ أنت داخل بصلاحية الإدارة/التدريس.</p>
                 <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="toggleLockState()">
                     قفل / فتح المنصة
                 </button>
@@ -2158,7 +2130,7 @@
                     تغيير رمز الأدمن
                 </button>
                 <button type="button" class="mini-act-btn mini-delete" style="width: 100%; padding: 8px;" onclick="logoutAdminSession()">
-                    خروج الأدمن (العودة لوضع الطالب)
+                    خروج (العودة لوضع الطالب)
                 </button>
             </div>
         </div>
@@ -2173,6 +2145,7 @@
 
         const SCHOOL_LOGO_URL = "logo.PNG";
         const DEFAULT_PRINCIPAL_PHONE = "07734579286";
+        const TEACHER_PIN_CODE = "A";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDV8xl6gEF6eHvcA8Rut8INisrNuBciZcY",
@@ -2262,6 +2235,7 @@
         ];
 
         let isAdminSession = false;
+        let isTeacherSession = false;
         let ownedStudentIds = loadOwnedStudentIds();
         let studentsList = loadStudentsFromLocalStorage();
         let pendingEditStudentId = null;
@@ -2301,6 +2275,61 @@
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
+
+        function hasStaffAccess() {
+            return Boolean(isAdminSession || isTeacherSession);
+        }
+
+        function isValidStaffCode(rawCode) {
+            const clean = String(rawCode || "").trim();
+            if (!clean) return false;
+            return clean === getCurrentAdminSecret() || clean.toUpperCase() === TEACHER_PIN_CODE;
+        }
+
+        window.openTeacherLoginModal = function () {
+            document.getElementById("teacherPinInput").value = "";
+            const errBox = document.getElementById("teacherLoginErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            document.getElementById("teacherLoginModalLayer").style.display = "flex";
+            setTimeout(() => document.getElementById("teacherPinInput").focus(), 60);
+        };
+
+        window.closeTeacherLoginModal = function () {
+            document.getElementById("teacherPinInput").value = "";
+            const errBox = document.getElementById("teacherLoginErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            hideModal("teacherLoginModalLayer");
+        };
+
+        window.confirmTeacherLogin = function () {
+            const inp = document.getElementById("teacherPinInput");
+            const errBox = document.getElementById("teacherLoginErrorBox");
+            const val = inp.value.trim();
+
+            if (!val) {
+                errBox.innerText = "⚠️ يرجى إدخال رمز دخول المدرسين.";
+                errBox.style.display = "block";
+                inp.focus();
+                return;
+            }
+
+            if (val.toUpperCase() !== TEACHER_PIN_CODE && val !== getCurrentAdminSecret()) {
+                errBox.innerText = "❌ رمز دخول المدرسين غير صحيح.";
+                errBox.style.display = "block";
+                inp.focus();
+                return;
+            }
+
+            isTeacherSession = true;
+            updateAdminBadgeUI();
+            closeTeacherLoginModal();
+
+            const targetG = selectedGrade || pickerGrade || "الصف الاول";
+            const targetS = selectedSection || pickerSection || "أ";
+            enterSectionWorkspace(targetG, targetS, "grades");
+        };
 
         try {
             history.replaceState({ platformRoot: true }, "", window.location.href);
@@ -2695,9 +2724,15 @@
 
             if (isAdminSession) {
                 btn.classList.add("admin-active-badge");
-                tag.innerText = "أدمن / مدرس";
+                tag.innerText = "أدمن";
                 lbl.innerText = "وضع الإدارة نشط";
                 if (delAllBtn) delAllBtn.style.display = "inline-flex";
+                if (quickLogoutBtn) quickLogoutBtn.style.display = "inline-flex";
+            } else if (isTeacherSession) {
+                btn.classList.add("admin-active-badge");
+                tag.innerText = "أستاذ";
+                lbl.innerText = "دخول الأساتذة نشط";
+                if (delAllBtn) delAllBtn.style.display = "none";
                 if (quickLogoutBtn) quickLogoutBtn.style.display = "inline-flex";
             } else {
                 btn.classList.remove("admin-active-badge");
@@ -2973,27 +3008,14 @@
 
         function renderGradesShelf() {
             const container = document.getElementById("gradesSixShelf");
-            container.innerHTML = GRADES.map(grade => {
-                const isActiveG = selectedGrade === grade;
-                return `
-                    <div class="grade-column-card ${isActiveG ? 'active-grade-card' : ''}">
-                        <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('${grade}')">
-                            <span>🎓 ${grade}</span>
-                            <span>&lt;</span>
-                        </button>
-                        <div class="grade-quick-sec-row">
-                            ${SECTIONS.map(sec => `
-                                <button type="button" class="sec-mini-chip" onclick="openSectionTwoRoomsModal('${grade}', '${sec}')">
-                                    شعبة ${sec}
-                                </button>
-                            `).join("")}
-                        </div>
-                    </div>
-                `;
-            }).join("");
+            container.innerHTML = GRADES.map(grade => `
+                <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('${grade}')">
+                    <span>🎓 ${grade}</span>
+                    <span>&lt;</span>
+                </button>
+            `).join("");
         }
 
-        /* Step 1: Grade Modal (استعلام الطلاب | الشعب) */
         window.openGradeRoomsModal = function (grade) {
             pickerGrade = grade;
             document.getElementById("gradeField").value = grade;
@@ -3012,7 +3034,6 @@
             enterInquiryWorkspace(g);
         };
 
-        /* Step 2: Sections Picker Modal (أ - ب - ج) */
         window.openGradeSectionsPicker = function () {
             if (!pickerGrade) return;
             closeGradeRoomsModal();
@@ -3029,7 +3050,6 @@
             hideModal("sectionsPickerModalLayer");
         };
 
-        /* Step 3: Section Two-Rooms Modal (معلومات الطلاب | المواد الدراسية) */
         window.openSectionTwoRoomsModal = function (grade, sec) {
             pickerGrade = grade;
             pickerSection = sec;
@@ -3057,7 +3077,7 @@
             const g = pickerGrade;
             const s = pickerSection;
             closeSectionTwoRoomsModal();
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction(
                     { type: "openSubjectsRoom", grade: g, section: s },
                     `المواد الدراسية (${g} - شعبة ${s})`
@@ -3134,7 +3154,7 @@
         };
 
         window.switchSectionRoomMode = function (mode) {
-            if (mode === "grades" && !isAdminSession) {
+            if (mode === "grades" && !hasStaffAccess()) {
                 requestAdminPinForAction(
                     { type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection },
                     `المواد الدراسية (${selectedGrade} - شعبة ${selectedSection})`
@@ -3173,7 +3193,7 @@
         }
 
         window.addRoomSubject = function () {
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة مادة");
                 return;
             }
@@ -3192,7 +3212,7 @@
 
         window.teacherAddStudentAndGrade = async function () {
             if (!selectedGrade || !selectedSection) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة اسم ودرجة");
                 return;
             }
@@ -3294,7 +3314,7 @@
         };
 
         window.updateStudentGradeField = async function (studentId, field, value) {
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "تعديل الدرجات");
                 return;
             }
@@ -3468,13 +3488,13 @@
             tbody.innerHTML = filtered.map((st, idx) => {
                 const previewBtnHtml = `<button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>`;
                 const editBtnHtml = `<button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>`;
-                const changePinBtnHtml = isAdminSession
+                const changePinBtnHtml = hasStaffAccess()
                     ? ""
                     : `<button type="button" class="mini-act-btn mini-pin-change" onclick="startChangeStudentPin('${st.id}')">🔑 تغيير رمز الطالب</button>`;
-                const notifyBtnHtml = isAdminSession
+                const notifyBtnHtml = hasStaffAccess()
                     ? `<button type="button" class="mini-act-btn mini-notify" onclick="startNotifyGuardian('${st.id}')">📩 تبليغ</button>`
                     : "";
-                const deleteBtnHtml = isAdminSession
+                const deleteBtnHtml = hasStaffAccess()
                     ? `<button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>`
                     : "";
 
@@ -3529,7 +3549,7 @@
         window.startNotifyGuardian = function (id, subjectContext = null) {
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "notifyGuardian", studentId: id, subjectContext }, `تبليغ ولي أمر الطالب: ${st.name}`);
                 return;
             }
@@ -3635,7 +3655,7 @@
 
         window.startBulkNotifySection = function () {
             if (!selectedGrade) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "bulkNotify" }, `تبليغ جماعي - ${selectedGrade}`);
                 return;
             }
@@ -3756,7 +3776,7 @@
 
         window.saveFullSectionTable = function () {
             if (!selectedGrade) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "saveFull" }, "حفظ الجدول بالكامل");
                 return;
             }
@@ -3780,7 +3800,7 @@
 
         window.handleFormatSave = function () {
             if (!selectedGrade) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "saveFormat" }, "حفظ الملف");
                 return;
             }
@@ -3805,7 +3825,7 @@
 
         window.handleFormatPrint = function () {
             if (!selectedGrade) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "printFormat" }, "طباعة الجدول");
                 return;
             }
@@ -4019,7 +4039,7 @@
             document.getElementById("cancelEditActionBtn").style.display = "none";
         };
 
-        function openEditFormForStudent(st, asAdminMode = false) {
+        function openEditFormForStudent(st, asStaffMode = false) {
             setRoomExpandedState(false);
             document.getElementById("editStudentIdField").value = st.id;
             document.getElementById("nameField").value = st.name;
@@ -4033,8 +4053,8 @@
             document.getElementById("studentPinField").value = "";
             currentPhotoBase64 = st.photo || "";
             document.getElementById("photoPreviewHolder").innerHTML = `<img src="${st.photo || defaultAvatar}" alt="صورة الطالب">`;
-            document.getElementById("studentFormBadge").innerHTML = asAdminMode
-                ? `<span>🛡️</span><span>تعديل شامل (أدمن)</span>`
+            document.getElementById("studentFormBadge").innerHTML = asStaffMode
+                ? `<span>🛡️</span><span>تعديل شامل</span>`
                 : `<span>✏️</span><span>تعديل معلوماتي</span>`;
             document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>حفظ التعديل</span>`;
             document.getElementById("cancelEditActionBtn").style.display = "inline-block";
@@ -4137,7 +4157,7 @@
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
 
-            if (isAdminSession) {
+            if (hasStaffAccess()) {
                 openEditFormForStudent(st, true);
                 return;
             }
@@ -4183,7 +4203,7 @@
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
 
-            if (isAdminSession) {
+            if (hasStaffAccess()) {
                 renderIdCardModal(st);
                 return;
             }
@@ -4271,14 +4291,18 @@
                 return;
             }
 
-            if (cleanCode !== getCurrentAdminSecret()) {
+            if (!isValidStaffCode(cleanCode)) {
                 errBox.innerText = "❌ رمز الدخول غير صحيح (خاص بالمدير والمدرسين فقط).";
                 errBox.style.display = "block";
                 inputEl.focus();
                 return;
             }
 
-            isAdminSession = true;
+            if (cleanCode === getCurrentAdminSecret()) {
+                isAdminSession = true;
+            } else {
+                isTeacherSession = true;
+            }
             updateAdminBadgeUI();
             if (isInsideRoom) renderActiveRoomView();
 
@@ -4307,7 +4331,7 @@
         window.removeStudent = function (id) {
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
-            if (!isAdminSession) {
+            if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "deleteSingle", studentId: id }, `حذف الطالب: ${st.name}`);
                 return;
             }
@@ -4412,15 +4436,15 @@
             if (mode === "change") {
                 document.getElementById("adminDialogHeading").innerText = "🔑 تغيير رمز الأدمن";
                 document.getElementById("adminChangeView").style.display = "block";
-            } else if (isAdminSession) {
+            } else if (hasStaffAccess()) {
                 document.getElementById("adminDialogHeading").innerText = "🛡️ قائمة المدير والمدرسين";
                 document.getElementById("adminMenuView").style.display = "block";
             } else {
-                document.getElementById("adminDialogHeading").innerText = "🔐 دخول المدير والمدرسين";
+                document.getElementById("adminDialogHeading").innerText = "🔐 دخول الأدمن";
                 document.getElementById("adminAuthView").style.display = "block";
             }
             document.getElementById("adminDialogLayer").style.display = "flex";
-            if (!isAdminSession && mode !== "change") {
+            if (!hasStaffAccess() && mode !== "change") {
                 setTimeout(() => document.getElementById("adminAuthInput").focus(), 60);
             }
         };
@@ -4440,6 +4464,7 @@
 
         window.logoutAdminSession = function () {
             isAdminSession = false;
+            isTeacherSession = false;
             updateAdminBadgeUI();
             if (isInsideRoom && !isInquiryMode && activeRoomMode === "grades") {
                 switchSectionRoomMode("info");
@@ -4470,7 +4495,7 @@
                 return;
             }
             await persistAdminSecret(nextCode);
-            alert("✅ تم تغيير رمز الأدمن والمدرسين وحفظه بنجاح.");
+            alert("✅ تم تغيير رمز الأدمن وحفظه بنجاح.");
             hideModal("adminDialogLayer");
         };
 
