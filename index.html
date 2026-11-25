@@ -867,32 +867,60 @@
         }
 
         .grade-num-input {
-            width: 72px;
-            height: 34px;
-            padding: 4px 6px;
+            width: 54px;
+            height: 31px;
+            padding: 2px 3px;
             border: 1.5px solid #94a3b8;
-            border-radius: 7px;
+            border-radius: 6px;
             text-align: center;
             font-weight: 800;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
         }
 
         .grade-att-select {
-            height: 34px;
-            padding: 2px 6px;
+            height: 31px;
+            padding: 2px 4px;
             border: 1.5px solid #94a3b8;
-            border-radius: 7px;
+            border-radius: 6px;
             font-weight: 800;
-            font-size: 0.84rem;
+            font-size: 0.78rem;
             background: #ffffff;
+        }
+
+        .term-group-header {
+            background: linear-gradient(180deg, #0b2e5e, #061c3a) !important;
+            color: var(--gold-300) !important;
+            font-size: 0.82rem !important;
+            padding: 6px 6px !important;
+        }
+
+        .midterm-header {
+            background: linear-gradient(180deg, #6d28d9, #4c1d95) !important;
+            color: #ede9fe !important;
+            font-size: 0.82rem !important;
+            padding: 6px 6px !important;
+        }
+
+        .term2-header {
+            background: linear-gradient(180deg, #114b5f, #072c38) !important;
+            color: #a5f3fc !important;
+            font-size: 0.82rem !important;
+            padding: 6px 6px !important;
+        }
+
+        .final-exam-header {
+            background: linear-gradient(180deg, #047857, #064e3b) !important;
+            color: #d1fae5 !important;
+            font-size: 0.82rem !important;
+            padding: 6px 6px !important;
         }
 
         .badge-pass {
             background: #dcfce7;
             color: #166534;
-            padding: 2px 9px;
+            padding: 2px 8px;
             border-radius: 10px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 900;
             display: inline-block;
         }
@@ -900,9 +928,9 @@
         .badge-fail {
             background: #fee2e2;
             color: #991b1b;
-            padding: 2px 9px;
+            padding: 2px 8px;
             border-radius: 10px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 900;
             display: inline-block;
         }
@@ -1124,10 +1152,10 @@
         table.section-students-tbl thead th {
             background: linear-gradient(180deg, #0e386e 0%, #082347 100%);
             color: #ffffff;
-            padding: 12px 14px;
+            padding: 9px 6px;
             text-align: center;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.82rem;
             border-left: 1px solid rgba(255, 255, 255, 0.22);
             border-bottom: 2px solid var(--gold-500);
             white-space: nowrap;
@@ -1137,13 +1165,14 @@
         }
 
         table.section-students-tbl tbody td {
-            padding: 11px 14px;
+            padding: 8px 6px;
             text-align: center;
             font-weight: 700;
-            font-size: 0.94rem;
+            font-size: 0.84rem;
             border-bottom: 1px solid #cbd5e1;
             border-left: 1px solid #e2e8f0;
             color: var(--text-main);
+            white-space: nowrap;
         }
 
         table.section-students-tbl tbody tr:nth-child(even) {
@@ -1175,8 +1204,8 @@
         .mini-act-btn {
             border: none;
             border-radius: 7px;
-            padding: 5px 11px;
-            font-size: 0.82rem;
+            padding: 5px 10px;
+            font-size: 0.8rem;
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
@@ -1753,18 +1782,25 @@
 
                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                         <input type="text" id="teacherDirectNameInput" class="ctrl-field" style="width: 175px; height: 35px;" placeholder="اسم طالب يضيفه المدرس...">
-                        <input type="number" id="teacherDirectScoreInput" class="grade-num-input" style="width: 82px; height: 35px;" placeholder="درجة" min="0" max="100">
+                        <input type="number" id="teacherDirectScoreInput" class="grade-num-input" style="width: 68px; height: 35px;" placeholder="ش١" min="0" max="100">
                         <button type="button" class="btn-save-full-table" style="padding: 6px 12px;" onclick="teacherAddStudentAndGrade()">+ إضافة اسم ودرجة</button>
                     </div>
                 </div>
 
                 <div class="grades-control-bar" style="padding: 9px 14px;">
-                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                        <label style="font-weight: 800; font-size: 0.85rem; color: var(--navy-800);">درجة النجاح:</label>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <label style="font-weight: 800; font-size: 0.84rem; color: var(--navy-800);">درجة النجاح:</label>
                         <input type="number" id="roomPassMarkInput" class="grade-num-input" value="50" min="0" max="100" onchange="updateRoomPassMark()">
+
+                        <label style="font-weight: 800; font-size: 0.84rem; color: var(--navy-800);">وزن السعي %:</label>
+                        <input type="number" id="pursuitWeightInput" class="grade-num-input" value="30" min="0" max="100" onchange="updateWeightsConfig()">
+
+                        <label style="font-weight: 800; font-size: 0.84rem; color: var(--navy-800);">وزن النهائي %:</label>
+                        <input type="number" id="finalExamWeightInput" class="grade-num-input" value="70" min="0" max="100" onchange="updateWeightsConfig()">
+
                         <button type="button" class="template-chip-btn" onclick="toggleGradeScaleBox()">⚙️ نظام التقديرات</button>
                     </div>
-                    <span style="font-size: 0.82rem; font-weight: 800; color: #15803d;">🛡️ غرفة مخصصة للمدير والمدرسين فقط</span>
+                    <span style="font-size: 0.8rem; font-weight: 800; color: #15803d;">💡 أعلى شهرين للفصل + تقريب كسر 0.5 فأكثر للأعلى (مثال: 96.5 ← 97)</span>
                 </div>
 
                 <div id="gradeScaleEditorBox" style="display: none; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
@@ -1782,16 +1818,30 @@
                     <table class="section-students-tbl">
                         <thead>
                             <tr>
-                                <th>ت</th>
-                                <th>الاسم الرباعي</th>
-                                <th>الحضور</th>
-                                <th>الشهر 1</th>
-                                <th>الشهر 2</th>
-                                <th>الشهر 3</th>
-                                <th>المعدل</th>
-                                <th>التقدير</th>
-                                <th>الحالة</th>
-                                <th>تبليغ ولي الأمر</th>
+                                <th rowspan="2">ت</th>
+                                <th rowspan="2">الاسم الرباعي</th>
+                                <th rowspan="2">الحضور</th>
+                                <th colspan="4" class="term-group-header">الفصل الأول (أعلى شهرين)</th>
+                                <th class="midterm-header">نصف السنة</th>
+                                <th colspan="4" class="term2-header">الفصل الثاني (بعد نصف السنة - أعلى شهرين)</th>
+                                <th rowspan="2">السعي السنوي</th>
+                                <th class="final-exam-header">النهائي</th>
+                                <th rowspan="2">الدرجة النهائية</th>
+                                <th rowspan="2">التقدير</th>
+                                <th rowspan="2">الحالة</th>
+                                <th rowspan="2">تبليغ ولي الأمر</th>
+                            </tr>
+                            <tr>
+                                <th>ش١</th>
+                                <th>ش٢</th>
+                                <th>ش٣</th>
+                                <th>معدل ف١</th>
+                                <th>درجة</th>
+                                <th>ش١ (ف٢)</th>
+                                <th>ش٢ (ف٢)</th>
+                                <th>ش٣ (ف٢)</th>
+                                <th>معدل ف٢</th>
+                                <th>امتحان</th>
                             </tr>
                         </thead>
                         <tbody id="gradesRoomTableBody"></tbody>
@@ -2214,6 +2264,7 @@
         const STORAGE_SUBJECTS_KEY = "mutafawiqeen_subjects_v24";
         const STORAGE_PASSMARK_KEY = "mutafawiqeen_passmark_v24";
         const STORAGE_SCALE_KEY = "mutafawiqeen_grade_scale_v24";
+        const STORAGE_WEIGHTS_KEY = "mutafawiqeen_grade_weights_v24";
 
         const DEFAULT_SUBJECTS = [
             "الحاسوب",
@@ -2257,6 +2308,7 @@
         let subjectsList = loadSubjectsFromStorage();
         let passMarkValue = Number(localStorage.getItem(STORAGE_PASSMARK_KEY) || 50);
         let gradeScaleRules = loadGradeScaleFromStorage();
+        let gradeWeights = loadWeightsFromStorage();
 
         let savedSectionTables = JSON.parse(localStorage.getItem(STORAGE_SAVED_SECTIONS_KEY)) || {};
         let adminSecret = loadInitialAdminSecret();
@@ -2380,10 +2432,78 @@
             } catch (e) {}
         }
 
-        function calcStudentAverage(m1, m2, m3) {
-            const nums = [m1, m2, m3].filter(v => v !== "" && v !== null && v !== undefined && !Number.isNaN(Number(v)));
-            if (nums.length === 0) return null;
-            return nums.reduce((acc, v) => acc + Number(v), 0) / nums.length;
+        function loadWeightsFromStorage() {
+            try {
+                const raw = localStorage.getItem(STORAGE_WEIGHTS_KEY);
+                const parsed = raw ? JSON.parse(raw) : null;
+                if (parsed && typeof parsed.pursuit === "number" && typeof parsed.finalExam === "number") {
+                    return parsed;
+                }
+            } catch (e) {}
+            return { pursuit: 30, finalExam: 70 };
+        }
+
+        function saveWeightsToStorage() {
+            try {
+                localStorage.setItem(STORAGE_WEIGHTS_KEY, JSON.stringify(gradeWeights));
+            } catch (e) {}
+        }
+
+        function parseNumericScore(v) {
+            if (v === "" || v === null || v === undefined) return null;
+            const n = Number(v);
+            return Number.isNaN(n) ? null : n;
+        }
+
+        /* تقريب كسر 0.5 فأكثر إلى العدد الصحيح الأعلى (مثال: 96.5 يحسب 97، و96.4 يحسب 96) */
+        function roundHalfUpGrade(val) {
+            if (val === null || val === undefined || Number.isNaN(val)) return null;
+            return Math.floor(Number(val) + 0.5);
+        }
+
+        /* حساب معدل الفصل: إذا وُجدت 3 أشهر يُؤخذ أعلى شهرين؛ وإذا وُجد شهر أو شهران يُحسب متوسط المتاح */
+        function calcTermBestTwoAverage(m1, m2, m3) {
+            const validScores = [m1, m2, m3]
+                .map(parseNumericScore)
+                .filter(n => n !== null)
+                .sort((a, b) => b - a);
+
+            if (validScores.length === 0) return null;
+            if (validScores.length >= 3) {
+                return (validScores[0] + validScores[1]) / 2;
+            }
+            return validScores.reduce((acc, n) => acc + n, 0) / validScores.length;
+        }
+
+        /* حساب السعي السنوي من (معدل الفصل الأول، نصف السنة، معدل الفصل الثاني) وتقريبه (96.5 -> 97) */
+        function calcAnnualPursuit(rec) {
+            const avg1 = calcTermBestTwoAverage(rec.m1, rec.m2, rec.m3);
+            const midterm = parseNumericScore(rec.midterm);
+            const avg2 = calcTermBestTwoAverage(rec.t2_m1, rec.t2_m2, rec.t2_m3);
+
+            const parts = [avg1, midterm, avg2].filter(v => v !== null);
+            if (parts.length === 0) return null;
+            const rawPursuit = parts.reduce((acc, n) => acc + n, 0) / parts.length;
+            return roundHalfUpGrade(rawPursuit);
+        }
+
+        /* حساب الدرجة النهائية وتقريب كسر 0.5 فأكثر للأعلى */
+        function calcFinalGrade(rec) {
+            const pursuit = calcAnnualPursuit(rec);
+            const finalExam = parseNumericScore(rec.finalExam);
+
+            if (pursuit !== null && finalExam !== null) {
+                const wP = Number(gradeWeights.pursuit || 0);
+                const wF = Number(gradeWeights.finalExam || 0);
+                const totalW = wP + wF;
+                const rawFinal = totalW > 0
+                    ? ((pursuit * wP) + (finalExam * wF)) / totalW
+                    : (pursuit + finalExam) / 2;
+                return roundHalfUpGrade(rawFinal);
+            }
+            if (finalExam !== null) return roundHalfUpGrade(finalExam);
+            if (pursuit !== null) return pursuit;
+            return null;
         }
 
         function getScoreEvaluationLabel(avg) {
@@ -2399,7 +2519,12 @@
                 attendance: entry.attendance || "حاضر",
                 m1: entry.m1 ?? "",
                 m2: entry.m2 ?? "",
-                m3: entry.m3 ?? ""
+                m3: entry.m3 ?? "",
+                midterm: entry.midterm ?? "",
+                t2_m1: entry.t2_m1 ?? "",
+                t2_m2: entry.t2_m2 ?? "",
+                t2_m3: entry.t2_m3 ?? "",
+                finalExam: entry.finalExam ?? ""
             };
         }
 
@@ -3273,6 +3398,17 @@
             renderGradesRoomTable();
         };
 
+        window.updateWeightsConfig = function () {
+            const pVal = Number(document.getElementById("pursuitWeightInput").value);
+            const fVal = Number(document.getElementById("finalExamWeightInput").value);
+            gradeWeights = {
+                pursuit: Number.isNaN(pVal) ? 30 : Math.max(0, pVal),
+                finalExam: Number.isNaN(fVal) ? 70 : Math.max(0, fVal)
+            };
+            saveWeightsToStorage();
+            renderGradesRoomTable();
+        };
+
         window.toggleGradeScaleBox = function () {
             const box = document.getElementById("gradeScaleEditorBox");
             const nextShow = box.style.display === "none";
@@ -3340,6 +3476,8 @@
             if (!selectedGrade || !selectedSection) return;
             populateRoomSubjectSelect();
             document.getElementById("roomPassMarkInput").value = passMarkValue;
+            document.getElementById("pursuitWeightInput").value = gradeWeights.pursuit;
+            document.getElementById("finalExamWeightInput").value = gradeWeights.finalExam;
 
             const subj = document.getElementById("roomSubjectSelect").value || subjectsList[0] || "الحاسوب";
             const searchTerm = (document.getElementById("roomSearchInput")?.value || "").trim();
@@ -3350,17 +3488,20 @@
 
             const tbody = document.getElementById("gradesRoomTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #64748b;">لا يوجد طلاب في هذه الشعبة حالياً. يمكنك إضافة اسم ودرجة مباشرة من الأعلى.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="18" style="padding: 24px; color: #64748b;">لا يوجد طلاب في هذه الشعبة حالياً. يمكنك إضافة اسم ودرجة مباشرة من الأعلى.</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = filtered.map((st, idx) => {
                 const rec = getStudentSubjectRecord(st, subj);
-                const avg = calcStudentAverage(rec.m1, rec.m2, rec.m3);
-                const evalLabel = getScoreEvaluationLabel(avg);
-                const passBadge = avg === null
+                const avg1 = calcTermBestTwoAverage(rec.m1, rec.m2, rec.m3);
+                const avg2 = calcTermBestTwoAverage(rec.t2_m1, rec.t2_m2, rec.t2_m3);
+                const pursuit = calcAnnualPursuit(rec);
+                const finalScore = calcFinalGrade(rec);
+                const evalLabel = getScoreEvaluationLabel(finalScore);
+                const passBadge = finalScore === null
                     ? `<span style="color:#64748b;">—</span>`
-                    : (avg >= passMarkValue
+                    : (finalScore >= passMarkValue
                         ? `<span class="badge-pass">ناجح</span>`
                         : `<span class="badge-fail">راسب/مكمل</span>`);
 
@@ -3379,7 +3520,15 @@
                         <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.m1}" onchange="updateStudentGradeField('${st.id}', 'm1', this.value)"></td>
                         <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.m2}" onchange="updateStudentGradeField('${st.id}', 'm2', this.value)"></td>
                         <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.m3}" onchange="updateStudentGradeField('${st.id}', 'm3', this.value)"></td>
-                        <td><strong>${avg !== null ? avg.toFixed(1) : "—"}</strong></td>
+                        <td><strong>${avg1 !== null ? avg1.toFixed(1) : "—"}</strong></td>
+                        <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.midterm}" onchange="updateStudentGradeField('${st.id}', 'midterm', this.value)"></td>
+                        <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.t2_m1}" onchange="updateStudentGradeField('${st.id}', 't2_m1', this.value)"></td>
+                        <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.t2_m2}" onchange="updateStudentGradeField('${st.id}', 't2_m2', this.value)"></td>
+                        <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.t2_m3}" onchange="updateStudentGradeField('${st.id}', 't2_m3', this.value)"></td>
+                        <td><strong>${avg2 !== null ? avg2.toFixed(1) : "—"}</strong></td>
+                        <td><strong>${pursuit !== null ? pursuit : "—"}</strong></td>
+                        <td><input type="number" min="0" max="100" class="grade-num-input" value="${rec.finalExam}" onchange="updateStudentGradeField('${st.id}', 'finalExam', this.value)"></td>
+                        <td><strong>${finalScore !== null ? finalScore : "—"}</strong></td>
                         <td><strong>${evalLabel}</strong></td>
                         <td>${passBadge}</td>
                         <td>
@@ -3524,18 +3673,32 @@
             }).join("");
         };
 
+        function formatGradesReportText(student, subjectName) {
+            const rec = getStudentSubjectRecord(student, subjectName);
+            const avg1 = calcTermBestTwoAverage(rec.m1, rec.m2, rec.m3);
+            const avg2 = calcTermBestTwoAverage(rec.t2_m1, rec.t2_m2, rec.t2_m3);
+            const pursuit = calcAnnualPursuit(rec);
+            const finalScore = calcFinalGrade(rec);
+            const evalTxt = getScoreEvaluationLabel(finalScore);
+            return (
+                `تقرير مادة (${subjectName}):\n` +
+                `- الحضور: ${rec.attendance}\n` +
+                `- الفصل الأول (ش١: ${rec.m1 || "—"} | ش٢: ${rec.m2 || "—"} | ش٣: ${rec.m3 || "—"}) -> معدل ف١: ${avg1 !== null ? avg1.toFixed(1) : "—"}\n` +
+                `- نصف السنة: ${rec.midterm || "—"}\n` +
+                `- الفصل الثاني (ش١: ${rec.t2_m1 || "—"} | ش٢: ${rec.t2_m2 || "—"} | ش٣: ${rec.t2_m3 || "—"}) -> معدل ف٢: ${avg2 !== null ? avg2.toFixed(1) : "—"}\n` +
+                `- السعي السنوي: ${pursuit !== null ? pursuit : "—"} | النهائي: ${rec.finalExam || "—"}\n` +
+                `- الدرجة النهائية: ${finalScore !== null ? finalScore : "—"} (${evalTxt})`
+            );
+        }
+
         function openNotifyComposerForStudent(st, subjectContext = null) {
             activeNotifyStudent = st;
             document.getElementById("notifyStudentMeta").innerText = `الطالب: ${st.name} (${st.grade} - شعبة ${st.section})`;
             document.getElementById("notifySenderStatusMeta").innerText = "يُرسل عبر واتساب ولا يظهر رقم المدير داخل الرسالة";
             document.getElementById("notifyGuardianPhoneInput").value = st.guardianPhone || "";
             if (subjectContext) {
-                const rec = getStudentSubjectRecord(st, subjectContext);
-                const avg = calcStudentAverage(rec.m1, rec.m2, rec.m3);
-                const avgTxt = avg !== null ? avg.toFixed(1) : "—";
-                const evalTxt = getScoreEvaluationLabel(avg);
                 document.getElementById("notifyMessageTextarea").value =
-                    `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${st.name}) المحترم.\nتقرير مادة (${subjectContext}):\n- الحضور: ${rec.attendance}\n- شهر 1: ${rec.m1 || "—"} | شهر 2: ${rec.m2 || "—"} | شهر 3: ${rec.m3 || "—"}\n- المعدل: ${avgTxt} (${evalTxt})\nإدارة ثانوية المتفوقين الثانية للبنين - الأنبار.`;
+                    `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${st.name}) المحترم.\n${formatGradesReportText(st, subjectContext)}\nإدارة ثانوية المتفوقين الثانية للبنين - الأنبار.`;
             } else {
                 document.getElementById("notifyMessageTextarea").value =
                     `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${st.name}) المحترم.\nيرجى مراجعة إدارة ثانوية المتفوقين الثانية للبنين - الأنبار بخصوص أمور دراسية مهمة.\nمع فائق الاحترام.`;
@@ -3569,11 +3732,7 @@
                 ta.value = `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${name} - ${gradeSec}) المحترم.\nتتقدم إدارة ثانوية المتفوقين الثانية للبنين - الأنبار بالشكر والتقدير لمتابعتكم وحرصكم على تفوق الطالب.`;
             } else if (kind === "grades") {
                 const subj = document.getElementById("roomSubjectSelect")?.value || subjectsList[0] || "الحاسوب";
-                const rec = getStudentSubjectRecord(activeNotifyStudent, subj);
-                const avg = calcStudentAverage(rec.m1, rec.m2, rec.m3);
-                const avgTxt = avg !== null ? avg.toFixed(1) : "—";
-                const evalTxt = getScoreEvaluationLabel(avg);
-                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${name} - ${gradeSec}) المحترم.\nملخص (${subj}): الحضور (${rec.attendance}) | شهر 1: ${rec.m1 || "—"} | شهر 2: ${rec.m2 || "—"} | شهر 3: ${rec.m3 || "—"} | المعدل: ${avgTxt} (${evalTxt}).`;
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${name} - ${gradeSec}) المحترم.\n${formatGradesReportText(activeNotifyStudent, subj)}`;
             }
         };
 
@@ -3758,6 +3917,7 @@
             persistStudentsToLocalStorage(studentsList);
             saveSubjectsToStorage();
             saveGradeScaleToStorage();
+            saveWeightsToStorage();
             const rows = getScopeStudents();
             const secKey = selectedSection || "ALL";
             const key = `${selectedGrade}__${secKey}`;
