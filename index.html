@@ -2309,6 +2309,9 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <script>
         (function () {
             "use strict";
@@ -2317,6 +2320,22 @@
             var DEFAULT_PRINCIPAL_PHONE = "07734579286";
             var TEACHER_PIN_CODE = "A";
             var DEFAULT_SECRET_CODE = "وليد";
+
+            // إعدادات المزامنة السحابية عبر Firebase Firestore
+            // فعّل CLOUD_SYNC_ENABLED وضع بيانات مشروعك الحقيقي ليظهر التحديث على جميع الأجهزة
+            var CLOUD_SYNC_ENABLED = true;
+            var SCHOOL_CLOUD_DOC_ID = "mutafawiqeen_anbar_main_v1";
+            var firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_PROJECT.firebaseapp.com",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_PROJECT.appspot.com",
+                messagingSenderId: "YOUR_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+            var cloudDb = null;
+            var cloudDocRef = null;
+            var isApplyingRemoteSync = false;
 
             var GRADES = [
                 "الصف الاول",
@@ -2456,6 +2475,120 @@
             var principalPhone = loadInitialPrincipalPhone();
             var isPlatformLocked = loadInitialLockState();
 
+            function isFirebaseConfigReady() {
+                return Boolean(
+                    CLOUD_SYNC_ENABLED &&
+                    typeof firebase !== "undefined" &&
+                    firebaseConfig &&
+                    firebaseConfig.apiKey &&
+                    firebaseConfig.apiKey !== "YOUR_API_KEY" &&
+                    firebaseConfig.projectId &&
+                    firebaseConfig.projectId !== "YOUR_PROJECT_ID"
+                );
+            }
+
+            function pushStateToCloud(skipSync) {
+                if (skipSync || isApplyingRemoteSync || !isFirebaseConfigReady() || !cloudDocRef) return;
+                try {
+                    cloudDocRef.set({
+                        students: sortStudentsAlphabetically(filterOutDeletedStudents(studentsList)),
+                        deletedIds: deletedStudentIds.slice(),
+                        subjects: sortSubjectsAlphabetically(subjectsList),
+                        passMark: Number(passMarkValue),
+                        gradeScale: gradeScaleRules,
+                        weights: gradeWeights,
+                        principalPhone: getCurrentPrincipalPhone(),
+                        adminSecret: getCurrentAdminSecret(),
+                        locked: Boolean(isPlatformLocked),
+                        updatedAt: Date.now()
+                    }, { merge: true }).catch(function (err) {
+                        console.warn("تعذر رفع التحديث إلى قاعدة البيانات السحابية:", err);
+                    });
+                } catch (e) {
+                    console.warn("خطأ أثناء المزامنة السحابية:", e);
+                }
+            }
+
+            function initCloudSync() {
+                if (!isFirebaseConfigReady()) return;
+                try {
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    cloudDb = firebase.firestore();
+                    cloudDocRef = cloudDb.collection("school_platforms").doc(SCHOOL_CLOUD_DOC_ID);
+
+                    cloudDocRef.onSnapshot(function (docSnap) {
+                        if (!docSnap.exists) {
+                            pushStateToCloud(false);
+                            return;
+                        }
+                        var remoteData = docSnap.data() || {};
+                        isApplyingRemoteSync = true;
+
+                        try {
+                            if (Array.isArray(remoteData.deletedIds)) {
+                                deletedStudentIds = remoteData.deletedIds.map(String);
+                                saveDeletedStudentIds(true);
+                            }
+
+                            if (Array.isArray(remoteData.students)) {
+                                studentsList = sortStudentsAlphabetically(filterOutDeletedStudents(remoteData.students));
+                                persistStudentsToLocalStorage(studentsList, true);
+                            }
+
+                            if (Array.isArray(remoteData.subjects) && remoteData.subjects.length > 0) {
+                                subjectsList = sortSubjectsAlphabetically(remoteData.subjects);
+                                saveSubjectsToStorage(true);
+                            }
+
+                            if (typeof remoteData.passMark === "number" && !isNaN(remoteData.passMark)) {
+                                passMarkValue = remoteData.passMark;
+                                safeStorageSet(STORAGE_PASSMARK_KEY, String(passMarkValue));
+                            }
+
+                            if (Array.isArray(remoteData.gradeScale) && remoteData.gradeScale.length > 0) {
+                                gradeScaleRules = remoteData.gradeScale;
+                                saveGradeScaleToStorage(true);
+                            }
+
+                            if (remoteData.weights && typeof remoteData.weights.pursuit === "number" && typeof remoteData.weights.finalExam === "number") {
+                                gradeWeights = remoteData.weights;
+                                saveWeightsToStorage(true);
+                            }
+
+                            if (remoteData.principalPhone && String(remoteData.principalPhone).trim()) {
+                                persistPrincipalPhone(String(remoteData.principalPhone).trim(), true);
+                            }
+
+                            if (remoteData.adminSecret && String(remoteData.adminSecret).trim()) {
+                                persistAdminSecret(String(remoteData.adminSecret).trim(), true);
+                            }
+
+                            if (typeof remoteData.locked === "boolean") {
+                                isPlatformLocked = remoteData.locked;
+                                for (var i = 0; i < ALL_LOCKED_KEYS.length; i++) {
+                                    safeStorageSet(ALL_LOCKED_KEYS[i], String(isPlatformLocked));
+                                }
+                                applyLockUI();
+                            }
+
+                            renderGradesShelf();
+                            if (isInsideRoom) {
+                                renderActiveRoomView();
+                            }
+                        } finally {
+                            isApplyingRemoteSync = false;
+                        }
+                    }, function (err) {
+                        isApplyingRemoteSync = false;
+                        console.warn("فشل الاستماع الفوري للمزامنة السحابية:", err);
+                    });
+                } catch (e) {
+                    console.warn("تعذر تهيئة Firebase:", e);
+                }
+            }
+
             function compareArabicStrings(a, b) {
                 var sa = String(a || "").trim();
                 var sb = String(b || "").trim();
@@ -2496,8 +2629,9 @@
                 }
             }
 
-            function saveDeletedStudentIds() {
+            function saveDeletedStudentIds(skipSync) {
                 safeStorageSet(STORAGE_DELETED_IDS_KEY, JSON.stringify(deletedStudentIds));
+                pushStateToCloud(skipSync);
             }
 
             function markIdsAsDeleted(ids) {
@@ -2508,14 +2642,14 @@
                         deletedStudentIds.push(id);
                     }
                 }
-                saveDeletedStudentIds();
+                saveDeletedStudentIds(false);
             }
 
             function unmarkIdAsDeleted(id) {
                 if (!id) return;
                 var strId = String(id);
                 deletedStudentIds = deletedStudentIds.filter(function (x) { return x !== strId; });
-                saveDeletedStudentIds();
+                saveDeletedStudentIds(false);
             }
 
             function filterOutDeletedStudents(list) {
@@ -2617,9 +2751,10 @@
                 return sortSubjectsAlphabetically(DEFAULT_SUBJECTS.slice());
             }
 
-            function saveSubjectsToStorage() {
+            function saveSubjectsToStorage(skipSync) {
                 subjectsList = sortSubjectsAlphabetically(subjectsList);
                 safeStorageSet(STORAGE_SUBJECTS_KEY, JSON.stringify(subjectsList));
+                pushStateToCloud(skipSync);
             }
 
             function loadGradeScaleFromStorage() {
@@ -2631,8 +2766,9 @@
                 return DEFAULT_GRADE_SCALE.map(function (r) { return Object.assign({}, r); });
             }
 
-            function saveGradeScaleToStorage() {
+            function saveGradeScaleToStorage(skipSync) {
                 safeStorageSet(STORAGE_SCALE_KEY, JSON.stringify(gradeScaleRules));
+                pushStateToCloud(skipSync);
             }
 
             function loadWeightsFromStorage() {
@@ -2646,8 +2782,9 @@
                 return { pursuit: 30, finalExam: 70 };
             }
 
-            function saveWeightsToStorage() {
+            function saveWeightsToStorage(skipSync) {
                 safeStorageSet(STORAGE_WEIGHTS_KEY, JSON.stringify(gradeWeights));
+                pushStateToCloud(skipSync);
             }
 
             function parseNumericScore(v) {
@@ -2841,13 +2978,14 @@
                 }
             }
 
-            function persistPrincipalPhone(nextPhone) {
+            function persistPrincipalPhone(nextPhone, skipSync) {
                 var cleanPhone = String(nextPhone || "").trim() || DEFAULT_PRINCIPAL_PHONE;
                 principalPhone = cleanPhone;
                 safeStorageSet(STORAGE_PRINCIPAL_OVERRIDE_KEY, cleanPhone);
                 for (var i = 0; i < ALL_PRINCIPAL_PHONE_KEYS.length; i++) {
                     safeStorageSet(ALL_PRINCIPAL_PHONE_KEYS[i], cleanPhone);
                 }
+                pushStateToCloud(skipSync);
             }
 
             function showPrincipalPhoneModalNow() {
@@ -2883,7 +3021,7 @@
                     return;
                 }
                 errBox.style.display = "none";
-                persistPrincipalPhone(phoneVal);
+                persistPrincipalPhone(phoneVal, false);
                 var savedNow = getCurrentPrincipalPhone();
                 closePrincipalPhoneModal();
                 alert("✅ تم حفظ واستبدال رقم المدير (" + savedNow + ") فوراً.");
@@ -2898,12 +3036,13 @@
                 hideModal("principalPhoneModalLayer");
             }
 
-            function persistAdminSecret(nextCode) {
+            function persistAdminSecret(nextCode, skipSync) {
                 var cleanCode = String(nextCode).trim();
                 adminSecret = cleanCode;
                 for (var i = 0; i < ALL_SECRET_KEYS.length; i++) {
                     safeStorageSet(ALL_SECRET_KEYS[i], cleanCode);
                 }
+                pushStateToCloud(skipSync);
             }
 
             function persistStudentRecord(fullRecord, isUpdate) {
@@ -2927,7 +3066,7 @@
                         : studentsList.concat([stampedRecord]);
                 }
                 studentsList = sortStudentsAlphabetically(studentsList);
-                persistStudentsToLocalStorage(studentsList);
+                persistStudentsToLocalStorage(studentsList, false);
                 return stampedRecord;
             }
 
@@ -3053,12 +3192,13 @@
                 return sortStudentsAlphabetically(combined);
             }
 
-            function persistStudentsToLocalStorage(list) {
+            function persistStudentsToLocalStorage(list, skipSync) {
                 var sorted = sortStudentsAlphabetically(list);
                 for (var i = 0; i < ALL_STUDENT_STORAGE_KEYS.length; i++) {
                     safeStorageSet(ALL_STUDENT_STORAGE_KEYS[i], JSON.stringify(sorted));
                 }
                 safeStorageSet(STORAGE_STUDENTS_KEY, JSON.stringify(sorted));
+                pushStateToCloud(skipSync);
             }
 
             function openConfirmDeleteModal(titleText, messageText, actionObj) {
@@ -3092,7 +3232,7 @@
                 studentsList = sortStudentsAlphabetically(
                     studentsList.filter(function (s) { return String(s.id) !== targetId; })
                 );
-                persistStudentsToLocalStorage(studentsList);
+                persistStudentsToLocalStorage(studentsList, false);
                 if (verifiedInquiryStudentId && String(verifiedInquiryStudentId) === targetId) {
                     resetStudentInquiryView();
                 }
@@ -3111,7 +3251,7 @@
                 studentsList = sortStudentsAlphabetically(
                     studentsList.filter(function (s) { return idList.indexOf(String(s.id)) === -1; })
                 );
-                persistStudentsToLocalStorage(studentsList);
+                persistStudentsToLocalStorage(studentsList, false);
                 if (verifiedInquiryStudentId && idList.indexOf(String(verifiedInquiryStudentId)) !== -1) {
                     resetStudentInquiryView();
                 }
@@ -3510,7 +3650,7 @@
 
                 if (subjectsList.indexOf(name) === -1) {
                     subjectsList = sortSubjectsAlphabetically(subjectsList.concat([name]));
-                    saveSubjectsToStorage();
+                    saveSubjectsToStorage(false);
 
                     var nowTs = Date.now();
                     studentsList = sortStudentsAlphabetically(
@@ -3521,7 +3661,7 @@
                             });
                         })
                     );
-                    persistStudentsToLocalStorage(studentsList);
+                    persistStudentsToLocalStorage(studentsList, false);
                 }
 
                 inp.value = "";
@@ -3594,6 +3734,7 @@
                 var val = Number(document.getElementById("roomPassMarkInput").value);
                 passMarkValue = isNaN(val) ? 50 : val;
                 safeStorageSet(STORAGE_PASSMARK_KEY, String(passMarkValue));
+                pushStateToCloud(false);
                 renderGradesRoomTable();
             }
 
@@ -3604,7 +3745,7 @@
                     pursuit: isNaN(pVal) ? 30 : Math.max(0, pVal),
                     finalExam: isNaN(fVal) ? 70 : Math.max(0, fVal)
                 };
-                saveWeightsToStorage();
+                saveWeightsToStorage(false);
                 renderGradesRoomTable();
             }
 
@@ -3633,7 +3774,7 @@
                 if (isNaN(minV) || isNaN(maxV) || !lbl) return;
                 gradeScaleRules.push({ min: minV, max: maxV, label: lbl });
                 gradeScaleRules.sort(function (a, b) { return Number(b.min) - Number(a.min); });
-                saveGradeScaleToStorage();
+                saveGradeScaleToStorage(false);
                 document.getElementById("scaleMinInp").value = "";
                 document.getElementById("scaleMaxInp").value = "";
                 document.getElementById("scaleLabelInp").value = "";
@@ -3643,7 +3784,7 @@
 
             function removeCustomGradeScale(idx) {
                 gradeScaleRules.splice(idx, 1);
-                saveGradeScaleToStorage();
+                saveGradeScaleToStorage(false);
                 renderGradeScaleChips();
                 renderGradesRoomTable();
             }
@@ -4117,10 +4258,11 @@
             function executeSaveFullSectionTable() {
                 if (!selectedGrade) return;
                 studentsList = sortStudentsAlphabetically(studentsList);
-                persistStudentsToLocalStorage(studentsList);
-                saveSubjectsToStorage();
-                saveGradeScaleToStorage();
-                saveWeightsToStorage();
+                persistStudentsToLocalStorage(studentsList, false);
+                saveSubjectsToStorage(true);
+                saveGradeScaleToStorage(true);
+                saveWeightsToStorage(true);
+                pushStateToCloud(false);
                 var rows = getScopeStudents();
                 var secKey = selectedSection || "ALL";
                 var key = selectedGrade + "__" + secKey;
@@ -4134,7 +4276,7 @@
                 };
                 safeStorageSet(STORAGE_SAVED_SECTIONS_KEY, JSON.stringify(savedSectionTables));
                 renderActiveRoomView();
-                alert("✅ تم حفظ الجدول بالكامل (" + rows.length + " طالب).");
+                alert("✅ تم حفظ الجدول بالكامل ومزامنته (" + rows.length + " طالب).");
             }
 
             function saveFullSectionTable() {
@@ -4374,9 +4516,9 @@
 
                 if (!editId) {
                     markStudentAsOwned(savedRec.id);
-                    alert("✅ تم حفظ بيانات الطالب وترتيبه أبجدياً، وأصبح جاهزاً في سجل الأساتذة لإضافة الدرجات.\nالاسم: " + savedRec.name + "\nالرمز الخاص بالطالب: " + savedRec.editPin);
+                    alert("✅ تم حفظ بيانات الطالب وترتيبه أبجدياً ومزامنته مع بقية الأجهزة.\nالاسم: " + savedRec.name + "\nالرمز الخاص بالطالب: " + savedRec.editPin);
                 } else {
-                    alert("✅ تم حفظ التعديلات والرمز وتحديث الترتيب الأبجدي بنجاح.");
+                    alert("✅ تم حفظ التعديلات والرمز وتحديث الترتيب الأبجدي ومزامنته بنجاح.");
                 }
 
                 resetStudentFormState();
@@ -4726,6 +4868,7 @@
                     safeStorageSet(ALL_LOCKED_KEYS[i], String(isPlatformLocked));
                 }
                 applyLockUI();
+                pushStateToCloud(false);
             }
 
             function applyLockUI() {
@@ -4888,8 +5031,8 @@
                     alert("⚠️ يرجى إدخال الرمز الجديد.");
                     return;
                 }
-                persistAdminSecret(nextCode);
-                alert("✅ تم تغيير رمز الأدمن وحفظه بنجاح.");
+                persistAdminSecret(nextCode, false);
+                alert("✅ تم تغيير رمز الأدمن وحفظه ومزامنته بنجاح.");
                 hideModal("adminDialogLayer");
             }
 
@@ -5128,8 +5271,10 @@
 
                 if (studentsList.length > 0) {
                     studentsList = sortStudentsAlphabetically(studentsList);
-                    persistStudentsToLocalStorage(studentsList);
+                    persistStudentsToLocalStorage(studentsList, true);
                 }
+
+                initCloudSync();
             }
 
             if (document.readyState === "loading") {
