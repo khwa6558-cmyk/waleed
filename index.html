@@ -7,17 +7,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy-dark: #061c3a;
-            --navy-mid: #0c356b;
-            --blue-royal: #0d58b8;
-            --blue-deep: #072f66;
-            --gold: #d4af37;
-            --gold-bright: #f6d56a;
-            --white: #ffffff;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --green: #15803d;
-            --red: #dc2626;
+            --navy-950: #041226;
+            --navy-900: #061c3a;
+            --navy-800: #0b2e5e;
+            --blue-700: #0e4a99;
+            --blue-600: #1565c0;
+            --blue-500: #2563eb;
+            --sky-400: #38bdf8;
+            --gold-600: #b88a1e;
+            --gold-500: #d4af37;
+            --gold-300: #f6d56a;
+            --gold-100: #fef3c7;
+            --surface-glass: rgba(255, 255, 255, 0.94);
+            --surface-tint: #f3f8ff;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --border-soft: #cbd5e1;
+            --green-600: #15803d;
+            --green-500: #16a34a;
+            --red-600: #dc2626;
+            --shadow-lg: 0 16px 36px rgba(4, 18, 38, 0.16);
+            --shadow-md: 0 8px 22px rgba(11, 46, 94, 0.11);
         }
 
         * {
@@ -29,24 +39,27 @@
 
         body {
             background:
-                radial-gradient(circle at 50% 85%, rgba(56, 189, 248, 0.22), transparent 55%),
-                linear-gradient(180deg, #dce8f5 0%, #eef4fa 45%, #e2ebf5 100%);
-            color: var(--text-dark);
+                radial-gradient(circle at 15% 12%, rgba(212, 175, 55, 0.14), transparent 36%),
+                radial-gradient(circle at 85% 88%, rgba(37, 99, 235, 0.16), transparent 45%),
+                linear-gradient(180deg, #d6e4f3 0%, #edf3fa 48%, #dde8f4 100%);
+            color: var(--text-main);
             min-height: 100vh;
+            line-height: 1.5;
         }
 
         /* ================= HERO BANNER (TITLE TOP + LOGO CENTER) ================= */
         .hero-banner {
             background:
-                linear-gradient(90deg, rgba(6, 28, 58, 0.94) 0%, rgba(12, 53, 107, 0.85) 50%, rgba(6, 28, 58, 0.94) 100%),
-                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.22), transparent 55%);
-            color: var(--white);
-            padding: 16px 24px 18px;
-            border-bottom: 3px solid var(--gold);
+                linear-gradient(90deg, rgba(4, 18, 38, 0.96) 0%, rgba(11, 46, 94, 0.88) 50%, rgba(4, 18, 38, 0.96) 100%),
+                radial-gradient(circle at 50% 50%, rgba(246, 213, 106, 0.24), transparent 58%);
+            color: #ffffff;
+            padding: 18px 24px 20px;
+            border-bottom: 3px solid var(--gold-500);
+            box-shadow: 0 6px 22px rgba(4, 18, 38, 0.25);
         }
 
         .hero-inner {
-            max-width: 1420px;
+            max-width: 1480px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -65,9 +78,10 @@
         }
 
         .hero-center h1 {
-            font-size: 2.05rem;
+            font-size: 2.1rem;
             font-weight: 900;
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+            letter-spacing: -0.2px;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
             line-height: 1.25;
         }
 
@@ -75,20 +89,21 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(246, 213, 106, 0.35);
             border-radius: 12px;
-            padding: 3px 10px;
+            padding: 3px 11px;
             font-size: 1.15rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         .school-logo-circle {
-            width: 102px;
-            height: 102px;
+            width: 104px;
+            height: 104px;
             border-radius: 50%;
             background: #ffffff;
-            border: 3px solid var(--gold-bright);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+            border: 3.5px solid var(--gold-300);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.28), 0 10px 24px rgba(0, 0, 0, 0.48);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -96,6 +111,11 @@
             padding: 3px;
             flex-shrink: 0;
             margin: 2px 0;
+            transition: transform 0.25s ease;
+        }
+
+        .school-logo-circle:hover {
+            transform: scale(1.03);
         }
 
         .school-logo-circle img {
@@ -108,34 +128,37 @@
         .hero-center .sub-city {
             font-size: 1.15rem;
             font-weight: 900;
-            color: var(--gold-bright);
+            color: var(--gold-300);
             margin-top: 1px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
         }
 
         .hero-sub-pill {
             display: inline-block;
-            margin-top: 2px;
-            background: linear-gradient(90deg, #061c3a, #164887, #061c3a);
-            border: 1.5px solid rgba(246, 213, 106, 0.75);
-            padding: 3px 26px;
-            border-radius: 20px;
+            margin-top: 3px;
+            background: linear-gradient(90deg, #051730, #164b91, #051730);
+            border: 1.5px solid rgba(246, 213, 106, 0.85);
+            padding: 4px 28px;
+            border-radius: 22px;
             font-size: 0.98rem;
             font-weight: 800;
             color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         /* ================= TOP ADMIN BAR ================= */
         .admin-strip {
-            background: linear-gradient(90deg, #05162e 0%, #09264d 50%, #05162e 100%);
+            background: linear-gradient(90deg, #041226 0%, #092752 50%, #041226 100%);
             padding: 8px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(246, 213, 106, 0.28);
             position: sticky;
             top: 0;
-            z-index: 150;
+            z-index: 200;
+            box-shadow: 0 4px 14px rgba(4, 18, 38, 0.25);
         }
 
         .admin-strip-inner {
-            max-width: 1420px;
+            max-width: 1480px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -155,13 +178,18 @@
             border: none;
             cursor: pointer;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: #ffffff;
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            transition: 0.2s;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.18s ease, filter 0.18s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .top-pill-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
         }
 
         .btn-open-state {
@@ -187,7 +215,7 @@
 
         .btn-code-action {
             background: linear-gradient(180deg, #1e3a5f, #0f2942);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.28);
             border-radius: 8px;
             padding: 7px 14px;
         }
@@ -203,88 +231,96 @@
             color: #ffffff;
             border: 1.5px solid #3b82f6;
             border-radius: 8px;
-            padding: 5px 12px;
+            padding: 5px 13px;
             font-weight: 900;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .admin-login-box-btn:hover {
+            border-color: var(--gold-300);
+            background: #081c3a;
         }
 
         .admin-login-tag {
-            background: #2563eb;
+            background: linear-gradient(180deg, #3b82f6, #1d4ed8);
             color: #ffffff;
-            padding: 1px 6px;
+            padding: 1px 7px;
             border-radius: 4px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
         }
 
         /* ================= WELCOME BANNER ================= */
         .welcome-strip {
-            max-width: 1020px;
-            margin: 12px auto 12px;
-            background: linear-gradient(90deg, #072854 0%, #14498d 50%, #072854 100%);
-            border-top: 2px solid var(--gold-bright);
-            border-bottom: 2px solid var(--gold-bright);
+            max-width: 1060px;
+            margin: 14px auto 10px;
+            background: linear-gradient(90deg, #06234a 0%, #13478c 50%, #06234a 100%);
+            border-top: 2px solid var(--gold-300);
+            border-bottom: 2px solid var(--gold-300);
             border-radius: 14px;
-            padding: 8px 24px;
+            padding: 9px 24px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(7, 40, 84, 0.22);
+            box-shadow: var(--shadow-md);
         }
 
         .welcome-strip h2 {
             color: #ffffff;
-            font-size: 1.5rem;
+            font-size: 1.48rem;
             font-weight: 900;
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
         }
 
         /* ================= MAIN CONTAINER ================= */
         .page-shell {
-            max-width: 1420px;
+            max-width: 1480px;
             margin: 0 auto;
-            padding: 0 18px 34px;
+            padding: 4px 18px 40px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
+            transition: max-width 0.25s ease, padding 0.25s ease;
         }
 
         /* ================= ADD STUDENT CARD ================= */
         .add-card-panel {
-            background: linear-gradient(180deg, #f3f8ff 0%, #e7f0fc 100%);
-            border: 2px solid #2563eb;
-            border-radius: 16px;
-            padding: 12px 18px 16px;
-            box-shadow: 0 8px 22px rgba(12, 53, 107, 0.1);
+            background: linear-gradient(180deg, #f8fbff 0%, #e8f1fc 100%);
+            border: 2px solid var(--blue-500);
+            border-radius: 18px;
+            padding: 14px 20px 18px;
+            box-shadow: var(--shadow-md);
         }
 
         .panel-ribbon-title {
             display: flex;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .ribbon-badge {
-            background: linear-gradient(180deg, #13478a 0%, #082852 100%);
+            background: linear-gradient(180deg, #144b91 0%, #07254d 100%);
             color: #ffffff;
-            border: 1.5px solid var(--gold-bright);
-            padding: 4px 26px;
+            border: 1.5px solid var(--gold-300);
+            padding: 5px 28px;
             border-radius: 10px 10px 18px 18px;
             font-size: 1.05rem;
             font-weight: 900;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 10px rgba(8, 40, 82, 0.25);
+            box-shadow: 0 5px 12px rgba(7, 37, 77, 0.25);
         }
 
         .form-horizontal-grid {
             display: grid;
-            grid-template-columns: 1.45fr 1.05fr 1.05fr 1.85fr 1.25fr 125px;
-            gap: 10px;
+            grid-template-columns: 1.55fr 1.05fr 1.05fr 1.85fr 1.35fr 128px;
+            gap: 12px;
             align-items: start;
         }
 
@@ -299,14 +335,14 @@
                 grid-template-columns: 1fr;
             }
             .hero-center h1 {
-                font-size: 1.4rem;
+                font-size: 1.42rem;
             }
             .welcome-strip h2 {
                 font-size: 1.1rem;
             }
             .school-logo-circle {
-                width: 82px;
-                height: 82px;
+                width: 84px;
+                height: 84px;
             }
         }
 
@@ -317,55 +353,57 @@
         }
 
         .input-group-box label {
-            font-size: 0.9rem;
+            font-size: 0.89rem;
             font-weight: 800;
-            color: #0b2c57;
+            color: var(--navy-800);
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
         .ctrl-field {
-            height: 38px;
-            padding: 6px 10px;
+            height: 39px;
+            padding: 6px 11px;
             border: 1.5px solid #94a3b8;
-            border-radius: 8px;
+            border-radius: 9px;
             background: #ffffff;
             font-size: 0.88rem;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--text-main);
             width: 100%;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .ctrl-field:focus {
             outline: none;
-            border-color: #1d4ed8;
-            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.16);
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16);
         }
 
         .dob-row-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 5px;
+            gap: 6px;
         }
 
         .photo-box-widget {
             background: #ffffff;
             border: 1.5px dashed #64748b;
-            border-radius: 10px;
+            border-radius: 11px;
             padding: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
+            box-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.04);
         }
 
         .photo-thumb-holder {
-            width: 76px;
-            height: 76px;
+            width: 78px;
+            height: 78px;
             border-radius: 8px;
             background: #ffffff;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #cbd5e1;
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -380,15 +418,20 @@
         }
 
         .btn-pick-img {
-            background: linear-gradient(180deg, #16529c, #0b3366);
+            background: linear-gradient(180deg, #1959a8, #0a3163);
             color: #ffffff;
             border: none;
-            border-radius: 6px;
+            border-radius: 7px;
             padding: 4px 8px;
             font-size: 0.78rem;
             font-weight: 800;
             cursor: pointer;
             width: 100%;
+            transition: filter 0.18s ease;
+        }
+
+        .btn-pick-img:hover {
+            filter: brightness(1.08);
         }
 
         .add-btn-center {
@@ -396,57 +439,64 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 12px;
             flex-wrap: wrap;
         }
 
         .btn-submit-student {
-            background: linear-gradient(180deg, #1565c0 0%, #09356b 100%);
+            background: linear-gradient(180deg, #1967c2 0%, #083369 100%);
             color: #ffffff;
             border: 1.5px solid #60a5fa;
-            border-radius: 9px;
-            padding: 8px 34px;
+            border-radius: 10px;
+            padding: 8px 36px;
             font-size: 1rem;
             font-weight: 900;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(9, 53, 107, 0.32);
+            box-shadow: 0 5px 14px rgba(8, 51, 105, 0.32);
+            transition: transform 0.18s ease, filter 0.18s ease;
+        }
+
+        .btn-submit-student:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
         }
 
         /* ================= GRADES HORIZONTAL SHELF ================= */
         .grades-shelf-box {
-            background: linear-gradient(180deg, #f5f9ff 0%, #e5effa 100%);
-            border: 2px solid #2563eb;
+            background: linear-gradient(180deg, #f8fbff 0%, #e6f0fb 100%);
+            border: 2px solid var(--blue-500);
             border-radius: 18px;
-            padding: 10px 14px 16px;
-            box-shadow: 0 8px 22px rgba(12, 53, 107, 0.1);
+            padding: 12px 16px 18px;
+            box-shadow: var(--shadow-md);
         }
 
         .shelf-top-badge {
             display: flex;
             justify-content: center;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .shelf-title-pill {
-            background: linear-gradient(180deg, #124584 0%, #07244a 100%);
+            background: linear-gradient(180deg, #13488a 0%, #072348 100%);
             color: #ffffff;
-            border: 1.5px solid var(--gold-bright);
-            padding: 4px 28px;
+            border: 1.5px solid var(--gold-300);
+            padding: 5px 30px;
             border-radius: 10px 10px 18px 18px;
             font-size: 1.05rem;
             font-weight: 900;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 12px rgba(7, 35, 72, 0.25);
         }
 
         .grades-six-row {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
+            gap: 11px;
         }
 
         @media (max-width: 1150px) {
@@ -462,26 +512,32 @@
         }
 
         .grade-column-card {
-            background: linear-gradient(180deg, #0e3f7d 0%, #072247 100%);
-            border: 2px solid var(--gold);
-            border-radius: 13px;
-            padding: 8px;
-            box-shadow: 0 5px 12px rgba(7, 34, 71, 0.25);
+            background: linear-gradient(180deg, #0f4282 0%, #061f42 100%);
+            border: 2px solid var(--gold-500);
+            border-radius: 14px;
+            padding: 9px;
+            box-shadow: 0 6px 14px rgba(6, 31, 66, 0.25);
             display: flex;
             flex-direction: column;
             gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .grade-column-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(6, 31, 66, 0.32);
         }
 
         .grade-column-card.active-grade-card {
-            border-color: var(--gold-bright);
-            box-shadow: 0 0 0 2px rgba(246, 213, 106, 0.55), 0 8px 18px rgba(7, 34, 71, 0.35);
+            border-color: var(--gold-300);
+            box-shadow: 0 0 0 2px rgba(246, 213, 106, 0.6), 0 10px 22px rgba(6, 31, 66, 0.36);
         }
 
         .grade-card-heading {
-            background: linear-gradient(180deg, #1a56a3, #0b3163);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 8px;
-            padding: 5px 6px;
+            background: linear-gradient(180deg, #1b59a8, #092e5e);
+            border: 1px solid rgba(255, 255, 255, 0.26);
+            border-radius: 9px;
+            padding: 6px 7px;
             color: #ffffff;
             font-weight: 900;
             font-size: 0.95rem;
@@ -499,22 +555,23 @@
         }
 
         .sec-pill-btn {
-            background: linear-gradient(180deg, #1b63bd 0%, #093269 100%);
+            background: linear-gradient(180deg, #1e68c4 0%, #09336b 100%);
             color: #ffffff;
-            border: 1.5px solid var(--gold);
+            border: 1.5px solid var(--gold-500);
             border-radius: 8px;
-            padding: 6px 2px;
-            font-size: 0.95rem;
+            padding: 7px 2px;
+            font-size: 0.96rem;
             font-weight: 900;
             cursor: pointer;
             text-align: center;
-            transition: 0.15s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+            transition: transform 0.16s ease, background 0.16s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.26);
         }
 
         .sec-pill-btn:hover {
             transform: translateY(-1px);
-            background: linear-gradient(180deg, #2575d6 0%, #0d4185 100%);
+            background: linear-gradient(180deg, #297be0 0%, #0d438a 100%);
+            border-color: var(--gold-300);
         }
 
         .sec-pill-btn.active-sec-btn {
@@ -522,19 +579,37 @@
             border-color: #fde047;
         }
 
-        /* ================= SECTION ROOM VIEW ================= */
+        /* ================= SECTION ROOM VIEW + EXPANDED FULL-SCREEN MODE ================= */
         .section-room-view {
             display: none;
-            background: linear-gradient(180deg, #ffffff 0%, #f4f8fe 100%);
-            border: 2.5px solid var(--gold);
+            background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+            border: 2.5px solid var(--gold-500);
             border-radius: 20px;
-            padding: 18px 20px 24px;
-            box-shadow: 0 14px 34px rgba(6, 28, 58, 0.2);
-            animation: enterRoomFade 0.22s ease;
+            padding: 20px 22px 26px;
+            box-shadow: var(--shadow-lg);
+            animation: enterRoomFade 0.24s ease;
+            width: 100%;
+            transition: border-radius 0.25s ease, padding 0.25s ease;
+        }
+
+        .section-room-view.room-expanded {
+            position: fixed;
+            inset: 0;
+            z-index: 950;
+            border-radius: 0;
+            border: 3px solid var(--gold-500);
+            max-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            overflow-y: auto;
+            padding: 18px 24px 28px;
+            background: linear-gradient(180deg, #f8fbff 0%, #eaf2fc 100%);
+            box-shadow: none;
         }
 
         @keyframes enterRoomFade {
-            from { opacity: 0; transform: translateY(10px) scale(0.99); }
+            from { opacity: 0; transform: translateY(10px) scale(0.992); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
@@ -544,12 +619,13 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            background: linear-gradient(90deg, #061c3a 0%, #103d78 55%, #061c3a 100%);
+            background: linear-gradient(90deg, #04152e 0%, #0f3d7a 55%, #04152e 100%);
             color: #ffffff;
-            padding: 12px 16px;
-            border-radius: 14px;
-            border-bottom: 2.5px solid var(--gold-bright);
+            padding: 13px 18px;
+            border-radius: 15px;
+            border-bottom: 2.5px solid var(--gold-300);
             margin-bottom: 14px;
+            box-shadow: 0 6px 16px rgba(4, 21, 46, 0.22);
         }
 
         .room-identity-group {
@@ -560,25 +636,25 @@
         }
 
         .room-badge-pill {
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid var(--gold-bright);
-            color: var(--gold-bright);
-            padding: 3px 12px;
+            background: rgba(246, 213, 106, 0.16);
+            border: 1px solid var(--gold-300);
+            color: var(--gold-300);
+            padding: 3px 13px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 800;
         }
 
         .room-identity-group h3 {
-            font-size: 1.2rem;
+            font-size: 1.24rem;
             font-weight: 900;
         }
 
         .count-chip {
-            background: rgba(255, 255, 255, 0.16);
-            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.34);
             color: #ffffff;
-            padding: 3px 11px;
+            padding: 3px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 800;
@@ -589,6 +665,27 @@
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+        }
+
+        .btn-expand-room {
+            background: linear-gradient(180deg, #d97706, #b45309);
+            color: #ffffff;
+            border: 1px solid var(--gold-300);
+            border-radius: 9px;
+            padding: 7px 15px;
+            font-weight: 800;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+            transition: transform 0.16s ease, filter 0.16s ease;
+        }
+
+        .btn-expand-room:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
         }
 
         .btn-save-full-table {
@@ -603,6 +700,12 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: transform 0.16s ease, filter 0.16s ease;
+        }
+
+        .btn-save-full-table:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
         }
 
         .btn-back-section {
@@ -617,6 +720,12 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: transform 0.16s ease, filter 0.16s ease;
+        }
+
+        .btn-back-section:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
         }
 
         .btn-close-section {
@@ -631,6 +740,12 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: transform 0.16s ease, filter 0.16s ease;
+        }
+
+        .btn-close-section:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
         }
 
         .room-subbar {
@@ -639,17 +754,24 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .room-search-box {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background: #ffffff;
             border: 1.5px solid #94a3b8;
-            border-radius: 9px;
-            padding: 5px 12px;
+            border-radius: 10px;
+            padding: 5px 14px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .room-search-box:focus-within {
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         .room-search-box input {
@@ -657,14 +779,24 @@
             background: transparent;
             outline: none;
             font-weight: 700;
-            font-size: 0.9rem;
-            width: 220px;
+            font-size: 0.92rem;
+            width: 240px;
+            max-width: 65vw;
+            color: var(--text-main);
         }
 
         .table-scroll-box {
+            width: 100%;
             overflow-x: auto;
-            border: 1.5px solid #1e3a8a;
-            border-radius: 12px;
+            border: 2px solid var(--navy-800);
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(11, 46, 94, 0.08);
+        }
+
+        .section-room-view.room-expanded .table-scroll-box {
+            max-height: calc(100vh - 210px);
+            overflow-y: auto;
         }
 
         table.section-students-tbl {
@@ -674,108 +806,123 @@
         }
 
         table.section-students-tbl thead th {
-            background: #0c2d57;
+            background: linear-gradient(180deg, #0e386e 0%, #082347 100%);
             color: #ffffff;
-            padding: 10px 12px;
+            padding: 12px 14px;
             text-align: center;
             font-weight: 800;
-            font-size: 0.92rem;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.95rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.22);
+            border-bottom: 2px solid var(--gold-500);
             white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         table.section-students-tbl tbody td {
-            padding: 10px 12px;
+            padding: 11px 14px;
             text-align: center;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.94rem;
             border-bottom: 1px solid #cbd5e1;
             border-left: 1px solid #e2e8f0;
+            color: var(--text-main);
         }
 
         table.section-students-tbl tbody tr:nth-child(even) {
-            background: #f8fafc;
+            background: #f8fbff;
         }
 
         table.section-students-tbl tbody tr:hover {
-            background: #eff6ff;
+            background: #eaf3ff;
         }
 
         .student-link-name {
-            color: #0b2e59;
+            color: var(--navy-800);
             font-weight: 800;
             cursor: pointer;
+            transition: color 0.16s ease;
         }
 
         .student-link-name:hover {
             text-decoration: underline;
-            color: #1d4ed8;
+            color: var(--blue-500);
         }
 
         .cell-actions {
             display: inline-flex;
             gap: 6px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .mini-act-btn {
             border: none;
-            border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 0.8rem;
+            border-radius: 7px;
+            padding: 5px 11px;
+            font-size: 0.82rem;
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
+            transition: transform 0.15s ease, filter 0.15s ease;
         }
 
-        .mini-preview { background: #1d4ed8; }
-        .mini-edit { background: #16a34a; }
-        .mini-delete { background: #dc2626; }
+        .mini-act-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
+        }
+
+        .mini-preview { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
+        .mini-edit { background: linear-gradient(180deg, #16a34a, #15803d); }
+        .mini-delete { background: linear-gradient(180deg, #dc2626, #b91c1c); }
 
         /* ================= MODALS & ID CARD ================= */
         .modal-layer {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(6, 20, 42, 0.72);
-            z-index: 1200;
+            background: rgba(4, 18, 38, 0.75);
+            z-index: 1500;
             align-items: center;
             justify-content: center;
             padding: 16px;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
         }
 
         .id-card-box {
             width: 100%;
-            max-width: 540px;
-            background: linear-gradient(135deg, #f8fafc 0%, #e0ecfa 55%, #f1f5f9 100%);
-            border: 3px solid #1e3a8a;
+            max-width: 560px;
+            background: linear-gradient(135deg, #ffffff 0%, #e7f1fc 58%, #f8fafc 100%);
+            border: 3px solid var(--navy-800);
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 24px 54px rgba(0, 0, 0, 0.48);
         }
 
         .id-card-head {
-            background: linear-gradient(90deg, #071e3d 0%, #143d75 100%);
+            background: linear-gradient(90deg, #061d3b 0%, #143f7a 100%);
             color: #ffffff;
-            padding: 10px 16px;
+            padding: 11px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold-500);
         }
 
         .id-head-logo {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #ffffff;
             padding: 2px;
             object-fit: contain;
+            border: 1.5px solid var(--gold-300);
         }
 
         .id-card-content {
-            padding: 16px;
+            padding: 18px;
             display: flex;
             gap: 16px;
             align-items: center;
@@ -788,13 +935,14 @@
         }
 
         .id-photo-frame {
-            width: 132px;
-            height: 158px;
+            width: 138px;
+            height: 164px;
             border-radius: 12px;
-            border: 2.5px solid var(--gold);
+            border: 2.5px solid var(--gold-500);
             background: #ffffff;
             overflow: hidden;
             flex-shrink: 0;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
         }
 
         .id-photo-frame img {
@@ -809,13 +957,14 @@
             display: flex;
             flex-direction: column;
             gap: 7px;
+            width: 100%;
         }
 
         .id-field-line {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            padding: 5px 12px;
+            border-radius: 8px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -824,23 +973,23 @@
 
         .id-field-line .k {
             font-weight: 800;
-            color: #0b2e59;
-            min-width: 80px;
+            color: var(--navy-800);
+            min-width: 102px;
         }
 
         .id-field-line .v {
             font-weight: 900;
-            color: #0f172a;
+            color: var(--text-main);
         }
 
         .dialog-card {
-            background: #ffffff;
-            border-radius: 14px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 16px;
             max-width: 430px;
             width: 100%;
-            padding: 20px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-            border-top: 5px solid #0b3d7a;
+            padding: 22px;
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.38);
+            border-top: 5px solid var(--blue-600);
             position: relative;
         }
 
@@ -848,7 +997,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(6, 28, 58, 0.96);
+            background: rgba(4, 18, 38, 0.96);
             z-index: 2500;
             align-items: center;
             justify-content: center;
@@ -863,7 +1012,7 @@
                 left: 50%;
                 top: 24px;
                 transform: translateX(-50%);
-                width: 540px;
+                width: 560px;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -946,10 +1095,10 @@
     </div>
 
     <!-- Main Page Content -->
-    <main class="page-shell">
+    <main class="page-shell" id="mainPageShell">
 
         <!-- Main Lobby (Add Student + Grades Shelf) -->
-        <div id="mainLobbyContainer" style="display: flex; flex-direction: column; gap: 14px;">
+        <div id="mainLobbyContainer" style="display: flex; flex-direction: column; gap: 16px;">
 
             <!-- Add Student Box -->
             <section class="add-card-panel">
@@ -965,8 +1114,8 @@
 
                     <div class="form-horizontal-grid">
                         <div class="input-group-box">
-                            <label>👤 الاسم</label>
-                            <input type="text" id="nameField" class="ctrl-field" placeholder="أدخل اسم الطالب" required>
+                            <label>👤 الاسم الرباعي</label>
+                            <input type="text" id="nameField" class="ctrl-field" placeholder="الاسم الأول الأب الجد اللقب" required>
                         </div>
 
                         <div class="input-group-box">
@@ -993,7 +1142,7 @@
                         </div>
 
                         <div class="input-group-box">
-                            <label>📅 المواليد</label>
+                            <label>📅 المواليد (2002 - 2080)</label>
                             <div class="dob-row-3">
                                 <select id="dayField" class="ctrl-field" required></select>
                                 <select id="monthField" class="ctrl-field" required></select>
@@ -1002,15 +1151,15 @@
                         </div>
 
                         <div class="input-group-box">
-                            <label>👤 اسم الام</label>
-                            <input type="text" id="motherField" class="ctrl-field" placeholder="أدخل اسم الأم" required>
+                            <label>👤 اسم الام الثلاثي</label>
+                            <input type="text" id="motherField" class="ctrl-field" placeholder="اسم الأم الأب الجد" required>
                         </div>
 
                         <div class="input-group-box">
-                            <label style="justify-content: center;">🖼️ الصورة</label>
+                            <label style="justify-content: center;">🖼️ الصورة (خلفية بيضاء)</label>
                             <div class="photo-box-widget">
                                 <div class="photo-thumb-holder" id="photoPreviewHolder">
-                                    <span style="font-size: 2rem; color: #94a3b8;">👤</span>
+                                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='56' r='26' fill='%2394a3b8'/><path d='M24 148 C24 108, 116 108, 116 148 Z' fill='%2394a3b8'/></svg>" alt="معاينة خلفية بيضاء">
                                 </div>
                                 <input type="file" id="photoInputFile" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
                                 <button type="button" class="btn-pick-img" onclick="document.getElementById('photoInputFile').click()">
@@ -1057,6 +1206,10 @@
                 </div>
 
                 <div class="room-nav-actions">
+                    <button type="button" id="toggleExpandRoomBtn" class="btn-expand-room" onclick="toggleExpandSectionRoom()">
+                        <span>⛶</span>
+                        <span id="expandRoomLabel">تكبير الشعبة</span>
+                    </button>
                     <button type="button" class="btn-save-full-table" onclick="saveFullSectionTable()">
                         <span>💾</span>
                         <span>حفظ الجدول بالكامل</span>
@@ -1079,10 +1232,10 @@
                 </div>
 
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" class="mini-act-btn mini-preview" style="padding: 6px 12px;" onclick="exportSectionWord()">
+                    <button type="button" class="mini-act-btn mini-preview" style="padding: 6px 13px;" onclick="exportSectionWord()">
                         📄 تصدير Word
                     </button>
-                    <button type="button" class="mini-act-btn mini-delete" style="padding: 6px 12px;" onclick="deleteAllInActiveSection()">
+                    <button type="button" class="mini-act-btn mini-delete" style="padding: 6px 13px;" onclick="deleteAllInActiveSection()">
                         🗑️ حذف طلاب الشعبة
                     </button>
                 </div>
@@ -1093,11 +1246,11 @@
                     <thead>
                         <tr>
                             <th>ت</th>
-                            <th>الاسم</th>
+                            <th>الاسم الرباعي</th>
                             <th>الصف</th>
                             <th>الشعبة</th>
                             <th>المواليد</th>
-                            <th>اسم الام</th>
+                            <th>اسم الام الثلاثي</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -1127,11 +1280,11 @@
                     <img id="idCardStudentPhoto" src="" alt="صورة الطالب">
                 </div>
                 <div class="id-rows">
-                    <div class="id-field-line"><span class="k">الاسم</span><span>:</span><span class="v" id="idCardName"></span></div>
+                    <div class="id-field-line"><span class="k">الاسم الرباعي</span><span>:</span><span class="v" id="idCardName"></span></div>
                     <div class="id-field-line"><span class="k">الصف</span><span>:</span><span class="v" id="idCardGrade"></span></div>
                     <div class="id-field-line"><span class="k">الشعبة</span><span>:</span><span class="v" id="idCardSection"></span></div>
                     <div class="id-field-line"><span class="k">المواليد</span><span>:</span><span class="v" id="idCardDob"></span></div>
-                    <div class="id-field-line"><span class="k">اسم الام</span><span>:</span><span class="v" id="idCardMother"></span></div>
+                    <div class="id-field-line"><span class="k">اسم الام الثلاثي</span><span>:</span><span class="v" id="idCardMother"></span></div>
                 </div>
             </div>
 
@@ -1214,11 +1367,12 @@
         let selectedGrade = null;
         let selectedSection = null;
         let isInsideRoom = false;
+        let isRoomExpanded = false;
         let currentPhotoBase64 = "";
 
-        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v13")) || {};
-        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v13") || DEFAULT_SECRET_CODE;
-        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v13") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v15")) || {};
+        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v15") || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v15") === "true";
 
         let useCloud = false;
         let db = null;
@@ -1226,7 +1380,8 @@
         let settingsDoc = null;
         let localDb = null;
 
-        const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='55' r='28' fill='%2364748b'/><path d='M22 150 C22 108, 118 108, 118 150 Z' fill='%2364748b'/></svg>";
+        // صورة افتراضية بخلفية بيضاء نقية
+        const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='56' r='26' fill='%2394a3b8'/><path d='M24 148 C24 108, 116 108, 116 148 Z' fill='%2394a3b8'/></svg>";
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
@@ -1266,7 +1421,7 @@
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V13", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V15", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1288,6 +1443,7 @@
             };
         }
 
+        // السنوات من 2002 إلى 2080
         function initDateFields() {
             const dSel = document.getElementById("dayField");
             const mSel = document.getElementById("monthField");
@@ -1300,7 +1456,7 @@
             for (let m = 1; m <= 12; m++) mSel.innerHTML += `<option value="${m}">${m}</option>`;
 
             ySel.innerHTML = '<option value="">سنة</option>';
-            for (let y = 2016; y >= 2002; y--) ySel.innerHTML += `<option value="${y}">${y}</option>`;
+            for (let y = 2002; y <= 2080; y++) ySel.innerHTML += `<option value="${y}">${y}</option>`;
         }
 
         function renderGradesShelf() {
@@ -1328,7 +1484,23 @@
             }).join("");
         }
 
-        // الدخول إلى غرفة الشعبة مستقلة
+        function setRoomExpandedState(expand) {
+            isRoomExpanded = Boolean(expand);
+            const roomEl = document.getElementById("sectionRoomView");
+            const labelEl = document.getElementById("expandRoomLabel");
+            if (isRoomExpanded) {
+                roomEl.classList.add("room-expanded");
+                labelEl.innerText = "تصغير الشعبة";
+            } else {
+                roomEl.classList.remove("room-expanded");
+                labelEl.innerText = "تكبير الشعبة";
+            }
+        }
+
+        window.toggleExpandSectionRoom = function () {
+            setRoomExpandedState(!isRoomExpanded);
+        };
+
         window.enterSectionRoom = function (grade, sec) {
             selectedGrade = grade;
             selectedSection = sec;
@@ -1341,13 +1513,14 @@
             document.getElementById("mainLobbyContainer").style.display = "none";
             document.getElementById("welcomeRibbonBanner").style.display = "none";
             document.getElementById("sectionRoomView").style.display = "block";
+            setRoomExpandedState(false);
 
             renderSectionRoomTable();
             window.scrollTo({ top: 90, behavior: "smooth" });
         };
 
-        // زر الرجوع من غرفة الشعبة إلى قائمة الصفوف والشعب
         window.backFromSectionRoom = function () {
+            setRoomExpandedState(false);
             document.getElementById("sectionRoomView").style.display = "none";
             document.getElementById("mainLobbyContainer").style.display = "flex";
             document.getElementById("welcomeRibbonBanner").style.display = "block";
@@ -1356,8 +1529,8 @@
             document.getElementById("gradesSixShelf").scrollIntoView({ behavior: "smooth", block: "center" });
         };
 
-        // زر إغلاق غرفة الشعبة والعودة إلى بداية الصفحة
         window.closeSectionRoom = function () {
+            setRoomExpandedState(false);
             document.getElementById("sectionRoomView").style.display = "none";
             document.getElementById("mainLobbyContainer").style.display = "flex";
             document.getElementById("welcomeRibbonBanner").style.display = "block";
@@ -1393,7 +1566,7 @@
 
             const tbody = document.getElementById("roomTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
                 return;
             }
 
@@ -1428,11 +1601,12 @@
                 savedAt: nowTime,
                 students: rows
             };
-            localStorage.setItem("mutafawiqeen_saved_sections_v13", JSON.stringify(savedSectionTables));
+            localStorage.setItem("mutafawiqeen_saved_sections_v15", JSON.stringify(savedSectionTables));
             renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
 
+        // معالجة الصورة لتكون على خلفية بيضاء نقية
         window.handlePhotoUpload = function (e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1444,14 +1618,31 @@
                     canvas.width = 160;
                     canvas.height = 190;
                     const ctx = canvas.getContext("2d");
+
+                    ctx.save();
                     ctx.fillStyle = "#FFFFFF";
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
                     const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
                     const x = (canvas.width / 2) - (img.width / 2) * scale;
                     const y = (canvas.height / 2) - (img.height / 2) * scale;
                     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-                    currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.65);
-                    document.getElementById("photoPreviewHolder").innerHTML = `<img src="${currentPhotoBase64}" alt="صورة الطالب">`;
+
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const px = imgData.data;
+                    for (let i = 0; i < px.length; i += 4) {
+                        if (px[i + 3] < 245) {
+                            px[i] = 255;
+                            px[i + 1] = 255;
+                            px[i + 2] = 255;
+                            px[i + 3] = 255;
+                        }
+                    }
+                    ctx.putImageData(imgData, 0, 0);
+                    ctx.restore();
+
+                    currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.72);
+                    document.getElementById("photoPreviewHolder").innerHTML = `<img src="${currentPhotoBase64}" alt="صورة الطالب بخلفية بيضاء">`;
                 };
                 img.src = ev.target.result;
             };
@@ -1502,7 +1693,7 @@
             document.getElementById("studentForm").reset();
             document.getElementById("editStudentIdField").value = "";
             currentPhotoBase64 = "";
-            document.getElementById("photoPreviewHolder").innerHTML = `<span style="font-size: 2rem; color: #94a3b8;">👤</span>`;
+            document.getElementById("photoPreviewHolder").innerHTML = `<img src="${defaultAvatar}" alt="معاينة خلفية بيضاء">`;
             document.getElementById("studentFormBadge").innerHTML = `<span>👤+</span><span>إضافة طالب جديد</span>`;
             document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>إضافة الطالب</span>`;
             document.getElementById("cancelEditActionBtn").style.display = "none";
@@ -1511,6 +1702,7 @@
         window.startEditStudent = function (id) {
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
+            setRoomExpandedState(false);
             document.getElementById("editStudentIdField").value = st.id;
             document.getElementById("nameField").value = st.name;
             document.getElementById("gradeField").value = st.grade;
@@ -1605,11 +1797,11 @@
                         <thead>
                             <tr style="background:#0c2d57;color:#fff;">
                                 <th style="border:1px solid #000;padding:8px;">ت</th>
-                                <th style="border:1px solid #000;padding:8px;">الاسم</th>
+                                <th style="border:1px solid #000;padding:8px;">الاسم الرباعي</th>
                                 <th style="border:1px solid #000;padding:8px;">الصف</th>
                                 <th style="border:1px solid #000;padding:8px;">الشعبة</th>
                                 <th style="border:1px solid #000;padding:8px;">المواليد</th>
-                                <th style="border:1px solid #000;padding:8px;">اسم الام</th>
+                                <th style="border:1px solid #000;padding:8px;">اسم الام الثلاثي</th>
                             </tr>
                         </thead>
                         <tbody>${bodyRows}</tbody>
@@ -1630,7 +1822,7 @@
         // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v13", String(locked));
+            localStorage.setItem("mutafawiqeen_locked_v15", String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { isLocked: locked });
@@ -1723,7 +1915,7 @@
                 return;
             }
             adminSecret = nextCode;
-            localStorage.setItem("mutafawiqeen_secret_v13", nextCode);
+            localStorage.setItem("mutafawiqeen_secret_v15", nextCode);
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { adminCode: nextCode });
             }
