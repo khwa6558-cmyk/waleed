@@ -181,13 +181,18 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            transition: transform 0.18s ease, filter 0.18s ease;
+            transition: transform 0.18s ease, filter 0.18s ease, border-color 0.18s ease;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
         }
 
         .top-pill-btn:hover {
             transform: translateY(-1px);
             filter: brightness(1.06);
+        }
+
+        .top-pill-btn.sound-playing {
+            background: linear-gradient(180deg, #15803d, #14532d) !important;
+            border-color: #86efac !important;
         }
 
         .btn-open-state {
@@ -1350,9 +1355,6 @@
 </head>
 <body>
 
-    <!-- Basmala Audio (Sudais) -->
-    <audio id="basmalaAudio" preload="auto" src="basmala_sudais.mp3"></audio>
-
     <!-- Lock Overlay Screen -->
     <div id="lockScreenLayer" class="lock-screen-layer">
         <div class="dialog-card" style="text-align: center;">
@@ -1398,11 +1400,6 @@
                 </button>
 
                 <span class="strip-sep"></span>
-
-                <button type="button" id="basmalaSoundBtn" class="top-pill-btn btn-code-action" onclick="playBasmalaSound(true)" title="تشغيل صوت بسم الله الرحمن الرحيم بصوت السديسي">
-                    <span>🔊</span>
-                    <span id="basmalaSoundLabel">البسملة</span>
-                </button>
 
                 <button type="button" class="top-pill-btn btn-lock-action" onclick="promptLockPlatform()">
                     <span>🔒</span>
@@ -1994,42 +1991,6 @@
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
-
-        const basmalaAudioEl = document.getElementById("basmalaAudio");
-        const basmalaSoundLabelEl = document.getElementById("basmalaSoundLabel");
-        let basmalaPlayedOnce = false;
-
-        async function playBasmalaSound(manualClick = false) {
-            if (!basmalaAudioEl) return false;
-            try {
-                basmalaAudioEl.currentTime = 0;
-                await basmalaAudioEl.play();
-                basmalaPlayedOnce = true;
-                if (basmalaSoundLabelEl) basmalaSoundLabelEl.innerText = "إعادة البسملة";
-                return true;
-            } catch (err) {
-                if (manualClick) {
-                    alert("⚠️ تعذر تشغيل الصوت؛ تأكد من وجود ملف الصوت (basmala_sudais.mp3) أو من صلاحيات الصوت في المتصفح.");
-                }
-                return false;
-            }
-        }
-
-        window.playBasmalaSound = playBasmalaSound;
-
-        window.addEventListener("DOMContentLoaded", async () => {
-            const ok = await playBasmalaSound(false);
-            if (!ok) {
-                const unlockOnce = async () => {
-                    if (basmalaPlayedOnce) return;
-                    await playBasmalaSound(false);
-                    document.removeEventListener("pointerdown", unlockOnce);
-                    document.removeEventListener("keydown", unlockOnce);
-                };
-                document.addEventListener("pointerdown", unlockOnce, { once: true });
-                document.addEventListener("keydown", unlockOnce, { once: true });
-            }
-        });
 
         try {
             history.replaceState({ platformRoot: true }, "", window.location.href);
