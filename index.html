@@ -47,7 +47,6 @@
             line-height: 1.5;
         }
 
-        /* ================= HERO BANNER (TITLE TOP + LOGO CENTER) ================= */
         .hero-banner {
             background:
                 linear-gradient(90deg, rgba(4, 18, 38, 0.96) 0%, rgba(11, 46, 94, 0.88) 50%, rgba(4, 18, 38, 0.96) 100%),
@@ -146,7 +145,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        /* ================= TOP ADMIN BAR ================= */
         .admin-strip {
             background: linear-gradient(90deg, #041226 0%, #092752 50%, #041226 100%);
             padding: 8px 24px;
@@ -270,7 +268,6 @@
             background: linear-gradient(180deg, #16a34a, #15803d);
         }
 
-        /* ================= WELCOME BANNER ================= */
         .welcome-strip {
             max-width: 1060px;
             margin: 14px auto 10px;
@@ -293,7 +290,6 @@
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
         }
 
-        /* ================= MAIN CONTAINER ================= */
         .page-shell {
             max-width: 1520px;
             margin: 0 auto;
@@ -304,7 +300,6 @@
             transition: max-width 0.25s ease, padding 0.25s ease;
         }
 
-        /* ================= ADD STUDENT CARD ================= */
         .add-card-panel {
             background: linear-gradient(180deg, #f8fbff 0%, #e8f1fc 100%);
             border: 2px solid var(--blue-500);
@@ -509,12 +504,16 @@
             transition: transform 0.18s ease, filter 0.18s ease;
         }
 
-        .btn-whatsapp-send:hover {
+        .btn-whatsapp-send:hover:not(:disabled) {
             transform: translateY(-1px);
             filter: brightness(1.06);
         }
 
-        /* ================= GRADES HORIZONTAL SHELF ================= */
+        .btn-whatsapp-send:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
         .grades-shelf-box {
             background: linear-gradient(180deg, #f8fbff 0%, #e6f0fb 100%);
             border: 2px solid var(--blue-500);
@@ -629,7 +628,6 @@
             border-color: #fde047;
         }
 
-        /* ================= SECTION ROOM VIEW + EXPANDED FULL-SCREEN MODE ================= */
         .section-room-view {
             display: none;
             background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
@@ -1169,12 +1167,31 @@
             color: var(--navy-800);
         }
 
-        /* ================= PRINTABLE SECTION REPORT ================= */
+        .status-feedback-banner {
+            display: none;
+            border-radius: 9px;
+            padding: 8px 11px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .status-feedback-ok {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+        }
+
+        .status-feedback-err {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
         #printableSectionSheet {
             display: none;
         }
 
-        /* ================= MODALS & ID CARD ================= */
         .modal-layer {
             display: none;
             position: fixed;
@@ -1359,7 +1376,7 @@
         </div>
     </div>
 
-    <!-- Hero Banner (School Name Top + Logo Center) -->
+    <!-- Hero Banner -->
     <header class="hero-banner">
         <div class="hero-inner">
             <div class="hero-center">
@@ -1426,7 +1443,6 @@
     <!-- Main Page Content -->
     <main class="page-shell" id="mainPageShell">
 
-        <!-- Main Lobby (Add Student + Grades Shelf) -->
         <div id="mainLobbyContainer" style="display: flex; flex-direction: column; gap: 16px;">
 
             <!-- Add Student Box -->
@@ -1520,7 +1536,7 @@
                 </form>
             </section>
 
-            <!-- Grades Shelf (6 Grades Horizontally, Each With Sections أ ب ج) -->
+            <!-- Grades Shelf -->
             <section class="grades-shelf-box">
                 <div class="shelf-top-badge">
                     <div class="shelf-title-pill">
@@ -1534,7 +1550,7 @@
 
         </div>
 
-        <!-- Dedicated Section Room View (Opens Like a Room When Clicking a Section) -->
+        <!-- Dedicated Section Room View -->
         <section id="sectionRoomView" class="section-room-view">
             <div class="room-top-banner">
                 <div class="room-identity-group">
@@ -1631,26 +1647,27 @@
     <!-- Printable Section Sheet Container -->
     <div id="printableSectionSheet"></div>
 
-    <!-- Principal Phone Modal (Enter Phone -> Click Add -> Enter Admin PIN -> Save & Retain) -->
+    <!-- Principal Phone Modal -->
     <div id="principalPhoneModalLayer" class="modal-layer" onclick="if(event.target===this) closePrincipalPhoneModal()">
         <div class="dialog-card" style="border-top-color: #0f766e;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closePrincipalPhoneModal()">✕</button>
-            <h3 style="color: #0f766e; margin-bottom: 6px;">📞 إضافة رقم المدير (خاص بالإدارة)</h3>
-            <p style="color: #475569; font-size: 0.84rem; font-weight: 700; margin-bottom: 12px;">
-                لا يظهر هذا الرقم للطلاب؛ يُستخدم تلقائياً في رسائل التبليغ بعد تأكيد رمز الأدمن وحفظه.
+            <h3 style="color: #0f766e; margin-bottom: 4px;">📞 تغيير / حفظ رقم المدير</h3>
+            <p id="currentPrincipalActiveLabel" style="background:#f0fdfa;border:1px solid #99f6e4;color:#115e59;padding:6px 10px;border-radius:8px;font-size:0.84rem;font-weight:800;margin-bottom:8px;" dir="ltr"></p>
+            <p style="color: #475569; font-size: 0.82rem; font-weight: 700; margin-bottom: 12px;">
+                عند الحفظ يتم استبدال الرقم السابق تلقائياً واستخدامه فوراً دون تعديل الكود، ولا يظهر في نص الرسالة.
             </p>
 
             <div id="principalModalErrorBox" class="pin-error-msg"></div>
 
             <div id="principalPhoneStep1">
                 <div class="input-group-box" style="margin-bottom: 14px;">
-                    <label>رقم هاتف المدير:</label>
-                    <input type="tel" id="principalPhoneInputField" class="ctrl-field" placeholder="07XXXXXXXXX" dir="ltr" onkeydown="if(event.key==='Enter'){event.preventDefault();requestAdminPinForPrincipalSave();}">
+                    <label>رقم هاتف المدير الجديد:</label>
+                    <input type="tel" id="principalPhoneInputField" class="ctrl-field" placeholder="07734579286" dir="ltr" onkeydown="if(event.key==='Enter'){event.preventDefault();requestAdminPinForPrincipalSave();}">
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="requestAdminPinForPrincipalSave()">
                         <span>➕</span>
-                        <span>إضافة</span>
+                        <span>متابعة</span>
                     </button>
                     <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closePrincipalPhoneModal()">
                         إلغاء
@@ -1661,13 +1678,13 @@
             <div id="principalPhoneStep2" style="display: none;">
                 <p id="principalPendingPreview" style="background:#f0fdfa;border:1px solid #99f6e4;color:#115e59;padding:7px 10px;border-radius:8px;font-size:0.86rem;font-weight:800;margin-bottom:10px;" dir="ltr"></p>
                 <div class="input-group-box" style="margin-bottom: 14px;">
-                    <label>أدخل رمز الأدمن لحفظ الرقم والاحتفاظ به:</label>
+                    <label>أدخل رمز الأدمن لاستبدال الرقم وحفظه تلقائياً:</label>
                     <input type="password" id="principalAdminPinField" class="ctrl-field" placeholder="أدخل رمز الأدمن..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmSavePrincipalWithPin();}">
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <button type="button" class="btn-save-full-table" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmSavePrincipalWithPin()">
                         <span>💾</span>
-                        <span>حفظ</span>
+                        <span>حفظ واستبدال</span>
                     </button>
                     <button type="button" class="btn-clear-search" style="padding: 8px 12px;" onclick="backToPrincipalPhoneStep()">
                         رجوع
@@ -1708,7 +1725,7 @@
         </div>
     </div>
 
-    <!-- Direct Admin Code Verification Modal (Edit / Delete All / Save / Print / Notify / Bulk Notify) -->
+    <!-- Direct Admin Code Verification Modal -->
     <div id="adminEditPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeAdminEditPinModal()">
         <div class="dialog-card" style="border-top-color: var(--gold-500);">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeAdminEditPinModal()">✕</button>
@@ -1734,15 +1751,15 @@
         </div>
     </div>
 
-    <!-- Single WhatsApp Notification Composer Modal -->
+    <!-- Single WhatsApp Notification Modal -->
     <div id="whatsappNotifyModalLayer" class="modal-layer" onclick="if(event.target===this) closeWhatsappNotifyModal()">
         <div class="dialog-card" style="border-top-color: #16a34a; max-width: 480px;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeWhatsappNotifyModal()">✕</button>
             <h3 style="color: #15803d; margin-bottom: 6px;">📩 تبليغ ولي الأمر عبر الواتساب</h3>
             <p id="notifyStudentMeta" style="color: #0f172a; font-size: 0.88rem; font-weight: 800; margin-bottom: 4px;"></p>
-            <p id="notifyPrincipalMeta" style="color: #475569; font-size: 0.82rem; font-weight: 700; margin-bottom: 10px;"></p>
+            <p id="notifySenderStatusMeta" style="color: #475569; font-size: 0.82rem; font-weight: 700; margin-bottom: 10px;"></p>
 
-            <div id="notifyErrorBox" class="pin-error-msg"></div>
+            <div id="notifyFeedbackBox" class="status-feedback-banner"></div>
 
             <div class="input-group-box" style="margin-bottom: 8px;">
                 <label>📱 رقم ولي الأمر (قابل للتعديل قبل الإرسال):</label>
@@ -1756,30 +1773,30 @@
             </div>
 
             <div class="input-group-box" style="margin-bottom: 14px;">
-                <label>✍️ نص الرسالة المرسلة من المدير:</label>
+                <label>✍️ نص الرسالة (يُرسل بدون إظهار رقم المدير):</label>
                 <textarea id="notifyMessageTextarea" class="ctrl-field" placeholder="اكتب نص التبليغ هنا..."></textarea>
             </div>
 
             <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="sendWhatsappNotification()">
-                    <span>💬</span>
+                <button type="button" id="sendSingleCloudBtn" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="sendWhatsappNotification()">
+                    <span>📤</span>
                     <span>إرسال عبر واتساب</span>
                 </button>
                 <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeWhatsappNotifyModal()">
-                    إلغاء
+                    إغلاق
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Bulk WhatsApp Notification Modal (For Section Students) -->
+    <!-- Bulk WhatsApp Notification Modal -->
     <div id="bulkWhatsappModalLayer" class="modal-layer" onclick="if(event.target===this) closeBulkWhatsappModal()">
         <div class="dialog-card" style="border-top-color: #16a34a; max-width: 540px;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeBulkWhatsappModal()">✕</button>
             <h3 style="color: #15803d; margin-bottom: 4px;">📢 تبليغ جماعي لطلاب الشعبة عبر الواتساب</h3>
             <p id="bulkSectionMeta" style="color: #475569; font-size: 0.85rem; font-weight: 800; margin-bottom: 10px;"></p>
 
-            <div id="bulkErrorBox" class="pin-error-msg"></div>
+            <div id="bulkFeedbackBox" class="status-feedback-banner"></div>
 
             <div id="bulkQueueStatusBanner" class="bulk-step-banner" style="display: none;"></div>
 
@@ -1801,7 +1818,7 @@
                 </div>
 
                 <div class="input-group-box" style="margin-bottom: 14px;">
-                    <label>✍️ نص الرسالة الموحدة (يُضاف اسم الطالب تلقائياً):</label>
+                    <label>✍️ نص الرسالة الموحدة (بدون رقم المدير):</label>
                     <textarea id="bulkMessageTextarea" class="ctrl-field" placeholder="اكتب نص التبليغ الجماعي هنا..."></textarea>
                 </div>
 
@@ -1819,7 +1836,7 @@
             <div id="bulkQueueControlStage" style="display: none;">
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <button type="button" id="bulkSendNextBtn" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="sendCurrentBulkQueueItem()">
-                        <span>💬</span>
+                        <span>📤</span>
                         <span>إرسال للطالب الحالي</span>
                     </button>
                     <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="skipCurrentBulkQueueItem()">
@@ -1916,6 +1933,7 @@
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         const SCHOOL_LOGO_URL = "logo.PNG";
+        const DEFAULT_PRINCIPAL_PHONE = "07734579286";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDV8xl6gEF6eHvcA8Rut8INisrNuBciZcY",
@@ -1955,8 +1973,10 @@
         ];
         const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v23";
         const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v23";
+        const STORAGE_PRINCIPAL_OVERRIDE_KEY = "mutafawiqeen_principal_override_v23";
         const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v23";
         const ALL_PRINCIPAL_PHONE_KEYS = [
+            "mutafawiqeen_principal_override_v23",
             "mutafawiqeen_principal_phone_v23",
             "mutafawiqeen_principal_phone_v22"
         ];
@@ -2009,6 +2029,19 @@
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
 
+        function setFeedbackBanner(elId, message, type = "err") {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            if (!message) {
+                el.style.display = "none";
+                el.innerText = "";
+                return;
+            }
+            el.className = `status-feedback-banner ${type === "ok" ? "status-feedback-ok" : "status-feedback-err"}`;
+            el.innerText = message;
+            el.style.display = "block";
+        }
+
         function loadInitialAdminSecret() {
             for (const k of ALL_SECRET_KEYS) {
                 const v = localStorage.getItem(k);
@@ -2033,18 +2066,30 @@
         }
 
         function loadInitialPrincipalPhone() {
+            const overrideVal = localStorage.getItem(STORAGE_PRINCIPAL_OVERRIDE_KEY);
+            if (overrideVal && String(overrideVal).trim()) {
+                return String(overrideVal).trim();
+            }
             for (const k of ALL_PRINCIPAL_PHONE_KEYS) {
                 const v = localStorage.getItem(k);
                 if (v && String(v).trim()) {
                     const clean = String(v).trim();
-                    try { localStorage.setItem(STORAGE_PRINCIPAL_PHONE_KEY, clean); } catch (e) {}
+                    try { ALL_PRINCIPAL_PHONE_KEYS.forEach(key => localStorage.setItem(key, clean)); } catch (e) {}
                     return clean;
                 }
             }
-            return "";
+            try {
+                ALL_PRINCIPAL_PHONE_KEYS.forEach(key => localStorage.setItem(key, DEFAULT_PRINCIPAL_PHONE));
+            } catch (e) {}
+            return DEFAULT_PRINCIPAL_PHONE;
         }
 
         function getCurrentPrincipalPhone() {
+            const overrideVal = localStorage.getItem(STORAGE_PRINCIPAL_OVERRIDE_KEY);
+            if (overrideVal && String(overrideVal).trim()) {
+                principalPhone = String(overrideVal).trim();
+                return principalPhone;
+            }
             for (const k of ALL_PRINCIPAL_PHONE_KEYS) {
                 const v = localStorage.getItem(k);
                 if (v && String(v).trim()) {
@@ -2052,7 +2097,7 @@
                     return principalPhone;
                 }
             }
-            return principalPhone;
+            return principalPhone || DEFAULT_PRINCIPAL_PHONE;
         }
 
         function normalizePhoneToWhatsapp(rawPhone) {
@@ -2073,16 +2118,33 @@
         }
 
         function buildPrincipalMessage(studentName, bodyText) {
-            const pPhone = getCurrentPrincipalPhone();
-            const footerLines = [
-                "ــــــــــــــــــــ",
-                "من: مدير ثانوية المتفوقين الثانية للبنين - الأنبار"
-            ];
-            if (pPhone) {
-                footerLines.push(`رقم المدير: ${pPhone}`);
-            }
             const headerLine = studentName ? `بخصوص الطالب: (${studentName})\n\n` : "";
-            return `${headerLine}${bodyText}\n\n${footerLines.join("\n")}`;
+            const signature = "إدارة ثانوية المتفوقين الثانية للبنين - الأنبار";
+            return `${headerLine}${bodyText}\n\nــــــــــــــــــــ\n${signature}`;
+        }
+
+        function openWhatsappDirect(waNumber, fullText) {
+            const cleanNum = normalizePhoneToWhatsapp(waNumber);
+            if (!cleanNum || cleanNum.length < 9) {
+                throw new Error("رقم واتساب ولي الأمر غير صالح.");
+            }
+            const url = `https://wa.me/${cleanNum}?text=${encodeURIComponent(fullText)}`;
+            const win = window.open(url, "_blank", "noopener,noreferrer");
+            if (!win) {
+                window.location.href = url;
+            }
+        }
+
+        function promptAdminPinBeforeWhatsappSend(labelText) {
+            const entered = prompt(`${labelText}\nأدخل رمز الأدمن للمتابعة وفتح واتساب:`);
+            if (entered === null) return false;
+            if (entered.trim() !== getCurrentAdminSecret()) {
+                alert("❌ رمز الأدمن غير صحيح.");
+                return false;
+            }
+            isAdminLoggedIn = true;
+            updateAdminBadgeUI();
+            return true;
         }
 
         function writeSecretToIndexedDB(codeValue, updatedTs) {
@@ -2098,6 +2160,7 @@
             try {
                 const tx = localDb.transaction("meta", "readwrite");
                 tx.objectStore("meta").put({ key: "principalPhone", value: phoneValue, updatedAt: updatedTs });
+                tx.objectStore("meta").put({ key: "principalOverride", value: phoneValue, updatedAt: updatedTs });
             } catch (e) {}
         }
 
@@ -2118,12 +2181,13 @@
         }
 
         async function persistPrincipalPhone(nextPhone) {
-            const cleanPhone = String(nextPhone || "").trim();
+            const cleanPhone = String(nextPhone || "").trim() || DEFAULT_PRINCIPAL_PHONE;
             const nowTs = Date.now();
             principalPhone = cleanPhone;
             principalUpdatedAt = nowTs;
 
             try {
+                localStorage.setItem(STORAGE_PRINCIPAL_OVERRIDE_KEY, cleanPhone);
                 ALL_PRINCIPAL_PHONE_KEYS.forEach(k => localStorage.setItem(k, cleanPhone));
                 localStorage.setItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(nowTs));
             } catch (e) {}
@@ -2134,6 +2198,7 @@
                 try {
                     await setDoc(settingsDoc, {
                         principalPhone: cleanPhone,
+                        principalOverride: cleanPhone,
                         principalUpdatedAt: nowTs
                     }, { merge: true });
                 } catch (err) {}
@@ -2141,8 +2206,10 @@
         }
 
         window.openPrincipalAddModal = function () {
+            const currentActive = getCurrentPrincipalPhone();
             pendingPrincipalPhoneCandidate = "";
-            document.getElementById("principalPhoneInputField").value = "";
+            document.getElementById("currentPrincipalActiveLabel").innerText = `الرقم المعتمد حالياً: ${currentActive}`;
+            document.getElementById("principalPhoneInputField").value = currentActive;
             document.getElementById("principalAdminPinField").value = "";
             document.getElementById("principalPhoneStep1").style.display = "block";
             document.getElementById("principalPhoneStep2").style.display = "none";
@@ -2165,7 +2232,7 @@
             }
             errBox.style.display = "none";
             pendingPrincipalPhoneCandidate = phoneVal;
-            document.getElementById("principalPendingPreview").innerText = `الرقم المراد إضافته وحفظه: ${phoneVal}`;
+            document.getElementById("principalPendingPreview").innerText = `الرقم الجديد الذي سيحل محل السابق: ${phoneVal}`;
             document.getElementById("principalAdminPinField").value = "";
             document.getElementById("principalPhoneStep1").style.display = "none";
             document.getElementById("principalPhoneStep2").style.display = "block";
@@ -2198,8 +2265,12 @@
             isAdminLoggedIn = true;
             updateAdminBadgeUI();
             await persistPrincipalPhone(pendingPrincipalPhoneCandidate);
+            const savedNow = getCurrentPrincipalPhone();
             closePrincipalPhoneModal();
-            alert("✅ تم حفظ رقم المدير والاحتفاظ به لاستخدامه في رسائل التبليغ.");
+            alert(`✅ تم استبدال رقم المدير وحفظه تلقائياً (${savedNow}) وسيُستخدم في جميع الرسائل القادمة.`);
+            if (activeNotifyStudent) {
+                document.getElementById("notifySenderStatusMeta").innerText = "المرسل: رقم المدير المحدّث (لا يُطبع داخل الرسالة)";
+            }
             if (isInsideRoom) renderSectionRoomTable();
         };
 
@@ -2401,6 +2472,7 @@
                                 adminCode: getCurrentAdminSecret(),
                                 secretUpdatedAt: secretUpdatedAt || Date.now(),
                                 principalPhone: getCurrentPrincipalPhone(),
+                                principalOverride: getCurrentPrincipalPhone(),
                                 principalUpdatedAt: principalUpdatedAt || Date.now()
                             });
                         } else {
@@ -2420,11 +2492,14 @@
                                 writeSecretToIndexedDB(adminSecret, remoteUpdatedAt);
                             }
 
+                            const remotePhoneCandidate = data.principalOverride || data.principalPhone;
                             const remotePUpdated = Number(data.principalUpdatedAt || 0);
                             const localPUpdated = Number(localStorage.getItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
-                            if (data.principalPhone && remotePUpdated >= localPUpdated) {
-                                principalPhone = String(data.principalPhone).trim();
+                            const recentPrincipalWrite = (Date.now() - localPUpdated) < 15000;
+                            if (remotePhoneCandidate && !recentPrincipalWrite && remotePUpdated > localPUpdated) {
+                                principalPhone = String(remotePhoneCandidate).trim();
                                 principalUpdatedAt = remotePUpdated;
+                                localStorage.setItem(STORAGE_PRINCIPAL_OVERRIDE_KEY, principalPhone);
                                 ALL_PRINCIPAL_PHONE_KEYS.forEach(k => localStorage.setItem(k, principalPhone));
                                 localStorage.setItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(remotePUpdated));
                                 writePrincipalPhoneToIndexedDB(principalPhone, remotePUpdated);
@@ -2533,6 +2608,7 @@
                         if (pRec && pRec.value && (pRec.updatedAt || 0) >= lsPUpdated) {
                             principalPhone = String(pRec.value).trim();
                             principalUpdatedAt = Number(pRec.updatedAt || 0);
+                            localStorage.setItem(STORAGE_PRINCIPAL_OVERRIDE_KEY, principalPhone);
                             ALL_PRINCIPAL_PHONE_KEYS.forEach(k => localStorage.setItem(k, principalPhone));
                             localStorage.setItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(principalUpdatedAt));
                         }
@@ -2774,14 +2850,16 @@
 
         function openNotifyComposerForStudent(st) {
             activeNotifyStudent = st;
+            const activePrincipal = getCurrentPrincipalPhone();
             document.getElementById("notifyStudentMeta").innerText = `الطالب: ${st.name} (${st.grade} - شعبة ${st.section})`;
-            document.getElementById("notifyPrincipalMeta").innerText = `مرسلة من: إدارة ثانوية المتفوقين الثانية للبنين - الأنبار`;
+            document.getElementById("notifySenderStatusMeta").innerText = activePrincipal
+                ? "المرسل: رقم المدير المعتمد حالياً (لا يُطبع داخل الرسالة)"
+                : "تنبيه: لم يتم حفظ رقم المدير بعد من زر (إضافة رقم المدير)";
             document.getElementById("notifyGuardianPhoneInput").value = st.guardianPhone || "";
             document.getElementById("notifyMessageTextarea").value =
                 `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${st.name}) المحترم.\nيرجى مراجعة إدارة ثانوية المتفوقين الثانية للبنين - الأنبار بخصوص أمور دراسية مهمة.\nمع فائق الاحترام.`;
-            const errBox = document.getElementById("notifyErrorBox");
-            errBox.style.display = "none";
-            errBox.innerText = "";
+            setFeedbackBanner("notifyFeedbackBox", "");
+            document.getElementById("sendSingleCloudBtn").disabled = false;
             document.getElementById("whatsappNotifyModalLayer").style.display = "flex";
             setTimeout(() => document.getElementById("notifyMessageTextarea").focus(), 60);
         }
@@ -2808,33 +2886,44 @@
 
         window.sendWhatsappNotification = function () {
             if (!activeNotifyStudent) return;
+            if (!promptAdminPinBeforeWhatsappSend("تأكيد إرسال التبليغ الفردي")) return;
+
             const rawGuardian = document.getElementById("notifyGuardianPhoneInput").value.trim();
             const msgBody = document.getElementById("notifyMessageTextarea").value.trim();
-            const errBox = document.getElementById("notifyErrorBox");
+            const sendBtn = document.getElementById("sendSingleCloudBtn");
+
+            const activePrincipal = normalizePhoneToWhatsapp(getCurrentPrincipalPhone());
+            if (!activePrincipal || activePrincipal.length < 9) {
+                setFeedbackBanner("notifyFeedbackBox", "⚠️ يرجى إضافة وحفظ رقم المدير أولاً من زر (إضافة رقم المدير).", "err");
+                return;
+            }
 
             const waNumber = normalizePhoneToWhatsapp(rawGuardian);
             if (!waNumber || waNumber.length < 9) {
-                errBox.innerText = "⚠️ يرجى إدخال رقم واتساب صحيح لولي الأمر.";
-                errBox.style.display = "block";
+                setFeedbackBanner("notifyFeedbackBox", "⚠️ يرجى إدخال رقم واتساب صحيح لولي الأمر.", "err");
                 return;
             }
             if (!msgBody) {
-                errBox.innerText = "⚠️ يرجى كتابة نص الرسالة قبل الإرسال.";
-                errBox.style.display = "block";
+                setFeedbackBanner("notifyFeedbackBox", "⚠️ يرجى كتابة نص الرسالة قبل الإرسال.", "err");
                 return;
             }
 
             const fullText = buildPrincipalMessage("", msgBody);
-            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(fullText)}`;
-            window.open(waUrl, "_blank", "noopener,noreferrer");
-            closeWhatsappNotifyModal();
+            sendBtn.disabled = true;
+
+            try {
+                openWhatsappDirect(waNumber, fullText);
+                setFeedbackBanner("notifyFeedbackBox", "✅ تم فتح تطبيق واتساب بالرسالة الجاهزة.", "ok");
+            } catch (err) {
+                setFeedbackBanner("notifyFeedbackBox", `❌ ${err.message}`, "err");
+            } finally {
+                sendBtn.disabled = false;
+            }
         };
 
         window.closeWhatsappNotifyModal = function () {
             activeNotifyStudent = null;
-            const errBox = document.getElementById("notifyErrorBox");
-            errBox.style.display = "none";
-            errBox.innerText = "";
+            setFeedbackBanner("notifyFeedbackBox", "");
             hideModal("whatsappNotifyModalLayer");
         };
 
@@ -2842,9 +2931,7 @@
             if (!selectedGrade || !selectedSection) return;
             const rows = getAllSectionStudents(selectedGrade, selectedSection);
             document.getElementById("bulkSectionMeta").innerText = `${selectedGrade} - شعبة (${selectedSection}) | إجمالي الطلاب: ${rows.length}`;
-            const errBox = document.getElementById("bulkErrorBox");
-            errBox.style.display = "none";
-            errBox.innerText = "";
+            setFeedbackBanner("bulkFeedbackBox", "");
 
             const checklist = document.getElementById("bulkStudentsChecklist");
             if (rows.length === 0) {
@@ -2910,19 +2997,23 @@
         }
 
         window.beginBulkSendQueue = function () {
-            const errBox = document.getElementById("bulkErrorBox");
-            errBox.style.display = "none";
+            setFeedbackBanner("bulkFeedbackBox", "");
+
+            const activePrincipal = normalizePhoneToWhatsapp(getCurrentPrincipalPhone());
+            if (!activePrincipal || activePrincipal.length < 9) {
+                setFeedbackBanner("bulkFeedbackBox", "⚠️ يرجى إضافة وحفظ رقم المدير أولاً من زر (إضافة رقم المدير).", "err");
+                return;
+            }
+
             const msgBody = document.getElementById("bulkMessageTextarea").value.trim();
             if (!msgBody) {
-                errBox.innerText = "⚠️ يرجى كتابة نص الرسالة الموحدة أولاً.";
-                errBox.style.display = "block";
+                setFeedbackBanner("bulkFeedbackBox", "⚠️ يرجى كتابة نص الرسالة الموحدة أولاً.", "err");
                 return;
             }
 
             const selectedIds = Array.from(document.querySelectorAll(".bulk-student-cb:checked")).map(cb => cb.value);
             if (selectedIds.length === 0) {
-                errBox.innerText = "⚠️ يرجى اختيار طالب واحد على الأقل.";
-                errBox.style.display = "block";
+                setFeedbackBanner("bulkFeedbackBox", "⚠️ يرجى اختيار طالب واحد على الأقل.", "err");
                 return;
             }
 
@@ -2940,14 +3031,12 @@
             });
 
             if (queueItems.length === 0) {
-                errBox.innerText = "⚠️ لا يوجد رقم واتساب صالح لأي من الطلاب المحددين.";
-                errBox.style.display = "block";
+                setFeedbackBanner("bulkFeedbackBox", "⚠️ لا يوجد رقم واتساب صالح لأي من الطلاب المحددين.", "err");
                 return;
             }
 
             if (skippedNames.length > 0) {
-                errBox.innerText = `ℹ️ تم تجاوز (${skippedNames.length}) طالب لعدم توفر رقم صالح: ${skippedNames.join("، ")}`;
-                errBox.style.display = "block";
+                setFeedbackBanner("bulkFeedbackBox", `ℹ️ تم تجاوز (${skippedNames.length}) طالب لعدم توفر رقم صالح: ${skippedNames.join("، ")}`, "err");
             }
 
             bulkQueue = queueItems;
@@ -2960,12 +3049,30 @@
 
         window.sendCurrentBulkQueueItem = function () {
             if (bulkQueueIndex >= bulkQueue.length) return;
+            if (!promptAdminPinBeforeWhatsappSend("تأكيد إرسال التبليغ الجماعي")) return;
+
             const current = bulkQueue[bulkQueueIndex];
+            const nextBtn = document.getElementById("bulkSendNextBtn");
+
+            const activePrincipal = normalizePhoneToWhatsapp(getCurrentPrincipalPhone());
+            if (!activePrincipal || activePrincipal.length < 9) {
+                setFeedbackBanner("bulkFeedbackBox", "⚠️ يرجى إضافة وحفظ رقم المدير أولاً من زر (إضافة رقم المدير).", "err");
+                return;
+            }
+
             const fullText = buildPrincipalMessage(current.student.name, current.body);
-            const waUrl = `https://wa.me/${current.waNumber}?text=${encodeURIComponent(fullText)}`;
-            window.open(waUrl, "_blank", "noopener,noreferrer");
-            bulkQueueIndex += 1;
-            updateBulkQueueBanner();
+            nextBtn.disabled = true;
+
+            try {
+                openWhatsappDirect(current.waNumber, fullText);
+                setFeedbackBanner("bulkFeedbackBox", `✅ تم فتح واتساب للطالب (${current.student.name})؛ أرسل الرسالة ثم اضغط للمتابعة.`, "ok");
+                bulkQueueIndex += 1;
+                updateBulkQueueBanner();
+            } catch (err) {
+                setFeedbackBanner("bulkFeedbackBox", `❌ تعذر فتح واتساب للطالب (${current.student.name}): ${err.message}`, "err");
+            } finally {
+                nextBtn.disabled = false;
+            }
         };
 
         window.skipCurrentBulkQueueItem = function () {
@@ -2984,9 +3091,7 @@
 
         window.closeBulkWhatsappModal = function () {
             resetBulkQueueToSelection();
-            const errBox = document.getElementById("bulkErrorBox");
-            errBox.style.display = "none";
-            errBox.innerText = "";
+            setFeedbackBanner("bulkFeedbackBox", "");
             hideModal("bulkWhatsappModalLayer");
         };
 
