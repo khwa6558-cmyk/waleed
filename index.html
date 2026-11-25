@@ -516,58 +516,69 @@
             border-color: #fde047;
         }
 
-        /* ================= SECTION TABLE DRAWER ================= */
-        .section-table-drawer {
+        /* ================= SECTION ROOM VIEW ================= */
+        .section-room-view {
             display: none;
-            background: #ffffff;
-            border: 2.5px solid #0c356b;
-            border-radius: 16px;
-            padding: 16px 18px 20px;
-            box-shadow: 0 12px 28px rgba(6, 28, 58, 0.16);
-            animation: slideDownFade 0.2s ease;
+            background: linear-gradient(180deg, #ffffff 0%, #f4f8fe 100%);
+            border: 2.5px solid var(--gold);
+            border-radius: 20px;
+            padding: 18px 20px 24px;
+            box-shadow: 0 14px 34px rgba(6, 28, 58, 0.2);
+            animation: enterRoomFade 0.22s ease;
         }
 
-        @keyframes slideDownFade {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes enterRoomFade {
+            from { opacity: 0; transform: translateY(10px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .drawer-toolbar {
+        .room-top-banner {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            background: linear-gradient(90deg, #07244a 0%, #11407d 100%);
+            gap: 12px;
+            background: linear-gradient(90deg, #061c3a 0%, #103d78 55%, #061c3a 100%);
             color: #ffffff;
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border-bottom: 2.5px solid var(--gold-bright);
+            margin-bottom: 14px;
         }
 
-        .drawer-title-group {
+        .room-identity-group {
             display: flex;
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
         }
 
-        .drawer-title-group h3 {
-            font-size: 1.15rem;
-            font-weight: 900;
-        }
-
-        .count-chip {
-            background: rgba(255, 255, 255, 0.18);
+        .room-badge-pill {
+            background: rgba(212, 175, 55, 0.2);
             border: 1px solid var(--gold-bright);
             color: var(--gold-bright);
-            padding: 2px 10px;
+            padding: 3px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 800;
         }
 
-        .drawer-controls-group {
+        .room-identity-group h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+
+        .count-chip {
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            padding: 3px 11px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+
+        .room-nav-actions {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -578,10 +589,10 @@
             background: linear-gradient(180deg, #16a34a, #15803d);
             color: #ffffff;
             border: 1px solid #86efac;
-            border-radius: 8px;
-            padding: 6px 14px;
+            border-radius: 9px;
+            padding: 7px 15px;
             font-weight: 800;
-            font-size: 0.86rem;
+            font-size: 0.88rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -592,10 +603,10 @@
             background: linear-gradient(180deg, #2563eb, #1d4ed8);
             color: #ffffff;
             border: 1px solid #93c5fd;
-            border-radius: 8px;
-            padding: 6px 14px;
+            border-radius: 9px;
+            padding: 7px 15px;
             font-weight: 800;
-            font-size: 0.86rem;
+            font-size: 0.88rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -606,48 +617,48 @@
             background: linear-gradient(180deg, #dc2626, #b91c1c);
             color: #ffffff;
             border: 1px solid #fca5a5;
-            border-radius: 8px;
-            padding: 6px 14px;
+            border-radius: 9px;
+            padding: 7px 15px;
             font-weight: 800;
-            font-size: 0.86rem;
+            font-size: 0.88rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
 
-        .drawer-subbar {
+        .room-subbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .drawer-search-box {
+        .room-search-box {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: #f8fafc;
+            background: #ffffff;
             border: 1.5px solid #94a3b8;
-            border-radius: 8px;
-            padding: 4px 10px;
+            border-radius: 9px;
+            padding: 5px 12px;
         }
 
-        .drawer-search-box input {
+        .room-search-box input {
             border: none;
             background: transparent;
             outline: none;
             font-weight: 700;
-            font-size: 0.88rem;
-            width: 210px;
+            font-size: 0.9rem;
+            width: 220px;
         }
 
         .table-scroll-box {
             overflow-x: auto;
             border: 1.5px solid #1e3a8a;
-            border-radius: 10px;
+            border-radius: 12px;
         }
 
         table.section-students-tbl {
@@ -920,7 +931,7 @@
     </nav>
 
     <!-- Welcome Ribbon -->
-    <div class="welcome-strip">
+    <div id="welcomeRibbonBanner" class="welcome-strip">
         <h2>
             <span>🎓</span>
             <span>اهلا بكم في ثانوية المتفوقين الثانية - الانبار</span>
@@ -930,129 +941,134 @@
     <!-- Main Page Content -->
     <main class="page-shell">
 
-        <!-- Add Student Box -->
-        <section class="add-card-panel">
-            <div class="panel-ribbon-title">
-                <div class="ribbon-badge" id="studentFormBadge">
-                    <span>👤+</span>
-                    <span>إضافة طالب جديد</span>
+        <!-- Main Lobby (Add Student + Grades Shelf) -->
+        <div id="mainLobbyContainer" style="display: flex; flex-direction: column; gap: 14px;">
+
+            <!-- Add Student Box -->
+            <section class="add-card-panel">
+                <div class="panel-ribbon-title">
+                    <div class="ribbon-badge" id="studentFormBadge">
+                        <span>👤+</span>
+                        <span>إضافة طالب جديد</span>
+                    </div>
                 </div>
-            </div>
 
-            <form id="studentForm" onsubmit="saveStudentEntry(event)">
-                <input type="hidden" id="editStudentIdField">
+                <form id="studentForm" onsubmit="saveStudentEntry(event)">
+                    <input type="hidden" id="editStudentIdField">
 
-                <div class="form-horizontal-grid">
-                    <div class="input-group-box">
-                        <label>👤 الاسم</label>
-                        <input type="text" id="nameField" class="ctrl-field" placeholder="أدخل اسم الطالب" required>
-                    </div>
-
-                    <div class="input-group-box">
-                        <label>🎓 الصف</label>
-                        <select id="gradeField" class="ctrl-field" required>
-                            <option value="">اختر الصف</option>
-                            <option value="الصف الاول">الصف الاول</option>
-                            <option value="الصف الثاني">الصف الثاني</option>
-                            <option value="الصف الثالث">الصف الثالث</option>
-                            <option value="الصف الرابع">الصف الرابع</option>
-                            <option value="الصف الخامس">الصف الخامس</option>
-                            <option value="الصف السادس">الصف السادس</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group-box">
-                        <label>👥 الشعبة</label>
-                        <select id="sectionField" class="ctrl-field" required>
-                            <option value="">اختر الشعبة</option>
-                            <option value="أ">أ</option>
-                            <option value="ب">ب</option>
-                            <option value="ج">ج</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group-box">
-                        <label>📅 المواليد</label>
-                        <div class="dob-row-3">
-                            <select id="dayField" class="ctrl-field" required></select>
-                            <select id="monthField" class="ctrl-field" required></select>
-                            <select id="yearField" class="ctrl-field" required></select>
+                    <div class="form-horizontal-grid">
+                        <div class="input-group-box">
+                            <label>👤 الاسم</label>
+                            <input type="text" id="nameField" class="ctrl-field" placeholder="أدخل اسم الطالب" required>
                         </div>
-                    </div>
 
-                    <div class="input-group-box">
-                        <label>👤 اسم الام</label>
-                        <input type="text" id="motherField" class="ctrl-field" placeholder="أدخل اسم الأم" required>
-                    </div>
+                        <div class="input-group-box">
+                            <label>🎓 الصف</label>
+                            <select id="gradeField" class="ctrl-field" required>
+                                <option value="">اختر الصف</option>
+                                <option value="الصف الاول">الصف الاول</option>
+                                <option value="الصف الثاني">الصف الثاني</option>
+                                <option value="الصف الثالث">الصف الثالث</option>
+                                <option value="الصف الرابع">الصف الرابع</option>
+                                <option value="الصف الخامس">الصف الخامس</option>
+                                <option value="الصف السادس">الصف السادس</option>
+                            </select>
+                        </div>
 
-                    <div class="input-group-box">
-                        <label style="justify-content: center;">🖼️ الصورة</label>
-                        <div class="photo-box-widget">
-                            <div class="photo-thumb-holder" id="photoPreviewHolder">
-                                <span style="font-size: 2rem; color: #94a3b8;">👤</span>
+                        <div class="input-group-box">
+                            <label>👥 الشعبة</label>
+                            <select id="sectionField" class="ctrl-field" required>
+                                <option value="">اختر الشعبة</option>
+                                <option value="أ">أ</option>
+                                <option value="ب">ب</option>
+                                <option value="ج">ج</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group-box">
+                            <label>📅 المواليد</label>
+                            <div class="dob-row-3">
+                                <select id="dayField" class="ctrl-field" required></select>
+                                <select id="monthField" class="ctrl-field" required></select>
+                                <select id="yearField" class="ctrl-field" required></select>
                             </div>
-                            <input type="file" id="photoInputFile" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
-                            <button type="button" class="btn-pick-img" onclick="document.getElementById('photoInputFile').click()">
-                                📷 اختيار صورة
-                            </button>
                         </div>
+
+                        <div class="input-group-box">
+                            <label>👤 اسم الام</label>
+                            <input type="text" id="motherField" class="ctrl-field" placeholder="أدخل اسم الأم" required>
+                        </div>
+
+                        <div class="input-group-box">
+                            <label style="justify-content: center;">🖼️ الصورة</label>
+                            <div class="photo-box-widget">
+                                <div class="photo-thumb-holder" id="photoPreviewHolder">
+                                    <span style="font-size: 2rem; color: #94a3b8;">👤</span>
+                                </div>
+                                <input type="file" id="photoInputFile" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                                <button type="button" class="btn-pick-img" onclick="document.getElementById('photoInputFile').click()">
+                                    📷 اختيار صورة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="add-btn-center">
+                        <button type="submit" id="saveStudentBtn" class="btn-submit-student">
+                            <span>💾</span>
+                            <span>إضافة الطالب</span>
+                        </button>
+                        <button type="button" id="cancelEditActionBtn" class="mini-act-btn mini-delete" style="display: none; padding: 8px 14px;" onclick="resetStudentFormState()">
+                            إلغاء التعديل
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Grades Shelf (6 Grades Horizontally, Each With Sections أ ب ج) -->
+            <section class="grades-shelf-box">
+                <div class="shelf-top-badge">
+                    <div class="shelf-title-pill">
+                        <span>⭐</span>
+                        <span>اختر الصف لدخول شعبته</span>
                     </div>
                 </div>
 
-                <div class="add-btn-center">
-                    <button type="submit" id="saveStudentBtn" class="btn-submit-student">
-                        <span>💾</span>
-                        <span>إضافة الطالب</span>
-                    </button>
-                    <button type="button" id="cancelEditActionBtn" class="mini-act-btn mini-delete" style="display: none; padding: 8px 14px;" onclick="resetStudentFormState()">
-                        إلغاء التعديل
-                    </button>
-                </div>
-            </form>
-        </section>
+                <div class="grades-six-row" id="gradesSixShelf"></div>
+            </section>
 
-        <!-- Grades Shelf (6 Grades Horizontally, Each With Sections أ ب ج) -->
-        <section class="grades-shelf-box">
-            <div class="shelf-top-badge">
-                <div class="shelf-title-pill">
-                    <span>⭐</span>
-                    <span>اختر الصف لعرض شعبه</span>
-                </div>
-            </div>
+        </div>
 
-            <div class="grades-six-row" id="gradesSixShelf"></div>
-        </section>
-
-        <!-- Section Students Table Drawer (Opens When Any Section Button Is Clicked) -->
-        <section id="sectionTableDrawer" class="section-table-drawer">
-            <div class="drawer-toolbar">
-                <div class="drawer-title-group">
-                    <span>📋</span>
-                    <h3 id="drawerHeadingTitle">جدول الشعبة</h3>
-                    <span class="count-chip" id="drawerCountChip">0 طالب</span>
-                    <span class="count-chip" id="drawerSavedStateChip" style="display: none;">محفوظ</span>
+        <!-- Dedicated Section Room View (Opens Like a Room When Clicking a Section) -->
+        <section id="sectionRoomView" class="section-room-view">
+            <div class="room-top-banner">
+                <div class="room-identity-group">
+                    <span class="room-badge-pill">🚪 غرفة الشعبة</span>
+                    <h3 id="roomHeadingTitle">جدول الشعبة</h3>
+                    <span class="count-chip" id="roomCountChip">0 طالب</span>
+                    <span class="count-chip" id="roomSavedStateChip" style="display: none;">محفوظ</span>
                 </div>
 
-                <div class="drawer-controls-group">
+                <div class="room-nav-actions">
                     <button type="button" class="btn-save-full-table" onclick="saveFullSectionTable()">
                         <span>💾</span>
                         <span>حفظ الجدول بالكامل</span>
                     </button>
-                    <button type="button" class="btn-back-section" onclick="backToGradesView()">
+                    <button type="button" class="btn-back-section" onclick="backFromSectionRoom()">
                         <span>↩️</span>
-                        <span>الرجوع</span>
+                        <span>رجوع</span>
                     </button>
-                    <button type="button" class="btn-close-section" onclick="closeSectionDrawer()">
+                    <button type="button" class="btn-close-section" onclick="closeSectionRoom()">
                         <span>✕</span>
                         <span>إغلاق</span>
                     </button>
                 </div>
             </div>
 
-            <div class="drawer-subbar">
-                <div class="drawer-search-box">
+            <div class="room-subbar">
+                <div class="room-search-box">
                     <span>🔍</span>
-                    <input type="text" id="drawerSearchInput" placeholder="بحث داخل الشعبة بالاسم أو الأم..." oninput="renderDrawerTable()">
+                    <input type="text" id="roomSearchInput" placeholder="بحث داخل الشعبة بالاسم أو الأم..." oninput="renderSectionRoomTable()">
                 </div>
 
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -1078,7 +1094,7 @@
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody id="drawerTableBody"></tbody>
+                    <tbody id="roomTableBody"></tbody>
                 </table>
             </div>
         </section>
@@ -1163,8 +1179,8 @@
             onSnapshot, query, orderBy, writeBatch
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        // مسار شعار المدرسة (ضع logo.png بجانب الملف عند الرفع على الاستضافة)
-        const SCHOOL_LOGO_URL = "logo.png";
+        // مطابق تماماً لاسم الشعار المرفوع في المستودع
+        const SCHOOL_LOGO_URL = "logo.PNG";
 
         // اختياري: إعدادات Firebase للمزامنة السحابية بين الأجهزة
         const firebaseConfig = {
@@ -1190,12 +1206,12 @@
         let studentsList = [];
         let selectedGrade = null;
         let selectedSection = null;
-        let isDrawerOpen = false;
+        let isInsideRoom = false;
         let currentPhotoBase64 = "";
 
-        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v7")) || {};
-        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v7") || DEFAULT_SECRET_CODE;
-        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v7") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v10")) || {};
+        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v10") || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v10") === "true";
 
         let useCloud = false;
         let db = null;
@@ -1236,14 +1252,14 @@
 
             onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
                 studentsList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                if (isDrawerOpen) renderDrawerTable();
+                if (isInsideRoom) renderSectionRoomTable();
             });
         } else {
             initIndexedDB();
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V7", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V10", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1261,7 +1277,7 @@
             const tx = localDb.transaction("students", "readonly");
             tx.objectStore("students").getAll().onsuccess = (e) => {
                 studentsList = (e.target.result || []).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-                if (isDrawerOpen) renderDrawerTable();
+                if (isInsideRoom) renderSectionRoomTable();
             };
         }
 
@@ -1283,7 +1299,7 @@
         function renderGradesShelf() {
             const container = document.getElementById("gradesSixShelf");
             container.innerHTML = GRADES.map(grade => {
-                const isActiveG = isDrawerOpen && selectedGrade === grade;
+                const isActiveG = selectedGrade === grade;
                 return `
                     <div class="grade-column-card ${isActiveG ? 'active-grade-card' : ''}">
                         <div class="grade-card-heading">
@@ -1294,7 +1310,7 @@
                             ${SECTIONS.map(sec => {
                                 const isActiveS = isActiveG && selectedSection === sec;
                                 return `
-                                    <button type="button" class="sec-pill-btn ${isActiveS ? 'active-sec-btn' : ''}" onclick="openSectionTable('${grade}', '${sec}')">
+                                    <button type="button" class="sec-pill-btn ${isActiveS ? 'active-sec-btn' : ''}" onclick="enterSectionRoom('${grade}', '${sec}')">
                                         ${sec}
                                     </button>
                                 `;
@@ -1305,35 +1321,48 @@
             }).join("");
         }
 
-        window.openSectionTable = function (grade, sec) {
+        // الدخول إلى غرفة الشعبة مستقلة
+        window.enterSectionRoom = function (grade, sec) {
             selectedGrade = grade;
             selectedSection = sec;
-            isDrawerOpen = true;
+            isInsideRoom = true;
+
             document.getElementById("gradeField").value = grade;
             document.getElementById("sectionField").value = sec;
-            document.getElementById("drawerSearchInput").value = "";
-            document.getElementById("sectionTableDrawer").style.display = "block";
-            renderGradesShelf();
-            renderDrawerTable();
-            document.getElementById("sectionTableDrawer").scrollIntoView({ behavior: "smooth", block: "nearest" });
+            document.getElementById("roomSearchInput").value = "";
+
+            document.getElementById("mainLobbyContainer").style.display = "none";
+            document.getElementById("welcomeRibbonBanner").style.display = "none";
+            document.getElementById("sectionRoomView").style.display = "block";
+
+            renderSectionRoomTable();
+            window.scrollTo({ top: 90, behavior: "smooth" });
         };
 
-        window.backToGradesView = function () {
-            document.getElementById("sectionTableDrawer").style.display = "none";
-            isDrawerOpen = false;
+        // زر الرجوع من غرفة الشعبة إلى قائمة الصفوف والشعب
+        window.backFromSectionRoom = function () {
+            document.getElementById("sectionRoomView").style.display = "none";
+            document.getElementById("mainLobbyContainer").style.display = "flex";
+            document.getElementById("welcomeRibbonBanner").style.display = "block";
+            isInsideRoom = false;
             renderGradesShelf();
-            document.getElementById("gradesSixShelf").parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
+            document.getElementById("gradesSixShelf").scrollIntoView({ behavior: "smooth", block: "center" });
         };
 
-        window.closeSectionDrawer = function () {
-            document.getElementById("sectionTableDrawer").style.display = "none";
-            isDrawerOpen = false;
+        // زر إغلاق غرفة الشعبة والعودة إلى بداية الصفحة
+        window.closeSectionRoom = function () {
+            document.getElementById("sectionRoomView").style.display = "none";
+            document.getElementById("mainLobbyContainer").style.display = "flex";
+            document.getElementById("welcomeRibbonBanner").style.display = "block";
+            isInsideRoom = false;
+            selectedSection = null;
             renderGradesShelf();
+            window.scrollTo({ top: 0, behavior: "smooth" });
         };
 
-        function renderDrawerTable() {
+        function renderSectionRoomTable() {
             if (!selectedGrade || !selectedSection) return;
-            const searchTerm = document.getElementById("drawerSearchInput").value.trim().toLowerCase();
+            const searchTerm = document.getElementById("roomSearchInput").value.trim().toLowerCase();
 
             const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
             const filtered = searchTerm
@@ -1343,11 +1372,11 @@
                 )
                 : sectionRows;
 
-            document.getElementById("drawerHeadingTitle").innerText = `جدول طلاب ${selectedGrade} - شعبة (${selectedSection})`;
-            document.getElementById("drawerCountChip").innerText = `عدد الطلاب: ${filtered.length}`;
+            document.getElementById("roomHeadingTitle").innerText = `${selectedGrade} - شعبة (${selectedSection})`;
+            document.getElementById("roomCountChip").innerText = `عدد الطلاب: ${filtered.length}`;
 
             const key = `${selectedGrade}__${selectedSection}`;
-            const savedChip = document.getElementById("drawerSavedStateChip");
+            const savedChip = document.getElementById("roomSavedStateChip");
             if (savedSectionTables[key]) {
                 savedChip.style.display = "inline-block";
                 savedChip.innerText = `✔️ محفوظ (${savedSectionTables[key].savedAt})`;
@@ -1355,9 +1384,9 @@
                 savedChip.style.display = "none";
             }
 
-            const tbody = document.getElementById("drawerTableBody");
+            const tbody = document.getElementById("roomTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="padding: 22px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
                 return;
             }
 
@@ -1392,8 +1421,8 @@
                 savedAt: nowTime,
                 students: rows
             };
-            localStorage.setItem("mutafawiqeen_saved_sections_v7", JSON.stringify(savedSectionTables));
-            renderDrawerTable();
+            localStorage.setItem("mutafawiqeen_saved_sections_v10", JSON.stringify(savedSectionTables));
+            renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
 
@@ -1458,13 +1487,8 @@
                 loadLocalList();
             }
 
-            selectedGrade = grade;
-            selectedSection = section;
-            isDrawerOpen = true;
-            document.getElementById("sectionTableDrawer").style.display = "block";
-            renderGradesShelf();
-            renderDrawerTable();
             resetStudentFormState();
+            window.enterSectionRoom(grade, section);
         };
 
         window.resetStudentFormState = function () {
@@ -1493,6 +1517,11 @@
             document.getElementById("studentFormBadge").innerHTML = `<span>✏️</span><span>تعديل معلومات الطالب</span>`;
             document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>حفظ التعديل</span>`;
             document.getElementById("cancelEditActionBtn").style.display = "inline-block";
+
+            document.getElementById("sectionRoomView").style.display = "none";
+            document.getElementById("mainLobbyContainer").style.display = "flex";
+            document.getElementById("welcomeRibbonBanner").style.display = "block";
+            isInsideRoom = false;
             window.scrollTo({ top: 120, behavior: "smooth" });
         };
 
@@ -1594,7 +1623,7 @@
         // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v7", String(locked));
+            localStorage.setItem("mutafawiqeen_locked_v10", String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { isLocked: locked });
@@ -1687,7 +1716,7 @@
                 return;
             }
             adminSecret = nextCode;
-            localStorage.setItem("mutafawiqeen_secret_v7", nextCode);
+            localStorage.setItem("mutafawiqeen_secret_v10", nextCode);
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { adminCode: nextCode });
             }
