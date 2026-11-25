@@ -7,26 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy-dark: #071e3d;
-            --navy-mid: #0d3263;
-            --blue-btn: #0b5ed7;
-            --blue-btn-hover: #094db1;
+            --navy-dark: #061c3a;
+            --navy-mid: #0c356b;
+            --blue-royal: #0d58b8;
+            --blue-deep: #072f66;
             --gold: #d4af37;
-            --gold-light: #f3d266;
-            --bg-main: #eef3f8;
+            --gold-bright: #f6d56a;
             --white: #ffffff;
             --text-dark: #0f172a;
             --text-muted: #64748b;
             --green: #15803d;
             --red: #dc2626;
-            --border: #cbd5e1;
-
-            /* Global Table Style Variables (Applied to ALL tables) */
-            --tbl-head-bg: #0c2d57;
-            --tbl-head-color: #ffffff;
-            --tbl-font-size: 0.95rem;
-            --tbl-pad-y: 11px;
-            --tbl-pad-x: 12px;
         }
 
         * {
@@ -37,44 +28,42 @@
         }
 
         body {
-            background: linear-gradient(180deg, #e6eef7 0%, #f4f7fb 100%);
+            background:
+                radial-gradient(circle at 50% 85%, rgba(56, 189, 248, 0.22), transparent 55%),
+                linear-gradient(180deg, #dce8f5 0%, #eef4fa 45%, #e2ebf5 100%);
             color: var(--text-dark);
             min-height: 100vh;
         }
 
         /* ================= HERO BANNER ================= */
         .hero-banner {
-            position: relative;
             background:
-                linear-gradient(90deg, rgba(7, 30, 61, 0.93) 0%, rgba(13, 50, 99, 0.80) 50%, rgba(7, 30, 61, 0.93) 100%),
-                radial-gradient(circle at 18% 50%, rgba(212, 175, 55, 0.22), transparent 40%),
-                radial-gradient(circle at 82% 50%, rgba(56, 189, 248, 0.2), transparent 45%);
+                linear-gradient(90deg, rgba(6, 28, 58, 0.94) 0%, rgba(12, 53, 107, 0.82) 50%, rgba(6, 28, 58, 0.94) 100%),
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.25), transparent 40%),
+                radial-gradient(circle at 80% 50%, rgba(56, 189, 248, 0.22), transparent 45%);
             color: var(--white);
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-bottom: 3px solid var(--gold);
-            overflow: hidden;
         }
 
         .hero-inner {
-            max-width: 1440px;
+            max-width: 1420px;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            position: relative;
-            z-index: 2;
         }
 
-        .hero-academic-art {
+        .hero-left-badges {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            padding: 8px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            font-size: 1.5rem;
+            padding: 8px 14px;
+            font-size: 1.45rem;
         }
 
         .hero-center {
@@ -85,46 +74,44 @@
         .hero-center h1 {
             font-size: 2rem;
             font-weight: 900;
-            color: var(--white);
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
         }
 
-        .hero-center .sub-location {
+        .hero-center .sub-city {
             font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--gold-light);
-            margin-top: 2px;
+            font-weight: 900;
+            color: var(--gold-bright);
+            margin-top: 1px;
         }
 
-        .hero-pill-title {
+        .hero-sub-pill {
             display: inline-block;
-            margin-top: 6px;
-            background: linear-gradient(90deg, #071e3d, #16447a, #071e3d);
-            border: 1px solid rgba(212, 175, 55, 0.65);
-            color: #ffffff;
-            padding: 4px 26px;
+            margin-top: 5px;
+            background: linear-gradient(90deg, #061c3a, #164887, #061c3a);
+            border: 1.5px solid rgba(246, 213, 106, 0.75);
+            padding: 3px 26px;
             border-radius: 20px;
-            font-size: 1rem;
+            font-size: 0.98rem;
             font-weight: 800;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
         }
 
-        .school-emblem-box {
-            width: 96px;
-            height: 96px;
+        .school-logo-circle {
+            width: 92px;
+            height: 92px;
             border-radius: 50%;
             background: #ffffff;
-            border: 2.5px solid var(--gold-light);
+            border: 2.5px solid var(--gold-bright);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-            flex-shrink: 0;
             overflow: hidden;
-            padding: 4px;
+            padding: 3px;
+            flex-shrink: 0;
         }
 
-        .school-emblem-box img {
+        .school-logo-circle img {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -132,18 +119,17 @@
         }
 
         /* ================= TOP ADMIN BAR ================= */
-        .top-admin-bar {
-            background: linear-gradient(90deg, #061933 0%, #0a284f 50%, #061933 100%);
-            padding: 10px 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        .admin-strip {
+            background: linear-gradient(90deg, #05162e 0%, #09264d 50%, #05162e 100%);
+            padding: 8px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
             position: sticky;
             top: 0;
-            z-index: 200;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+            z-index: 150;
         }
 
-        .top-admin-inner {
-            max-width: 1440px;
+        .admin-strip-inner {
+            max-width: 1420px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -152,65 +138,66 @@
             gap: 10px;
         }
 
-        .admin-left-group {
+        .admin-actions-left {
             display: flex;
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
         }
 
-        .bar-btn {
+        .top-pill-btn {
             border: none;
-            border-radius: 8px;
-            padding: 7px 15px;
+            cursor: pointer;
             font-weight: 800;
             font-size: 0.9rem;
-            cursor: pointer;
+            color: #ffffff;
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            color: #ffffff;
             transition: 0.2s;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .bar-btn-status-open {
+        .btn-open-state {
             background: linear-gradient(180deg, #16a34a, #15803d);
-            border: 1px solid #4ade80;
+            border: 1px solid #86efac;
             border-radius: 20px;
             padding: 6px 16px;
         }
 
-        .bar-btn-status-locked {
-            background: linear-gradient(180deg, #dc2626, #b91c1c);
-            border: 1px solid #f87171;
+        .btn-locked-state {
+            background: linear-gradient(180deg, #dc2626, #991b1b);
+            border: 1px solid #fca5a5;
             border-radius: 20px;
             padding: 6px 16px;
         }
 
-        .bar-btn-lock {
-            background: linear-gradient(180deg, #1d4ed8, #1e40af);
-            border: 1px solid #60a5fa;
+        .btn-lock-action {
+            background: linear-gradient(180deg, #1d4ed8, #1e3a8a);
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 7px 14px;
         }
 
-        .bar-btn-change {
+        .btn-code-action {
             background: linear-gradient(180deg, #1e3a5f, #0f2942);
             border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            padding: 7px 14px;
         }
 
-        .bar-divider {
+        .strip-sep {
             width: 1px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.22);
-            margin: 0 4px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.25);
         }
 
-        .admin-badge-btn {
-            background: #041124;
+        .admin-login-box-btn {
+            background: #041022;
             color: #ffffff;
             border: 1.5px solid #3b82f6;
             border-radius: 8px;
-            padding: 6px 14px;
+            padding: 5px 12px;
             font-weight: 900;
             font-size: 0.92rem;
             cursor: pointer;
@@ -219,166 +206,147 @@
             gap: 8px;
         }
 
-        .admin-badge-code {
+        .admin-login-tag {
             background: #2563eb;
             color: #ffffff;
-            padding: 1px 7px;
-            border-radius: 5px;
+            padding: 1px 6px;
+            border-radius: 4px;
             font-size: 0.82rem;
         }
 
-        /* ================= WELCOME RIBBON ================= */
-        .welcome-ribbon {
-            max-width: 1150px;
-            margin: 14px auto 14px;
-            background: linear-gradient(90deg, rgba(255,255,255,0.25) 0%, #ffffff 25%, #ffffff 75%, rgba(255,255,255,0.25) 100%);
-            border-top: 2px solid rgba(212, 175, 55, 0.55);
-            border-bottom: 2px solid rgba(212, 175, 55, 0.55);
-            padding: 9px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 3px 10px rgba(15, 41, 66, 0.06);
+        /* ================= WELCOME BANNER ================= */
+        .welcome-strip {
+            max-width: 1020px;
+            margin: 12px auto 12px;
+            background: linear-gradient(90deg, #072854 0%, #14498d 50%, #072854 100%);
+            border-top: 2px solid var(--gold-bright);
+            border-bottom: 2px solid var(--gold-bright);
+            border-radius: 14px;
+            padding: 8px 24px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(7, 40, 84, 0.22);
         }
 
-        .welcome-ribbon h2 {
-            color: #0b3c78;
-            font-size: 1.55rem;
+        .welcome-strip h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
             font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .megaphone-icon {
-            font-size: 1.6rem;
-            transform: rotate(-12deg);
-        }
-
-        /* ================= MAIN WORKSPACE GRID ================= */
-        .workspace-container {
-            max-width: 1440px;
+        /* ================= MAIN CONTAINER ================= */
+        .page-shell {
+            max-width: 1420px;
             margin: 0 auto;
-            padding: 0 18px 36px;
-            display: grid;
-            grid-template-columns: 1fr 225px;
-            gap: 16px;
-            align-items: start;
-        }
-
-        @media (max-width: 980px) {
-            .workspace-container {
-                grid-template-columns: 1fr;
-            }
-            .hero-center h1 {
-                font-size: 1.4rem;
-            }
-            .welcome-ribbon h2 {
-                font-size: 1.15rem;
-            }
-            .school-emblem-box {
-                width: 74px;
-                height: 74px;
-            }
-        }
-
-        .center-workspace {
-            min-width: 0;
+            padding: 0 18px 34px;
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
 
         /* ================= ADD STUDENT CARD ================= */
-        .add-student-box {
-            background: #f8fbff;
+        .add-card-panel {
+            background: linear-gradient(180deg, #f3f8ff 0%, #e7f0fc 100%);
             border: 2px solid #2563eb;
             border-radius: 16px;
-            padding: 14px 18px 18px;
-            box-shadow: 0 8px 22px rgba(15, 41, 66, 0.08);
-            position: relative;
+            padding: 12px 18px 16px;
+            box-shadow: 0 8px 22px rgba(12, 53, 107, 0.1);
         }
 
-        .box-floating-header {
+        .panel-ribbon-title {
             display: flex;
             justify-content: center;
             margin-bottom: 12px;
         }
 
-        .floating-pill {
-            background: linear-gradient(180deg, #124584 0%, #092952 100%);
+        .ribbon-badge {
+            background: linear-gradient(180deg, #13478a 0%, #082852 100%);
             color: #ffffff;
-            border: 1.5px solid var(--gold-light);
-            padding: 5px 28px;
+            border: 1.5px solid var(--gold-bright);
+            padding: 4px 26px;
             border-radius: 10px 10px 18px 18px;
-            font-weight: 900;
             font-size: 1.05rem;
+            font-weight: 900;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 10px rgba(9, 41, 82, 0.25);
+            box-shadow: 0 4px 10px rgba(8, 40, 82, 0.25);
         }
 
-        .add-form-row {
+        .form-horizontal-grid {
             display: grid;
-            grid-template-columns: 1.35fr 1fr 1fr 1.85fr 1.2fr 125px;
+            grid-template-columns: 1.45fr 1.05fr 1.05fr 1.85fr 1.25fr 125px;
             gap: 10px;
             align-items: start;
         }
 
         @media (max-width: 1180px) {
-            .add-form-row {
+            .form-horizontal-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        @media (max-width: 640px) {
-            .add-form-row {
+        @media (max-width: 650px) {
+            .form-horizontal-grid {
                 grid-template-columns: 1fr;
+            }
+            .hero-center h1 {
+                font-size: 1.35rem;
+            }
+            .welcome-strip h2 {
+                font-size: 1.1rem;
+            }
+            .school-logo-circle {
+                width: 72px;
+                height: 72px;
             }
         }
 
-        .field-col {
+        .input-group-box {
             display: flex;
             flex-direction: column;
             gap: 5px;
         }
 
-        .field-col label {
-            font-weight: 800;
+        .input-group-box label {
             font-size: 0.9rem;
-            color: #0f2942;
+            font-weight: 800;
+            color: #0b2c57;
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .input-styled {
+        .ctrl-field {
             height: 38px;
             padding: 6px 10px;
             border: 1.5px solid #94a3b8;
-            border-radius: 7px;
+            border-radius: 8px;
             background: #ffffff;
             font-size: 0.88rem;
-            font-weight: 600;
+            font-weight: 700;
             color: #0f172a;
             width: 100%;
         }
 
-        .input-styled:focus {
+        .ctrl-field:focus {
             outline: none;
             border-color: #1d4ed8;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.16);
         }
 
-        .dob-three-selects {
+        .dob-row-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 5px;
         }
 
-        .photo-picker-card {
+        .photo-box-widget {
+            background: #ffffff;
             border: 1.5px dashed #64748b;
             border-radius: 10px;
-            background: #ffffff;
             padding: 6px;
             display: flex;
             flex-direction: column;
@@ -386,9 +354,9 @@
             gap: 6px;
         }
 
-        .photo-avatar-frame {
-            width: 78px;
-            height: 78px;
+        .photo-thumb-holder {
+            width: 76px;
+            height: 76px;
             border-radius: 8px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -398,26 +366,26 @@
             justify-content: center;
         }
 
-        .photo-avatar-frame img {
+        .photo-thumb-holder img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             background: #ffffff;
         }
 
-        .btn-choose-photo {
-            background: linear-gradient(180deg, #16529c, #0c3569);
+        .btn-pick-img {
+            background: linear-gradient(180deg, #16529c, #0b3366);
             color: #ffffff;
             border: none;
             border-radius: 6px;
-            padding: 4px 10px;
+            padding: 4px 8px;
             font-size: 0.78rem;
             font-weight: 800;
             cursor: pointer;
             width: 100%;
         }
 
-        .submit-center-wrap {
+        .add-btn-center {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -426,8 +394,8 @@
             flex-wrap: wrap;
         }
 
-        .btn-add-student {
-            background: linear-gradient(180deg, #1565c0 0%, #0b3d7a 100%);
+        .btn-submit-student {
+            background: linear-gradient(180deg, #1565c0 0%, #09356b 100%);
             color: #ffffff;
             border: 1.5px solid #60a5fa;
             border-radius: 9px;
@@ -438,172 +406,302 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(11, 61, 122, 0.3);
-            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(9, 53, 107, 0.32);
         }
 
-        .btn-add-student:hover {
-            background: linear-gradient(180deg, #1976d2 0%, #0d47a1 100%);
+        /* ================= GRADES HORIZONTAL SHELF ================= */
+        .grades-shelf-box {
+            background: linear-gradient(180deg, #f5f9ff 0%, #e5effa 100%);
+            border: 2px solid #2563eb;
+            border-radius: 18px;
+            padding: 10px 14px 16px;
+            box-shadow: 0 8px 22px rgba(12, 53, 107, 0.1);
         }
 
-        /* ================= STUDENTS TABLE PANEL ================= */
-        .students-panel {
+        .shelf-top-badge {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .shelf-title-pill {
+            background: linear-gradient(180deg, #124584 0%, #07244a 100%);
+            color: #ffffff;
+            border: 1.5px solid var(--gold-bright);
+            padding: 4px 28px;
+            border-radius: 10px 10px 18px 18px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .grades-six-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 1150px) {
+            .grades-six-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grades-six-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .grade-column-card {
+            background: linear-gradient(180deg, #0e3f7d 0%, #072247 100%);
+            border: 2px solid var(--gold);
+            border-radius: 13px;
+            padding: 8px;
+            box-shadow: 0 5px 12px rgba(7, 34, 71, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .grade-column-card.active-grade-card {
+            border-color: var(--gold-bright);
+            box-shadow: 0 0 0 2px rgba(246, 213, 106, 0.55), 0 8px 18px rgba(7, 34, 71, 0.35);
+        }
+
+        .grade-card-heading {
+            background: linear-gradient(180deg, #1a56a3, #0b3163);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            padding: 5px 6px;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .grade-sec-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .sec-pill-btn {
+            background: linear-gradient(180deg, #1b63bd 0%, #093269 100%);
+            color: #ffffff;
+            border: 1.5px solid var(--gold);
+            border-radius: 8px;
+            padding: 6px 2px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.15s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+        }
+
+        .sec-pill-btn:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(180deg, #2575d6 0%, #0d4185 100%);
+        }
+
+        .sec-pill-btn.active-sec-btn {
+            background: linear-gradient(180deg, #16a34a 0%, #15803d 100%);
+            border-color: #fde047;
+        }
+
+        /* ================= SECTION TABLE DRAWER ================= */
+        .section-table-drawer {
+            display: none;
             background: #ffffff;
-            border: 2px solid #93c5fd;
+            border: 2.5px solid #0c356b;
             border-radius: 16px;
-            padding: 14px 16px 18px;
-            box-shadow: 0 8px 22px rgba(15, 41, 66, 0.08);
+            padding: 16px 18px 20px;
+            box-shadow: 0 12px 28px rgba(6, 28, 58, 0.16);
+            animation: slideDownFade 0.2s ease;
         }
 
-        .panel-top-bar {
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .drawer-toolbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
+            background: linear-gradient(90deg, #07244a 0%, #11407d 100%);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 12px;
             margin-bottom: 12px;
         }
 
-        .btn-print-word {
-            background: linear-gradient(180deg, #1565c0, #0c3d78);
-            color: #ffffff;
-            border: 1px solid #60a5fa;
-            border-radius: 8px;
-            padding: 7px 14px;
+        .drawer-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .drawer-title-group h3 {
+            font-size: 1.15rem;
+            font-weight: 900;
+        }
+
+        .count-chip {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid var(--gold-bright);
+            color: var(--gold-bright);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 800;
-            font-size: 0.88rem;
+        }
+
+        .drawer-controls-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-save-full-table {
+            background: linear-gradient(180deg, #16a34a, #15803d);
+            color: #ffffff;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-weight: 800;
+            font-size: 0.86rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
 
-        .btn-save-tbl {
-            background: linear-gradient(180deg, #16a34a, #15803d);
+        .btn-back-section {
+            background: linear-gradient(180deg, #2563eb, #1d4ed8);
             color: #ffffff;
-            border: none;
+            border: 1px solid #93c5fd;
             border-radius: 8px;
-            padding: 7px 13px;
+            padding: 6px 14px;
             font-weight: 800;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn-apply-all {
-            background: linear-gradient(180deg, #0f2942, #1e466e);
+        .btn-close-section {
+            background: linear-gradient(180deg, #dc2626, #b91c1c);
             color: #ffffff;
-            border: 1px solid var(--gold);
+            border: 1px solid #fca5a5;
             border-radius: 8px;
-            padding: 7px 13px;
+            padding: 6px 14px;
             font-weight: 800;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .table-title-center {
+        .drawer-subbar {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: #0b2e59;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        .search-inline-box {
+        .drawer-search-box {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: #ffffff;
+            background: #f8fafc;
             border: 1.5px solid #94a3b8;
             border-radius: 8px;
-            padding: 3px 10px;
+            padding: 4px 10px;
         }
 
-        .search-inline-box input {
+        .drawer-search-box input {
             border: none;
-            outline: none;
-            font-size: 0.88rem;
-            font-weight: 700;
-            width: 190px;
             background: transparent;
+            outline: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            width: 210px;
         }
 
-        .section-meta-strip {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.86rem;
-            font-weight: 800;
-            color: #1e3a8a;
-        }
-
-        .table-wrap-scroll {
+        .table-scroll-box {
             overflow-x: auto;
-            border-radius: 10px;
             border: 1.5px solid #1e3a8a;
+            border-radius: 10px;
         }
 
-        table.students-main-table {
+        table.section-students-tbl {
             width: 100%;
             border-collapse: collapse;
-            font-size: var(--tbl-font-size);
             background: #ffffff;
         }
 
-        table.students-main-table thead th {
-            background: var(--tbl-head-bg);
-            color: var(--tbl-head-color);
-            padding: var(--tbl-pad-y) var(--tbl-pad-x);
+        table.section-students-tbl thead th {
+            background: #0c2d57;
+            color: #ffffff;
+            padding: 10px 12px;
             text-align: center;
             font-weight: 800;
+            font-size: 0.92rem;
             border-left: 1px solid rgba(255, 255, 255, 0.2);
             white-space: nowrap;
         }
 
-        table.students-main-table tbody td {
-            padding: var(--tbl-pad-y) var(--tbl-pad-x);
+        table.section-students-tbl tbody td {
+            padding: 10px 12px;
             text-align: center;
             font-weight: 700;
-            color: #0f172a;
+            font-size: 0.9rem;
             border-bottom: 1px solid #cbd5e1;
             border-left: 1px solid #e2e8f0;
         }
 
-        table.students-main-table.grid-mode tbody td,
-        table.students-main-table.grid-mode thead th {
-            border: 1px solid #94a3b8;
-        }
-
-        table.students-main-table tbody tr:nth-child(even) {
+        table.section-students-tbl tbody tr:nth-child(even) {
             background: #f8fafc;
         }
 
-        table.students-main-table tbody tr:hover {
+        table.section-students-tbl tbody tr:hover {
             background: #eff6ff;
         }
 
-        .clickable-student {
-            cursor: pointer;
+        .student-link-name {
             color: #0b2e59;
             font-weight: 800;
+            cursor: pointer;
         }
 
-        .clickable-student:hover {
+        .student-link-name:hover {
             text-decoration: underline;
             color: #1d4ed8;
         }
 
-        .row-actions {
+        .cell-actions {
             display: inline-flex;
-            align-items: center;
-            justify-content: center;
             gap: 6px;
+            justify-content: center;
         }
 
-        .act-btn {
+        .mini-act-btn {
             border: none;
             border-radius: 6px;
             padding: 4px 10px;
@@ -611,132 +709,26 @@
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .act-preview { background: #1d4ed8; }
-        .act-edit { background: #16a34a; }
-        .act-del { background: #dc2626; }
+        .mini-preview { background: #1d4ed8; }
+        .mini-edit { background: #16a34a; }
+        .mini-delete { background: #dc2626; }
 
-        /* ================= BOTTOM BULK DELETE BAR ================= */
-        .bulk-delete-footer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .btn-bulk-red {
-            background: linear-gradient(180deg, #ef4444, #b91c1c);
-            color: #ffffff;
-            border: 1px solid #fca5a5;
-            border-radius: 8px;
-            padding: 7px 16px;
-            font-weight: 800;
-            font-size: 0.86rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 3px 8px rgba(185, 28, 28, 0.25);
-        }
-
-        /* ================= RIGHT SIDEBAR: GRADES & SECTIONS ================= */
-        .right-grades-rail {
-            background: linear-gradient(180deg, #0b2d5c 0%, #071b38 100%);
-            border: 2px solid var(--gold);
-            border-radius: 16px;
-            padding: 10px;
-            box-shadow: 0 8px 22px rgba(7, 27, 56, 0.25);
-            color: #ffffff;
-        }
-
-        .rail-header-box {
-            background: linear-gradient(180deg, #16447d, #0a254a);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 10px;
-            padding: 8px 10px;
-            text-align: center;
-            font-weight: 900;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .grade-card-block {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            border-radius: 11px;
-            padding: 8px 7px;
-            margin-bottom: 9px;
-            transition: 0.2s;
-        }
-
-        .grade-card-block.active-grade {
-            background: rgba(59, 130, 246, 0.25);
-            border-color: var(--gold-light);
-        }
-
-        .grade-title-btn {
-            width: 100%;
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-weight: 900;
-            font-size: 0.96rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 7px;
-        }
-
-        .sections-three-btns {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-        }
-
-        .sec-mini-btn {
-            background: linear-gradient(180deg, #ffffff, #e2e8f0);
-            color: #0f172a;
-            border: 1px solid #94a3b8;
-            border-radius: 7px;
-            padding: 4px 2px;
-            font-weight: 900;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.15s;
-        }
-
-        .sec-mini-btn.selected-sec {
-            background: linear-gradient(180deg, #2563eb, #1d4ed8);
-            color: #ffffff;
-            border-color: var(--gold-light);
-        }
-
-        /* ================= STUDENT ID CARD MODAL ================= */
-        .modal-backdrop {
+        /* ================= MODALS & ID CARD ================= */
+        .modal-layer {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(7, 20, 40, 0.72);
-            z-index: 1000;
+            background: rgba(6, 20, 42, 0.72);
+            z-index: 1200;
             align-items: center;
             justify-content: center;
             padding: 16px;
             backdrop-filter: blur(2px);
         }
 
-        .id-card-frame {
+        .id-card-box {
             width: 100%;
             max-width: 540px;
             background: linear-gradient(135deg, #f8fafc 0%, #e0ecfa 55%, #f1f5f9 100%);
@@ -744,10 +736,9 @@
             border-radius: 18px;
             overflow: hidden;
             box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
-            position: relative;
         }
 
-        .id-card-top {
+        .id-card-head {
             background: linear-gradient(90deg, #071e3d 0%, #143d75 100%);
             color: #ffffff;
             padding: 10px 16px;
@@ -757,7 +748,7 @@
             border-bottom: 3px solid var(--gold);
         }
 
-        .id-card-logo-mini {
+        .id-head-logo {
             width: 34px;
             height: 34px;
             border-radius: 50%;
@@ -766,32 +757,7 @@
             object-fit: contain;
         }
 
-        .id-card-top-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .id-print-icon-btn {
-            background: rgba(255, 255, 255, 0.16);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            border-radius: 6px;
-            padding: 3px 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-
-        .id-close-x {
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 1.25rem;
-            font-weight: 900;
-            cursor: pointer;
-        }
-
-        .id-card-body {
+        .id-card-content {
             padding: 16px;
             display: flex;
             gap: 16px;
@@ -799,12 +765,12 @@
         }
 
         @media (max-width: 520px) {
-            .id-card-body {
+            .id-card-content {
                 flex-direction: column;
             }
         }
 
-        .id-portrait-box {
+        .id-photo-frame {
             width: 132px;
             height: 158px;
             border-radius: 12px;
@@ -812,25 +778,24 @@
             background: #ffffff;
             overflow: hidden;
             flex-shrink: 0;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16);
         }
 
-        .id-portrait-box img {
+        .id-photo-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             background: #ffffff;
         }
 
-        .id-info-list {
+        .id-rows {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 7px;
         }
 
-        .id-info-pill {
-            background: rgba(255, 255, 255, 0.88);
+        .id-field-line {
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #cbd5e1;
             border-radius: 7px;
             padding: 5px 12px;
@@ -840,42 +805,21 @@
             font-size: 0.92rem;
         }
 
-        .id-info-pill .lbl {
+        .id-field-line .k {
             font-weight: 800;
             color: #0b2e59;
-            min-width: 82px;
+            min-width: 80px;
         }
 
-        .id-info-pill .val {
+        .id-field-line .v {
             font-weight: 900;
             color: #0f172a;
         }
 
-        .id-card-bottom {
-            padding: 0 16px 16px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .btn-print-card-main {
-            background: linear-gradient(180deg, #124584, #092952);
-            color: #ffffff;
-            border: 1.5px solid var(--gold-light);
-            border-radius: 9px;
-            padding: 8px 28px;
-            font-weight: 900;
-            font-size: 0.98rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* ================= GENERIC MODAL ================= */
-        .dialog-box {
+        .dialog-card {
             background: #ffffff;
             border-radius: 14px;
-            max-width: 440px;
+            max-width: 430px;
             width: 100%;
             padding: 20px;
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
@@ -883,18 +827,11 @@
             position: relative;
         }
 
-        .dialog-box h3 {
-            color: #0b2e59;
-            margin-bottom: 12px;
-            font-size: 1.15rem;
-            font-weight: 900;
-        }
-
-        .lock-overlay-screen {
+        .lock-screen-layer {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(7, 27, 56, 0.96);
+            background: rgba(6, 28, 58, 0.96);
             z-index: 2500;
             align-items: center;
             justify-content: center;
@@ -903,8 +840,8 @@
 
         @media print {
             body * { visibility: hidden; }
-            #printableCardArea, #printableCardArea * { visibility: visible; }
-            #printableCardArea {
+            #printableIdCard, #printableIdCard * { visibility: visible; }
+            #printableIdCard {
                 position: fixed;
                 left: 50%;
                 top: 24px;
@@ -919,23 +856,23 @@
 </head>
 <body>
 
-    <!-- Lock Screen When Locked -->
-    <div id="lockScreenOverlay" class="lock-overlay-screen">
-        <div class="dialog-box" style="text-align: center;">
+    <!-- Lock Overlay Screen -->
+    <div id="lockScreenLayer" class="lock-screen-layer">
+        <div class="dialog-card" style="text-align: center;">
             <div style="font-size: 3rem; margin-bottom: 8px;">🔒</div>
-            <h3 style="color: #dc2626;">المنصة مقفلة حالياً</h3>
-            <p style="color: #475569; font-size: 0.92rem; margin-bottom: 14px; font-weight: 700;">
-                تم إغلاق نظام إدخال البيانات مؤقتاً في ثانوية المتفوقين الثانية للبنين - الأنبار.
+            <h3 style="color: #dc2626; margin-bottom: 8px;">المنصة مقفلة حالياً</h3>
+            <p style="color: #475569; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px;">
+                تم قفل المنصة مؤقتاً في ثانوية المتفوقين الثانية للبنين - الأنبار.
             </p>
-            <input type="password" id="unlockPasswordInput" class="input-styled" style="margin-bottom: 12px;" placeholder="أدخل رمز الأدمن لفتح المنصة...">
-            <button type="button" class="btn-add-student" style="width: 100%; justify-content: center;" onclick="unlockPlatformAction()">🔓 فتح المنصة</button>
+            <input type="password" id="unlockCodeField" class="ctrl-field" style="margin-bottom: 12px;" placeholder="أدخل رمز الأدمن لفتح المنصة...">
+            <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="unlockAction()">🔓 فتح المنصة</button>
         </div>
     </div>
 
-    <!-- Top Hero Banner -->
+    <!-- Hero Banner -->
     <header class="hero-banner">
         <div class="hero-inner">
-            <div class="hero-academic-art" title="منصة تعليمية متكاملة">
+            <div class="hero-left-badges">
                 <span>🎓</span>
                 <span>📚</span>
                 <span>💻</span>
@@ -943,328 +880,279 @@
 
             <div class="hero-center">
                 <h1>ثانوية المتفوقين الثانية للبنين</h1>
-                <div class="sub-location">- الانبار -</div>
-                <div class="hero-pill-title">منصة إدارة بيانات الطلبة</div>
+                <div class="sub-city">- الانبار -</div>
+                <div class="hero-sub-pill">منصة إدارة بيانات الطلبة</div>
             </div>
 
-            <div class="school-emblem-box" title="شعار ثانوية المتفوقين الثانية للبنين - الأنبار">
-                <img id="heroSchoolLogoImg" src="" alt="شعار ثانوية المتفوقين الثانية للبنين - الأنبار">
+            <div class="school-logo-circle" title="شعار ثانوية المتفوقين الثانية للبنين - الأنبار">
+                <img id="bannerSchoolLogo" src="" alt="شعار المدرسة">
             </div>
         </div>
     </header>
 
-    <!-- Admin Control Bar -->
-    <nav class="top-admin-bar">
-        <div class="top-admin-inner">
-            <div class="admin-left-group">
-                <button type="button" id="statusPillBtn" class="bar-btn bar-btn-status-open" onclick="quickLockPrompt()">
+    <!-- Admin Bar -->
+    <nav class="admin-strip">
+        <div class="admin-strip-inner">
+            <div class="admin-actions-left">
+                <button type="button" id="statusTogglePill" class="top-pill-btn btn-open-state" onclick="promptLockPlatform()">
                     <span>🔓</span>
-                    <span id="statusPillText">المنصة مفتوحة</span>
+                    <span id="statusToggleText">المنصة مفتوحة</span>
                 </button>
 
-                <span class="bar-divider"></span>
+                <span class="strip-sep"></span>
 
-                <button type="button" class="bar-btn bar-btn-lock" onclick="quickLockPrompt()">
+                <button type="button" class="top-pill-btn btn-lock-action" onclick="promptLockPlatform()">
                     <span>🔒</span>
                     <span>قفل المنصة</span>
                 </button>
 
-                <button type="button" class="bar-btn bar-btn-change" onclick="openAdminModal('change')">
+                <button type="button" class="top-pill-btn btn-code-action" onclick="openAdminDialog('change')">
                     <span>⚙️</span>
                     <span>تغيير الرمز</span>
                 </button>
             </div>
 
-            <button type="button" class="admin-badge-btn" onclick="openAdminModal('auth')">
-                <span class="admin-badge-code">دخول</span>
-                <span>دخول الأدمن</span>
+            <button type="button" class="admin-login-box-btn" onclick="openAdminDialog('auth')">
+                <span class="admin-login-tag">دخول</span>
+                <span>دخول الادمن</span>
             </button>
         </div>
     </nav>
 
     <!-- Welcome Ribbon -->
-    <div class="welcome-ribbon">
-        <span class="megaphone-icon">📢</span>
-        <h2>اهلا بكم في ثانوية المتفوقين الثانية - الانبار</h2>
+    <div class="welcome-strip">
+        <h2>
+            <span>🎓</span>
+            <span>اهلا بكم في ثانوية المتفوقين الثانية - الانبار</span>
+        </h2>
     </div>
 
-    <!-- Main Content Layout -->
-    <main class="workspace-container">
+    <!-- Main Page Content -->
+    <main class="page-shell">
 
-        <!-- Center Column: Form + Table -->
-        <div class="center-workspace">
-
-            <!-- Add Student Box -->
-            <section class="add-student-box">
-                <div class="box-floating-header">
-                    <div class="floating-pill" id="formHeaderTitle">
-                        <span>👤+</span>
-                        <span>إضافة طالب جديد</span>
-                    </div>
+        <!-- Add Student Box -->
+        <section class="add-card-panel">
+            <div class="panel-ribbon-title">
+                <div class="ribbon-badge" id="studentFormBadge">
+                    <span>👤+</span>
+                    <span>إضافة طالب جديد</span>
                 </div>
-
-                <form id="studentForm" onsubmit="handleSaveStudent(event)">
-                    <input type="hidden" id="editingStudentId">
-
-                    <div class="add-form-row">
-                        <div class="field-col">
-                            <label>👤 الاسم</label>
-                            <input type="text" id="studentNameInput" class="input-styled" placeholder="أدخل اسم الطالب" required>
-                        </div>
-
-                        <div class="field-col">
-                            <label>🎓 الصف</label>
-                            <select id="studentGradeInput" class="input-styled" required>
-                                <option value="">اختر الصف</option>
-                                <option value="الصف الاول">الصف الاول</option>
-                                <option value="الصف الثاني">الصف الثاني</option>
-                                <option value="الصف الثالث">الصف الثالث</option>
-                                <option value="الصف الرابع">الصف الرابع</option>
-                                <option value="الصف الخامس">الصف الخامس</option>
-                                <option value="الصف السادس">الصف السادس</option>
-                            </select>
-                        </div>
-
-                        <div class="field-col">
-                            <label>👥 الشعبة</label>
-                            <select id="studentSectionInput" class="input-styled" required>
-                                <option value="">اختر الشعبة</option>
-                                <option value="أ">أ</option>
-                                <option value="ب">ب</option>
-                                <option value="ج">ج</option>
-                            </select>
-                        </div>
-
-                        <div class="field-col">
-                            <label>📅 المواليد</label>
-                            <div class="dob-three-selects">
-                                <select id="dobDayInput" class="input-styled" required></select>
-                                <select id="dobMonthInput" class="input-styled" required></select>
-                                <select id="dobYearInput" class="input-styled" required></select>
-                            </div>
-                        </div>
-
-                        <div class="field-col">
-                            <label>👤 اسم الام</label>
-                            <input type="text" id="motherNameInput" class="input-styled" placeholder="أدخل اسم الأم" required>
-                        </div>
-
-                        <div class="field-col">
-                            <label style="justify-content: center;">🖼️ الصورة</label>
-                            <div class="photo-picker-card">
-                                <div class="photo-avatar-frame" id="photoPreviewFrame">
-                                    <span style="font-size: 2rem; color: #94a3b8;">👤</span>
-                                </div>
-                                <input type="file" id="studentPhotoFile" accept="image/*" style="display: none;" onchange="handlePhotoChange(event)">
-                                <button type="button" class="btn-choose-photo" onclick="document.getElementById('studentPhotoFile').click()">
-                                    📷 اختيار صورة
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="submit-center-wrap">
-                        <button type="submit" id="submitStudentBtn" class="btn-add-student">
-                            <span>+</span>
-                            <span>إضافة الطالب</span>
-                        </button>
-                        <button type="button" id="cancelEditBtn" class="act-btn act-del" style="display: none; padding: 8px 14px;" onclick="resetStudentForm()">
-                            إلغاء التعديل
-                        </button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- Students Table Panel -->
-            <section class="students-panel">
-                <div class="panel-top-bar">
-                    <div style="display: flex; gap: 7px; flex-wrap: wrap;">
-                        <button type="button" class="btn-print-word" onclick="exportSectionToWord()">
-                            <span>🖨️</span>
-                            <span>طباعة الجدول</span>
-                            <span style="background: #ffffff; color: #1565c0; padding: 0 4px; border-radius: 3px; font-size: 0.75rem;">W</span>
-                        </button>
-                        <button type="button" class="btn-save-tbl" onclick="saveCurrentSectionTable()">
-                            💾 حفظ الجدول
-                        </button>
-                        <button type="button" class="btn-apply-all" onclick="openTableTemplateModal()">
-                            🌐 تطبيق على كل الجداول
-                        </button>
-                    </div>
-
-                    <div class="table-title-center">
-                        <span>🗄️</span>
-                        <span>جدول الطلبة</span>
-                    </div>
-
-                    <div class="search-inline-box">
-                        <span style="cursor: pointer;" onclick="runTableSearch()">🔍</span>
-                        <input type="text" id="tableSearchInput" placeholder="البحث بالاسم..." oninput="runTableSearch()">
-                    </div>
-                </div>
-
-                <div class="section-meta-strip">
-                    <span id="currentViewLabel">الشعبة الحالية: الصف الاول / أ</span>
-                    <span id="storageBadgeInfo">💾 جاهز</span>
-                </div>
-
-                <div class="table-wrap-scroll">
-                    <table id="studentsTable" class="students-main-table">
-                        <thead id="studentsTableHead"></thead>
-                        <tbody id="studentsTableBody"></tbody>
-                    </table>
-                </div>
-
-                <!-- Bulk Delete Buttons -->
-                <div class="bulk-delete-footer" id="bulkDeleteButtonsBar"></div>
-            </section>
-        </div>
-
-        <!-- Right Sidebar: Grades & Sections -->
-        <aside class="right-grades-rail">
-            <div class="rail-header-box">
-                <span>🏫</span>
-                <span>المراحل الدراسية</span>
             </div>
-            <div id="gradesRailList"></div>
-        </aside>
+
+            <form id="studentForm" onsubmit="saveStudentEntry(event)">
+                <input type="hidden" id="editStudentIdField">
+
+                <div class="form-horizontal-grid">
+                    <div class="input-group-box">
+                        <label>👤 الاسم</label>
+                        <input type="text" id="nameField" class="ctrl-field" placeholder="أدخل اسم الطالب" required>
+                    </div>
+
+                    <div class="input-group-box">
+                        <label>🎓 الصف</label>
+                        <select id="gradeField" class="ctrl-field" required>
+                            <option value="">اختر الصف</option>
+                            <option value="الصف الاول">الصف الاول</option>
+                            <option value="الصف الثاني">الصف الثاني</option>
+                            <option value="الصف الثالث">الصف الثالث</option>
+                            <option value="الصف الرابع">الصف الرابع</option>
+                            <option value="الصف الخامس">الصف الخامس</option>
+                            <option value="الصف السادس">الصف السادس</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group-box">
+                        <label>👥 الشعبة</label>
+                        <select id="sectionField" class="ctrl-field" required>
+                            <option value="">اختر الشعبة</option>
+                            <option value="أ">أ</option>
+                            <option value="ب">ب</option>
+                            <option value="ج">ج</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group-box">
+                        <label>📅 المواليد</label>
+                        <div class="dob-row-3">
+                            <select id="dayField" class="ctrl-field" required></select>
+                            <select id="monthField" class="ctrl-field" required></select>
+                            <select id="yearField" class="ctrl-field" required></select>
+                        </div>
+                    </div>
+
+                    <div class="input-group-box">
+                        <label>👤 اسم الام</label>
+                        <input type="text" id="motherField" class="ctrl-field" placeholder="أدخل اسم الأم" required>
+                    </div>
+
+                    <div class="input-group-box">
+                        <label style="justify-content: center;">🖼️ الصورة</label>
+                        <div class="photo-box-widget">
+                            <div class="photo-thumb-holder" id="photoPreviewHolder">
+                                <span style="font-size: 2rem; color: #94a3b8;">👤</span>
+                            </div>
+                            <input type="file" id="photoInputFile" accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                            <button type="button" class="btn-pick-img" onclick="document.getElementById('photoInputFile').click()">
+                                📷 اختيار صورة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-btn-center">
+                    <button type="submit" id="saveStudentBtn" class="btn-submit-student">
+                        <span>💾</span>
+                        <span>إضافة الطالب</span>
+                    </button>
+                    <button type="button" id="cancelEditActionBtn" class="mini-act-btn mini-delete" style="display: none; padding: 8px 14px;" onclick="resetStudentFormState()">
+                        إلغاء التعديل
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Grades Shelf (6 Grades Horizontally, Each With Sections أ ب ج) -->
+        <section class="grades-shelf-box">
+            <div class="shelf-top-badge">
+                <div class="shelf-title-pill">
+                    <span>⭐</span>
+                    <span>اختر الصف لعرض شعبه</span>
+                </div>
+            </div>
+
+            <div class="grades-six-row" id="gradesSixShelf"></div>
+        </section>
+
+        <!-- Section Students Table Drawer (Opens When Any Section Button Is Clicked) -->
+        <section id="sectionTableDrawer" class="section-table-drawer">
+            <div class="drawer-toolbar">
+                <div class="drawer-title-group">
+                    <span>📋</span>
+                    <h3 id="drawerHeadingTitle">جدول الشعبة</h3>
+                    <span class="count-chip" id="drawerCountChip">0 طالب</span>
+                    <span class="count-chip" id="drawerSavedStateChip" style="display: none;">محفوظ</span>
+                </div>
+
+                <div class="drawer-controls-group">
+                    <button type="button" class="btn-save-full-table" onclick="saveFullSectionTable()">
+                        <span>💾</span>
+                        <span>حفظ الجدول بالكامل</span>
+                    </button>
+                    <button type="button" class="btn-back-section" onclick="backToGradesView()">
+                        <span>↩️</span>
+                        <span>الرجوع</span>
+                    </button>
+                    <button type="button" class="btn-close-section" onclick="closeSectionDrawer()">
+                        <span>✕</span>
+                        <span>إغلاق</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="drawer-subbar">
+                <div class="drawer-search-box">
+                    <span>🔍</span>
+                    <input type="text" id="drawerSearchInput" placeholder="بحث داخل الشعبة بالاسم أو الأم..." oninput="renderDrawerTable()">
+                </div>
+
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" class="mini-act-btn mini-preview" style="padding: 6px 12px;" onclick="exportSectionWord()">
+                        📄 تصدير Word
+                    </button>
+                    <button type="button" class="mini-act-btn mini-delete" style="padding: 6px 12px;" onclick="deleteAllInActiveSection()">
+                        🗑️ حذف طلاب الشعبة
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-scroll-box">
+                <table class="section-students-tbl">
+                    <thead>
+                        <tr>
+                            <th>ت</th>
+                            <th>الاسم</th>
+                            <th>الصف</th>
+                            <th>الشعبة</th>
+                            <th>المواليد</th>
+                            <th>اسم الام</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="drawerTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
     </main>
 
     <!-- Student ID Card Modal -->
-    <div id="idCardModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('idCardModal')">
-        <div id="printableCardArea" class="id-card-frame">
-            <div class="id-card-top">
+    <div id="idCardModalLayer" class="modal-layer" onclick="if(event.target===this) hideModal('idCardModalLayer')">
+        <div id="printableIdCard" class="id-card-box">
+            <div class="id-card-head">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <img id="idCardSchoolLogoImg" class="id-card-logo-mini" src="" alt="شعار المدرسة">
+                    <img id="idCardLogoThumb" class="id-head-logo" src="" alt="شعار المدرسة">
                     <span style="font-weight: 900; font-size: 1.05rem;">بطاقة تعريف الطالب</span>
                 </div>
-                <div class="id-card-top-actions no-print">
-                    <button type="button" class="id-print-icon-btn" onclick="window.print()" title="طباعة">🖨️</button>
-                    <button type="button" class="id-close-x" onclick="closeModal('idCardModal')" title="إغلاق">✕</button>
+                <div style="display: flex; align-items: center; gap: 8px;" class="no-print">
+                    <button type="button" class="mini-act-btn mini-preview" onclick="window.print()">🖨️</button>
+                    <button type="button" style="background: transparent; border: none; color: #fff; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="hideModal('idCardModalLayer')">✕</button>
                 </div>
             </div>
 
-            <div class="id-card-body">
-                <div class="id-portrait-box">
-                    <img id="idCardPhotoImg" src="" alt="صورة الطالب">
+            <div class="id-card-content">
+                <div class="id-photo-frame">
+                    <img id="idCardStudentPhoto" src="" alt="صورة الطالب">
                 </div>
-
-                <div class="id-info-list">
-                    <div class="id-info-pill">
-                        <span class="lbl">الاسم</span>
-                        <span>:</span>
-                        <span class="val" id="idCardNameVal"></span>
-                    </div>
-                    <div class="id-info-pill">
-                        <span class="lbl">الصف</span>
-                        <span>:</span>
-                        <span class="val" id="idCardGradeVal"></span>
-                    </div>
-                    <div class="id-info-pill">
-                        <span class="lbl">الشعبة</span>
-                        <span>:</span>
-                        <span class="val" id="idCardSectionVal"></span>
-                    </div>
-                    <div class="id-info-pill">
-                        <span class="lbl">المواليد</span>
-                        <span>:</span>
-                        <span class="val" id="idCardDobVal"></span>
-                    </div>
-                    <div class="id-info-pill">
-                        <span class="lbl">اسم الام</span>
-                        <span>:</span>
-                        <span class="val" id="idCardMotherVal"></span>
-                    </div>
+                <div class="id-rows">
+                    <div class="id-field-line"><span class="k">الاسم</span><span>:</span><span class="v" id="idCardName"></span></div>
+                    <div class="id-field-line"><span class="k">الصف</span><span>:</span><span class="v" id="idCardGrade"></span></div>
+                    <div class="id-field-line"><span class="k">الشعبة</span><span>:</span><span class="v" id="idCardSection"></span></div>
+                    <div class="id-field-line"><span class="k">المواليد</span><span>:</span><span class="v" id="idCardDob"></span></div>
+                    <div class="id-field-line"><span class="k">اسم الام</span><span>:</span><span class="v" id="idCardMother"></span></div>
                 </div>
             </div>
 
-            <div class="id-card-bottom no-print">
-                <button type="button" class="btn-print-card-main" onclick="window.print()">
-                    <span>🖨️</span>
-                    <span>طباعة البطاقة</span>
-                </button>
+            <div style="padding: 0 16px 16px; display: flex; justify-content: center;" class="no-print">
+                <button type="button" class="btn-submit-student" onclick="window.print()">🖨️ طباعة البطاقة</button>
             </div>
         </div>
     </div>
 
-    <!-- Admin Modal (Auth / Change Code) -->
-    <div id="adminDialogModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('adminDialogModal')">
-        <div class="dialog-box">
-            <button type="button" class="id-close-x" style="color: #0f172a; position: absolute; left: 14px; top: 14px;" onclick="closeModal('adminDialogModal')">✕</button>
-            <h3 id="adminModalHeading">🔐 دخول الأدمن</h3>
+    <!-- Admin Dialog Modal -->
+    <div id="adminDialogLayer" class="modal-layer" onclick="if(event.target===this) hideModal('adminDialogLayer')">
+        <div class="dialog-card">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="hideModal('adminDialogLayer')">✕</button>
+            <h3 id="adminDialogHeading" style="color: #0b2e59; margin-bottom: 12px;">🔐 دخول الأدمن</h3>
 
-            <div id="adminStepAuth">
-                <div class="field-col" style="margin-bottom: 12px;">
+            <div id="adminAuthView">
+                <div class="input-group-box" style="margin-bottom: 12px;">
                     <label>أدخل رمز الأدمن:</label>
-                    <input type="password" id="adminAuthCodeInput" class="input-styled" placeholder="أدخل الرمز...">
+                    <input type="password" id="adminAuthInput" class="ctrl-field" placeholder="أدخل الرمز...">
                 </div>
-                <button type="button" class="btn-add-student" style="width: 100%; justify-content: center;" onclick="verifyAdminModal()">تأكيد الدخول</button>
+                <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="confirmAdminLogin()">تأكيد</button>
             </div>
 
-            <div id="adminStepChange" style="display: none;">
-                <div class="field-col" style="margin-bottom: 10px;">
+            <div id="adminChangeView" style="display: none;">
+                <div class="input-group-box" style="margin-bottom: 10px;">
                     <label>الرمز الحالي:</label>
-                    <input type="password" id="currentCodeVerifyInput" class="input-styled" placeholder="أدخل الرمز الحالي...">
+                    <input type="password" id="oldCodeInput" class="ctrl-field" placeholder="أدخل الرمز الحالي...">
                 </div>
-                <div class="field-col" style="margin-bottom: 14px;">
+                <div class="input-group-box" style="margin-bottom: 14px;">
                     <label>الرمز الجديد:</label>
-                    <input type="text" id="newCodeValueInput" class="input-styled" placeholder="أدخل الرمز الجديد...">
+                    <input type="text" id="newCodeInput" class="ctrl-field" placeholder="أدخل الرمز الجديد...">
                 </div>
-                <button type="button" class="btn-add-student" style="width: 100%; justify-content: center;" onclick="saveNewAdminCode()">💾 حفظ الرمز الجديد</button>
+                <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="updateAdminPasscode()">💾 حفظ الرمز الجديد</button>
             </div>
 
-            <div id="adminStepMenu" style="display: none;">
-                <p style="font-weight: 800; color: #15803d; margin-bottom: 12px;">✅ تم التحقق بنجاح.</p>
-                <button type="button" class="btn-add-student" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="toggleLockFromModal()">
-                    تبديل حالة قفل المنصة
+            <div id="adminMenuView" style="display: none;">
+                <p style="font-weight: 800; color: #15803d; margin-bottom: 12px;">✅ تم تسجيل دخول الأدمن.</p>
+                <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="toggleLockState()">
+                    قفل / فتح المنصة
                 </button>
-                <button type="button" class="btn-apply-all" style="width: 100%; justify-content: center;" onclick="switchToChangeForm()">
+                <button type="button" class="btn-back-section" style="width: 100%; justify-content: center;" onclick="showChangeCodeForm()">
                     ⚙️ تغيير رمز الأدمن
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- Global Table Template Modal -->
-    <div id="tableTemplateModal" class="modal-backdrop" onclick="if(event.target===this) closeModal('tableTemplateModal')">
-        <div class="dialog-box">
-            <button type="button" class="id-close-x" style="color: #0f172a; position: absolute; left: 14px; top: 14px;" onclick="closeModal('tableTemplateModal')">✕</button>
-            <h3>🌐 حفظ وتطبيق الجدول على كل الجداول</h3>
-            <p style="font-size: 0.85rem; color: #475569; font-weight: 700; margin-bottom: 10px;">
-                أي تعديل هنا يُحفظ ويُطبق فوراً على جميع جداول الصفوف والشعب:
-            </p>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; font-size: 0.88rem; font-weight: 800;">
-                <label><input type="checkbox" id="optColName" checked disabled> الاسم</label>
-                <label><input type="checkbox" id="optColSection" checked> الشعبة</label>
-                <label><input type="checkbox" id="optColDob" checked> المواليد</label>
-                <label><input type="checkbox" id="optColMother" checked> اسم الام</label>
-                <label><input type="checkbox" id="optColActions" checked> الإجراءات</label>
-                <label><input type="checkbox" id="optGridBorder"> حدود شبكة كاملة</label>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
-                <div class="field-col">
-                    <label>حجم الخط:</label>
-                    <select id="optFontSize" class="input-styled">
-                        <option value="0.88rem">صغير</option>
-                        <option value="0.95rem" selected>متوسط</option>
-                        <option value="1.05rem">كبير</option>
-                    </select>
-                </div>
-                <div class="field-col">
-                    <label>لون الترويسة:</label>
-                    <select id="optHeadColor" class="input-styled">
-                        <option value="#0c2d57|#ffffff" selected>كحلي داكن</option>
-                        <option value="#0f5132|#ffffff">أخضر داكن</option>
-                        <option value="#1e293b|#f8fafc">رمادي داكن</option>
-                    </select>
-                </div>
-            </div>
-
-            <button type="button" class="btn-add-student" style="width: 100%; justify-content: center;" onclick="saveAndApplyAllTables()">
-                🌐 حفظ وتطبيق على كل الجداول
-            </button>
         </div>
     </div>
 
@@ -1275,10 +1163,10 @@
             onSnapshot, query, orderBy, writeBatch
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        // مسار الشعار: يمكنك وضعه كـ "logo.png" بجانب الملف عند الرفع على الاستضافة
-        const SCHOOL_LOGO_SRC = "logo.png";
+        // مسار شعار المدرسة (ضع logo.png بجانب الملف عند الرفع على الاستضافة)
+        const SCHOOL_LOGO_URL = "logo.png";
 
-        // اختياري: أضف إعدادات Firebase هنا للمزامنة السحابية بين الأجهزة
+        // اختياري: إعدادات Firebase للمزامنة السحابية بين الأجهزة
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -1288,7 +1176,7 @@
             appId: "YOUR_APP_ID"
         };
 
-        const SECRET_DEFAULT_CODE = "وليد";
+        const DEFAULT_SECRET_CODE = "وليد";
         const GRADES = [
             "الصف الاول",
             "الصف الثاني",
@@ -1299,136 +1187,114 @@
         ];
         const SECTIONS = ["أ", "ب", "ج"];
 
-        const DEFAULT_TABLE_CFG = {
-            columns: { name: true, section: true, dob: true, mother: true, actions: true },
-            fontSize: "0.95rem",
-            headColor: "#0c2d57|#ffffff",
-            gridBorder: false
-        };
+        let studentsList = [];
+        let selectedGrade = null;
+        let selectedSection = null;
+        let isDrawerOpen = false;
+        let currentPhotoBase64 = "";
 
-        let tableCfg = JSON.parse(localStorage.getItem("mutafawiqeen_tbl_cfg_v6")) || JSON.parse(JSON.stringify(DEFAULT_TABLE_CFG));
-        let savedTablesArchive = JSON.parse(localStorage.getItem("mutafawiqeen_tbl_archive_v6")) || {};
-        let adminPasscode = localStorage.getItem("mutafawiqeen_pass_v6") || SECRET_DEFAULT_CODE;
-        let platformIsLocked = localStorage.getItem("mutafawiqeen_locked_v6") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v7")) || {};
+        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v7") || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v7") === "true";
 
-        let studentsData = [];
-        let activeGrade = "الصف الاول";
-        let activeSection = "أ";
-        let activeSearch = "";
-        let uploadedPhotoData = "";
+        let useCloud = false;
+        let db = null;
+        let studentsCol = null;
+        let settingsDoc = null;
+        let localDb = null;
 
-        let useCloudDB = false;
-        let dbInstance = null;
-        let studentsRef = null;
-        let configDocRef = null;
-        let idb = null;
+        const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='55' r='28' fill='%2364748b'/><path d='M22 150 C22 108, 118 108, 118 150 Z' fill='%2364748b'/></svg>";
 
-        const fallbackAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='55' r='28' fill='%2364748b'/><path d='M22 150 C22 108, 118 108, 118 150 Z' fill='%2364748b'/></svg>";
+        document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
+        document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
 
-        // ربط شعار المدرسة في البانر والبطاقة
-        const heroLogo = document.getElementById("heroSchoolLogoImg");
-        const cardLogo = document.getElementById("idCardSchoolLogoImg");
-        if (heroLogo) heroLogo.src = SCHOOL_LOGO_SRC;
-        if (cardLogo) cardLogo.src = SCHOOL_LOGO_SRC;
-
-        initDobSelectors();
-        applyTableConfig();
-        renderGradesRail();
-        renderBulkDeleteButtons();
-        syncLockStateUI();
+        initDateFields();
+        renderGradesShelf();
+        applyLockUI();
 
         if (navigator.storage && navigator.storage.persist) {
             try { await navigator.storage.persist(); } catch (e) {}
         }
 
         if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-            useCloudDB = true;
+            useCloud = true;
             const app = initializeApp(firebaseConfig);
-            dbInstance = getFirestore(app);
-            studentsRef = collection(dbInstance, "students");
-            configDocRef = doc(dbInstance, "config", "platform");
+            db = getFirestore(app);
+            studentsCol = collection(db, "students");
+            settingsDoc = doc(db, "config", "platform");
 
-            document.getElementById("storageBadgeInfo").innerText = "☁️ مزامنة سحابية نشطة";
-
-            onSnapshot(configDocRef, async (snap) => {
+            onSnapshot(settingsDoc, async (snap) => {
                 if (!snap.exists()) {
-                    await setDoc(configDocRef, { isLocked: platformIsLocked, adminCode: adminPasscode, tableCfg });
+                    await setDoc(settingsDoc, { isLocked: isPlatformLocked, adminCode: adminSecret });
                 } else {
-                    const d = snap.data();
-                    platformIsLocked = Boolean(d.isLocked);
-                    adminPasscode = d.adminCode || SECRET_DEFAULT_CODE;
-                    if (d.tableCfg) {
-                        tableCfg = { ...DEFAULT_TABLE_CFG, ...d.tableCfg, columns: { ...DEFAULT_TABLE_CFG.columns, ...(d.tableCfg.columns || {}) } };
-                        localStorage.setItem("mutafawiqeen_tbl_cfg_v6", JSON.stringify(tableCfg));
-                        applyTableConfig();
-                        renderStudentsTable();
-                    }
-                    syncLockStateUI();
+                    const data = snap.data();
+                    isPlatformLocked = Boolean(data.isLocked);
+                    adminSecret = data.adminCode || DEFAULT_SECRET_CODE;
+                    applyLockUI();
                 }
             });
 
-            onSnapshot(query(studentsRef, orderBy("createdAt", "asc")), (snapshot) => {
-                studentsData = snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
-                renderStudentsTable();
+            onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
+                studentsList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (isDrawerOpen) renderDrawerTable();
             });
         } else {
-            document.getElementById("storageBadgeInfo").innerText = "💾 تخزين محلي غير محدود (IndexedDB)";
-            openIndexedStorage();
+            initIndexedDB();
         }
 
-        function openIndexedStorage() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V6", 1);
+        function initIndexedDB() {
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V7", 1);
             req.onupgradeneeded = (e) => {
-                const db = e.target.result;
-                if (!db.objectStoreNames.contains("students")) {
-                    db.createObjectStore("students", { keyPath: "id" });
+                const database = e.target.result;
+                if (!database.objectStoreNames.contains("students")) {
+                    database.createObjectStore("students", { keyPath: "id" });
                 }
             };
             req.onsuccess = (e) => {
-                idb = e.target.result;
-                loadFromIndexedStorage();
+                localDb = e.target.result;
+                loadLocalList();
             };
         }
 
-        function loadFromIndexedStorage() {
-            if (!idb) return;
-            const tx = idb.transaction("students", "readonly");
+        function loadLocalList() {
+            if (!localDb) return;
+            const tx = localDb.transaction("students", "readonly");
             tx.objectStore("students").getAll().onsuccess = (e) => {
-                studentsData = (e.target.result || []).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-                renderStudentsTable();
+                studentsList = (e.target.result || []).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                if (isDrawerOpen) renderDrawerTable();
             };
         }
 
-        function initDobSelectors() {
-            const dEl = document.getElementById("dobDayInput");
-            const mEl = document.getElementById("dobMonthInput");
-            const yEl = document.getElementById("dobYearInput");
+        function initDateFields() {
+            const dSel = document.getElementById("dayField");
+            const mSel = document.getElementById("monthField");
+            const ySel = document.getElementById("yearField");
 
-            dEl.innerHTML = '<option value="">يوم</option>';
-            for (let d = 1; d <= 31; d++) dEl.innerHTML += `<option value="${d}">${d}</option>`;
+            dSel.innerHTML = '<option value="">يوم</option>';
+            for (let d = 1; d <= 31; d++) dSel.innerHTML += `<option value="${d}">${d}</option>`;
 
-            mEl.innerHTML = '<option value="">شهر</option>';
-            for (let m = 1; m <= 12; m++) mEl.innerHTML += `<option value="${m}">${m}</option>`;
+            mSel.innerHTML = '<option value="">شهر</option>';
+            for (let m = 1; m <= 12; m++) mSel.innerHTML += `<option value="${m}">${m}</option>`;
 
-            yEl.innerHTML = '<option value="">سنة</option>';
-            for (let y = 2016; y >= 2002; y--) yEl.innerHTML += `<option value="${y}">${y}</option>`;
+            ySel.innerHTML = '<option value="">سنة</option>';
+            for (let y = 2016; y >= 2002; y--) ySel.innerHTML += `<option value="${y}">${y}</option>`;
         }
 
-        function renderGradesRail() {
-            const rail = document.getElementById("gradesRailList");
-            rail.innerHTML = GRADES.map((grade) => {
-                const isActiveG = activeGrade === grade;
+        function renderGradesShelf() {
+            const container = document.getElementById("gradesSixShelf");
+            container.innerHTML = GRADES.map(grade => {
+                const isActiveG = isDrawerOpen && selectedGrade === grade;
                 return `
-                    <div class="grade-card-block ${isActiveG ? 'active-grade' : ''}">
-                        <button type="button" class="grade-title-btn" onclick="selectGradeOnly('${grade}')">
+                    <div class="grade-column-card ${isActiveG ? 'active-grade-card' : ''}">
+                        <div class="grade-card-heading">
                             <span>🎓</span>
                             <span>${grade}</span>
-                        </button>
-                        <div class="sections-three-btns">
+                        </div>
+                        <div class="grade-sec-buttons">
                             ${SECTIONS.map(sec => {
-                                const isSel = isActiveG && activeSection === sec;
+                                const isActiveS = isActiveG && selectedSection === sec;
                                 return `
-                                    <button type="button" class="sec-mini-btn ${isSel ? 'selected-sec' : ''}" onclick="selectGradeSection('${grade}', '${sec}')">
+                                    <button type="button" class="sec-pill-btn ${isActiveS ? 'active-sec-btn' : ''}" onclick="openSectionTable('${grade}', '${sec}')">
                                         ${sec}
                                     </button>
                                 `;
@@ -1439,123 +1305,99 @@
             }).join("");
         }
 
-        window.selectGradeOnly = function (grade) {
-            activeGrade = grade;
-            activeSection = "أ";
-            activeSearch = "";
-            document.getElementById("tableSearchInput").value = "";
-            renderGradesRail();
-            renderStudentsTable();
+        window.openSectionTable = function (grade, sec) {
+            selectedGrade = grade;
+            selectedSection = sec;
+            isDrawerOpen = true;
+            document.getElementById("gradeField").value = grade;
+            document.getElementById("sectionField").value = sec;
+            document.getElementById("drawerSearchInput").value = "";
+            document.getElementById("sectionTableDrawer").style.display = "block";
+            renderGradesShelf();
+            renderDrawerTable();
+            document.getElementById("sectionTableDrawer").scrollIntoView({ behavior: "smooth", block: "nearest" });
         };
 
-        window.selectGradeSection = function (grade, sec) {
-            activeGrade = grade;
-            activeSection = sec;
-            activeSearch = "";
-            document.getElementById("tableSearchInput").value = "";
-            renderGradesRail();
-            renderStudentsTable();
+        window.backToGradesView = function () {
+            document.getElementById("sectionTableDrawer").style.display = "none";
+            isDrawerOpen = false;
+            renderGradesShelf();
+            document.getElementById("gradesSixShelf").parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
         };
 
-        function renderBulkDeleteButtons() {
-            const bar = document.getElementById("bulkDeleteButtonsBar");
-            const samplePairs = [
-                { grade: "الصف الاول", sec: "أ", label: "الصف الأول / أ" },
-                { grade: "الصف الثاني", sec: "ب", label: "الصف الثاني / ب" },
-                { grade: "الصف الثالث", sec: "ج", label: "الصف الثالث / ج" }
-            ];
-            bar.innerHTML = samplePairs.map(item => `
-                <button type="button" class="btn-bulk-red" onclick="bulkDeleteByGradeSec('${item.grade}', '${item.sec}')">
-                    <span>🗑️</span>
-                    <span>حذف كل شيء - ${item.label}</span>
-                </button>
-            `).join("");
-        }
+        window.closeSectionDrawer = function () {
+            document.getElementById("sectionTableDrawer").style.display = "none";
+            isDrawerOpen = false;
+            renderGradesShelf();
+        };
 
-        function applyTableConfig() {
-            const root = document.documentElement;
-            const [bg, fg] = (tableCfg.headColor || "#0c2d57|#ffffff").split("|");
-            root.style.setProperty("--tbl-head-bg", bg);
-            root.style.setProperty("--tbl-head-color", fg);
-            root.style.setProperty("--tbl-font-size", tableCfg.fontSize || "0.95rem");
-            const tbl = document.getElementById("studentsTable");
-            if (tbl) tbl.classList.toggle("grid-mode", Boolean(tableCfg.gridBorder));
-        }
+        function renderDrawerTable() {
+            if (!selectedGrade || !selectedSection) return;
+            const searchTerm = document.getElementById("drawerSearchInput").value.trim().toLowerCase();
 
-        function renderStudentsTable() {
-            const c = tableCfg.columns || DEFAULT_TABLE_CFG.columns;
-            const thead = document.getElementById("studentsTableHead");
-            let th = "<tr>";
-            if (c.name) th += "<th>الاسم</th>";
-            if (c.section) th += "<th>الشعبة</th>";
-            if (c.dob) th += "<th>المواليد</th>";
-            if (c.mother) th += "<th>اسم الام</th>";
-            if (c.actions) th += "<th>الإجراءات</th>";
-            th += "</tr>";
-            thead.innerHTML = th;
+            const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            const filtered = searchTerm
+                ? sectionRows.filter(s =>
+                    (s.name && s.name.toLowerCase().includes(searchTerm)) ||
+                    (s.mother && s.mother.toLowerCase().includes(searchTerm))
+                )
+                : sectionRows;
 
-            const filtered = studentsData.filter(s => {
-                if (activeSearch) {
-                    return (
-                        (s.name && s.name.toLowerCase().includes(activeSearch.toLowerCase())) ||
-                        (s.mother && s.mother.toLowerCase().includes(activeSearch.toLowerCase()))
-                    );
-                }
-                return s.grade === activeGrade && s.section === activeSection;
-            });
+            document.getElementById("drawerHeadingTitle").innerText = `جدول طلاب ${selectedGrade} - شعبة (${selectedSection})`;
+            document.getElementById("drawerCountChip").innerText = `عدد الطلاب: ${filtered.length}`;
 
-            const archiveKey = `${activeGrade}__${activeSection}`;
-            const savedMark = savedTablesArchive[archiveKey] ? ` | محفوظ (${savedTablesArchive[archiveKey].savedAt})` : "";
+            const key = `${selectedGrade}__${selectedSection}`;
+            const savedChip = document.getElementById("drawerSavedStateChip");
+            if (savedSectionTables[key]) {
+                savedChip.style.display = "inline-block";
+                savedChip.innerText = `✔️ محفوظ (${savedSectionTables[key].savedAt})`;
+            } else {
+                savedChip.style.display = "none";
+            }
 
-            document.getElementById("currentViewLabel").innerText = activeSearch
-                ? `نتائج البحث (${filtered.length})`
-                : `${activeGrade} / شعبة (${activeSection}) — العدد: ${filtered.length}${savedMark}`;
-
-            const tbody = document.getElementById("studentsTableBody");
-            const colSpan = Object.values(c).filter(Boolean).length || 1;
-
+            const tbody = document.getElementById("drawerTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${colSpan}" style="padding: 22px; color: #64748b;">لا توجد بيانات مسجلة في هذه الشعبة حالياً</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="padding: 22px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filtered.map(st => {
-                let row = "<tr>";
-                if (c.name) {
-                    row += `<td><span class="clickable-student" onclick="openStudentCard('${st.id}')">${st.name}</span></td>`;
-                }
-                if (c.section) {
-                    const secDisplay = st.grade ? st.grade.replace("الصف ", "") : st.section;
-                    row += `<td>${secDisplay}</td>`;
-                }
-                if (c.dob) {
-                    row += `<td dir="ltr">${st.dob}</td>`;
-                }
-                if (c.mother) {
-                    row += `<td>${st.mother}</td>`;
-                }
-                if (c.actions) {
-                    row += `
-                        <td>
-                            <div class="row-actions">
-                                <button type="button" class="act-btn act-preview" onclick="openStudentCard('${st.id}')">👁️ معاينة</button>
-                                <button type="button" class="act-btn act-edit" onclick="editStudentRecord('${st.id}')">📝 تعديل</button>
-                                <button type="button" class="act-btn act-del" onclick="deleteStudentRecord('${st.id}')">🗑️ حذف</button>
-                            </div>
-                        </td>
-                    `;
-                }
-                row += "</tr>";
-                return row;
-            }).join("");
+            tbody.innerHTML = filtered.map((st, idx) => `
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><span class="student-link-name" onclick="showStudentCard('${st.id}')">${st.name}</span></td>
+                    <td>${st.grade}</td>
+                    <td>${st.section}</td>
+                    <td dir="ltr">${st.dob}</td>
+                    <td>${st.mother}</td>
+                    <td>
+                        <div class="cell-actions">
+                            <button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>
+                            <button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>
+                            <button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join("");
         }
 
-        window.runTableSearch = function () {
-            activeSearch = document.getElementById("tableSearchInput").value.trim();
-            renderStudentsTable();
+        window.saveFullSectionTable = function () {
+            if (!selectedGrade || !selectedSection) return;
+            const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            const key = `${selectedGrade}__${selectedSection}`;
+            const nowTime = new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
+            savedSectionTables[key] = {
+                grade: selectedGrade,
+                section: selectedSection,
+                count: rows.length,
+                savedAt: nowTime,
+                students: rows
+            };
+            localStorage.setItem("mutafawiqeen_saved_sections_v7", JSON.stringify(savedSectionTables));
+            renderDrawerTable();
+            alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
 
-        window.handlePhotoChange = function (e) {
+        window.handlePhotoUpload = function (e) {
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -1572,205 +1414,163 @@
                     const x = (canvas.width / 2) - (img.width / 2) * scale;
                     const y = (canvas.height / 2) - (img.height / 2) * scale;
                     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-                    uploadedPhotoData = canvas.toDataURL("image/jpeg", 0.65);
-                    document.getElementById("photoPreviewFrame").innerHTML = `<img src="${uploadedPhotoData}" alt="صورة الطالب">`;
+                    currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.65);
+                    document.getElementById("photoPreviewHolder").innerHTML = `<img src="${currentPhotoBase64}" alt="صورة الطالب">`;
                 };
                 img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
         };
 
-        window.handleSaveStudent = async function (e) {
+        window.saveStudentEntry = async function (e) {
             e.preventDefault();
-            const editId = document.getElementById("editingStudentId").value;
-            const name = document.getElementById("studentNameInput").value.trim();
-            const grade = document.getElementById("studentGradeInput").value;
-            const section = document.getElementById("studentSectionInput").value;
-            const day = document.getElementById("dobDayInput").value;
-            const month = document.getElementById("dobMonthInput").value;
-            const year = document.getElementById("dobYearInput").value;
-            const mother = document.getElementById("motherNameInput").value.trim();
+            const editId = document.getElementById("editStudentIdField").value;
+            const name = document.getElementById("nameField").value.trim();
+            const grade = document.getElementById("gradeField").value;
+            const section = document.getElementById("sectionField").value;
+            const day = document.getElementById("dayField").value;
+            const month = document.getElementById("monthField").value;
+            const year = document.getElementById("yearField").value;
+            const mother = document.getElementById("motherField").value.trim();
 
-            const existing = editId ? studentsData.find(s => s.id === editId) : null;
+            const existing = editId ? studentsList.find(s => s.id === editId) : null;
             const dobFormatted = `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
 
-            const payload = {
+            const record = {
                 name, grade, section, day, month, year,
                 dob: dobFormatted,
                 mother,
-                photo: uploadedPhotoData || (existing ? existing.photo : fallbackAvatar),
+                photo: currentPhotoBase64 || (existing ? existing.photo : defaultAvatar),
                 createdAt: existing ? existing.createdAt : Date.now()
             };
 
-            if (useCloudDB && studentsRef) {
+            if (useCloud && studentsCol) {
                 if (editId) {
-                    await updateDoc(doc(dbInstance, "students", editId), payload);
+                    await updateDoc(doc(db, "students", editId), record);
                 } else {
-                    await addDoc(studentsRef, payload);
+                    await addDoc(studentsCol, record);
                 }
             } else {
                 const id = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-                const tx = idb.transaction("students", "readwrite");
-                tx.objectStore("students").put({ id, ...payload });
+                const tx = localDb.transaction("students", "readwrite");
+                tx.objectStore("students").put({ id, ...record });
                 await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
-                loadFromIndexedStorage();
+                loadLocalList();
             }
 
-            activeGrade = grade;
-            activeSection = section;
-            activeSearch = "";
-            document.getElementById("tableSearchInput").value = "";
-            renderGradesRail();
-            resetStudentForm();
+            selectedGrade = grade;
+            selectedSection = section;
+            isDrawerOpen = true;
+            document.getElementById("sectionTableDrawer").style.display = "block";
+            renderGradesShelf();
+            renderDrawerTable();
+            resetStudentFormState();
         };
 
-        window.resetStudentForm = function () {
+        window.resetStudentFormState = function () {
             document.getElementById("studentForm").reset();
-            document.getElementById("editingStudentId").value = "";
-            uploadedPhotoData = "";
-            document.getElementById("photoPreviewFrame").innerHTML = `<span style="font-size: 2rem; color: #94a3b8;">👤</span>`;
-            document.getElementById("formHeaderTitle").innerHTML = `<span>👤+</span><span>إضافة طالب جديد</span>`;
-            document.getElementById("submitStudentBtn").innerHTML = `<span>+</span><span>إضافة الطالب</span>`;
-            document.getElementById("cancelEditBtn").style.display = "none";
+            document.getElementById("editStudentIdField").value = "";
+            currentPhotoBase64 = "";
+            document.getElementById("photoPreviewHolder").innerHTML = `<span style="font-size: 2rem; color: #94a3b8;">👤</span>`;
+            document.getElementById("studentFormBadge").innerHTML = `<span>👤+</span><span>إضافة طالب جديد</span>`;
+            document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>إضافة الطالب</span>`;
+            document.getElementById("cancelEditActionBtn").style.display = "none";
         };
 
-        window.editStudentRecord = function (id) {
-            const st = studentsData.find(s => s.id === id);
+        window.startEditStudent = function (id) {
+            const st = studentsList.find(s => s.id === id);
             if (!st) return;
-            document.getElementById("editingStudentId").value = st.id;
-            document.getElementById("studentNameInput").value = st.name;
-            document.getElementById("studentGradeInput").value = st.grade;
-            document.getElementById("studentSectionInput").value = st.section;
-            document.getElementById("dobDayInput").value = st.day;
-            document.getElementById("dobMonthInput").value = st.month;
-            document.getElementById("dobYearInput").value = st.year;
-            document.getElementById("motherNameInput").value = st.mother;
-            uploadedPhotoData = st.photo || "";
-            document.getElementById("photoPreviewFrame").innerHTML = `<img src="${st.photo || fallbackAvatar}" alt="صورة الطالب">`;
-            document.getElementById("formHeaderTitle").innerHTML = `<span>📝</span><span>تعديل بيانات الطالب</span>`;
-            document.getElementById("submitStudentBtn").innerHTML = `<span>💾</span><span>حفظ التعديل</span>`;
-            document.getElementById("cancelEditBtn").style.display = "inline-flex";
-            window.scrollTo({ top: 140, behavior: "smooth" });
+            document.getElementById("editStudentIdField").value = st.id;
+            document.getElementById("nameField").value = st.name;
+            document.getElementById("gradeField").value = st.grade;
+            document.getElementById("sectionField").value = st.section;
+            document.getElementById("dayField").value = st.day;
+            document.getElementById("monthField").value = st.month;
+            document.getElementById("yearField").value = st.year;
+            document.getElementById("motherField").value = st.mother;
+            currentPhotoBase64 = st.photo || "";
+            document.getElementById("photoPreviewHolder").innerHTML = `<img src="${st.photo || defaultAvatar}" alt="صورة الطالب">`;
+            document.getElementById("studentFormBadge").innerHTML = `<span>✏️</span><span>تعديل معلومات الطالب</span>`;
+            document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>حفظ التعديل</span>`;
+            document.getElementById("cancelEditActionBtn").style.display = "inline-block";
+            window.scrollTo({ top: 120, behavior: "smooth" });
         };
 
-        window.deleteStudentRecord = async function (id) {
-            const st = studentsData.find(s => s.id === id);
+        window.removeStudent = async function (id) {
+            const st = studentsList.find(s => s.id === id);
             if (!st) return;
             if (!confirm(`هل تريد حذف الطالب (${st.name})؟`)) return;
-            if (useCloudDB && studentsRef) {
-                await deleteDoc(doc(dbInstance, "students", id));
+            if (useCloud && studentsCol) {
+                await deleteDoc(doc(db, "students", id));
             } else {
-                const tx = idb.transaction("students", "readwrite");
+                const tx = localDb.transaction("students", "readwrite");
                 tx.objectStore("students").delete(id);
-                tx.oncomplete = loadFromIndexedStorage;
+                tx.oncomplete = loadLocalList;
             }
         };
 
-        window.bulkDeleteByGradeSec = async function (grade, sec) {
-            const list = studentsData.filter(s => s.grade === grade && s.section === sec);
-            if (list.length === 0) {
-                alert("القائمة فارغة بالفعل.");
+        window.deleteAllInActiveSection = async function () {
+            if (!selectedGrade || !selectedSection) return;
+            const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            if (rows.length === 0) {
+                alert("الشعبة فارغة بالفعل.");
                 return;
             }
-            if (!confirm(`سيتم حذف جميع طلاب (${grade} / ${sec}) وعددهم (${list.length}). متابعة؟`)) return;
-            if (useCloudDB && studentsRef) {
-                const batch = writeBatch(dbInstance);
-                list.forEach(item => batch.delete(doc(dbInstance, "students", item.id)));
+            if (!confirm(`سيتم حذف جميع طلاب (${selectedGrade} - شعبة ${selectedSection}) وعددهم (${rows.length}). متابعة؟`)) return;
+            if (useCloud && studentsCol) {
+                const batch = writeBatch(db);
+                rows.forEach(r => batch.delete(doc(db, "students", r.id)));
                 await batch.commit();
             } else {
-                const tx = idb.transaction("students", "readwrite");
+                const tx = localDb.transaction("students", "readwrite");
                 const store = tx.objectStore("students");
-                list.forEach(item => store.delete(item.id));
-                tx.oncomplete = loadFromIndexedStorage;
+                rows.forEach(r => store.delete(r.id));
+                tx.oncomplete = loadLocalList;
             }
         };
 
-        window.openStudentCard = function (id) {
-            const st = studentsData.find(s => s.id === id);
+        window.showStudentCard = function (id) {
+            const st = studentsList.find(s => s.id === id);
             if (!st) return;
-            document.getElementById("idCardPhotoImg").src = st.photo || fallbackAvatar;
-            document.getElementById("idCardNameVal").innerText = st.name;
-            document.getElementById("idCardGradeVal").innerText = st.grade.replace("الصف ", "");
-            document.getElementById("idCardSectionVal").innerText = st.section;
-            document.getElementById("idCardDobVal").innerText = st.dob;
-            document.getElementById("idCardMotherVal").innerText = st.mother;
-            document.getElementById("idCardModal").style.display = "flex";
+            document.getElementById("idCardStudentPhoto").src = st.photo || defaultAvatar;
+            document.getElementById("idCardName").innerText = st.name;
+            document.getElementById("idCardGrade").innerText = st.grade.replace("الصف ", "");
+            document.getElementById("idCardSection").innerText = st.section;
+            document.getElementById("idCardDob").innerText = st.dob;
+            document.getElementById("idCardMother").innerText = st.mother;
+            document.getElementById("idCardModalLayer").style.display = "flex";
         };
 
-        window.saveCurrentSectionTable = function () {
-            const rows = studentsData.filter(s => s.grade === activeGrade && s.section === activeSection);
-            const key = `${activeGrade}__${activeSection}`;
-            savedTablesArchive[key] = {
-                savedAt: new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" }),
-                count: rows.length,
-                rows
-            };
-            localStorage.setItem("mutafawiqeen_tbl_archive_v6", JSON.stringify(savedTablesArchive));
-            renderStudentsTable();
-            alert(`✅ تم حفظ جدول (${activeGrade} / ${activeSection}) بنجاح.`);
-        };
-
-        window.openTableTemplateModal = function () {
-            const c = tableCfg.columns || DEFAULT_TABLE_CFG.columns;
-            document.getElementById("optColName").checked = true;
-            document.getElementById("optColSection").checked = Boolean(c.section);
-            document.getElementById("optColDob").checked = Boolean(c.dob);
-            document.getElementById("optColMother").checked = Boolean(c.mother);
-            document.getElementById("optColActions").checked = Boolean(c.actions);
-            document.getElementById("optFontSize").value = tableCfg.fontSize || "0.95rem";
-            document.getElementById("optHeadColor").value = tableCfg.headColor || "#0c2d57|#ffffff";
-            document.getElementById("optGridBorder").checked = Boolean(tableCfg.gridBorder);
-            document.getElementById("tableTemplateModal").style.display = "flex";
-        };
-
-        window.saveAndApplyAllTables = async function () {
-            tableCfg = {
-                columns: {
-                    name: true,
-                    section: document.getElementById("optColSection").checked,
-                    dob: document.getElementById("optColDob").checked,
-                    mother: document.getElementById("optColMother").checked,
-                    actions: document.getElementById("optColActions").checked
-                },
-                fontSize: document.getElementById("optFontSize").value,
-                headColor: document.getElementById("optHeadColor").value,
-                gridBorder: document.getElementById("optGridBorder").checked
-            };
-            localStorage.setItem("mutafawiqeen_tbl_cfg_v6", JSON.stringify(tableCfg));
-            applyTableConfig();
-            renderStudentsTable();
-            if (useCloudDB && configDocRef) {
-                await updateDoc(configDocRef, { tableCfg });
-            }
-            closeModal("tableTemplateModal");
-            alert("🌐 تم حفظ الإعداد وتطبيقه على كل الجداول بنجاح.");
-        };
-
-        window.exportSectionToWord = function () {
-            const rows = studentsData.filter(s => s.grade === activeGrade && s.section === activeSection);
+        window.exportSectionWord = function () {
+            if (!selectedGrade || !selectedSection) return;
+            const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
             if (rows.length === 0) {
-                alert("لا توجد بيانات في هذه الشعبة للتصدير.");
+                alert("لا توجد بيانات للتصدير.");
                 return;
             }
-            const bodyRows = rows.map(r => `
+            const bodyRows = rows.map((r, i) => `
                 <tr>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${i + 1}</td>
                     <td style="border:1px solid #000;padding:7px;">${r.name}</td>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.grade}</td>
                     <td style="border:1px solid #000;padding:7px;text-align:center;">${r.section}</td>
                     <td style="border:1px solid #000;padding:7px;text-align:center;">${r.dob}</td>
                     <td style="border:1px solid #000;padding:7px;">${r.mother}</td>
                 </tr>
             `).join("");
 
-            const htmlDoc = `
+            const docHtml = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head><meta charset='utf-8'><title>جدول الطلبة</title></head>
+                <head><meta charset='utf-8'><title>جدول الشعبة</title></head>
                 <body dir="rtl" style="font-family:Arial,sans-serif;">
                     <h2 style="text-align:center;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
-                    <h3 style="text-align:center;">${activeGrade} - شعبة (${activeSection})</h3>
+                    <h3 style="text-align:center;">${selectedGrade} - شعبة (${selectedSection})</h3>
                     <table style="width:100%;border-collapse:collapse;">
                         <thead>
                             <tr style="background:#0c2d57;color:#fff;">
+                                <th style="border:1px solid #000;padding:8px;">ت</th>
                                 <th style="border:1px solid #000;padding:8px;">الاسم</th>
+                                <th style="border:1px solid #000;padding:8px;">الصف</th>
                                 <th style="border:1px solid #000;padding:8px;">الشعبة</th>
                                 <th style="border:1px solid #000;padding:8px;">المواليد</th>
                                 <th style="border:1px solid #000;padding:8px;">اسم الام</th>
@@ -1780,122 +1580,122 @@
                     </table>
                 </body></html>
             `;
-            const blob = new Blob(["\ufeff", htmlDoc], { type: "application/msword" });
+            const blob = new Blob(["\ufeff", docHtml], { type: "application/msword" });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `جدول_${activeGrade}_${activeSection}.doc`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `جدول_${selectedGrade}_شعبة_${selectedSection}.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
             URL.revokeObjectURL(url);
         };
 
-        async function persistLock(locked) {
-            platformIsLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v6", String(locked));
-            syncLockStateUI();
-            if (useCloudDB && configDocRef) {
-                await updateDoc(configDocRef, { isLocked: locked });
+        // Admin & Lock Controls (Code never displayed in UI)
+        async function saveLockState(locked) {
+            isPlatformLocked = locked;
+            localStorage.setItem("mutafawiqeen_locked_v7", String(locked));
+            applyLockUI();
+            if (useCloud && settingsDoc) {
+                await updateDoc(settingsDoc, { isLocked: locked });
             }
         }
 
-        function syncLockStateUI() {
-            const btn = document.getElementById("statusPillBtn");
-            const txt = document.getElementById("statusPillText");
-            const screen = document.getElementById("lockScreenOverlay");
-            if (platformIsLocked) {
-                btn.className = "bar-btn bar-btn-status-locked";
+        function applyLockUI() {
+            const btn = document.getElementById("statusTogglePill");
+            const txt = document.getElementById("statusToggleText");
+            const overlay = document.getElementById("lockScreenLayer");
+            if (isPlatformLocked) {
+                btn.className = "top-pill-btn btn-locked-state";
                 txt.innerText = "المنصة مقفلة";
-                screen.style.display = "flex";
+                overlay.style.display = "flex";
             } else {
-                btn.className = "bar-btn bar-btn-status-open";
+                btn.className = "top-pill-btn btn-open-state";
                 txt.innerText = "المنصة مفتوحة";
-                screen.style.display = "none";
+                overlay.style.display = "none";
             }
         }
 
-        window.quickLockPrompt = async function () {
-            if (platformIsLocked) return;
+        window.promptLockPlatform = async function () {
+            if (isPlatformLocked) return;
             const code = prompt("أدخل رمز الأدمن لقفل المنصة:");
             if (code === null) return;
-            if (code.trim() === adminPasscode) {
-                await persistLock(true);
+            if (code.trim() === adminSecret) {
+                await saveLockState(true);
             } else {
                 alert("❌ رمز الأدمن غير صحيح.");
             }
         };
 
-        window.unlockPlatformAction = async function () {
-            const code = document.getElementById("unlockPasswordInput").value.trim();
-            if (code === adminPasscode) {
-                document.getElementById("unlockPasswordInput").value = "";
-                await persistLock(false);
+        window.unlockAction = async function () {
+            const code = document.getElementById("unlockCodeField").value.trim();
+            if (code === adminSecret) {
+                document.getElementById("unlockCodeField").value = "";
+                await saveLockState(false);
             } else {
                 alert("❌ رمز الأدمن غير صحيح.");
             }
         };
 
-        window.openAdminModal = function (mode) {
-            document.getElementById("adminAuthCodeInput").value = "";
-            document.getElementById("currentCodeVerifyInput").value = "";
-            document.getElementById("newCodeValueInput").value = "";
+        window.openAdminDialog = function (mode) {
+            document.getElementById("adminAuthInput").value = "";
+            document.getElementById("oldCodeInput").value = "";
+            document.getElementById("newCodeInput").value = "";
+            document.getElementById("adminAuthView").style.display = "none";
+            document.getElementById("adminChangeView").style.display = "none";
+            document.getElementById("adminMenuView").style.display = "none";
 
             if (mode === "change") {
-                document.getElementById("adminModalHeading").innerText = "⚙️ تغيير رمز الأدمن";
-                document.getElementById("adminStepAuth").style.display = "none";
-                document.getElementById("adminStepMenu").style.display = "none";
-                document.getElementById("adminStepChange").style.display = "block";
+                document.getElementById("adminDialogHeading").innerText = "⚙️ تغيير رمز الأدمن";
+                document.getElementById("adminChangeView").style.display = "block";
             } else {
-                document.getElementById("adminModalHeading").innerText = "🔐 دخول الأدمن";
-                document.getElementById("adminStepChange").style.display = "none";
-                document.getElementById("adminStepMenu").style.display = "none";
-                document.getElementById("adminStepAuth").style.display = "block";
+                document.getElementById("adminDialogHeading").innerText = "🔐 دخول الأدمن";
+                document.getElementById("adminAuthView").style.display = "block";
             }
-            document.getElementById("adminDialogModal").style.display = "flex";
+            document.getElementById("adminDialogLayer").style.display = "flex";
         };
 
-        window.verifyAdminModal = function () {
-            const code = document.getElementById("adminAuthCodeInput").value.trim();
-            if (code === adminPasscode) {
-                document.getElementById("adminStepAuth").style.display = "none";
-                document.getElementById("adminStepMenu").style.display = "block";
+        window.confirmAdminLogin = function () {
+            const code = document.getElementById("adminAuthInput").value.trim();
+            if (code === adminSecret) {
+                document.getElementById("adminAuthView").style.display = "none";
+                document.getElementById("adminMenuView").style.display = "block";
             } else {
                 alert("❌ رمز الأدمن غير صحيح.");
             }
         };
 
-        window.toggleLockFromModal = async function () {
-            await persistLock(!platformIsLocked);
-            closeModal("adminDialogModal");
+        window.showChangeCodeForm = function () {
+            document.getElementById("adminMenuView").style.display = "none";
+            document.getElementById("adminChangeView").style.display = "block";
         };
 
-        window.switchToChangeForm = function () {
-            document.getElementById("adminStepMenu").style.display = "none";
-            document.getElementById("adminStepChange").style.display = "block";
+        window.toggleLockState = async function () {
+            await saveLockState(!isPlatformLocked);
+            hideModal("adminDialogLayer");
         };
 
-        window.saveNewAdminCode = async function () {
-            const cur = document.getElementById("currentCodeVerifyInput").value.trim();
-            const nxt = document.getElementById("newCodeValueInput").value.trim();
-            if (cur !== adminPasscode) {
+        window.updateAdminPasscode = async function () {
+            const oldCode = document.getElementById("oldCodeInput").value.trim();
+            const nextCode = document.getElementById("newCodeInput").value.trim();
+            if (oldCode !== adminSecret) {
                 alert("❌ الرمز الحالي غير صحيح.");
                 return;
             }
-            if (!nxt) {
+            if (!nextCode) {
                 alert("يرجى إدخال الرمز الجديد.");
                 return;
             }
-            adminPasscode = nxt;
-            localStorage.setItem("mutafawiqeen_pass_v6", nxt);
-            if (useCloudDB && configDocRef) {
-                await updateDoc(configDocRef, { adminCode: nxt });
+            adminSecret = nextCode;
+            localStorage.setItem("mutafawiqeen_secret_v7", nextCode);
+            if (useCloud && settingsDoc) {
+                await updateDoc(settingsDoc, { adminCode: nextCode });
             }
-            alert("✅ تم تحديث رمز الأدمن بنجاح.");
-            closeModal("adminDialogModal");
+            alert("✅ تم تغيير رمز الأدمن بنجاح.");
+            hideModal("adminDialogLayer");
         };
 
-        window.closeModal = function (id) {
+        window.hideModal = function (id) {
             document.getElementById(id).style.display = "none";
         };
     </script>
