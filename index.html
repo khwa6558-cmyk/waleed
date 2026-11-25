@@ -1216,9 +1216,9 @@
         let isInsideRoom = false;
         let currentPhotoBase64 = "";
 
-        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v12")) || {};
-        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v12") || DEFAULT_SECRET_CODE;
-        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v12") === "true";
+        let savedSectionTables = JSON.parse(localStorage.getItem("mutafawiqeen_saved_sections_v13")) || {};
+        let adminSecret = localStorage.getItem("mutafawiqeen_secret_v13") || DEFAULT_SECRET_CODE;
+        let isPlatformLocked = localStorage.getItem("mutafawiqeen_locked_v13") === "true";
 
         let useCloud = false;
         let db = null;
@@ -1266,7 +1266,7 @@
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V12", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V13", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1428,7 +1428,7 @@
                 savedAt: nowTime,
                 students: rows
             };
-            localStorage.setItem("mutafawiqeen_saved_sections_v12", JSON.stringify(savedSectionTables));
+            localStorage.setItem("mutafawiqeen_saved_sections_v13", JSON.stringify(savedSectionTables));
             renderSectionRoomTable();
             alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
         };
@@ -1630,7 +1630,7 @@
         // Admin & Lock Controls (Code never displayed in UI)
         async function saveLockState(locked) {
             isPlatformLocked = locked;
-            localStorage.setItem("mutafawiqeen_locked_v12", String(locked));
+            localStorage.setItem("mutafawiqeen_locked_v13", String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { isLocked: locked });
@@ -1723,7 +1723,7 @@
                 return;
             }
             adminSecret = nextCode;
-            localStorage.setItem("mutafawiqeen_secret_v12", nextCode);
+            localStorage.setItem("mutafawiqeen_secret_v13", nextCode);
             if (useCloud && settingsDoc) {
                 await updateDoc(settingsDoc, { adminCode: nextCode });
             }
