@@ -306,7 +306,6 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            transition: max-width 0.25s ease, padding 0.25s ease;
         }
 
         .add-card-panel {
@@ -518,11 +517,6 @@
             filter: brightness(1.06);
         }
 
-        .btn-whatsapp-send:disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
-        }
-
         .grades-shelf-box {
             background: linear-gradient(180deg, #f8fbff 0%, #e6f0fb 100%);
             border: 2px solid var(--blue-500);
@@ -573,7 +567,7 @@
             background: linear-gradient(180deg, #0f4282 0%, #061f42 100%);
             border: 2px solid var(--gold-500);
             border-radius: 14px;
-            padding: 9px;
+            padding: 10px;
             box-shadow: 0 6px 14px rgba(6, 31, 66, 0.25);
             display: flex;
             flex-direction: column;
@@ -591,52 +585,200 @@
             box-shadow: 0 0 0 2px rgba(246, 213, 106, 0.6), 0 10px 22px rgba(6, 31, 66, 0.36);
         }
 
-        .grade-card-heading {
+        .grade-open-btn {
             background: linear-gradient(180deg, #1b59a8, #092e5e);
-            border: 1px solid rgba(255, 255, 255, 0.26);
-            border-radius: 9px;
-            padding: 6px 7px;
+            border: 1.5px solid var(--gold-300);
+            border-radius: 10px;
+            padding: 9px 10px;
             color: #ffffff;
             font-weight: 900;
-            font-size: 0.95rem;
-            text-align: center;
+            font-size: 0.98rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            gap: 6px;
+            transition: transform 0.16s ease, filter 0.16s ease;
+        }
+
+        .grade-open-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+        }
+
+        .grade-quick-sec-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 5px;
         }
 
-        .grade-sec-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-        }
-
-        .sec-pill-btn {
-            background: linear-gradient(180deg, #1e68c4 0%, #09336b 100%);
+        .sec-mini-chip {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(246, 213, 106, 0.65);
             color: #ffffff;
-            border: 1.5px solid var(--gold-500);
-            border-radius: 8px;
-            padding: 7px 2px;
-            font-size: 0.96rem;
-            font-weight: 900;
+            border-radius: 7px;
+            padding: 4px 2px;
+            font-size: 0.85rem;
+            font-weight: 800;
             cursor: pointer;
             text-align: center;
-            transition: transform 0.16s ease, background 0.16s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.26);
         }
 
-        .sec-pill-btn:hover {
-            transform: translateY(-1px);
-            background: linear-gradient(180deg, #297be0 0%, #0d438a 100%);
+        .sec-mini-chip:hover {
+            background: #1967c2;
+        }
+
+        /* Styled Two-Room Choice Modal */
+        .rooms-picker-card {
+            width: 100%;
+            max-width: 490px;
+            background: linear-gradient(180deg, #f8fbff 0%, #e7f0fc 100%);
+            border: 3px solid var(--gold-500);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 24px 54px rgba(4, 18, 38, 0.55);
+            animation: enterRoomFade 0.2s ease;
+        }
+
+        .rooms-picker-header {
+            background: linear-gradient(90deg, #061d3b 0%, #124382 50%, #061d3b 100%);
+            color: #ffffff;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2.5px solid var(--gold-300);
+        }
+
+        .rooms-picker-header h3 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .circle-close-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold-300);
+            background: rgba(4, 18, 38, 0.65);
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circle-close-btn:hover {
+            background: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .rooms-picker-body {
+            padding: 18px 20px 22px;
+            text-align: center;
+        }
+
+        .rooms-picker-subtitle {
+            font-size: 0.96rem;
+            font-weight: 800;
+            color: var(--navy-800);
+            margin-bottom: 14px;
+        }
+
+        .room-choice-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .room-choice-banner-btn {
+            width: 100%;
+            background: linear-gradient(180deg, #1656a3 0%, #07264f 100%);
+            color: #ffffff;
+            border: 2px solid var(--gold-500);
+            border-radius: 15px;
+            padding: 13px 16px;
+            font-size: 1.08rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 7px 16px rgba(7, 38, 79, 0.24);
+            transition: transform 0.16s ease, filter 0.16s ease, border-color 0.16s ease;
+        }
+
+        .room-choice-banner-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.07);
             border-color: var(--gold-300);
         }
 
-        .sec-pill-btn.active-sec-btn {
-            background: linear-gradient(180deg, #16a34a 0%, #15803d 100%);
-            border-color: #fde047;
+        .room-choice-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
+        .room-choice-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(246, 213, 106, 0.55);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+        }
+
+        .room-choice-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(246, 213, 106, 0.2);
+            border: 1px solid var(--gold-300);
+            color: var(--gold-300);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+        .sections-pick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .section-door-btn {
+            background: linear-gradient(180deg, #1b63b8 0%, #082e61 100%);
+            color: #ffffff;
+            border: 2px solid var(--gold-500);
+            border-radius: 13px;
+            padding: 14px 8px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 5px 12px rgba(8, 46, 97, 0.22);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .section-door-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            border-color: var(--gold-300);
+        }
+
+        /* Active Workspace Room View */
         .section-room-view {
             display: none;
             background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
@@ -646,7 +788,6 @@
             box-shadow: var(--shadow-lg);
             animation: enterRoomFade 0.24s ease;
             width: 100%;
-            transition: border-radius 0.25s ease, padding 0.25s ease;
         }
 
         .section-room-view.room-expanded {
@@ -662,7 +803,6 @@
             overflow-y: auto;
             padding: 18px 24px 28px;
             background: linear-gradient(180deg, #f8fbff 0%, #eaf2fc 100%);
-            box-shadow: none;
         }
 
         @keyframes enterRoomFade {
@@ -703,7 +843,7 @@
         }
 
         .room-identity-group h3 {
-            font-size: 1.24rem;
+            font-size: 1.2rem;
             font-weight: 900;
         }
 
@@ -815,13 +955,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-            transition: transform 0.16s ease, filter 0.16s ease;
-        }
-
-        .btn-expand-room:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .btn-save-full-table {
@@ -836,12 +969,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: transform 0.16s ease, filter 0.16s ease;
-        }
-
-        .btn-save-full-table:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .btn-back-section {
@@ -856,12 +983,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: transform 0.16s ease, filter 0.16s ease;
-        }
-
-        .btn-back-section:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .btn-close-section {
@@ -876,12 +997,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: transform 0.16s ease, filter 0.16s ease;
-        }
-
-        .btn-close-section:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .room-subbar {
@@ -910,13 +1025,6 @@
             border: 1.5px solid #94a3b8;
             border-radius: 10px;
             padding: 5px 12px;
-            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .room-search-box:focus-within {
-            border-color: var(--blue-500);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         .room-search-box input {
@@ -942,13 +1050,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 3px 8px rgba(8, 51, 105, 0.25);
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-
-        .btn-do-search:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .btn-clear-search {
@@ -960,11 +1061,6 @@
             font-size: 0.84rem;
             font-weight: 800;
             cursor: pointer;
-            transition: background 0.15s ease;
-        }
-
-        .btn-clear-search:hover {
-            background: #cbd5e1;
         }
 
         .export-format-group {
@@ -1003,13 +1099,6 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-
-        .btn-export-selected:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .btn-print-selected {
@@ -1024,13 +1113,6 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-
-        .btn-print-selected:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .btn-bulk-notify {
@@ -1045,13 +1127,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 3px 8px rgba(21, 128, 61, 0.28);
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-
-        .btn-bulk-notify:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .search-mark {
@@ -1119,7 +1194,6 @@
             color: var(--navy-800);
             font-weight: 800;
             cursor: pointer;
-            transition: color 0.16s ease;
         }
 
         .student-link-name:hover {
@@ -1142,13 +1216,6 @@
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-
-        .mini-act-btn:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.07);
         }
 
         .mini-preview { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
@@ -1173,11 +1240,6 @@
             font-size: 0.78rem;
             font-weight: 800;
             cursor: pointer;
-            transition: background 0.15s ease;
-        }
-
-        .template-chip-btn:hover {
-            background: #dbeafe;
         }
 
         .bulk-checklist-box {
@@ -1320,7 +1382,6 @@
             background: #ffffff;
             overflow: hidden;
             flex-shrink: 0;
-            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
         }
 
         .id-photo-frame img {
@@ -1611,7 +1672,7 @@
                 <div class="shelf-top-badge">
                     <div class="shelf-title-pill">
                         <span>⭐</span>
-                        <span>اختر الصف لدخول شعبته</span>
+                        <span>اختر الصف لدخول غرفه</span>
                     </div>
                 </div>
 
@@ -1624,7 +1685,7 @@
         <section id="sectionRoomView" class="section-room-view">
             <div class="room-top-banner">
                 <div class="room-identity-group">
-                    <span class="room-badge-pill">🚪 غرفة الشعبة</span>
+                    <span class="room-badge-pill" id="roomCategoryBadge">🚪 غرفة الشعبة</span>
                     <h3 id="roomHeadingTitle">جدول الشعبة</h3>
                     <span class="count-chip" id="roomCountChip">0 طالب</span>
                     <span class="count-chip" id="roomSavedStateChip" style="display: none;">محفوظ</span>
@@ -1650,13 +1711,13 @@
                 </div>
             </div>
 
-            <!-- Room Sub-Tabs: Information Room vs Grades & Attendance Room -->
-            <div class="room-mode-switch">
+            <!-- Sub-tab switcher when inside a section -->
+            <div id="sectionInnerSwitch" class="room-mode-switch" style="display: none;">
                 <button type="button" id="tabInfoRoomBtn" class="room-mode-btn active-mode" onclick="switchSectionRoomMode('info')">
-                    📋 غرفة المعلومات والبيانات
+                    📋 معلومات الطلاب
                 </button>
                 <button type="button" id="tabGradesRoomBtn" class="room-mode-btn" onclick="switchSectionRoomMode('grades')">
-                    📊 غرفة الدرجات والحضور والمواد
+                    📚 المواد الدراسية (المدرسون والأدمن)
                 </button>
             </div>
 
@@ -1722,21 +1783,30 @@
                 </table>
             </div>
 
-            <!-- Panel 2: Grades & Attendance Room -->
+            <!-- Panel 2: Subjects, Teachers, Names & Grades Room -->
             <div id="gradesRoomPanel" style="display: none;">
                 <div class="grades-control-bar">
                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                        <label style="font-weight: 900; color: var(--navy-800);">📚 المادة الدراسية:</label>
-                        <select id="roomSubjectSelect" class="ctrl-field" style="width: 170px; height: 35px;" onchange="renderGradesRoomTable()"></select>
-                        <input type="text" id="newRoomSubjectInput" class="ctrl-field" style="width: 165px; height: 35px;" placeholder="مادة جديدة...">
-                        <button type="button" class="btn-do-search" style="padding: 6px 12px;" onclick="addRoomSubject()">+ إضافة مادة</button>
+                        <label style="font-weight: 900; color: var(--navy-800);">📚 المادة الرئيسية:</label>
+                        <select id="roomSubjectSelect" class="ctrl-field" style="width: 175px; height: 35px;" onchange="renderGradesRoomTable()"></select>
+                        <input type="text" id="newRoomSubjectInput" class="ctrl-field" style="width: 155px; height: 35px;" placeholder="إضافة مادة...">
+                        <button type="button" class="btn-do-search" style="padding: 6px 12px;" onclick="addRoomSubject()">+ مادة</button>
                     </div>
 
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <input type="text" id="teacherDirectNameInput" class="ctrl-field" style="width: 175px; height: 35px;" placeholder="اسم طالب يضيفه المدرس...">
+                        <input type="number" id="teacherDirectScoreInput" class="grade-num-input" style="width: 82px; height: 35px;" placeholder="درجة" min="0" max="100">
+                        <button type="button" class="btn-save-full-table" style="padding: 6px 12px;" onclick="teacherAddStudentAndGrade()">+ إضافة اسم ودرجة</button>
+                    </div>
+                </div>
+
+                <div class="grades-control-bar" style="padding: 9px 14px;">
                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                         <label style="font-weight: 800; font-size: 0.85rem; color: var(--navy-800);">درجة النجاح:</label>
                         <input type="number" id="roomPassMarkInput" class="grade-num-input" value="50" min="0" max="100" onchange="updateRoomPassMark()">
                         <button type="button" class="template-chip-btn" onclick="toggleGradeScaleBox()">⚙️ نظام التقديرات</button>
                     </div>
+                    <span style="font-size: 0.82rem; font-weight: 800; color: #15803d;">🛡️ غرفة مخصصة للمدير والمدرسين فقط</span>
                 </div>
 
                 <div id="gradeScaleEditorBox" style="display: none; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
@@ -1773,6 +1843,80 @@
         </section>
 
     </main>
+
+    <!-- Grade Rooms Choice Modal (1: استعلام الطلاب | 2: الشعب) -->
+    <div id="gradeRoomsModalLayer" class="modal-layer" onclick="if(event.target===this) closeGradeRoomsModal()">
+        <div class="rooms-picker-card">
+            <div class="rooms-picker-header">
+                <h3 id="gradePickerHeading">🎓 الصف الاول</h3>
+                <button type="button" class="circle-close-btn" onclick="closeGradeRoomsModal()">✕</button>
+            </div>
+            <div class="rooms-picker-body">
+                <p class="rooms-picker-subtitle">اختر الغرفة التي ترغب بالدخول إليها</p>
+                <div class="room-choice-stack">
+                    <button type="button" class="room-choice-banner-btn" onclick="openGradeInquiryRoom()">
+                        <div class="room-choice-left">
+                            <span class="room-choice-icon">🧑‍🎓</span>
+                            <span>غرفة استعلام الطلاب</span>
+                        </div>
+                        <span class="room-choice-arrow">&gt;</span>
+                    </button>
+
+                    <button type="button" class="room-choice-banner-btn" onclick="openGradeSectionsPicker()">
+                        <div class="room-choice-left">
+                            <span class="room-choice-icon">👥</span>
+                            <span>غرفة الشعب</span>
+                        </div>
+                        <span class="room-choice-arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sections Picker Modal (أ - ب - ج) -->
+    <div id="sectionsPickerModalLayer" class="modal-layer" onclick="if(event.target===this) closeSectionsPickerModal()">
+        <div class="rooms-picker-card">
+            <div class="rooms-picker-header">
+                <h3 id="sectionsPickerHeading">👥 شعب الصف الاول</h3>
+                <button type="button" class="circle-close-btn" onclick="closeSectionsPickerModal()">✕</button>
+            </div>
+            <div class="rooms-picker-body">
+                <p class="rooms-picker-subtitle">اختر الشعبة المطلوبة</p>
+                <div class="sections-pick-grid" id="sectionsButtonsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Two-Rooms Choice Modal (1: معلومات الطلاب | 2: المواد الدراسية) -->
+    <div id="sectionTwoRoomsModalLayer" class="modal-layer" onclick="if(event.target===this) closeSectionTwoRoomsModal()">
+        <div class="rooms-picker-card">
+            <div class="rooms-picker-header">
+                <h3 id="sectionTwoRoomsHeading">👥 الشعبة</h3>
+                <button type="button" class="circle-close-btn" onclick="closeSectionTwoRoomsModal()">✕</button>
+            </div>
+            <div class="rooms-picker-body">
+                <p class="rooms-picker-subtitle">اختر ما تريد الدخول إليه</p>
+                <div class="room-choice-stack">
+                    <button type="button" class="room-choice-banner-btn" onclick="chooseSectionInfoRoom()">
+                        <div class="room-choice-left">
+                            <span class="room-choice-icon">👤</span>
+                            <span>معلومات الطلاب</span>
+                        </div>
+                        <span class="room-choice-arrow">&gt;</span>
+                    </button>
+
+                    <button type="button" class="room-choice-banner-btn" onclick="chooseSectionSubjectsRoom()">
+                        <div class="room-choice-left">
+                            <span class="room-choice-icon">📖</span>
+                            <span>المواد الدراسية (المدرسون)</span>
+                        </div>
+                        <span class="room-choice-arrow">&gt;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Printable Section Sheet Container -->
     <div id="printableSectionSheet"></div>
@@ -1838,18 +1982,18 @@
         </div>
     </div>
 
-    <!-- Direct Admin Code Verification Modal -->
+    <!-- Direct Admin / Teacher Code Verification Modal -->
     <div id="adminEditPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeAdminEditPinModal()">
         <div class="dialog-card" style="border-top-color: var(--gold-500);">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeAdminEditPinModal()">✕</button>
-            <h3 id="adminPinModalTitle" style="color: #061c3a; margin-bottom: 6px;">🛡️ تسجيل دخول الأدمن</h3>
+            <h3 id="adminPinModalTitle" style="color: #061c3a; margin-bottom: 6px;">🛡️ دخول المدير والمدرسين</h3>
             <p id="adminEditTargetLabel" style="color: #475569; font-size: 0.88rem; font-weight: 800; margin-bottom: 12px;"></p>
 
             <div id="adminEditPinErrorBox" class="pin-error-msg"></div>
 
             <div class="input-group-box" style="margin-bottom: 14px;">
-                <label>أدخل رمز الأدمن للدخول وتنفيذ الإجراء:</label>
-                <input type="password" id="adminEditPinInput" class="ctrl-field" placeholder="أدخل رمز الأدمن..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmAdminEditPinModal();}">
+                <label>أدخل رمز الدخول الخاص بالمدير والمدرسين:</label>
+                <input type="password" id="adminEditPinInput" class="ctrl-field" placeholder="أدخل الرمز..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmAdminEditPinModal();}">
             </div>
 
             <div style="display: flex; gap: 8px;">
@@ -1903,7 +2047,7 @@
         </div>
     </div>
 
-    <!-- Bulk WhatsApp Notification Modal (Direct Batch Open) -->
+    <!-- Bulk WhatsApp Notification Modal -->
     <div id="bulkWhatsappModalLayer" class="modal-layer" onclick="if(event.target===this) closeBulkWhatsappModal()">
         <div class="dialog-card" style="border-top-color: #16a34a; max-width: 540px;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeBulkWhatsappModal()">✕</button>
@@ -2098,7 +2242,16 @@
         const STORAGE_PASSMARK_KEY = "mutafawiqeen_passmark_v24";
         const STORAGE_SCALE_KEY = "mutafawiqeen_grade_scale_v24";
 
-        const DEFAULT_SUBJECTS = ["الحاسوب", "الرياضيات", "الفيزياء", "الكيمياء", "اللغة العربية", "اللغة الإنجليزية"];
+        const DEFAULT_SUBJECTS = [
+            "الحاسوب",
+            "الرياضيات",
+            "الفيزياء",
+            "الكيمياء",
+            "الأحياء",
+            "اللغة العربية",
+            "اللغة الإنجليزية",
+            "التربية الإسلامية"
+        ];
         const DEFAULT_GRADE_SCALE = [
             { min: 90, max: 100, label: "امتياز" },
             { min: 80, max: 89, label: "جيد جداً" },
@@ -2116,8 +2269,12 @@
         let pendingAdminAction = null;
         let activeNotifyStudent = null;
 
+        let pickerGrade = null;
+        let pickerSection = null;
+
         let selectedGrade = null;
         let selectedSection = null;
+        let isInquiryMode = false;
         let isInsideRoom = false;
         let activeRoomMode = "info";
         let isRoomExpanded = false;
@@ -2453,9 +2610,7 @@
                         secretUpdatedAt: nowTs,
                         isLocked: isPlatformLocked
                     }, { merge: true });
-                } catch (err) {
-                    console.warn("تعذر تحديث رمز الأدمن سحابياً، تم الحفظ محلياً:", err);
-                }
+                } catch (err) {}
             }
         }
 
@@ -2482,9 +2637,7 @@
             if (useCloud && studentsCol) {
                 try {
                     await setDoc(doc(db, "students", stampedRecord.id), stampedRecord, { merge: true });
-                } catch (err) {
-                    console.warn("تعذر المزامنة السحابية الفورية، تم الحفظ محلياً:", err);
-                }
+                } catch (err) {}
             }
 
             return stampedRecord;
@@ -2523,8 +2676,14 @@
             }
         }
 
-        function getAllSectionStudents(grade, section) {
-            return studentsList.filter(s => s.grade === grade && s.section === section);
+        function getScopeStudents() {
+            if (isInquiryMode && selectedGrade) {
+                return studentsList.filter(s => s.grade === selectedGrade);
+            }
+            if (selectedGrade && selectedSection) {
+                return studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            }
+            return [];
         }
 
         function updateAdminBadgeUI() {
@@ -2536,8 +2695,8 @@
 
             if (isAdminSession) {
                 btn.classList.add("admin-active-badge");
-                tag.innerText = "أدمن";
-                lbl.innerText = "وضع الأدمن نشط";
+                tag.innerText = "أدمن / مدرس";
+                lbl.innerText = "وضع الإدارة نشط";
                 if (delAllBtn) delAllBtn.style.display = "inline-flex";
                 if (quickLogoutBtn) quickLogoutBtn.style.display = "inline-flex";
             } else {
@@ -2818,23 +2977,143 @@
                 const isActiveG = selectedGrade === grade;
                 return `
                     <div class="grade-column-card ${isActiveG ? 'active-grade-card' : ''}">
-                        <div class="grade-card-heading">
-                            <span>🎓</span>
-                            <span>${grade}</span>
-                        </div>
-                        <div class="grade-sec-buttons">
-                            ${SECTIONS.map(sec => {
-                                const isActiveS = isActiveG && selectedSection === sec;
-                                return `
-                                    <button type="button" class="sec-pill-btn ${isActiveS ? 'active-sec-btn' : ''}" onclick="enterSectionRoom('${grade}', '${sec}')">
-                                        ${sec}
-                                    </button>
-                                `;
-                            }).join("")}
+                        <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('${grade}')">
+                            <span>🎓 ${grade}</span>
+                            <span>&lt;</span>
+                        </button>
+                        <div class="grade-quick-sec-row">
+                            ${SECTIONS.map(sec => `
+                                <button type="button" class="sec-mini-chip" onclick="openSectionTwoRoomsModal('${grade}', '${sec}')">
+                                    شعبة ${sec}
+                                </button>
+                            `).join("")}
                         </div>
                     </div>
                 `;
             }).join("");
+        }
+
+        /* Step 1: Grade Modal (استعلام الطلاب | الشعب) */
+        window.openGradeRoomsModal = function (grade) {
+            pickerGrade = grade;
+            document.getElementById("gradeField").value = grade;
+            document.getElementById("gradePickerHeading").innerText = `🎓 ${grade}`;
+            document.getElementById("gradeRoomsModalLayer").style.display = "flex";
+        };
+
+        window.closeGradeRoomsModal = function () {
+            hideModal("gradeRoomsModalLayer");
+        };
+
+        window.openGradeInquiryRoom = function () {
+            if (!pickerGrade) return;
+            const g = pickerGrade;
+            closeGradeRoomsModal();
+            enterInquiryWorkspace(g);
+        };
+
+        /* Step 2: Sections Picker Modal (أ - ب - ج) */
+        window.openGradeSectionsPicker = function () {
+            if (!pickerGrade) return;
+            closeGradeRoomsModal();
+            document.getElementById("sectionsPickerHeading").innerText = `👥 شعب ${pickerGrade}`;
+            document.getElementById("sectionsButtonsContainer").innerHTML = SECTIONS.map(sec => `
+                <button type="button" class="section-door-btn" onclick="openSectionTwoRoomsModal('${pickerGrade}', '${sec}')">
+                    شعبة (${sec})
+                </button>
+            `).join("");
+            document.getElementById("sectionsPickerModalLayer").style.display = "flex";
+        };
+
+        window.closeSectionsPickerModal = function () {
+            hideModal("sectionsPickerModalLayer");
+        };
+
+        /* Step 3: Section Two-Rooms Modal (معلومات الطلاب | المواد الدراسية) */
+        window.openSectionTwoRoomsModal = function (grade, sec) {
+            pickerGrade = grade;
+            pickerSection = sec;
+            document.getElementById("gradeField").value = grade;
+            document.getElementById("sectionField").value = sec;
+            closeSectionsPickerModal();
+            document.getElementById("sectionTwoRoomsHeading").innerText = `👥 ${grade} - شعبة (${sec})`;
+            document.getElementById("sectionTwoRoomsModalLayer").style.display = "flex";
+        };
+
+        window.closeSectionTwoRoomsModal = function () {
+            hideModal("sectionTwoRoomsModalLayer");
+        };
+
+        window.chooseSectionInfoRoom = function () {
+            if (!pickerGrade || !pickerSection) return;
+            const g = pickerGrade;
+            const s = pickerSection;
+            closeSectionTwoRoomsModal();
+            enterSectionWorkspace(g, s, "info");
+        };
+
+        window.chooseSectionSubjectsRoom = function () {
+            if (!pickerGrade || !pickerSection) return;
+            const g = pickerGrade;
+            const s = pickerSection;
+            closeSectionTwoRoomsModal();
+            if (!isAdminSession) {
+                requestAdminPinForAction(
+                    { type: "openSubjectsRoom", grade: g, section: s },
+                    `المواد الدراسية (${g} - شعبة ${s})`
+                );
+                return;
+            }
+            enterSectionWorkspace(g, s, "grades");
+        };
+
+        function enterInquiryWorkspace(grade) {
+            selectedGrade = grade;
+            selectedSection = null;
+            isInquiryMode = true;
+            isInsideRoom = true;
+            activeRoomMode = "info";
+
+            try { history.pushState({ inquiryRoom: true, grade }, "", window.location.href); } catch (e) {}
+
+            document.getElementById("roomSearchInput").value = "";
+            document.getElementById("clearSearchBtn").style.display = "none";
+            document.getElementById("sectionInnerSwitch").style.display = "none";
+
+            document.getElementById("mainLobbyContainer").style.display = "none";
+            document.getElementById("welcomeRibbonBanner").style.display = "none";
+            document.getElementById("sectionRoomView").style.display = "block";
+            setRoomExpandedState(false);
+
+            document.getElementById("roomCategoryBadge").innerText = "🔎 غرفة استعلام الطلاب";
+            document.getElementById("infoRoomPanel").style.display = "block";
+            document.getElementById("gradesRoomPanel").style.display = "none";
+
+            renderActiveRoomView();
+            window.scrollTo({ top: 90, behavior: "smooth" });
+        }
+
+        function enterSectionWorkspace(grade, sec, mode = "info") {
+            selectedGrade = grade;
+            selectedSection = sec;
+            isInquiryMode = false;
+            isInsideRoom = true;
+
+            try { history.pushState({ sectionRoom: true, grade, sec }, "", window.location.href); } catch (e) {}
+
+            document.getElementById("gradeField").value = grade;
+            document.getElementById("sectionField").value = sec;
+            document.getElementById("roomSearchInput").value = "";
+            document.getElementById("clearSearchBtn").style.display = "none";
+            document.getElementById("sectionInnerSwitch").style.display = "inline-flex";
+
+            document.getElementById("mainLobbyContainer").style.display = "none";
+            document.getElementById("welcomeRibbonBanner").style.display = "none";
+            document.getElementById("sectionRoomView").style.display = "block";
+            setRoomExpandedState(false);
+
+            window.switchSectionRoomMode(mode);
+            window.scrollTo({ top: 90, behavior: "smooth" });
         }
 
         function setRoomExpandedState(expand) {
@@ -2855,7 +3134,17 @@
         };
 
         window.switchSectionRoomMode = function (mode) {
+            if (mode === "grades" && !isAdminSession) {
+                requestAdminPinForAction(
+                    { type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection },
+                    `المواد الدراسية (${selectedGrade} - شعبة ${selectedSection})`
+                );
+                return;
+            }
             activeRoomMode = mode === "grades" ? "grades" : "info";
+            document.getElementById("roomCategoryBadge").innerText = activeRoomMode === "grades"
+                ? "📖 غرفة المواد الدراسية (المدرسون)"
+                : "📋 غرفة معلومات الطلاب";
             document.getElementById("tabInfoRoomBtn").classList.toggle("active-mode", activeRoomMode === "info");
             document.getElementById("tabGradesRoomBtn").classList.toggle("active-mode", activeRoomMode === "grades");
             document.getElementById("infoRoomPanel").style.display = activeRoomMode === "info" ? "block" : "none";
@@ -2864,9 +3153,9 @@
         };
 
         window.renderActiveRoomView = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             updateAdminBadgeUI();
-            if (activeRoomMode === "grades") {
+            if (!isInquiryMode && activeRoomMode === "grades") {
                 renderGradesRoomTable();
             } else {
                 renderSectionRoomTable();
@@ -2884,6 +3173,10 @@
         }
 
         window.addRoomSubject = function () {
+            if (!isAdminSession) {
+                requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة مادة");
+                return;
+            }
             const inp = document.getElementById("newRoomSubjectInput");
             const name = inp.value.trim();
             if (!name) return;
@@ -2894,6 +3187,62 @@
             inp.value = "";
             populateRoomSubjectSelect();
             document.getElementById("roomSubjectSelect").value = name;
+            renderGradesRoomTable();
+        };
+
+        window.teacherAddStudentAndGrade = async function () {
+            if (!selectedGrade || !selectedSection) return;
+            if (!isAdminSession) {
+                requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة اسم ودرجة");
+                return;
+            }
+            const nameInp = document.getElementById("teacherDirectNameInput");
+            const scoreInp = document.getElementById("teacherDirectScoreInput");
+            const studentName = nameInp.value.trim();
+            const rawScore = scoreInp.value.trim();
+
+            if (!studentName) {
+                alert("⚠️ يرجى كتابة اسم الطالب أولاً.");
+                nameInp.focus();
+                return;
+            }
+
+            const subj = document.getElementById("roomSubjectSelect").value || subjectsList[0] || "الحاسوب";
+            let target = studentsList.find(s =>
+                s.grade === selectedGrade &&
+                s.section === selectedSection &&
+                String(s.name).trim() === studentName
+            );
+
+            if (!target) {
+                target = {
+                    id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+                    name: studentName,
+                    grade: selectedGrade,
+                    section: selectedSection,
+                    day: "1",
+                    month: "1",
+                    year: "2010",
+                    dob: "01/01/2010",
+                    mother: "—",
+                    guardianPhone: "",
+                    editPin: generateStudentPin(),
+                    photo: defaultAvatar,
+                    gradesBySubject: {},
+                    createdAt: Date.now()
+                };
+            }
+
+            const currentMap = { ...(target.gradesBySubject || {}) };
+            const prevSubj = { ...getStudentSubjectRecord(target, subj) };
+            if (rawScore !== "") {
+                prevSubj.m1 = Number(rawScore);
+            }
+            currentMap[subj] = prevSubj;
+
+            await persistStudentRecord({ ...target, gradesBySubject: currentMap }, Boolean(studentsList.some(s => s.id === target.id)));
+            nameInp.value = "";
+            scoreInp.value = "";
             renderGradesRoomTable();
         };
 
@@ -2945,6 +3294,10 @@
         };
 
         window.updateStudentGradeField = async function (studentId, field, value) {
+            if (!isAdminSession) {
+                requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "تعديل الدرجات");
+                return;
+            }
             const st = studentsList.find(s => s.id === studentId);
             if (!st) return;
             const subj = document.getElementById("roomSubjectSelect").value || subjectsList[0] || "الحاسوب";
@@ -2977,7 +3330,7 @@
 
             const tbody = document.getElementById("gradesRoomTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #64748b;">لا يوجد طلاب في هذه الشعبة حالياً. أضف طلاباً من غرفة المعلومات أولاً.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" style="padding: 24px; color: #64748b;">لا يوجد طلاب في هذه الشعبة حالياً. يمكنك إضافة اسم ودرجة مباشرة من الأعلى.</td></tr>`;
                 return;
             }
 
@@ -3017,29 +3370,6 @@
             }).join("");
         };
 
-        window.enterSectionRoom = function (grade, sec) {
-            selectedGrade = grade;
-            selectedSection = sec;
-            isInsideRoom = true;
-
-            try {
-                history.pushState({ sectionRoom: true, grade, sec }, "", window.location.href);
-            } catch (e) {}
-
-            document.getElementById("gradeField").value = grade;
-            document.getElementById("sectionField").value = sec;
-            document.getElementById("roomSearchInput").value = "";
-            document.getElementById("clearSearchBtn").style.display = "none";
-
-            document.getElementById("mainLobbyContainer").style.display = "none";
-            document.getElementById("welcomeRibbonBanner").style.display = "none";
-            document.getElementById("sectionRoomView").style.display = "block";
-            setRoomExpandedState(false);
-
-            window.switchSectionRoomMode(activeRoomMode);
-            window.scrollTo({ top: 90, behavior: "smooth" });
-        };
-
         window.backFromSectionRoom = function () {
             setRoomExpandedState(false);
             document.getElementById("sectionRoomView").style.display = "none";
@@ -3047,7 +3377,11 @@
             document.getElementById("welcomeRibbonBanner").style.display = "block";
             isInsideRoom = false;
             renderGradesShelf();
-            document.getElementById("gradesSixShelf").scrollIntoView({ behavior: "smooth", block: "center" });
+            if (!isInquiryMode && selectedGrade && selectedSection) {
+                openSectionTwoRoomsModal(selectedGrade, selectedSection);
+            } else if (selectedGrade) {
+                openGradeRoomsModal(selectedGrade);
+            }
         };
 
         window.closeSectionRoom = function () {
@@ -3056,6 +3390,7 @@
             document.getElementById("mainLobbyContainer").style.display = "flex";
             document.getElementById("welcomeRibbonBanner").style.display = "block";
             isInsideRoom = false;
+            isInquiryMode = false;
             selectedSection = null;
             renderGradesShelf();
             window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3081,21 +3416,22 @@
         };
 
         function getCurrentSectionRows() {
-            if (!selectedGrade || !selectedSection) return [];
+            if (!selectedGrade) return [];
             const rawQuery = document.getElementById("roomSearchInput")?.value || "";
             const lowerTerm = rawQuery.trim().toLowerCase();
-            const sectionRows = getAllSectionStudents(selectedGrade, selectedSection);
+            const scopeRows = getScopeStudents();
             return lowerTerm
-                ? sectionRows.filter(s =>
+                ? scopeRows.filter(s =>
                     (s.name && String(s.name).toLowerCase().includes(lowerTerm)) ||
                     (s.mother && String(s.mother).toLowerCase().includes(lowerTerm)) ||
-                    (s.guardianPhone && String(s.guardianPhone).toLowerCase().includes(lowerTerm))
+                    (s.guardianPhone && String(s.guardianPhone).toLowerCase().includes(lowerTerm)) ||
+                    (s.section && String(s.section).toLowerCase().includes(lowerTerm))
                 )
-                : sectionRows;
+                : scopeRows;
         }
 
         window.renderSectionRoomTable = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             updateAdminBadgeUI();
 
             const searchInput = document.getElementById("roomSearchInput");
@@ -3108,22 +3444,24 @@
                 clearBtn.style.display = searchTerm ? "inline-block" : "none";
             }
 
-            const sectionRows = getAllSectionStudents(selectedGrade, selectedSection);
+            const scopeRows = getScopeStudents();
             const filtered = getCurrentSectionRows();
 
-            document.getElementById("roomHeadingTitle").innerText = `${selectedGrade} - شعبة (${selectedSection})`;
+            document.getElementById("roomHeadingTitle").innerText = isInquiryMode
+                ? `استعلام طلاب ${selectedGrade} (جميع الشعب)`
+                : `${selectedGrade} - شعبة (${selectedSection}) | معلومات الطلاب`;
+
             document.getElementById("roomCountChip").innerText = lowerTerm
-                ? `نتائج البحث: ${filtered.length} من ${sectionRows.length}`
+                ? `نتائج البحث: ${filtered.length} من ${scopeRows.length}`
                 : `عدد الطلاب: ${filtered.length}`;
 
-            const savedChip = document.getElementById("roomSavedStateChip");
-            savedChip.style.display = "none";
+            document.getElementById("roomSavedStateChip").style.display = "none";
 
             const tbody = document.getElementById("roomTableBody");
             if (filtered.length === 0) {
                 tbody.innerHTML = lowerTerm
-                    ? `<tr><td colspan="8" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب مطابق للبحث (${searchTerm}) في هذه الشعبة</td></tr>`
-                    : `<tr><td colspan="8" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
+                    ? `<tr><td colspan="8" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب مطابق للبحث (${searchTerm})</td></tr>`
+                    : `<tr><td colspan="8" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون هنا حالياً</td></tr>`;
                 return;
             }
 
@@ -3141,7 +3479,6 @@
                     : "";
 
                 const nameCellHtml = `<span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span>`;
-
                 const phoneDisplay = st.guardianPhone ? highlightText(st.guardianPhone, searchTerm) : "—";
 
                 return `
@@ -3263,14 +3600,15 @@
         };
 
         function openBulkNotifyModal() {
-            if (!selectedGrade || !selectedSection) return;
-            const rows = getAllSectionStudents(selectedGrade, selectedSection);
-            document.getElementById("bulkSectionMeta").innerText = `${selectedGrade} - شعبة (${selectedSection}) | إجمالي الطلاب: ${rows.length}`;
+            if (!selectedGrade) return;
+            const rows = getScopeStudents();
+            const labelScope = isInquiryMode ? `${selectedGrade} (كل الشعب)` : `${selectedGrade} - شعبة (${selectedSection})`;
+            document.getElementById("bulkSectionMeta").innerText = `${labelScope} | إجمالي الطلاب: ${rows.length}`;
             setFeedbackBanner("bulkFeedbackBox", "");
 
             const checklist = document.getElementById("bulkStudentsChecklist");
             if (rows.length === 0) {
-                checklist.innerHTML = `<div style="text-align:center;color:#64748b;padding:12px;">لا يوجد طلاب في هذه الشعبة.</div>`;
+                checklist.innerHTML = `<div style="text-align:center;color:#64748b;padding:12px;">لا يوجد طلاب هنا.</div>`;
             } else {
                 checklist.innerHTML = rows.map(st => {
                     const wa = normalizePhoneToWhatsapp(st.guardianPhone);
@@ -3296,9 +3634,9 @@
         }
 
         window.startBulkNotifySection = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             if (!isAdminSession) {
-                requestAdminPinForAction({ type: "bulkNotify" }, `تبليغ جماعي - ${selectedGrade} (${selectedSection})`);
+                requestAdminPinForAction({ type: "bulkNotify" }, `تبليغ جماعي - ${selectedGrade}`);
                 return;
             }
             openBulkNotifyModal();
@@ -3311,7 +3649,7 @@
         };
 
         window.applyBulkTemplate = function (kind) {
-            const gradeSec = `${selectedGrade || ""} - شعبة (${selectedSection || ""})`;
+            const gradeSec = isInquiryMode ? `${selectedGrade}` : `${selectedGrade || ""} - شعبة (${selectedSection || ""})`;
             const ta = document.getElementById("bulkMessageTextarea");
             if (kind === "absence") {
                 ta.value = `السلام عليكم ورحمة الله وبركاته، ولي الأمر المحترم.\nنود إعلامكم بغياب الطالب اليوم عن الدوام الرسمي في (${gradeSec}) بثانوية المتفوقين الثانية للبنين - الأنبار.`;
@@ -3396,27 +3734,28 @@
         };
 
         function executeSaveFullSectionTable() {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             persistStudentsToLocalStorage(studentsList);
             saveSubjectsToStorage();
             saveGradeScaleToStorage();
-            const rows = getAllSectionStudents(selectedGrade, selectedSection);
-            const key = `${selectedGrade}__${selectedSection}`;
+            const rows = getScopeStudents();
+            const secKey = selectedSection || "ALL";
+            const key = `${selectedGrade}__${secKey}`;
             const nowTime = new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
             savedSectionTables[key] = {
                 grade: selectedGrade,
-                section: selectedSection,
+                section: secKey,
                 count: rows.length,
                 savedAt: nowTime,
                 students: rows
             };
             localStorage.setItem(STORAGE_SAVED_SECTIONS_KEY, JSON.stringify(savedSectionTables));
             renderActiveRoomView();
-            alert(`✅ تم حفظ جدول (${selectedGrade} - شعبة ${selectedSection}) بالكامل (${rows.length} طالب).`);
+            alert(`✅ تم حفظ الجدول بالكامل (${rows.length} طالب).`);
         }
 
         window.saveFullSectionTable = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             if (!isAdminSession) {
                 requestAdminPinForAction({ type: "saveFull" }, "حفظ الجدول بالكامل");
                 return;
@@ -3425,7 +3764,7 @@
         };
 
         function executeFormatSave() {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             const rows = getCurrentSectionRows();
             if (rows.length === 0) {
                 alert("لا توجد بيانات لحفظها.");
@@ -3440,7 +3779,7 @@
         }
 
         window.handleFormatSave = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             if (!isAdminSession) {
                 requestAdminPinForAction({ type: "saveFormat" }, "حفظ الملف");
                 return;
@@ -3449,7 +3788,7 @@
         };
 
         function executeFormatPrint() {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             const rows = getCurrentSectionRows();
             if (rows.length === 0) {
                 alert("لا توجد بيانات للطباعة.");
@@ -3465,7 +3804,7 @@
         }
 
         window.handleFormatPrint = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             if (!isAdminSession) {
                 requestAdminPinForAction({ type: "printFormat" }, "طباعة الجدول");
                 return;
@@ -3474,6 +3813,10 @@
         };
 
         function triggerSectionPrintView(rows, noticeText) {
+            const titleDesc = isInquiryMode
+                ? `استعلام طلاب ${selectedGrade}`
+                : `${selectedGrade} - شعبة (${selectedSection})`;
+
             const bodyRows = rows.map((r, i) => `
                 <tr>
                     <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;font-weight:700;">${i + 1}</td>
@@ -3490,7 +3833,7 @@
             sheet.innerHTML = `
                 <div style="text-align:center;border-bottom:2px solid #0b2e5e;padding-bottom:10px;margin-bottom:14px;">
                     <h2 style="font-size:1.35rem;color:#061c3a;margin-bottom:4px;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
-                    <h3 style="font-size:1.1rem;color:#0e4a99;">${selectedGrade} - شعبة (${selectedSection}) | العدد: ${rows.length}</h3>
+                    <h3 style="font-size:1.1rem;color:#0e4a99;">${titleDesc} | العدد: ${rows.length}</h3>
                     ${noticeText ? `<p style="font-size:0.85rem;color:#475569;margin-top:4px;">${noticeText}</p>` : ""}
                 </div>
                 <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
@@ -3528,6 +3871,10 @@
         };
 
         function downloadWordFile(rows) {
+            const titleDesc = isInquiryMode
+                ? `استعلام_${selectedGrade}`
+                : `جدول_${selectedGrade}_شعبة_${selectedSection}`;
+
             const bodyRows = rows.map((r, i) => `
                 <tr>
                     <td style="border:1px solid #000;padding:7px;text-align:center;">${i + 1}</td>
@@ -3542,10 +3889,10 @@
 
             const docHtml = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head><meta charset='utf-8'><title>جدول الشعبة</title></head>
+                <head><meta charset='utf-8'><title>جدول الطلاب</title></head>
                 <body dir="rtl" style="font-family:Arial,sans-serif;">
                     <h2 style="text-align:center;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
-                    <h3 style="text-align:center;">${selectedGrade} - شعبة (${selectedSection})</h3>
+                    <h3 style="text-align:center;">${titleDesc}</h3>
                     <table style="width:100%;border-collapse:collapse;">
                         <thead>
                             <tr style="background:#0c2d57;color:#fff;">
@@ -3566,7 +3913,7 @@
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.download = `جدول_${selectedGrade}_شعبة_${selectedSection}.doc`;
+            link.download = `${titleDesc}.doc`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -3657,7 +4004,7 @@
             }
 
             resetStudentFormState();
-            window.enterSectionRoom(grade, section);
+            enterSectionWorkspace(grade, section, "info");
         };
 
         window.resetStudentFormState = function () {
@@ -3859,8 +4206,8 @@
 
         function requestAdminPinForAction(actionObj, actionLabel) {
             pendingAdminAction = actionObj;
-            document.getElementById("adminPinModalTitle").innerText = `🛡️ دخول الأدمن (${actionLabel})`;
-            document.getElementById("adminEditTargetLabel").innerText = "بعد إدخال الرمز الصحيح ستبقى داخل وضع الأدمن دون إعادة طلب الرمز.";
+            document.getElementById("adminPinModalTitle").innerText = `🛡️ دخول المدير والمدرسين (${actionLabel})`;
+            document.getElementById("adminEditTargetLabel").innerText = "الدخول إلى غرفة المواد والدرجات والإجراءات الإدارية مخصص للمدير والمدرسين فقط.";
             document.getElementById("adminEditPinInput").value = "";
             const errBox = document.getElementById("adminEditPinErrorBox");
             errBox.style.display = "none";
@@ -3872,7 +4219,9 @@
 
         function runVerifiedAdminAction(actionObj) {
             if (!actionObj) return;
-            if (actionObj.type === "edit") {
+            if (actionObj.type === "openSubjectsRoom") {
+                enterSectionWorkspace(actionObj.grade || selectedGrade, actionObj.section || selectedSection, "grades");
+            } else if (actionObj.type === "edit") {
                 const st = studentsList.find(s => s.id === actionObj.studentId);
                 if (st) openEditFormForStudent(st, true);
             } else if (actionObj.type === "deleteSingle") {
@@ -3916,14 +4265,14 @@
             const cleanCode = inputEl.value.trim();
 
             if (!cleanCode) {
-                errBox.innerText = "⚠️ يرجى إدخال رمز الأدمن أولاً.";
+                errBox.innerText = "⚠️ يرجى إدخال الرمز أولاً.";
                 errBox.style.display = "block";
                 inputEl.focus();
                 return;
             }
 
             if (cleanCode !== getCurrentAdminSecret()) {
-                errBox.innerText = "❌ رمز الأدمن غير صحيح.";
+                errBox.innerText = "❌ رمز الدخول غير صحيح (خاص بالمدير والمدرسين فقط).";
                 errBox.style.display = "block";
                 inputEl.focus();
                 return;
@@ -3966,15 +4315,16 @@
         };
 
         async function executeDeleteAllInActiveSection() {
-            if (!selectedGrade || !selectedSection) return;
-            const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            if (!selectedGrade) return;
+            const rows = getScopeStudents();
             if (rows.length === 0) {
-                alert("الشعبة فارغة بالفعل.");
+                alert("القائمة فارغة بالفعل.");
                 return;
             }
-            if (!confirm(`سيتم حذف جميع طلاب (${selectedGrade} - شعبة ${selectedSection}) وعددهم (${rows.length}). متابعة؟`)) return;
+            if (!confirm(`سيتم حذف جميع الطلاب المعروضين وعددهم (${rows.length}). متابعة؟`)) return;
 
-            studentsList = studentsList.filter(s => !(s.grade === selectedGrade && s.section === selectedSection));
+            const targetIds = new Set(rows.map(r => r.id));
+            studentsList = studentsList.filter(s => !targetIds.has(s.id));
             persistStudentsToLocalStorage(studentsList);
             rows.forEach(r => deleteStudentFromIndexedDB(r.id));
 
@@ -3989,9 +4339,9 @@
         }
 
         window.deleteAllInActiveSection = function () {
-            if (!selectedGrade || !selectedSection) return;
+            if (!selectedGrade) return;
             if (!isAdminSession) {
-                requestAdminPinForAction({ type: "deleteAll" }, "حذف طلاب الشعبة");
+                requestAdminPinForAction({ type: "deleteAll" }, "حذف الطلاب");
                 return;
             }
             executeDeleteAllInActiveSection();
@@ -4063,10 +4413,10 @@
                 document.getElementById("adminDialogHeading").innerText = "🔑 تغيير رمز الأدمن";
                 document.getElementById("adminChangeView").style.display = "block";
             } else if (isAdminSession) {
-                document.getElementById("adminDialogHeading").innerText = "🛡️ قائمة الأدمن";
+                document.getElementById("adminDialogHeading").innerText = "🛡️ قائمة المدير والمدرسين";
                 document.getElementById("adminMenuView").style.display = "block";
             } else {
-                document.getElementById("adminDialogHeading").innerText = "🔐 دخول الأدمن";
+                document.getElementById("adminDialogHeading").innerText = "🔐 دخول المدير والمدرسين";
                 document.getElementById("adminAuthView").style.display = "block";
             }
             document.getElementById("adminDialogLayer").style.display = "flex";
@@ -4082,15 +4432,18 @@
                 updateAdminBadgeUI();
                 hideModal("adminDialogLayer");
                 if (isInsideRoom) renderActiveRoomView();
-                alert("✅ تم دخول الأدمن بنجاح؛ يمكنك الآن تنفيذ جميع الإجراءات مباشرة دون طلب رمز.");
+                alert("✅ تم الدخول بنجاح؛ يمكنك الآن فتح غرف المواد وإدارة الدرجات مباشرة.");
             } else {
-                alert("❌ رمز الأدمن غير صحيح.");
+                alert("❌ رمز الدخول غير صحيح.");
             }
         };
 
         window.logoutAdminSession = function () {
             isAdminSession = false;
             updateAdminBadgeUI();
+            if (isInsideRoom && !isInquiryMode && activeRoomMode === "grades") {
+                switchSectionRoomMode("info");
+            }
             hideModal("adminDialogLayer");
             if (isInsideRoom) renderActiveRoomView();
         };
@@ -4117,7 +4470,7 @@
                 return;
             }
             await persistAdminSecret(nextCode);
-            alert("✅ تم تغيير رمز الأدمن وحفظه بنجاح.");
+            alert("✅ تم تغيير رمز الأدمن والمدرسين وحفظه بنجاح.");
             hideModal("adminDialogLayer");
         };
 
