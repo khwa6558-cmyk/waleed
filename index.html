@@ -1747,7 +1747,6 @@
                 </button>
             </div>
 
-            <!-- غرفة استعلام الطالب: إدخال الاسم والرمز الخاص به وزر استعلام فقط، وعرض درجاته في كل المواد حتى نهاية السنة -->
             <div id="studentInquiryRoomPanel" style="display: none;">
                 <div class="inquiry-auth-card">
                     <h4 style="color: var(--navy-800); font-size: 1.05rem; font-weight: 900; margin-bottom: 12px;">
@@ -1951,13 +1950,12 @@
 
     </main>
 
-    <!-- Teacher Login Modal (رمز الدخول للمدرسين: A) -->
     <div id="teacherLoginModalLayer" class="modal-layer" onclick="if(event.target===this) closeTeacherLoginModal()">
         <div class="dialog-card" style="border-top-color: #d97706;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeTeacherLoginModal()">✕</button>
             <h3 style="color: #92400e; margin-bottom: 6px;">👨‍🏫 دخول الأساتذة والمدرسين</h3>
             <p style="color: #475569; font-size: 0.86rem; font-weight: 700; margin-bottom: 12px;">
-                أدخل رمز دخول المدرسين للدخول إلى غرف المواد وإضافة الأسماء والدرجات.
+                أدخل رمز دخول المدرسين للدخول إلى غرف المواد وإضافة الدرجات.
             </p>
             <div id="teacherLoginErrorBox" class="pin-error-msg"></div>
             <div class="input-group-box" style="margin-bottom: 14px;">
@@ -2428,6 +2426,57 @@
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
 
+        const arabicCollator = new Intl.Collator(["ar", "ar-IQ"], {
+            sensitivity: "base",
+            numeric: true
+        });
+
+        function normalizeArabicSortKey(str) {
+            return String(str || "")
+                .trim()
+                .replace(/\s+/g, " ")
+                .replace(/[أإآ]/g, "ا")
+                .replace(/ى/g, "ي")
+                .replace(/ة/g, "ه");
+        }
+
+        function sortStudentsAlphabetically(list) {
+            return [...(list || [])].sort((a, b) => {
+                const keyA = normalizeArabicSortKey(a?.name);
+                const keyB = normalizeArabicSortKey(b?.name);
+                const cmp = arabicCollator.compare(keyA, keyB);
+                if (cmp !== 0) return cmp;
+                return (a?.createdAt || 0) - (b?.createdAt || 0);
+            });
+        }
+
+        function createEmptySubjectEntry() {
+            return {
+                attendance: "حاضر",
+                m1: "",
+                m2: "",
+                m3: "",
+                midterm: "",
+                t2_m1: "",
+                t2_m2: "",
+                t2_m3: "",
+                finalExam: ""
+            };
+        }
+
+        function buildTeacherGradesMap(existingMap = {}) {
+            const nextMap = {};
+            const allSubjects = Array.from(new Set([...subjectsList, ...Object.keys(existingMap || {})]));
+            allSubjects.forEach((subjName) => {
+                const prev = existingMap[subjName] || {};
+                nextMap[subjName] = {
+                    ...createEmptySubjectEntry(),
+                    ...prev
+                };
+            });
+            return nextMap;
+        }
+
         function hasStaffAccess() {
             return Boolean(isAdminSession || isTeacherSession);
         }
@@ -2723,15 +2772,9 @@
             const gMap = student.gradesBySubject || {};
             const entry = gMap[subjectName] || {};
             return {
-                attendance: entry.attendance || "حاضر",
-                m1: entry.m1 ?? "",
-                m2: entry.m2 ?? "",
-                m3: entry.m3 ?? "",
-                midterm: entry.midterm ?? "",
-                t2_m1: entry.t2_m1 ?? "",
-                t2_m2: entry.t2_m2 ?? "",
-                t2_m3: entry.t2_m3 ?? "",
-                finalExam: entry.finalExam ?? ""
+                ...createEmptySubjectEntry(),
+                ...entry,
+                attendance: entry.attendance || "حاضر"
             };
         }
 
@@ -2978,7 +3021,7 @@
         async function persistStudentRecord(fullRecord, isUpdate = false) {
             const stampedRecord = {
                 ...fullRecord,
-                gradesBySubject: fullRecord.gradesBySubject || {},
+                gradesBySubject: buildTeacherGradesMap(fullRecord.gradesBySubject || {}),
                 updatedAt: Date.now()
             };
 
@@ -2990,7 +3033,7 @@
                     ? studentsList.map(s => s.id === stampedRecord.id ? stampedRecord : s)
                     : [...studentsList, stampedRecord];
             }
-            studentsList.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+            studentsList = sortStudentsAlphabetically(studentsList);
 
             persistStudentsToLocalStorage(studentsList);
             writeStudentToIndexedDB(stampedRecord);
@@ -3038,13 +3081,13 @@
         }
 
         function getScopeStudents() {
+            let scoped = [];
             if (isInquiryMode && selectedGrade) {
-                return studentsList.filter(s => s.grade === selectedGrade);
+                scoped = studentsList.filter(s => s.grade === selectedGrade);
+            } else if (selectedGrade && selectedSection) {
+                scoped = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
             }
-            if (selectedGrade && selectedSection) {
-                return studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
-            }
-            return [];
+            return sortStudentsAlphabetically(scoped);
         }
 
         function updateAdminBadgeUI() {
@@ -3095,14 +3138,14 @@
                     if (!mergedObj.guardianPhone && (prev.guardianPhone || item.guardianPhone)) {
                         mergedObj.guardianPhone = prev.guardianPhone || item.guardianPhone;
                     }
-                    mergedObj.gradesBySubject = {
+                    mergedObj.gradesBySubject = buildTeacherGradesMap({
                         ...(prev.gradesBySubject || {}),
                         ...(item.gradesBySubject || {})
-                    };
+                    });
                     map.set(item.id, mergedObj);
                 }
             });
-            return Array.from(map.values()).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+            return sortStudentsAlphabetically(Array.from(map.values()));
         }
 
         function loadStudentsFromLocalStorage() {
@@ -3124,12 +3167,13 @@
                     }
                 });
             } catch (e) {}
-            return combined;
+            return sortStudentsAlphabetically(combined);
         }
 
         function persistStudentsToLocalStorage(list) {
+            const sorted = sortStudentsAlphabetically(list);
             try {
-                ALL_STUDENT_STORAGE_KEYS.forEach(k => localStorage.setItem(k, JSON.stringify(list)));
+                ALL_STUDENT_STORAGE_KEYS.forEach(k => localStorage.setItem(k, JSON.stringify(sorted)));
             } catch (e) {}
         }
 
@@ -3139,6 +3183,7 @@
         updateAdminBadgeUI();
 
         if (studentsList.length > 0) {
+            studentsList = sortStudentsAlphabetically(studentsList);
             persistStudentsToLocalStorage(studentsList);
         }
 
@@ -3545,7 +3590,7 @@
             }
         }
 
-        window.addRoomSubject = function () {
+        window.addRoomSubject = async function () {
             if (!hasStaffAccess()) {
                 requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة مادة");
                 return;
@@ -3556,6 +3601,11 @@
             if (!subjectsList.includes(name)) {
                 subjectsList.push(name);
                 saveSubjectsToStorage();
+                studentsList = studentsList.map(st => ({
+                    ...st,
+                    gradesBySubject: buildTeacherGradesMap(st.gradesBySubject || {})
+                }));
+                persistStudentsToLocalStorage(studentsList);
             }
             inp.value = "";
             populateRoomSubjectSelect();
@@ -3584,7 +3634,7 @@
             let target = studentsList.find(s =>
                 s.grade === selectedGrade &&
                 s.section === selectedSection &&
-                String(s.name).trim() === studentName
+                normalizeArabicText(s.name) === normalizeArabicText(studentName)
             );
 
             if (!target) {
@@ -3601,12 +3651,12 @@
                     guardianPhone: "",
                     editPin: generateStudentPin(),
                     photo: defaultAvatar,
-                    gradesBySubject: {},
+                    gradesBySubject: buildTeacherGradesMap({}),
                     createdAt: Date.now()
                 };
             }
 
-            const currentMap = { ...(target.gradesBySubject || {}) };
+            const currentMap = buildTeacherGradesMap(target.gradesBySubject || {});
             const prevSubj = { ...getStudentSubjectRecord(target, subj) };
             if (rawScore !== "") {
                 prevSubj.m1 = Number(rawScore);
@@ -3685,7 +3735,7 @@
             const st = studentsList.find(s => s.id === studentId);
             if (!st) return;
             const subj = document.getElementById("roomSubjectSelect").value || subjectsList[0] || "الحاسوب";
-            const currentMap = { ...(st.gradesBySubject || {}) };
+            const currentMap = buildTeacherGradesMap(st.gradesBySubject || {});
             const prevSubj = { ...getStudentSubjectRecord(st, subj) };
 
             if (field === "attendance") {
@@ -3716,7 +3766,7 @@
 
             const tbody = document.getElementById("gradesRoomTableBody");
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="18" style="padding: 24px; color: #64748b;">لا يوجد طلاب في هذه الشعبة حالياً. يمكنك إضافة اسم ودرجة مباشرة من الأعلى.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="18" style="padding: 24px; color: #64748b;">لا يوجد طلاب في هذه الشعبة حالياً. عند تسجيل أي طالب في هذه الشعبة سيظهر اسمه هنا تلقائياً.</td></tr>`;
                 return;
             }
 
@@ -3819,7 +3869,7 @@
             const rawQuery = document.getElementById("roomSearchInput")?.value || "";
             const lowerTerm = rawQuery.trim().toLowerCase();
             const scopeRows = getScopeStudents();
-            return lowerTerm
+            const matched = lowerTerm
                 ? scopeRows.filter(s =>
                     (s.name && String(s.name).toLowerCase().includes(lowerTerm)) ||
                     (s.mother && String(s.mother).toLowerCase().includes(lowerTerm)) ||
@@ -3827,6 +3877,7 @@
                     (s.section && String(s.section).toLowerCase().includes(lowerTerm))
                 )
                 : scopeRows;
+            return sortStudentsAlphabetically(matched);
         }
 
         window.renderSectionRoomTable = function () {
@@ -4142,6 +4193,7 @@
 
         function executeSaveFullSectionTable() {
             if (!selectedGrade) return;
+            studentsList = sortStudentsAlphabetically(studentsList);
             persistStudentsToLocalStorage(studentsList);
             saveSubjectsToStorage();
             saveGradeScaleToStorage();
@@ -4221,11 +4273,12 @@
         };
 
         function triggerSectionPrintView(rows, noticeText) {
+            const sortedRows = sortStudentsAlphabetically(rows);
             const titleDesc = isInquiryMode
                 ? `استعلام طلاب ${selectedGrade}`
                 : `${selectedGrade} - شعبة (${selectedSection})`;
 
-            const bodyRows = rows.map((r, i) => `
+            const bodyRows = sortedRows.map((r, i) => `
                 <tr>
                     <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;font-weight:700;">${i + 1}</td>
                     <td style="border:1px solid #0b2e5e;padding:8px;font-weight:800;">${r.name}</td>
@@ -4241,7 +4294,7 @@
             sheet.innerHTML = `
                 <div style="text-align:center;border-bottom:2px solid #0b2e5e;padding-bottom:10px;margin-bottom:14px;">
                     <h2 style="font-size:1.35rem;color:#061c3a;margin-bottom:4px;">ثانوية المتفوقين الثانية للبنين - الأنبار</h2>
-                    <h3 style="font-size:1.1rem;color:#0e4a99;">${titleDesc} | العدد: ${rows.length}</h3>
+                    <h3 style="font-size:1.1rem;color:#0e4a99;">${titleDesc} | العدد: ${sortedRows.length}</h3>
                     ${noticeText ? `<p style="font-size:0.85rem;color:#475569;margin-top:4px;">${noticeText}</p>` : ""}
                 </div>
                 <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
@@ -4279,11 +4332,12 @@
         };
 
         function downloadWordFile(rows) {
+            const sortedRows = sortStudentsAlphabetically(rows);
             const titleDesc = isInquiryMode
                 ? `استعلام_${selectedGrade}`
                 : `جدول_${selectedGrade}_شعبة_${selectedSection}`;
 
-            const bodyRows = rows.map((r, i) => `
+            const bodyRows = sortedRows.map((r, i) => `
                 <tr>
                     <td style="border:1px solid #000;padding:7px;text-align:center;">${i + 1}</td>
                     <td style="border:1px solid #000;padding:7px;">${r.name}</td>
@@ -4395,7 +4449,7 @@
                 guardianPhone,
                 editPin: String(finalPin).trim(),
                 photo: currentPhotoBase64 || (existing ? existing.photo : defaultAvatar),
-                gradesBySubject: existing && existing.gradesBySubject ? { ...existing.gradesBySubject } : {},
+                gradesBySubject: buildTeacherGradesMap(existing && existing.gradesBySubject ? existing.gradesBySubject : {}),
                 createdAt: existing ? existing.createdAt : Date.now()
             };
 
@@ -4406,9 +4460,9 @@
 
             if (!editId) {
                 markStudentAsOwned(savedRec.id);
-                alert(`✅ تم حفظ بيانات الطالب بنجاح.\nالاسم: ${savedRec.name}\nالرمز الخاص بالطالب: ${savedRec.editPin}`);
+                alert(`✅ تم حفظ بيانات الطالب وترتيبه أبجدياً، وأصبح جاهزاً في سجل الأساتذة لإضافة الدرجات.\nالاسم: ${savedRec.name}\nالرمز الخاص بالطالب: ${savedRec.editPin}`);
             } else {
-                alert("✅ تم حفظ التعديلات والرمز بنجاح.");
+                alert("✅ تم حفظ التعديلات والرمز وتحديث الترتيب الأبجدي بنجاح.");
             }
 
             resetStudentFormState();
@@ -4704,7 +4758,7 @@
             if (!st) return;
             if (!confirm(`هل تريد حذف الطالب (${st.name})؟`)) return;
 
-            studentsList = studentsList.filter(s => s.id !== id);
+            studentsList = sortStudentsAlphabetically(studentsList.filter(s => s.id !== id));
             persistStudentsToLocalStorage(studentsList);
             deleteStudentFromIndexedDB(id);
 
@@ -4736,7 +4790,7 @@
             if (!confirm(`سيتم حذف جميع الطلاب المعروضين وعددهم (${rows.length}). متابعة؟`)) return;
 
             const targetIds = new Set(rows.map(r => r.id));
-            studentsList = studentsList.filter(s => !targetIds.has(s.id));
+            studentsList = sortStudentsAlphabetically(studentsList.filter(s => !targetIds.has(s.id)));
             persistStudentsToLocalStorage(studentsList);
             rows.forEach(r => deleteStudentFromIndexedDB(r.id));
 
