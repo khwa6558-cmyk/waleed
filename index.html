@@ -59,7 +59,7 @@
         }
 
         .hero-inner {
-            max-width: 1480px;
+            max-width: 1520px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -158,7 +158,7 @@
         }
 
         .admin-strip-inner {
-            max-width: 1480px;
+            max-width: 1520px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -216,6 +216,13 @@
         .btn-code-action {
             background: linear-gradient(180deg, #1e3a5f, #0f2942);
             border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 8px;
+            padding: 7px 14px;
+        }
+
+        .btn-principal-action {
+            background: linear-gradient(180deg, #0f766e, #115e59);
+            border: 1px solid #5eead4;
             border-radius: 8px;
             padding: 7px 14px;
         }
@@ -288,7 +295,7 @@
 
         /* ================= MAIN CONTAINER ================= */
         .page-shell {
-            max-width: 1480px;
+            max-width: 1520px;
             margin: 0 auto;
             padding: 4px 18px 40px;
             display: flex;
@@ -328,18 +335,24 @@
 
         .form-horizontal-grid {
             display: grid;
-            grid-template-columns: 1.45fr 1fr 1fr 1.65fr 1.25fr 1fr 124px;
+            grid-template-columns: 1.35fr 0.95fr 0.85fr 1.55fr 1.15fr 1.15fr 1fr 124px;
             gap: 10px;
             align-items: start;
         }
 
-        @media (max-width: 1260px) {
+        @media (max-width: 1360px) {
             .form-horizontal-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
-        @media (max-width: 650px) {
+        @media (max-width: 820px) {
+            .form-horizontal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 540px) {
             .form-horizontal-grid {
                 grid-template-columns: 1fr;
             }
@@ -381,6 +394,13 @@
             color: var(--text-main);
             width: 100%;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        textarea.ctrl-field {
+            height: auto;
+            min-height: 92px;
+            resize: vertical;
+            line-height: 1.55;
         }
 
         .ctrl-field:focus {
@@ -469,6 +489,27 @@
         }
 
         .btn-submit-student:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
+        }
+
+        .btn-whatsapp-send {
+            background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+            color: #ffffff;
+            border: 1.5px solid #86efac;
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size: 0.92rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 14px rgba(21, 128, 61, 0.3);
+            transition: transform 0.18s ease, filter 0.18s ease;
+        }
+
+        .btn-whatsapp-send:hover {
             transform: translateY(-1px);
             filter: brightness(1.06);
         }
@@ -917,6 +958,27 @@
             filter: brightness(1.07);
         }
 
+        .btn-bulk-notify {
+            background: linear-gradient(180deg, #22c55e, #15803d);
+            color: #ffffff;
+            border: 1px solid #86efac;
+            border-radius: 9px;
+            padding: 7px 14px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 3px 8px rgba(21, 128, 61, 0.28);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .btn-bulk-notify:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
+        }
+
         .search-mark {
             background: #fef08a;
             color: #0f172a;
@@ -1018,7 +1080,94 @@
         .mini-edit { background: linear-gradient(180deg, #16a34a, #15803d); }
         .mini-pin-change { background: linear-gradient(180deg, #0284c7, #0369a1); }
         .mini-admin-edit { background: linear-gradient(180deg, #0f4282, #061f42); border: 1px solid var(--gold-300); }
+        .mini-notify { background: linear-gradient(180deg, #16a34a, #15803d); border: 1px solid #86efac; }
         .mini-delete { background: linear-gradient(180deg, #dc2626, #b91c1c); }
+
+        .template-chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .template-chip-btn {
+            background: #eff6ff;
+            color: var(--navy-800);
+            border: 1px solid #93c5fd;
+            border-radius: 7px;
+            padding: 4px 9px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .template-chip-btn:hover {
+            background: #dbeafe;
+        }
+
+        .bulk-checklist-box {
+            max-height: 175px;
+            overflow-y: auto;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            background: #ffffff;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .bulk-student-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #f8fbff;
+            border: 1px solid #e2e8f0;
+            font-size: 0.84rem;
+            font-weight: 800;
+        }
+
+        .bulk-student-row label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .bulk-phone-tag {
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+        }
+
+        .bulk-phone-ok {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .bulk-phone-missing {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .bulk-step-banner {
+            background: #eff6ff;
+            border: 1.5px solid #93c5fd;
+            border-radius: 10px;
+            padding: 9px 12px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--navy-800);
+        }
 
         /* ================= PRINTABLE SECTION REPORT ================= */
         #printableSectionSheet {
@@ -1132,7 +1281,7 @@
         .dialog-card {
             background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
             border-radius: 16px;
-            max-width: 430px;
+            max-width: 450px;
             width: 100%;
             padding: 22px;
             box-shadow: 0 22px 48px rgba(0, 0, 0, 0.38);
@@ -1248,9 +1397,14 @@
                     <span>قفل المنصة</span>
                 </button>
 
+                <button type="button" class="top-pill-btn btn-principal-action" onclick="openPrincipalAddModal()">
+                    <span>📞</span>
+                    <span>إضافة رقم المدير</span>
+                </button>
+
                 <button type="button" class="top-pill-btn btn-code-action" onclick="openAdminDialog('change')">
-                    <span>⚙️</span>
-                    <span>تغيير الرمز</span>
+                    <span>🔑</span>
+                    <span>تغيير رمز الأدمن</span>
                 </button>
             </div>
 
@@ -1328,6 +1482,11 @@
                         <div class="input-group-box">
                             <label>👤 اسم الام الثلاثي</label>
                             <input type="text" id="motherField" class="ctrl-field" placeholder="اسم الأم الأب الجد" required>
+                        </div>
+
+                        <div class="input-group-box">
+                            <label>📱 رقم ولي الأمر</label>
+                            <input type="tel" id="guardianPhoneField" class="ctrl-field" placeholder="07XXXXXXXXX" dir="ltr" required>
                         </div>
 
                         <div class="input-group-box">
@@ -1421,6 +1580,11 @@
                 </div>
 
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                    <button type="button" class="btn-bulk-notify" onclick="startBulkNotifySection()">
+                        <span>📢</span>
+                        <span>تبليغ جماعي</span>
+                    </button>
+
                     <div class="export-format-group" title="اختر صيغة الملف للحفظ أو الطباعة">
                         <span style="font-size: 0.82rem; font-weight: 800; color: var(--navy-800);">الصيغة:</span>
                         <select id="fileFormatSelect" class="export-format-select">
@@ -1453,6 +1617,7 @@
                             <th>الشعبة</th>
                             <th>المواليد</th>
                             <th>اسم الام الثلاثي</th>
+                            <th>رقم ولي الأمر</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -1465,6 +1630,52 @@
 
     <!-- Printable Section Sheet Container -->
     <div id="printableSectionSheet"></div>
+
+    <!-- Principal Phone Modal (Enter Phone -> Click Add -> Enter Admin PIN -> Save & Retain) -->
+    <div id="principalPhoneModalLayer" class="modal-layer" onclick="if(event.target===this) closePrincipalPhoneModal()">
+        <div class="dialog-card" style="border-top-color: #0f766e;">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closePrincipalPhoneModal()">✕</button>
+            <h3 style="color: #0f766e; margin-bottom: 6px;">📞 إضافة رقم المدير (خاص بالإدارة)</h3>
+            <p style="color: #475569; font-size: 0.84rem; font-weight: 700; margin-bottom: 12px;">
+                لا يظهر هذا الرقم للطلاب؛ يُستخدم تلقائياً في رسائل التبليغ بعد تأكيد رمز الأدمن وحفظه.
+            </p>
+
+            <div id="principalModalErrorBox" class="pin-error-msg"></div>
+
+            <div id="principalPhoneStep1">
+                <div class="input-group-box" style="margin-bottom: 14px;">
+                    <label>رقم هاتف المدير:</label>
+                    <input type="tel" id="principalPhoneInputField" class="ctrl-field" placeholder="07XXXXXXXXX" dir="ltr" onkeydown="if(event.key==='Enter'){event.preventDefault();requestAdminPinForPrincipalSave();}">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="requestAdminPinForPrincipalSave()">
+                        <span>➕</span>
+                        <span>إضافة</span>
+                    </button>
+                    <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closePrincipalPhoneModal()">
+                        إلغاء
+                    </button>
+                </div>
+            </div>
+
+            <div id="principalPhoneStep2" style="display: none;">
+                <p id="principalPendingPreview" style="background:#f0fdfa;border:1px solid #99f6e4;color:#115e59;padding:7px 10px;border-radius:8px;font-size:0.86rem;font-weight:800;margin-bottom:10px;" dir="ltr"></p>
+                <div class="input-group-box" style="margin-bottom: 14px;">
+                    <label>أدخل رمز الأدمن لحفظ الرقم والاحتفاظ به:</label>
+                    <input type="password" id="principalAdminPinField" class="ctrl-field" placeholder="أدخل رمز الأدمن..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmSavePrincipalWithPin();}">
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn-save-full-table" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmSavePrincipalWithPin()">
+                        <span>💾</span>
+                        <span>حفظ</span>
+                    </button>
+                    <button type="button" class="btn-clear-search" style="padding: 8px 12px;" onclick="backToPrincipalPhoneStep()">
+                        رجوع
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Student Edit PIN Verification & Change Modal -->
     <div id="editPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeEditPinModal()">
@@ -1497,7 +1708,7 @@
         </div>
     </div>
 
-    <!-- Direct Admin Code Verification Modal (Edit / Delete All / Save / Print) -->
+    <!-- Direct Admin Code Verification Modal (Edit / Delete All / Save / Print / Notify / Bulk Notify) -->
     <div id="adminEditPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeAdminEditPinModal()">
         <div class="dialog-card" style="border-top-color: var(--gold-500);">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeAdminEditPinModal()">✕</button>
@@ -1514,11 +1725,110 @@
             <div style="display: flex; gap: 8px;">
                 <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmAdminEditPinModal()">
                     <span>🔓</span>
-                    <span>تأكيد وتنفيذ</span>
+                    <span>تأكيد ومتابعة</span>
                 </button>
                 <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeAdminEditPinModal()">
                     إلغاء
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single WhatsApp Notification Composer Modal -->
+    <div id="whatsappNotifyModalLayer" class="modal-layer" onclick="if(event.target===this) closeWhatsappNotifyModal()">
+        <div class="dialog-card" style="border-top-color: #16a34a; max-width: 480px;">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeWhatsappNotifyModal()">✕</button>
+            <h3 style="color: #15803d; margin-bottom: 6px;">📩 تبليغ ولي الأمر عبر الواتساب</h3>
+            <p id="notifyStudentMeta" style="color: #0f172a; font-size: 0.88rem; font-weight: 800; margin-bottom: 4px;"></p>
+            <p id="notifyPrincipalMeta" style="color: #475569; font-size: 0.82rem; font-weight: 700; margin-bottom: 10px;"></p>
+
+            <div id="notifyErrorBox" class="pin-error-msg"></div>
+
+            <div class="input-group-box" style="margin-bottom: 8px;">
+                <label>📱 رقم ولي الأمر (قابل للتعديل قبل الإرسال):</label>
+                <input type="tel" id="notifyGuardianPhoneInput" class="ctrl-field" placeholder="07XXXXXXXXX" dir="ltr">
+            </div>
+
+            <div class="template-chips-row">
+                <button type="button" class="template-chip-btn" onclick="applyNotifyTemplate('absence')">غياب الطالب</button>
+                <button type="button" class="template-chip-btn" onclick="applyNotifyTemplate('meeting')">مراجعة الإدارة</button>
+                <button type="button" class="template-chip-btn" onclick="applyNotifyTemplate('excellence')">تبليغ تفوق</button>
+            </div>
+
+            <div class="input-group-box" style="margin-bottom: 14px;">
+                <label>✍️ نص الرسالة المرسلة من المدير:</label>
+                <textarea id="notifyMessageTextarea" class="ctrl-field" placeholder="اكتب نص التبليغ هنا..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="sendWhatsappNotification()">
+                    <span>💬</span>
+                    <span>إرسال عبر واتساب</span>
+                </button>
+                <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeWhatsappNotifyModal()">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk WhatsApp Notification Modal (For Section Students) -->
+    <div id="bulkWhatsappModalLayer" class="modal-layer" onclick="if(event.target===this) closeBulkWhatsappModal()">
+        <div class="dialog-card" style="border-top-color: #16a34a; max-width: 540px;">
+            <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeBulkWhatsappModal()">✕</button>
+            <h3 style="color: #15803d; margin-bottom: 4px;">📢 تبليغ جماعي لطلاب الشعبة عبر الواتساب</h3>
+            <p id="bulkSectionMeta" style="color: #475569; font-size: 0.85rem; font-weight: 800; margin-bottom: 10px;"></p>
+
+            <div id="bulkErrorBox" class="pin-error-msg"></div>
+
+            <div id="bulkQueueStatusBanner" class="bulk-step-banner" style="display: none;"></div>
+
+            <div id="bulkSelectionStage">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                    <span style="font-size: 0.86rem; font-weight: 800; color: var(--navy-800);">👥 اختر الطلاب المراد تبليغ أولياء أمورهم:</span>
+                    <div style="display: flex; gap: 6px;">
+                        <button type="button" class="template-chip-btn" onclick="toggleAllBulkSelection(true)">تحديد الكل</button>
+                        <button type="button" class="template-chip-btn" onclick="toggleAllBulkSelection(false)">إلغاء الكل</button>
+                    </div>
+                </div>
+
+                <div id="bulkStudentsChecklist" class="bulk-checklist-box"></div>
+
+                <div class="template-chips-row">
+                    <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('absence')">غياب اليوم</button>
+                    <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('meeting')">اجتماع أولياء الأمور</button>
+                    <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('exam')">تنبيه امتحانات</button>
+                </div>
+
+                <div class="input-group-box" style="margin-bottom: 14px;">
+                    <label>✍️ نص الرسالة الموحدة (يُضاف اسم الطالب تلقائياً):</label>
+                    <textarea id="bulkMessageTextarea" class="ctrl-field" placeholder="اكتب نص التبليغ الجماعي هنا..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="beginBulkSendQueue()">
+                        <span>🚀</span>
+                        <span>بدء الإرسال المتسلسل</span>
+                    </button>
+                    <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeBulkWhatsappModal()">
+                        إغلاق
+                    </button>
+                </div>
+            </div>
+
+            <div id="bulkQueueControlStage" style="display: none;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" id="bulkSendNextBtn" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="sendCurrentBulkQueueItem()">
+                        <span>💬</span>
+                        <span>إرسال للطالب الحالي</span>
+                    </button>
+                    <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="skipCurrentBulkQueueItem()">
+                        تخطي
+                    </button>
+                    <button type="button" class="mini-act-btn mini-delete" style="padding: 8px 14px;" onclick="resetBulkQueueToSelection()">
+                        رجوع للقائمة
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1547,6 +1857,7 @@
                     <div class="id-field-line"><span class="k">الشعبة</span><span>:</span><span class="v" id="idCardSection"></span></div>
                     <div class="id-field-line"><span class="k">المواليد</span><span>:</span><span class="v" id="idCardDob"></span></div>
                     <div class="id-field-line"><span class="k">اسم الام الثلاثي</span><span>:</span><span class="v" id="idCardMother"></span></div>
+                    <div class="id-field-line"><span class="k">رقم ولي الأمر</span><span>:</span><span class="v" id="idCardGuardianPhone" dir="ltr"></span></div>
                 </div>
             </div>
 
@@ -1560,7 +1871,7 @@
     <div id="adminDialogLayer" class="modal-layer" onclick="if(event.target===this) hideModal('adminDialogLayer')">
         <div class="dialog-card">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="hideModal('adminDialogLayer')">✕</button>
-            <h3 id="adminDialogHeading" style="color: #0b2e59; margin-bottom: 12px;">🔐 دخول الأدمن</h3>
+            <h3 id="adminDialogHeading" style="color: #0b2e5e; margin-bottom: 12px;">🔐 دخول الأدمن</h3>
 
             <div id="adminAuthView">
                 <div class="input-group-box" style="margin-bottom: 12px;">
@@ -1579,7 +1890,7 @@
                     <label>الرمز الجديد:</label>
                     <input type="password" id="newCodeInput" class="ctrl-field" placeholder="أدخل الرمز الجديد...">
                 </div>
-                <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="updateAdminPasscode()">💾 حفظ الرمز الجديد</button>
+                <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="updateAdminPasscode()">حفظ الرمز</button>
             </div>
 
             <div id="adminMenuView" style="display: none;">
@@ -1588,7 +1899,7 @@
                     قفل / فتح المنصة
                 </button>
                 <button type="button" class="btn-back-section" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="showChangeCodeForm()">
-                    ⚙️ تغيير رمز الأدمن
+                    تغيير رمز الأدمن
                 </button>
                 <button type="button" class="mini-act-btn mini-delete" style="width: 100%; padding: 8px;" onclick="logoutAdminSession()">
                     تسجيل خروج الأدمن
@@ -1600,7 +1911,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import {
-            getFirestore, collection, doc, addDoc, setDoc, deleteDoc,
+            getFirestore, collection, doc, setDoc, deleteDoc,
             onSnapshot, query, orderBy, writeBatch
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
@@ -1627,12 +1938,41 @@
         ];
         const SECTIONS = ["أ", "ب", "ج"];
 
-        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v21";
-        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v21";
-        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v21";
-        const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v21";
-        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v21";
-        const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v21";
+        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v23";
+        const ALL_STUDENT_STORAGE_KEYS = [
+            "mutafawiqeen_students_list_v23",
+            "mutafawiqeen_students_list_v22",
+            "mutafawiqeen_students_list_v21",
+            "mutafawiqeen_students_list_v20"
+        ];
+        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v23";
+        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v23";
+        const ALL_SECRET_KEYS = [
+            "mutafawiqeen_secret_v23",
+            "mutafawiqeen_secret_v22",
+            "mutafawiqeen_secret_v21",
+            "mutafawiqeen_secret_v20"
+        ];
+        const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v23";
+        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v23";
+        const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v23";
+        const ALL_PRINCIPAL_PHONE_KEYS = [
+            "mutafawiqeen_principal_phone_v23",
+            "mutafawiqeen_principal_phone_v22"
+        ];
+        const STORAGE_PRINCIPAL_UPDATED_AT_KEY = "mutafawiqeen_principal_updated_at_v23";
+        const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v23";
+        const ALL_OWNED_KEYS = [
+            "mutafawiqeen_owned_student_ids_v23",
+            "mutafawiqeen_owned_student_ids_v22",
+            "mutafawiqeen_owned_student_ids_v21",
+            "mutafawiqeen_owned_student_ids_v20"
+        ];
+        const ALL_IDB_NAMES = [
+            "MutafawiqeenSchoolDB_V22",
+            "MutafawiqeenSchoolDB_V21",
+            "MutafawiqeenSchoolDB_V20"
+        ];
 
         let ownedStudentIds = loadOwnedStudentIds();
         let studentsList = loadStudentsFromLocalStorage();
@@ -1640,6 +1980,10 @@
         let pendingEditStudentId = null;
         let pendingPinMode = "edit";
         let pendingAdminAction = null;
+        let pendingPrincipalPhoneCandidate = "";
+        let activeNotifyStudent = null;
+        let bulkQueue = [];
+        let bulkQueueIndex = 0;
 
         let selectedGrade = null;
         let selectedSection = null;
@@ -1648,8 +1992,10 @@
         let currentPhotoBase64 = "";
 
         let savedSectionTables = JSON.parse(localStorage.getItem(STORAGE_SAVED_SECTIONS_KEY)) || {};
-        let adminSecret = localStorage.getItem(STORAGE_SECRET_KEY) || DEFAULT_SECRET_CODE;
+        let adminSecret = loadInitialAdminSecret();
         let secretUpdatedAt = Number(localStorage.getItem(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
+        let principalPhone = loadInitialPrincipalPhone();
+        let principalUpdatedAt = Number(localStorage.getItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
         let isPlatformLocked = localStorage.getItem(STORAGE_LOCKED_KEY) === "true";
 
         let useCloud = false;
@@ -1663,12 +2009,80 @@
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
 
+        function loadInitialAdminSecret() {
+            for (const k of ALL_SECRET_KEYS) {
+                const v = localStorage.getItem(k);
+                if (v && String(v).trim()) {
+                    const clean = String(v).trim();
+                    try { localStorage.setItem(STORAGE_SECRET_KEY, clean); } catch (e) {}
+                    return clean;
+                }
+            }
+            return DEFAULT_SECRET_CODE;
+        }
+
         function getCurrentAdminSecret() {
-            const latestStored = localStorage.getItem(STORAGE_SECRET_KEY);
-            if (latestStored && latestStored.trim()) {
-                adminSecret = latestStored.trim();
+            for (const k of ALL_SECRET_KEYS) {
+                const latestStored = localStorage.getItem(k);
+                if (latestStored && String(latestStored).trim()) {
+                    adminSecret = String(latestStored).trim();
+                    return adminSecret;
+                }
             }
             return adminSecret;
+        }
+
+        function loadInitialPrincipalPhone() {
+            for (const k of ALL_PRINCIPAL_PHONE_KEYS) {
+                const v = localStorage.getItem(k);
+                if (v && String(v).trim()) {
+                    const clean = String(v).trim();
+                    try { localStorage.setItem(STORAGE_PRINCIPAL_PHONE_KEY, clean); } catch (e) {}
+                    return clean;
+                }
+            }
+            return "";
+        }
+
+        function getCurrentPrincipalPhone() {
+            for (const k of ALL_PRINCIPAL_PHONE_KEYS) {
+                const v = localStorage.getItem(k);
+                if (v && String(v).trim()) {
+                    principalPhone = String(v).trim();
+                    return principalPhone;
+                }
+            }
+            return principalPhone;
+        }
+
+        function normalizePhoneToWhatsapp(rawPhone) {
+            if (!rawPhone) return "";
+            const arabicMap = { "٠": "0", "١": "1", "٢": "2", "٣": "3", "٤": "4", "٥": "5", "٦": "6", "٧": "7", "٨": "8", "٩": "9" };
+            const converted = String(rawPhone).replace(/[٠-٩]/g, d => arabicMap[d] || d);
+            let digits = converted.replace(/\D/g, "");
+            if (!digits) return "";
+            if (digits.startsWith("00")) {
+                digits = digits.slice(2);
+            }
+            if (digits.startsWith("07") && digits.length === 11) {
+                digits = "964" + digits.slice(1);
+            } else if (/^7\d{9}$/.test(digits)) {
+                digits = "964" + digits;
+            }
+            return digits;
+        }
+
+        function buildPrincipalMessage(studentName, bodyText) {
+            const pPhone = getCurrentPrincipalPhone();
+            const footerLines = [
+                "ــــــــــــــــــــ",
+                "من: مدير ثانوية المتفوقين الثانية للبنين - الأنبار"
+            ];
+            if (pPhone) {
+                footerLines.push(`رقم المدير: ${pPhone}`);
+            }
+            const headerLine = studentName ? `بخصوص الطالب: (${studentName})\n\n` : "";
+            return `${headerLine}${bodyText}\n\n${footerLines.join("\n")}`;
         }
 
         function writeSecretToIndexedDB(codeValue, updatedTs) {
@@ -1676,6 +2090,14 @@
             try {
                 const tx = localDb.transaction("meta", "readwrite");
                 tx.objectStore("meta").put({ key: "adminSecret", value: codeValue, updatedAt: updatedTs });
+            } catch (e) {}
+        }
+
+        function writePrincipalPhoneToIndexedDB(phoneValue, updatedTs) {
+            if (!localDb) return;
+            try {
+                const tx = localDb.transaction("meta", "readwrite");
+                tx.objectStore("meta").put({ key: "principalPhone", value: phoneValue, updatedAt: updatedTs });
             } catch (e) {}
         }
 
@@ -1695,6 +2117,102 @@
             } catch (e) {}
         }
 
+        async function persistPrincipalPhone(nextPhone) {
+            const cleanPhone = String(nextPhone || "").trim();
+            const nowTs = Date.now();
+            principalPhone = cleanPhone;
+            principalUpdatedAt = nowTs;
+
+            try {
+                ALL_PRINCIPAL_PHONE_KEYS.forEach(k => localStorage.setItem(k, cleanPhone));
+                localStorage.setItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(nowTs));
+            } catch (e) {}
+
+            writePrincipalPhoneToIndexedDB(cleanPhone, nowTs);
+
+            if (useCloud && settingsDoc) {
+                try {
+                    await setDoc(settingsDoc, {
+                        principalPhone: cleanPhone,
+                        principalUpdatedAt: nowTs
+                    }, { merge: true });
+                } catch (err) {}
+            }
+        }
+
+        window.openPrincipalAddModal = function () {
+            pendingPrincipalPhoneCandidate = "";
+            document.getElementById("principalPhoneInputField").value = "";
+            document.getElementById("principalAdminPinField").value = "";
+            document.getElementById("principalPhoneStep1").style.display = "block";
+            document.getElementById("principalPhoneStep2").style.display = "none";
+            const errBox = document.getElementById("principalModalErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            document.getElementById("principalPhoneModalLayer").style.display = "flex";
+            setTimeout(() => document.getElementById("principalPhoneInputField").focus(), 60);
+        };
+
+        window.requestAdminPinForPrincipalSave = function () {
+            const phoneVal = document.getElementById("principalPhoneInputField").value.trim();
+            const errBox = document.getElementById("principalModalErrorBox");
+            const digitsOnly = normalizePhoneToWhatsapp(phoneVal);
+            if (!phoneVal || !digitsOnly || digitsOnly.length < 9) {
+                errBox.innerText = "⚠️ يرجى إدخال رقم هاتف صحيح للمدير أولاً.";
+                errBox.style.display = "block";
+                document.getElementById("principalPhoneInputField").focus();
+                return;
+            }
+            errBox.style.display = "none";
+            pendingPrincipalPhoneCandidate = phoneVal;
+            document.getElementById("principalPendingPreview").innerText = `الرقم المراد إضافته وحفظه: ${phoneVal}`;
+            document.getElementById("principalAdminPinField").value = "";
+            document.getElementById("principalPhoneStep1").style.display = "none";
+            document.getElementById("principalPhoneStep2").style.display = "block";
+            setTimeout(() => document.getElementById("principalAdminPinField").focus(), 60);
+        };
+
+        window.backToPrincipalPhoneStep = function () {
+            const errBox = document.getElementById("principalModalErrorBox");
+            errBox.style.display = "none";
+            document.getElementById("principalPhoneStep2").style.display = "none";
+            document.getElementById("principalPhoneStep1").style.display = "block";
+            setTimeout(() => document.getElementById("principalPhoneInputField").focus(), 60);
+        };
+
+        window.confirmSavePrincipalWithPin = async function () {
+            const enteredPin = document.getElementById("principalAdminPinField").value.trim();
+            const errBox = document.getElementById("principalModalErrorBox");
+            if (!enteredPin) {
+                errBox.innerText = "⚠️ يرجى إدخال رمز الأدمن.";
+                errBox.style.display = "block";
+                document.getElementById("principalAdminPinField").focus();
+                return;
+            }
+            if (enteredPin !== getCurrentAdminSecret()) {
+                errBox.innerText = "❌ رمز الأدمن غير صحيح.";
+                errBox.style.display = "block";
+                document.getElementById("principalAdminPinField").focus();
+                return;
+            }
+            isAdminLoggedIn = true;
+            updateAdminBadgeUI();
+            await persistPrincipalPhone(pendingPrincipalPhoneCandidate);
+            closePrincipalPhoneModal();
+            alert("✅ تم حفظ رقم المدير والاحتفاظ به لاستخدامه في رسائل التبليغ.");
+            if (isInsideRoom) renderSectionRoomTable();
+        };
+
+        window.closePrincipalPhoneModal = function () {
+            pendingPrincipalPhoneCandidate = "";
+            document.getElementById("principalPhoneInputField").value = "";
+            document.getElementById("principalAdminPinField").value = "";
+            const errBox = document.getElementById("principalModalErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            hideModal("principalPhoneModalLayer");
+        };
+
         async function persistAdminSecret(nextCode) {
             const cleanCode = String(nextCode).trim();
             const nowTs = Date.now();
@@ -1702,7 +2220,7 @@
             secretUpdatedAt = nowTs;
 
             try {
-                localStorage.setItem(STORAGE_SECRET_KEY, cleanCode);
+                ALL_SECRET_KEYS.forEach(k => localStorage.setItem(k, cleanCode));
                 localStorage.setItem(STORAGE_SECRET_UPDATED_AT_KEY, String(nowTs));
             } catch (e) {}
 
@@ -1742,21 +2260,7 @@
 
             if (useCloud && studentsCol) {
                 try {
-                    if (isUpdate) {
-                        await setDoc(doc(db, "students", stampedRecord.id), stampedRecord, { merge: true });
-                    } else {
-                        const { id, ...docPayload } = stampedRecord;
-                        const docRef = await addDoc(studentsCol, docPayload);
-                        const cloudRecord = { id: docRef.id, ...docPayload };
-                        studentsList = studentsList.map(s => s.id === stampedRecord.id ? cloudRecord : s);
-                        if (isOwnStudentRecord(stampedRecord.id)) {
-                            ownedStudentIds = ownedStudentIds.filter(x => x !== stampedRecord.id);
-                            markStudentAsOwned(docRef.id);
-                        }
-                        persistStudentsToLocalStorage(studentsList);
-                        writeStudentToIndexedDB(cloudRecord);
-                        return cloudRecord;
-                    }
+                    await setDoc(doc(db, "students", stampedRecord.id), stampedRecord, { merge: true });
                 } catch (err) {
                     console.warn("تعذر المزامنة السحابية الفورية، تم الحفظ محلياً:", err);
                 }
@@ -1770,13 +2274,15 @@
         }
 
         function loadOwnedStudentIds() {
-            try {
-                const raw = localStorage.getItem(STORAGE_OWNED_IDS_KEY);
-                const parsed = raw ? JSON.parse(raw) : [];
-                return Array.isArray(parsed) ? parsed : [];
-            } catch (e) {
-                return [];
+            const collected = [];
+            for (const k of ALL_OWNED_KEYS) {
+                try {
+                    const raw = localStorage.getItem(k);
+                    const parsed = raw ? JSON.parse(raw) : [];
+                    if (Array.isArray(parsed)) collected.push(...parsed);
+                } catch (e) {}
             }
+            return Array.from(new Set(collected));
         }
 
         function markStudentAsOwned(id, dbRef) {
@@ -1784,7 +2290,7 @@
             if (!ownedStudentIds.includes(id)) {
                 ownedStudentIds.push(id);
                 try {
-                    localStorage.setItem(STORAGE_OWNED_IDS_KEY, JSON.stringify(ownedStudentIds));
+                    ALL_OWNED_KEYS.forEach(k => localStorage.setItem(k, JSON.stringify(ownedStudentIds)));
                 } catch (e) {}
             }
             const targetDb = dbRef || localDb;
@@ -1829,21 +2335,38 @@
             if (delAllBtn) delAllBtn.style.display = "inline-flex";
         }
 
+        function mergeStudentArrays(baseList, extraList) {
+            const map = new Map();
+            (baseList || []).forEach(item => {
+                if (item && item.id) map.set(item.id, item);
+            });
+            (extraList || []).forEach(item => {
+                if (!item || !item.id) return;
+                const prev = map.get(item.id);
+                if (!prev || (item.updatedAt || item.createdAt || 0) >= (prev.updatedAt || prev.createdAt || 0)) {
+                    map.set(item.id, { ...prev, ...item });
+                }
+            });
+            return Array.from(map.values()).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+        }
+
         function loadStudentsFromLocalStorage() {
-            try {
-                const raw = localStorage.getItem(STORAGE_STUDENTS_KEY);
-                const parsed = raw ? JSON.parse(raw) : [];
-                return Array.isArray(parsed)
-                    ? parsed.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0))
-                    : [];
-            } catch (e) {
-                return [];
+            let combined = [];
+            for (const key of ALL_STUDENT_STORAGE_KEYS) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    const parsed = raw ? JSON.parse(raw) : [];
+                    if (Array.isArray(parsed)) {
+                        combined = mergeStudentArrays(combined, parsed);
+                    }
+                } catch (e) {}
             }
+            return combined;
         }
 
         function persistStudentsToLocalStorage(list) {
             try {
-                localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(list));
+                ALL_STUDENT_STORAGE_KEYS.forEach(k => localStorage.setItem(k, JSON.stringify(list)));
             } catch (e) {}
         }
 
@@ -1851,6 +2374,10 @@
         renderGradesShelf();
         applyLockUI();
         updateAdminBadgeUI();
+
+        if (studentsList.length > 0) {
+            persistStudentsToLocalStorage(studentsList);
+        }
 
         if (navigator.storage && navigator.storage.persist) {
             try { await navigator.storage.persist(); } catch (e) {}
@@ -1872,7 +2399,9 @@
                             await setDoc(settingsDoc, {
                                 isLocked: isPlatformLocked,
                                 adminCode: getCurrentAdminSecret(),
-                                secretUpdatedAt: secretUpdatedAt || Date.now()
+                                secretUpdatedAt: secretUpdatedAt || Date.now(),
+                                principalPhone: getCurrentPrincipalPhone(),
+                                principalUpdatedAt: principalUpdatedAt || Date.now()
                             });
                         } else {
                             const data = snap.data();
@@ -1886,27 +2415,44 @@
                             if (data.adminCode && !recentLocalWrite && remoteUpdatedAt >= localUpdatedAt) {
                                 adminSecret = String(data.adminCode).trim();
                                 secretUpdatedAt = remoteUpdatedAt;
-                                localStorage.setItem(STORAGE_SECRET_KEY, adminSecret);
+                                ALL_SECRET_KEYS.forEach(k => localStorage.setItem(k, adminSecret));
                                 localStorage.setItem(STORAGE_SECRET_UPDATED_AT_KEY, String(remoteUpdatedAt));
                                 writeSecretToIndexedDB(adminSecret, remoteUpdatedAt);
+                            }
+
+                            const remotePUpdated = Number(data.principalUpdatedAt || 0);
+                            const localPUpdated = Number(localStorage.getItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
+                            if (data.principalPhone && remotePUpdated >= localPUpdated) {
+                                principalPhone = String(data.principalPhone).trim();
+                                principalUpdatedAt = remotePUpdated;
+                                ALL_PRINCIPAL_PHONE_KEYS.forEach(k => localStorage.setItem(k, principalPhone));
+                                localStorage.setItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(remotePUpdated));
+                                writePrincipalPhoneToIndexedDB(principalPhone, remotePUpdated);
                             }
                             applyLockUI();
                         }
                     } catch (err) {}
                 });
 
-                onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
+                onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), async (snapshot) => {
                     const cloudDocs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                    const localMap = new Map(loadStudentsFromLocalStorage().map(item => [item.id, item]));
-                    const merged = cloudDocs.map(cItem => {
-                        const lItem = localMap.get(cItem.id);
-                        if (lItem && (lItem.updatedAt || 0) > (cItem.updatedAt || 0)) {
-                            return lItem;
+                    const localSnapshot = mergeStudentArrays(studentsList, loadStudentsFromLocalStorage());
+                    const cloudIdSet = new Set(cloudDocs.map(c => c.id));
+
+                    for (const locItem of localSnapshot) {
+                        if (!cloudIdSet.has(locItem.id)) {
+                            try {
+                                await setDoc(doc(db, "students", locItem.id), locItem, { merge: true });
+                            } catch (e) {}
                         }
-                        return cItem;
-                    });
-                    studentsList = merged.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                    }
+
+                    const merged = mergeStudentArrays(cloudDocs, localSnapshot);
+                    studentsList = merged;
                     persistStudentsToLocalStorage(studentsList);
+                    if (localDb) {
+                        merged.forEach(item => writeStudentToIndexedDB(item));
+                    }
                     if (isInsideRoom) renderSectionRoomTable();
                 });
             } catch (e) {
@@ -1914,8 +2460,46 @@
             }
         }
 
+        function readStoreFromDb(database, storeName) {
+            return new Promise((resolve) => {
+                try {
+                    if (!database || !database.objectStoreNames.contains(storeName)) {
+                        resolve([]);
+                        return;
+                    }
+                    const tx = database.transaction(storeName, "readonly");
+                    const req = tx.objectStore(storeName).getAll();
+                    req.onsuccess = (ev) => resolve(ev.target.result || []);
+                    req.onerror = () => resolve([]);
+                } catch (e) {
+                    resolve([]);
+                }
+            });
+        }
+
+        function migrateFromLegacyIndexedDBs() {
+            ALL_IDB_NAMES.forEach((legacyName) => {
+                const req = indexedDB.open(legacyName);
+                req.onsuccess = async (ev) => {
+                    const legDb = ev.target.result;
+                    const legStudents = await readStoreFromDb(legDb, "students");
+                    const legOwned = await readStoreFromDb(legDb, "owned_records");
+                    if (legStudents.length > 0) {
+                        studentsList = mergeStudentArrays(studentsList, legStudents);
+                        persistStudentsToLocalStorage(studentsList);
+                        legStudents.forEach(st => writeStudentToIndexedDB(st));
+                        if (isInsideRoom) renderSectionRoomTable();
+                    }
+                    if (legOwned.length > 0) {
+                        legOwned.forEach(o => markStudentAsOwned(o.id));
+                    }
+                    legDb.close();
+                };
+            });
+        }
+
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V21", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V23", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1928,7 +2512,7 @@
                     database.createObjectStore("meta", { keyPath: "key" });
                 }
             };
-            req.onsuccess = (e) => {
+            req.onsuccess = async (e) => {
                 localDb = e.target.result;
 
                 try {
@@ -1939,49 +2523,35 @@
                         if (metaRec && metaRec.value && (metaRec.updatedAt || 0) >= lsUpdatedAt) {
                             adminSecret = String(metaRec.value).trim();
                             secretUpdatedAt = Number(metaRec.updatedAt || 0);
-                            localStorage.setItem(STORAGE_SECRET_KEY, adminSecret);
+                            ALL_SECRET_KEYS.forEach(k => localStorage.setItem(k, adminSecret));
                             localStorage.setItem(STORAGE_SECRET_UPDATED_AT_KEY, String(secretUpdatedAt));
+                        }
+                    };
+                    metaTx.objectStore("meta").get("principalPhone").onsuccess = (pev) => {
+                        const pRec = pev.target.result;
+                        const lsPUpdated = Number(localStorage.getItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
+                        if (pRec && pRec.value && (pRec.updatedAt || 0) >= lsPUpdated) {
+                            principalPhone = String(pRec.value).trim();
+                            principalUpdatedAt = Number(pRec.updatedAt || 0);
+                            ALL_PRINCIPAL_PHONE_KEYS.forEach(k => localStorage.setItem(k, principalPhone));
+                            localStorage.setItem(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(principalUpdatedAt));
                         }
                     };
                 } catch (err) {}
 
-                const tx = localDb.transaction("owned_records", "readonly");
-                tx.objectStore("owned_records").getAll().onsuccess = (ev) => {
-                    const savedOwned = (ev.target.result || []).map(item => item.id);
-                    ownedStudentIds = Array.from(new Set([...ownedStudentIds, ...savedOwned]));
-                    try {
-                        localStorage.setItem(STORAGE_OWNED_IDS_KEY, JSON.stringify(ownedStudentIds));
-                    } catch (err) {}
-                    if (!useCloud) {
-                        loadLocalList();
-                    } else if (isInsideRoom) {
-                        renderSectionRoomTable();
-                    }
-                };
-            };
-        }
+                const savedOwned = await readStoreFromDb(localDb, "owned_records");
+                const ownedIdsFromDb = savedOwned.map(item => item.id);
+                ownedStudentIds = Array.from(new Set([...ownedStudentIds, ...ownedIdsFromDb]));
+                try {
+                    ALL_OWNED_KEYS.forEach(k => localStorage.setItem(k, JSON.stringify(ownedStudentIds)));
+                } catch (err) {}
 
-        function loadLocalList() {
-            const lsList = loadStudentsFromLocalStorage();
-            if (!localDb) {
-                studentsList = lsList;
-                if (isInsideRoom) renderSectionRoomTable();
-                return;
-            }
-            const tx = localDb.transaction("students", "readonly");
-            tx.objectStore("students").getAll().onsuccess = (e) => {
-                const idbList = e.target.result || [];
-                const mergedMap = new Map();
-                lsList.forEach(item => mergedMap.set(item.id, item));
-                idbList.forEach(item => {
-                    const prev = mergedMap.get(item.id);
-                    if (!prev || (item.updatedAt || 0) >= (prev.updatedAt || 0)) {
-                        mergedMap.set(item.id, item);
-                    }
-                });
-                studentsList = Array.from(mergedMap.values()).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+                const idbStudents = await readStoreFromDb(localDb, "students");
+                studentsList = mergeStudentArrays(studentsList, idbStudents);
                 persistStudentsToLocalStorage(studentsList);
                 if (isInsideRoom) renderSectionRoomTable();
+
+                migrateFromLegacyIndexedDBs();
             };
         }
 
@@ -2109,7 +2679,8 @@
             return lowerTerm
                 ? sectionRows.filter(s =>
                     (s.name && String(s.name).toLowerCase().includes(lowerTerm)) ||
-                    (s.mother && String(s.mother).toLowerCase().includes(lowerTerm))
+                    (s.mother && String(s.mother).toLowerCase().includes(lowerTerm)) ||
+                    (s.guardianPhone && String(s.guardianPhone).toLowerCase().includes(lowerTerm))
                 )
                 : sectionRows;
         }
@@ -2148,8 +2719,8 @@
             const tbody = document.getElementById("roomTableBody");
             if (filtered.length === 0) {
                 tbody.innerHTML = lowerTerm
-                    ? `<tr><td colspan="7" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب باسم (${searchTerm}) في هذه الشعبة</td></tr>`
-                    : `<tr><td colspan="7" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
+                    ? `<tr><td colspan="8" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب مطابق للبحث (${searchTerm}) في هذه الشعبة</td></tr>`
+                    : `<tr><td colspan="8" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
                 return;
             }
 
@@ -2163,6 +2734,7 @@
                 const editBtnHtml = `<button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>`;
                 const changePinBtnHtml = `<button type="button" class="mini-act-btn mini-pin-change" onclick="startChangeStudentPin('${st.id}')">🔑 تغيير رمز الطالب</button>`;
                 const adminEditBtnHtml = `<button type="button" class="mini-act-btn mini-admin-edit" onclick="startAdminEditStudent('${st.id}')">🛡️ تعديل (أدمن)</button>`;
+                const notifyBtnHtml = `<button type="button" class="mini-act-btn mini-notify" onclick="startNotifyGuardian('${st.id}')">📩 تبليغ</button>`;
                 const deleteBtnHtml = isAdminLoggedIn
                     ? `<button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>`
                     : "";
@@ -2174,6 +2746,8 @@
                     ? `<span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span>${mineBadge}`
                     : `<span>${highlightText(st.name, searchTerm)}</span>`;
 
+                const phoneDisplay = st.guardianPhone ? highlightText(st.guardianPhone, searchTerm) : "—";
+
                 return `
                     <tr>
                         <td>${idx + 1}</td>
@@ -2182,18 +2756,238 @@
                         <td>${st.section}</td>
                         <td dir="ltr">${st.dob}</td>
                         <td>${highlightText(st.mother, searchTerm)}</td>
+                        <td dir="ltr">${phoneDisplay}</td>
                         <td>
                             <div class="cell-actions">
                                 ${previewBtnHtml}
                                 ${editBtnHtml}
                                 ${changePinBtnHtml}
                                 ${adminEditBtnHtml}
+                                ${notifyBtnHtml}
                                 ${deleteBtnHtml}
                             </div>
                         </td>
                     </tr>
                 `;
             }).join("");
+        };
+
+        function openNotifyComposerForStudent(st) {
+            activeNotifyStudent = st;
+            document.getElementById("notifyStudentMeta").innerText = `الطالب: ${st.name} (${st.grade} - شعبة ${st.section})`;
+            document.getElementById("notifyPrincipalMeta").innerText = `مرسلة من: إدارة ثانوية المتفوقين الثانية للبنين - الأنبار`;
+            document.getElementById("notifyGuardianPhoneInput").value = st.guardianPhone || "";
+            document.getElementById("notifyMessageTextarea").value =
+                `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${st.name}) المحترم.\nيرجى مراجعة إدارة ثانوية المتفوقين الثانية للبنين - الأنبار بخصوص أمور دراسية مهمة.\nمع فائق الاحترام.`;
+            const errBox = document.getElementById("notifyErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            document.getElementById("whatsappNotifyModalLayer").style.display = "flex";
+            setTimeout(() => document.getElementById("notifyMessageTextarea").focus(), 60);
+        }
+
+        window.startNotifyGuardian = function (id) {
+            const st = studentsList.find(s => s.id === id);
+            if (!st) return;
+            requestAdminPinForAction({ type: "notifyGuardian", studentId: id }, `تبليغ ولي أمر الطالب: ${st.name}`);
+        };
+
+        window.applyNotifyTemplate = function (kind) {
+            if (!activeNotifyStudent) return;
+            const name = activeNotifyStudent.name;
+            const gradeSec = `${activeNotifyStudent.grade} - شعبة (${activeNotifyStudent.section})`;
+            const ta = document.getElementById("notifyMessageTextarea");
+            if (kind === "absence") {
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${name} - ${gradeSec}) المحترم.\nنود إعلامكم بغياب الطالب عن الدوام الرسمي في ثانوية المتفوقين الثانية للبنين - الأنبار، نرجو متابعة الأمر وإبلاغ الإدارة بالأسباب.`;
+            } else if (kind === "meeting") {
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${name} - ${gradeSec}) المحترم.\nتدعوكم إدارة ثانوية المتفوقين الثانية للبنين - الأنبار إلى مراجعة المدرسة في أقرب وقت ممكن.`;
+            } else if (kind === "excellence") {
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي أمر الطالب (${name} - ${gradeSec}) المحترم.\nتتقدم إدارة ثانوية المتفوقين الثانية للبنين - الأنبار بالشكر والتقدير لمتابعتكم وحرصكم على تفوق الطالب.`;
+            }
+        };
+
+        window.sendWhatsappNotification = function () {
+            if (!activeNotifyStudent) return;
+            const rawGuardian = document.getElementById("notifyGuardianPhoneInput").value.trim();
+            const msgBody = document.getElementById("notifyMessageTextarea").value.trim();
+            const errBox = document.getElementById("notifyErrorBox");
+
+            const waNumber = normalizePhoneToWhatsapp(rawGuardian);
+            if (!waNumber || waNumber.length < 9) {
+                errBox.innerText = "⚠️ يرجى إدخال رقم واتساب صحيح لولي الأمر.";
+                errBox.style.display = "block";
+                return;
+            }
+            if (!msgBody) {
+                errBox.innerText = "⚠️ يرجى كتابة نص الرسالة قبل الإرسال.";
+                errBox.style.display = "block";
+                return;
+            }
+
+            const fullText = buildPrincipalMessage("", msgBody);
+            const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(fullText)}`;
+            window.open(waUrl, "_blank", "noopener,noreferrer");
+            closeWhatsappNotifyModal();
+        };
+
+        window.closeWhatsappNotifyModal = function () {
+            activeNotifyStudent = null;
+            const errBox = document.getElementById("notifyErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            hideModal("whatsappNotifyModalLayer");
+        };
+
+        function openBulkNotifyModal() {
+            if (!selectedGrade || !selectedSection) return;
+            const rows = getAllSectionStudents(selectedGrade, selectedSection);
+            document.getElementById("bulkSectionMeta").innerText = `${selectedGrade} - شعبة (${selectedSection}) | إجمالي الطلاب: ${rows.length}`;
+            const errBox = document.getElementById("bulkErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+
+            const checklist = document.getElementById("bulkStudentsChecklist");
+            if (rows.length === 0) {
+                checklist.innerHTML = `<div style="text-align:center;color:#64748b;padding:12px;">لا يوجد طلاب في هذه الشعبة.</div>`;
+            } else {
+                checklist.innerHTML = rows.map(st => {
+                    const wa = normalizePhoneToWhatsapp(st.guardianPhone);
+                    const hasPhone = Boolean(wa && wa.length >= 9);
+                    return `
+                        <div class="bulk-student-row">
+                            <label>
+                                <input type="checkbox" class="bulk-student-cb" value="${st.id}" ${hasPhone ? "checked" : ""}>
+                                <span>${st.name}</span>
+                            </label>
+                            <span class="bulk-phone-tag ${hasPhone ? "bulk-phone-ok" : "bulk-phone-missing"}" dir="ltr">
+                                ${hasPhone ? (st.guardianPhone || wa) : "بدون رقم"}
+                            </span>
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            document.getElementById("bulkMessageTextarea").value =
+                `السلام عليكم ورحمة الله وبركاته، ولي الأمر المحترم.\nنود إبلاغكم بمستجدات الدوام والمتابعة الدراسية في ثانوية المتفوقين الثانية للبنين - الأنبار.`;
+
+            resetBulkQueueToSelection();
+            document.getElementById("bulkWhatsappModalLayer").style.display = "flex";
+        }
+
+        window.startBulkNotifySection = function () {
+            if (!selectedGrade || !selectedSection) return;
+            requestAdminPinForAction({ type: "bulkNotify" }, `تبليغ جماعي - ${selectedGrade} (${selectedSection})`);
+        };
+
+        window.toggleAllBulkSelection = function (checked) {
+            document.querySelectorAll(".bulk-student-cb").forEach(cb => {
+                cb.checked = Boolean(checked);
+            });
+        };
+
+        window.applyBulkTemplate = function (kind) {
+            const gradeSec = `${selectedGrade || ""} - شعبة (${selectedSection || ""})`;
+            const ta = document.getElementById("bulkMessageTextarea");
+            if (kind === "absence") {
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي الأمر المحترم.\nنود إعلامكم بغياب الطالب اليوم عن الدوام الرسمي في (${gradeSec}) بثانوية المتفوقين الثانية للبنين - الأنبار.`;
+            } else if (kind === "meeting") {
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي الأمر المحترم.\nتدعوكم إدارة ثانوية المتفوقين الثانية للبنين - الأنبار إلى اجتماع أولياء الأمور لطلبة (${gradeSec}).`;
+            } else if (kind === "exam") {
+                ta.value = `السلام عليكم ورحمة الله وبركاته، ولي الأمر المحترم.\nنذكركم بقرب موعد الامتحانات لطلبة (${gradeSec}) في ثانوية المتفوقين الثانية للبنين - الأنبار، نرجو متابعة استعداد الطالب.`;
+            }
+        };
+
+        function updateBulkQueueBanner() {
+            const banner = document.getElementById("bulkQueueStatusBanner");
+            if (bulkQueueIndex >= bulkQueue.length) {
+                banner.innerText = `✅ تم الانتهاء من قائمة التبليغ الجماعي (${bulkQueue.length} طالب).`;
+                document.getElementById("bulkSendNextBtn").style.display = "none";
+                return;
+            }
+            const item = bulkQueue[bulkQueueIndex];
+            banner.innerText = `الطالب (${bulkQueueIndex + 1} من ${bulkQueue.length}): ${item.student.name} | الرقم: ${item.student.guardianPhone || item.waNumber}`;
+            document.getElementById("bulkSendNextBtn").style.display = "inline-flex";
+        }
+
+        window.beginBulkSendQueue = function () {
+            const errBox = document.getElementById("bulkErrorBox");
+            errBox.style.display = "none";
+            const msgBody = document.getElementById("bulkMessageTextarea").value.trim();
+            if (!msgBody) {
+                errBox.innerText = "⚠️ يرجى كتابة نص الرسالة الموحدة أولاً.";
+                errBox.style.display = "block";
+                return;
+            }
+
+            const selectedIds = Array.from(document.querySelectorAll(".bulk-student-cb:checked")).map(cb => cb.value);
+            if (selectedIds.length === 0) {
+                errBox.innerText = "⚠️ يرجى اختيار طالب واحد على الأقل.";
+                errBox.style.display = "block";
+                return;
+            }
+
+            const queueItems = [];
+            const skippedNames = [];
+            selectedIds.forEach(id => {
+                const st = studentsList.find(s => s.id === id);
+                if (!st) return;
+                const wa = normalizePhoneToWhatsapp(st.guardianPhone);
+                if (wa && wa.length >= 9) {
+                    queueItems.push({ student: st, waNumber: wa, body: msgBody });
+                } else {
+                    skippedNames.push(st.name);
+                }
+            });
+
+            if (queueItems.length === 0) {
+                errBox.innerText = "⚠️ لا يوجد رقم واتساب صالح لأي من الطلاب المحددين.";
+                errBox.style.display = "block";
+                return;
+            }
+
+            if (skippedNames.length > 0) {
+                errBox.innerText = `ℹ️ تم تجاوز (${skippedNames.length}) طالب لعدم توفر رقم صالح: ${skippedNames.join("، ")}`;
+                errBox.style.display = "block";
+            }
+
+            bulkQueue = queueItems;
+            bulkQueueIndex = 0;
+            document.getElementById("bulkSelectionStage").style.display = "none";
+            document.getElementById("bulkQueueControlStage").style.display = "block";
+            document.getElementById("bulkQueueStatusBanner").style.display = "block";
+            updateBulkQueueBanner();
+        };
+
+        window.sendCurrentBulkQueueItem = function () {
+            if (bulkQueueIndex >= bulkQueue.length) return;
+            const current = bulkQueue[bulkQueueIndex];
+            const fullText = buildPrincipalMessage(current.student.name, current.body);
+            const waUrl = `https://wa.me/${current.waNumber}?text=${encodeURIComponent(fullText)}`;
+            window.open(waUrl, "_blank", "noopener,noreferrer");
+            bulkQueueIndex += 1;
+            updateBulkQueueBanner();
+        };
+
+        window.skipCurrentBulkQueueItem = function () {
+            if (bulkQueueIndex >= bulkQueue.length) return;
+            bulkQueueIndex += 1;
+            updateBulkQueueBanner();
+        };
+
+        window.resetBulkQueueToSelection = function () {
+            bulkQueue = [];
+            bulkQueueIndex = 0;
+            document.getElementById("bulkSelectionStage").style.display = "block";
+            document.getElementById("bulkQueueControlStage").style.display = "none";
+            document.getElementById("bulkQueueStatusBanner").style.display = "none";
+        };
+
+        window.closeBulkWhatsappModal = function () {
+            resetBulkQueueToSelection();
+            const errBox = document.getElementById("bulkErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+            hideModal("bulkWhatsappModalLayer");
         };
 
         function executeSaveFullSectionTable() {
@@ -2269,6 +3063,7 @@
                     <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;">${r.section}</td>
                     <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;" dir="ltr">${r.dob}</td>
                     <td style="border:1px solid #0b2e5e;padding:8px;">${r.mother}</td>
+                    <td style="border:1px solid #0b2e5e;padding:8px;text-align:center;" dir="ltr">${r.guardianPhone || "—"}</td>
                 </tr>
             `).join("");
 
@@ -2288,6 +3083,7 @@
                             <th style="border:1px solid #0b2e5e;padding:9px;">الشعبة</th>
                             <th style="border:1px solid #0b2e5e;padding:9px;">المواليد</th>
                             <th style="border:1px solid #0b2e5e;padding:9px;">اسم الام الثلاثي</th>
+                            <th style="border:1px solid #0b2e5e;padding:9px;">رقم ولي الأمر</th>
                         </tr>
                     </thead>
                     <tbody>${bodyRows}</tbody>
@@ -2321,6 +3117,7 @@
                     <td style="border:1px solid #000;padding:7px;text-align:center;">${r.section}</td>
                     <td style="border:1px solid #000;padding:7px;text-align:center;">${r.dob}</td>
                     <td style="border:1px solid #000;padding:7px;">${r.mother}</td>
+                    <td style="border:1px solid #000;padding:7px;text-align:center;">${r.guardianPhone || "—"}</td>
                 </tr>
             `).join("");
 
@@ -2339,6 +3136,7 @@
                                 <th style="border:1px solid #000;padding:8px;">الشعبة</th>
                                 <th style="border:1px solid #000;padding:8px;">المواليد</th>
                                 <th style="border:1px solid #000;padding:8px;">اسم الام الثلاثي</th>
+                                <th style="border:1px solid #000;padding:8px;">رقم ولي الأمر</th>
                             </tr>
                         </thead>
                         <tbody>${bodyRows}</tbody>
@@ -2416,6 +3214,7 @@
             const month = document.getElementById("monthField").value;
             const year = document.getElementById("yearField").value;
             const mother = document.getElementById("motherField").value.trim();
+            const guardianPhone = document.getElementById("guardianPhoneField").value.trim();
             const enteredPin = document.getElementById("studentPinField").value.trim();
             const finalPin = enteredPin || (existing && existing.editPin) || generateStudentPin();
 
@@ -2425,6 +3224,7 @@
                 name, grade, section, day, month, year,
                 dob: dobFormatted,
                 mother,
+                guardianPhone,
                 editPin: String(finalPin).trim(),
                 photo: currentPhotoBase64 || (existing ? existing.photo : defaultAvatar),
                 createdAt: existing ? existing.createdAt : Date.now()
@@ -2437,7 +3237,7 @@
 
             if (!editId) {
                 markStudentAsOwned(savedRec.id);
-                alert("✅ تم حفظ بيانات الطالب بنجاح.");
+                alert("✅ تم حفظ بيانات الطالب ورقم ولي الأمر بنجاح.");
             } else {
                 alert("✅ تم حفظ التعديلات والرمز بنجاح.");
             }
@@ -2449,6 +3249,7 @@
         window.resetStudentFormState = function () {
             document.getElementById("studentForm").reset();
             document.getElementById("editStudentIdField").value = "";
+            document.getElementById("guardianPhoneField").value = "";
             document.getElementById("studentPinField").value = "";
             currentPhotoBase64 = "";
             document.getElementById("photoPreviewHolder").innerHTML = `<img src="${defaultAvatar}" alt="معاينة خلفية بيضاء">`;
@@ -2473,6 +3274,7 @@
             document.getElementById("monthField").value = st.month;
             document.getElementById("yearField").value = st.year;
             document.getElementById("motherField").value = st.mother;
+            document.getElementById("guardianPhoneField").value = st.guardianPhone || "";
             document.getElementById("studentPinField").value = "";
             currentPhotoBase64 = st.photo || "";
             document.getElementById("photoPreviewHolder").innerHTML = `<img src="${st.photo || defaultAvatar}" alt="صورة الطالب">`;
@@ -2627,6 +3429,11 @@
             if (actionObj.type === "edit") {
                 const st = studentsList.find(s => s.id === actionObj.studentId);
                 if (st) openEditFormForStudent(st, true);
+            } else if (actionObj.type === "notifyGuardian") {
+                const st = studentsList.find(s => s.id === actionObj.studentId);
+                if (st) openNotifyComposerForStudent(st);
+            } else if (actionObj.type === "bulkNotify") {
+                openBulkNotifyModal();
             } else if (actionObj.type === "deleteAll") {
                 executeDeleteAllInActiveSection();
             } else if (actionObj.type === "saveFull") {
@@ -2743,6 +3550,7 @@
             document.getElementById("idCardSection").innerText = st.section;
             document.getElementById("idCardDob").innerText = st.dob;
             document.getElementById("idCardMother").innerText = st.mother;
+            document.getElementById("idCardGuardianPhone").innerText = st.guardianPhone || "—";
             document.getElementById("idCardModalLayer").style.display = "flex";
         };
 
@@ -2815,7 +3623,7 @@
                 document.getElementById("adminDialogHeading").innerText = "🔐 قائمة الأدمن";
                 document.getElementById("adminMenuView").style.display = "block";
             } else if (mode === "change") {
-                document.getElementById("adminDialogHeading").innerText = "⚙️ تغيير رمز الأدمن";
+                document.getElementById("adminDialogHeading").innerText = "🔑 تغيير رمز الأدمن";
                 document.getElementById("adminChangeView").style.display = "block";
             } else {
                 document.getElementById("adminDialogHeading").innerText = "🔐 دخول الأدمن";
@@ -2862,11 +3670,11 @@
                 return;
             }
             if (!nextCode) {
-                alert("يرجى إدخال الرمز الجديد.");
+                alert("⚠️ يرجى إدخال الرمز الجديد.");
                 return;
             }
             await persistAdminSecret(nextCode);
-            alert("✅ تم تغيير وحفظ رمز الأدمن بنجاح.");
+            alert("✅ تم تغيير رمز الأدمن وحفظه بنجاح.");
             hideModal("adminDialogLayer");
         };
 
