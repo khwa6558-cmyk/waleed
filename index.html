@@ -246,12 +246,21 @@
             background: #081c3a;
         }
 
+        .admin-login-box-btn.admin-active-badge {
+            border-color: #4ade80;
+            background: #052e16;
+        }
+
         .admin-login-tag {
             background: linear-gradient(180deg, #3b82f6, #1d4ed8);
             color: #ffffff;
             padding: 1px 7px;
             border-radius: 4px;
             font-size: 0.8rem;
+        }
+
+        .admin-login-box-btn.admin-active-badge .admin-login-tag {
+            background: linear-gradient(180deg, #16a34a, #15803d);
         }
 
         /* ================= WELCOME BANNER ================= */
@@ -319,12 +328,12 @@
 
         .form-horizontal-grid {
             display: grid;
-            grid-template-columns: 1.55fr 1.05fr 1.05fr 1.85fr 1.35fr 128px;
-            gap: 12px;
+            grid-template-columns: 1.45fr 1fr 1fr 1.65fr 1.25fr 1fr 124px;
+            gap: 10px;
             align-items: start;
         }
 
-        @media (max-width: 1180px) {
+        @media (max-width: 1260px) {
             .form-horizontal-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -658,6 +667,17 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 800;
+        }
+
+        .mine-tag-pill {
+            background: rgba(22, 163, 74, 0.14);
+            border: 1px solid #86efac;
+            color: #15803d;
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-right: 6px;
         }
 
         .room-nav-actions {
@@ -1220,9 +1240,9 @@
                 </button>
             </div>
 
-            <button type="button" class="admin-login-box-btn" onclick="openAdminDialog('auth')">
-                <span class="admin-login-tag">دخول</span>
-                <span>دخول الادمن</span>
+            <button type="button" id="adminStatusBtn" class="admin-login-box-btn" onclick="openAdminDialog('auth')">
+                <span class="admin-login-tag" id="adminStatusTag">دخول</span>
+                <span id="adminStatusLabel">دخول الادمن</span>
             </button>
         </div>
     </nav>
@@ -1294,6 +1314,11 @@
                         <div class="input-group-box">
                             <label>👤 اسم الام الثلاثي</label>
                             <input type="text" id="motherField" class="ctrl-field" placeholder="اسم الأم الأب الجد" required>
+                        </div>
+
+                        <div class="input-group-box">
+                            <label>🔑 رمز تعديلي</label>
+                            <input type="text" id="studentPinField" class="ctrl-field" placeholder="اختياري (يُنشأ تلقائياً)" maxlength="20">
                         </div>
 
                         <div class="input-group-box">
@@ -1398,8 +1423,8 @@
                         </button>
                     </div>
 
-                    <button type="button" class="mini-act-btn mini-delete" style="padding: 7px 13px;" onclick="deleteAllInActiveSection()">
-                        🗑️ حذف طلاب الشعبة
+                    <button type="button" id="deleteAllSectionBtn" class="mini-act-btn mini-delete" style="padding: 7px 13px;" onclick="deleteAllInActiveSection()">
+                        🗑️ حذف طلاب الشعبة (أدمن)
                     </button>
                 </div>
             </div>
@@ -1487,12 +1512,15 @@
             </div>
 
             <div id="adminMenuView" style="display: none;">
-                <p style="font-weight: 800; color: #15803d; margin-bottom: 12px;">✅ تم تسجيل دخول الأدمن.</p>
+                <p style="font-weight: 800; color: #15803d; margin-bottom: 12px;">✅ تم تسجيل دخول الأدمن (صلاحية كاملة على جميع الطلبة).</p>
                 <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="toggleLockState()">
                     قفل / فتح المنصة
                 </button>
-                <button type="button" class="btn-back-section" style="width: 100%; justify-content: center;" onclick="showChangeCodeForm()">
+                <button type="button" class="btn-back-section" style="width: 100%; justify-content: center; margin-bottom: 10px;" onclick="showChangeCodeForm()">
                     ⚙️ تغيير رمز الأدمن
+                </button>
+                <button type="button" class="mini-act-btn mini-delete" style="width: 100%; padding: 8px;" onclick="logoutAdminSession()">
+                    تسجيل خروج الأدمن
                 </button>
             </div>
         </div>
@@ -1508,14 +1536,15 @@
         // مطابق تماماً لاسم الشعار المرفوع في المستودع
         const SCHOOL_LOGO_URL = "logo.PNG";
 
-        // اختياري: إعدادات Firebase للمزامنة السحابية بين الأجهزة
+        // إعدادات Firebase للمزامنة السحابية بين الأجهزة (مشروع std-information / تطبيق std-portal)
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDV8xl6gEF6eHvcA8Rut8INisrNuBciZcY",
+            authDomain: "std-information.firebaseapp.com",
+            projectId: "std-information",
+            storageBucket: "std-information.firebasestorage.app",
+            messagingSenderId: "25696034333",
+            appId: "1:25696034333:web:8d919984461f86503c30f4",
+            measurementId: "G-9NTNFXBE94"
         };
 
         const DEFAULT_SECRET_CODE = "وليد";
@@ -1529,12 +1558,16 @@
         ];
         const SECTIONS = ["أ", "ب", "ج"];
 
-        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v18";
-        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v18";
-        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v18";
-        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v18";
+        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v20";
+        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v20";
+        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v20";
+        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v20";
+        const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v20";
 
+        let ownedStudentIds = loadOwnedStudentIds();
         let studentsList = loadStudentsFromLocalStorage();
+        let isAdminLoggedIn = false;
+
         let selectedGrade = null;
         let selectedSection = null;
         let isInsideRoom = false;
@@ -1557,6 +1590,71 @@
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
 
+        function generateStudentPin() {
+            return String(Math.floor(1000 + Math.random() * 9000));
+        }
+
+        function loadOwnedStudentIds() {
+            try {
+                const raw = localStorage.getItem(STORAGE_OWNED_IDS_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function markStudentAsOwned(id, dbRef) {
+            if (!id) return;
+            if (!ownedStudentIds.includes(id)) {
+                ownedStudentIds.push(id);
+                try {
+                    localStorage.setItem(STORAGE_OWNED_IDS_KEY, JSON.stringify(ownedStudentIds));
+                } catch (e) {}
+            }
+            const targetDb = dbRef || localDb;
+            if (targetDb) {
+                try {
+                    const tx = targetDb.transaction("owned_records", "readwrite");
+                    tx.objectStore("owned_records").put({ id });
+                } catch (e) {}
+            }
+        }
+
+        function isOwnStudentRecord(id) {
+            return ownedStudentIds.includes(id);
+        }
+
+        function canEditStudentRecord(id) {
+            return isAdminLoggedIn || isOwnStudentRecord(id);
+        }
+
+        function canPreviewStudentRecord(id) {
+            return isAdminLoggedIn || isOwnStudentRecord(id);
+        }
+
+        function getAllSectionStudents(grade, section) {
+            return studentsList.filter(s => s.grade === grade && s.section === section);
+        }
+
+        function updateAdminBadgeUI() {
+            const btn = document.getElementById("adminStatusBtn");
+            const tag = document.getElementById("adminStatusTag");
+            const lbl = document.getElementById("adminStatusLabel");
+            const delAllBtn = document.getElementById("deleteAllSectionBtn");
+            if (isAdminLoggedIn) {
+                btn.classList.add("admin-active-badge");
+                tag.innerText = "نشط";
+                lbl.innerText = "وضع الأدمن";
+                if (delAllBtn) delAllBtn.style.display = "inline-flex";
+            } else {
+                btn.classList.remove("admin-active-badge");
+                tag.innerText = "دخول";
+                lbl.innerText = "دخول الادمن";
+                if (delAllBtn) delAllBtn.style.display = "none";
+            }
+        }
+
         function loadStudentsFromLocalStorage() {
             try {
                 const raw = localStorage.getItem(STORAGE_STUDENTS_KEY);
@@ -1578,49 +1676,73 @@
         initDateFields();
         renderGradesShelf();
         applyLockUI();
+        updateAdminBadgeUI();
 
         if (navigator.storage && navigator.storage.persist) {
             try { await navigator.storage.persist(); } catch (e) {}
         }
 
-        if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-            useCloud = true;
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            studentsCol = collection(db, "students");
-            settingsDoc = doc(db, "config", "platform");
+        initIndexedDB();
 
-            onSnapshot(settingsDoc, async (snap) => {
-                if (!snap.exists()) {
-                    await setDoc(settingsDoc, { isLocked: isPlatformLocked, adminCode: adminSecret });
-                } else {
-                    const data = snap.data();
-                    isPlatformLocked = Boolean(data.isLocked);
-                    adminSecret = data.adminCode || DEFAULT_SECRET_CODE;
-                    applyLockUI();
-                }
-            });
+        if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+            try {
+                useCloud = true;
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                studentsCol = collection(db, "students");
+                settingsDoc = doc(db, "config", "platform");
 
-            onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
-                studentsList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                persistStudentsToLocalStorage(studentsList);
-                if (isInsideRoom) renderSectionRoomTable();
-            });
-        } else {
-            initIndexedDB();
+                onSnapshot(settingsDoc, async (snap) => {
+                    try {
+                        if (!snap.exists()) {
+                            await setDoc(settingsDoc, { isLocked: isPlatformLocked, adminCode: adminSecret });
+                        } else {
+                            const data = snap.data();
+                            isPlatformLocked = Boolean(data.isLocked);
+                            adminSecret = data.adminCode || DEFAULT_SECRET_CODE;
+                            localStorage.setItem(STORAGE_LOCKED_KEY, String(isPlatformLocked));
+                            localStorage.setItem(STORAGE_SECRET_KEY, adminSecret);
+                            applyLockUI();
+                        }
+                    } catch (err) {}
+                });
+
+                onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
+                    studentsList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    persistStudentsToLocalStorage(studentsList);
+                    if (isInsideRoom) renderSectionRoomTable();
+                });
+            } catch (e) {
+                useCloud = false;
+            }
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V18", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V20", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
                     database.createObjectStore("students", { keyPath: "id" });
                 }
+                if (!database.objectStoreNames.contains("owned_records")) {
+                    database.createObjectStore("owned_records", { keyPath: "id" });
+                }
             };
             req.onsuccess = (e) => {
                 localDb = e.target.result;
-                loadLocalList();
+                const tx = localDb.transaction("owned_records", "readonly");
+                tx.objectStore("owned_records").getAll().onsuccess = (ev) => {
+                    const savedOwned = (ev.target.result || []).map(item => item.id);
+                    ownedStudentIds = Array.from(new Set([...ownedStudentIds, ...savedOwned]));
+                    try {
+                        localStorage.setItem(STORAGE_OWNED_IDS_KEY, JSON.stringify(ownedStudentIds));
+                    } catch (err) {}
+                    if (!useCloud) {
+                        loadLocalList();
+                    } else if (isInsideRoom) {
+                        renderSectionRoomTable();
+                    }
+                };
             };
         }
 
@@ -1764,7 +1886,7 @@
             if (!selectedGrade || !selectedSection) return [];
             const rawQuery = document.getElementById("roomSearchInput")?.value || "";
             const lowerTerm = rawQuery.trim().toLowerCase();
-            const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            const sectionRows = getAllSectionStudents(selectedGrade, selectedSection);
             return lowerTerm
                 ? sectionRows.filter(s =>
                     (s.name && String(s.name).toLowerCase().includes(lowerTerm)) ||
@@ -1775,6 +1897,8 @@
 
         window.renderSectionRoomTable = function () {
             if (!selectedGrade || !selectedSection) return;
+            updateAdminBadgeUI();
+
             const searchInput = document.getElementById("roomSearchInput");
             const rawQuery = searchInput ? searchInput.value : "";
             const searchTerm = rawQuery.trim();
@@ -1785,7 +1909,7 @@
                 clearBtn.style.display = searchTerm ? "inline-block" : "none";
             }
 
-            const sectionRows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            const sectionRows = getAllSectionStudents(selectedGrade, selectedSection);
             const filtered = getCurrentSectionRows();
 
             document.getElementById("roomHeadingTitle").innerText = `${selectedGrade} - شعبة (${selectedSection})`;
@@ -1795,7 +1919,7 @@
 
             const key = `${selectedGrade}__${selectedSection}`;
             const savedChip = document.getElementById("roomSavedStateChip");
-            if (savedSectionTables[key]) {
+            if (isAdminLoggedIn && savedSectionTables[key]) {
                 savedChip.style.display = "inline-block";
                 savedChip.innerText = `✔️ محفوظ (${savedSectionTables[key].savedAt})`;
             } else {
@@ -1805,34 +1929,55 @@
             const tbody = document.getElementById("roomTableBody");
             if (filtered.length === 0) {
                 tbody.innerHTML = lowerTerm
-                    ? `<tr><td colspan="7" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب مطابق للاسم (${searchTerm}) في هذه الشعبة</td></tr>`
+                    ? `<tr><td colspan="7" style="padding: 26px; color: #dc2626; font-weight: 800;">لا يوجد طالب باسم (${searchTerm}) في هذه الشعبة</td></tr>`
                     : `<tr><td colspan="7" style="padding: 26px; color: #64748b;">لا يوجد طلاب مسجلون في هذه الشعبة حالياً</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filtered.map((st, idx) => `
-                <tr>
-                    <td>${idx + 1}</td>
-                    <td><span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span></td>
-                    <td>${st.grade}</td>
-                    <td>${st.section}</td>
-                    <td dir="ltr">${st.dob}</td>
-                    <td>${highlightText(st.mother, searchTerm)}</td>
-                    <td>
-                        <div class="cell-actions">
-                            <button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>
-                            <button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>
-                            <button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join("");
+            tbody.innerHTML = filtered.map((st, idx) => {
+                const isMine = isOwnStudentRecord(st.id);
+                const canPreview = canPreviewStudentRecord(st.id);
+
+                // يظهر زر التعديل للجميع على السجل ليتمكن صاحب السجل من التعديل عبر جهازه أو عبر رمز التعديل الخاص به، مع رفض أي تعديل لغير صاحبه
+                const previewBtnHtml = canPreview
+                    ? `<button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>`
+                    : "";
+                const editBtnHtml = `<button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>`;
+                const deleteBtnHtml = isAdminLoggedIn
+                    ? `<button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>`
+                    : "";
+                const mineBadge = (!isAdminLoggedIn && isMine)
+                    ? `<span class="mine-tag-pill">سجلي</span>`
+                    : "";
+
+                const nameCellHtml = canPreview
+                    ? `<span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span>${mineBadge}`
+                    : `<span>${highlightText(st.name, searchTerm)}</span>`;
+
+                return `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${nameCellHtml}</td>
+                        <td>${st.grade}</td>
+                        <td>${st.section}</td>
+                        <td dir="ltr">${st.dob}</td>
+                        <td>${highlightText(st.mother, searchTerm)}</td>
+                        <td>
+                            <div class="cell-actions">
+                                ${previewBtnHtml}
+                                ${editBtnHtml}
+                                ${deleteBtnHtml}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
         };
 
         window.saveFullSectionTable = function () {
             if (!selectedGrade || !selectedSection) return;
             persistStudentsToLocalStorage(studentsList);
-            const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
+            const rows = getAllSectionStudents(selectedGrade, selectedSection);
             const key = `${selectedGrade}__${selectedSection}`;
             const nowTime = new Date().toLocaleTimeString("ar-IQ", { hour: "2-digit", minute: "2-digit" });
             savedSectionTables[key] = {
@@ -2022,6 +2167,14 @@
         window.saveStudentEntry = async function (e) {
             e.preventDefault();
             const editId = document.getElementById("editStudentIdField").value;
+            const existing = editId ? studentsList.find(s => s.id === editId) : null;
+
+            if (editId && !canEditStudentRecord(editId)) {
+                alert("⛔ لا يمكنك تعديل معلومات طالب آخر؛ يُسمح لك بالتعديل على معلوماتك الخاصة فقط.");
+                resetStudentFormState();
+                return;
+            }
+
             const name = document.getElementById("nameField").value.trim();
             const grade = document.getElementById("gradeField").value;
             const section = document.getElementById("sectionField").value;
@@ -2029,20 +2182,22 @@
             const month = document.getElementById("monthField").value;
             const year = document.getElementById("yearField").value;
             const mother = document.getElementById("motherField").value.trim();
+            const enteredPin = document.getElementById("studentPinField").value.trim();
+            const finalPin = enteredPin || (existing && existing.editPin) || generateStudentPin();
 
-            const existing = editId ? studentsList.find(s => s.id === editId) : null;
             const dobFormatted = `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
 
             const record = {
                 name, grade, section, day, month, year,
                 dob: dobFormatted,
                 mother,
+                editPin: finalPin,
                 photo: currentPhotoBase64 || (existing ? existing.photo : defaultAvatar),
                 createdAt: existing ? existing.createdAt : Date.now()
             };
 
-            const finalId = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-            const fullRecord = { id: finalId, ...record };
+            let finalId = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+            let fullRecord = { id: finalId, ...record };
 
             if (editId) {
                 studentsList = studentsList.map(s => s.id === editId ? fullRecord : s);
@@ -2052,15 +2207,28 @@
             persistStudentsToLocalStorage(studentsList);
 
             if (useCloud && studentsCol) {
-                if (editId) {
-                    await updateDoc(doc(db, "students", editId), record);
-                } else {
-                    await addDoc(studentsCol, record);
+                try {
+                    if (editId) {
+                        await updateDoc(doc(db, "students", editId), record);
+                    } else {
+                        const docRef = await addDoc(studentsCol, record);
+                        finalId = docRef.id;
+                        fullRecord = { id: finalId, ...record };
+                        studentsList = studentsList.map(s => s.id === fullRecord.id ? fullRecord : s);
+                        persistStudentsToLocalStorage(studentsList);
+                    }
+                } catch (err) {
+                    console.warn("تعذر المزامنة السحابية الفورية، تم الحفظ محلياً:", err);
                 }
             } else if (localDb) {
                 const tx = localDb.transaction("students", "readwrite");
                 tx.objectStore("students").put(fullRecord);
                 await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+            }
+
+            if (!editId) {
+                markStudentAsOwned(finalId);
+                alert(`✅ تم حفظ بيانات الطالب بنجاح.\n🔑 رمز التعديل الخاص بسجلك (احتفظ به للعودة للتعديل بعد مسح بيانات المتصفح): ${finalPin}`);
             }
 
             resetStudentFormState();
@@ -2070,6 +2238,7 @@
         window.resetStudentFormState = function () {
             document.getElementById("studentForm").reset();
             document.getElementById("editStudentIdField").value = "";
+            document.getElementById("studentPinField").value = "";
             currentPhotoBase64 = "";
             document.getElementById("photoPreviewHolder").innerHTML = `<img src="${defaultAvatar}" alt="معاينة خلفية بيضاء">`;
             document.getElementById("studentFormBadge").innerHTML = `<span>👤+</span><span>إضافة طالب جديد</span>`;
@@ -2080,6 +2249,18 @@
         window.startEditStudent = function (id) {
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
+
+            // إذا لم يكن أدمن ولم يكن السجل محفوظاً على المتصفح الحالي، يطلب رمز التعديل الخاص بهذا السجل فقط
+            if (!canEditStudentRecord(id)) {
+                const pinInput = prompt("أدخل رمز التعديل الخاص بهذا السجل (إذا كان السجل خاصاً بك بعد مسح بيانات المتصفح):");
+                if (pinInput === null) return;
+                if (!st.editPin || pinInput.trim() !== String(st.editPin).trim()) {
+                    alert("⛔ رمز التعديل غير صحيح؛ لا يمكنك تعديل معلومات طالب آخر.");
+                    return;
+                }
+                markStudentAsOwned(id);
+            }
+
             setRoomExpandedState(false);
             document.getElementById("editStudentIdField").value = st.id;
             document.getElementById("nameField").value = st.name;
@@ -2089,9 +2270,10 @@
             document.getElementById("monthField").value = st.month;
             document.getElementById("yearField").value = st.year;
             document.getElementById("motherField").value = st.mother;
+            document.getElementById("studentPinField").value = st.editPin || "";
             currentPhotoBase64 = st.photo || "";
             document.getElementById("photoPreviewHolder").innerHTML = `<img src="${st.photo || defaultAvatar}" alt="صورة الطالب">`;
-            document.getElementById("studentFormBadge").innerHTML = `<span>✏️</span><span>تعديل معلومات الطالب</span>`;
+            document.getElementById("studentFormBadge").innerHTML = `<span>✏️</span><span>تعديل معلوماتي</span>`;
             document.getElementById("saveStudentBtn").innerHTML = `<span>💾</span><span>حفظ التعديل</span>`;
             document.getElementById("cancelEditActionBtn").style.display = "inline-block";
 
@@ -2103,6 +2285,10 @@
         };
 
         window.removeStudent = async function (id) {
+            if (!isAdminLoggedIn) {
+                alert("⛔ الحذف متاح للأدمن فقط؛ لا يمكن للطالب حذف السجلات.");
+                return;
+            }
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
             if (!confirm(`هل تريد حذف الطالب (${st.name})؟`)) return;
@@ -2111,7 +2297,9 @@
             persistStudentsToLocalStorage(studentsList);
 
             if (useCloud && studentsCol) {
-                await deleteDoc(doc(db, "students", id));
+                try {
+                    await deleteDoc(doc(db, "students", id));
+                } catch (err) {}
             } else if (localDb) {
                 const tx = localDb.transaction("students", "readwrite");
                 tx.objectStore("students").delete(id);
@@ -2121,6 +2309,10 @@
         };
 
         window.deleteAllInActiveSection = async function () {
+            if (!isAdminLoggedIn) {
+                alert("⛔ حذف طلاب الشعبة متاح للأدمن فقط.");
+                return;
+            }
             if (!selectedGrade || !selectedSection) return;
             const rows = studentsList.filter(s => s.grade === selectedGrade && s.section === selectedSection);
             if (rows.length === 0) {
@@ -2133,9 +2325,11 @@
             persistStudentsToLocalStorage(studentsList);
 
             if (useCloud && studentsCol) {
-                const batch = writeBatch(db);
-                rows.forEach(r => batch.delete(doc(db, "students", r.id)));
-                await batch.commit();
+                try {
+                    const batch = writeBatch(db);
+                    rows.forEach(r => batch.delete(doc(db, "students", r.id)));
+                    await batch.commit();
+                } catch (err) {}
             } else if (localDb) {
                 const tx = localDb.transaction("students", "readwrite");
                 const store = tx.objectStore("students");
@@ -2146,6 +2340,10 @@
         };
 
         window.showStudentCard = function (id) {
+            if (!canPreviewStudentRecord(id)) {
+                alert("⛔ لا يمكنك معاينة بيانات طالب آخر؛ يمكنك معاينة بياناتك الخاصة فقط.");
+                return;
+            }
             const st = studentsList.find(s => s.id === id);
             if (!st) return;
             document.getElementById("idCardStudentPhoto").src = st.photo || defaultAvatar;
@@ -2163,7 +2361,9 @@
             localStorage.setItem(STORAGE_LOCKED_KEY, String(locked));
             applyLockUI();
             if (useCloud && settingsDoc) {
-                await updateDoc(settingsDoc, { isLocked: locked });
+                try {
+                    await updateDoc(settingsDoc, { isLocked: locked });
+                } catch (err) {}
             }
         }
 
@@ -2184,10 +2384,17 @@
 
         window.promptLockPlatform = async function () {
             if (isPlatformLocked) return;
+            if (isAdminLoggedIn) {
+                await saveLockState(true);
+                return;
+            }
             const code = prompt("أدخل رمز الأدمن لقفل المنصة:");
             if (code === null) return;
             if (code.trim() === adminSecret) {
+                isAdminLoggedIn = true;
+                updateAdminBadgeUI();
                 await saveLockState(true);
+                if (isInsideRoom) renderSectionRoomTable();
             } else {
                 alert("❌ رمز الأدمن غير صحيح.");
             }
@@ -2196,8 +2403,11 @@
         window.unlockAction = async function () {
             const code = document.getElementById("unlockCodeField").value.trim();
             if (code === adminSecret) {
+                isAdminLoggedIn = true;
+                updateAdminBadgeUI();
                 document.getElementById("unlockCodeField").value = "";
                 await saveLockState(false);
+                if (isInsideRoom) renderSectionRoomTable();
             } else {
                 alert("❌ رمز الأدمن غير صحيح.");
             }
@@ -2211,7 +2421,10 @@
             document.getElementById("adminChangeView").style.display = "none";
             document.getElementById("adminMenuView").style.display = "none";
 
-            if (mode === "change") {
+            if (isAdminLoggedIn && mode === "auth") {
+                document.getElementById("adminDialogHeading").innerText = "🔐 قائمة الأدمن";
+                document.getElementById("adminMenuView").style.display = "block";
+            } else if (mode === "change") {
                 document.getElementById("adminDialogHeading").innerText = "⚙️ تغيير رمز الأدمن";
                 document.getElementById("adminChangeView").style.display = "block";
             } else {
@@ -2224,11 +2437,21 @@
         window.confirmAdminLogin = function () {
             const code = document.getElementById("adminAuthInput").value.trim();
             if (code === adminSecret) {
+                isAdminLoggedIn = true;
+                updateAdminBadgeUI();
                 document.getElementById("adminAuthView").style.display = "none";
                 document.getElementById("adminMenuView").style.display = "block";
+                if (isInsideRoom) renderSectionRoomTable();
             } else {
                 alert("❌ رمز الأدمن غير صحيح.");
             }
+        };
+
+        window.logoutAdminSession = function () {
+            isAdminLoggedIn = false;
+            updateAdminBadgeUI();
+            hideModal("adminDialogLayer");
+            if (isInsideRoom) renderSectionRoomTable();
         };
 
         window.showChangeCodeForm = function () {
@@ -2255,7 +2478,9 @@
             adminSecret = nextCode;
             localStorage.setItem(STORAGE_SECRET_KEY, nextCode);
             if (useCloud && settingsDoc) {
-                await updateDoc(settingsDoc, { adminCode: nextCode });
+                try {
+                    await updateDoc(settingsDoc, { adminCode: nextCode });
+                } catch (err) {}
             }
             alert("✅ تم تغيير رمز الأدمن بنجاح.");
             hideModal("adminDialogLayer");
