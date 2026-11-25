@@ -1154,17 +1154,6 @@
             color: #b91c1c;
         }
 
-        .bulk-step-banner {
-            background: #eff6ff;
-            border: 1.5px solid #93c5fd;
-            border-radius: 10px;
-            padding: 9px 12px;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--navy-800);
-        }
-
         .status-feedback-banner {
             display: none;
             border-radius: 9px;
@@ -1578,7 +1567,7 @@
                     </button>
                     <button type="button" class="btn-close-section" onclick="closeSectionRoom()">
                         <span>✕</span>
-                        <span>إغلاق</span>
+                        <span>خروج</span>
                     </button>
                 </div>
             </div>
@@ -1775,7 +1764,7 @@
         </div>
     </div>
 
-    <!-- Bulk WhatsApp Notification Modal -->
+    <!-- Bulk WhatsApp Notification Modal (Direct Batch Open) -->
     <div id="bulkWhatsappModalLayer" class="modal-layer" onclick="if(event.target===this) closeBulkWhatsappModal()">
         <div class="dialog-card" style="border-top-color: #16a34a; max-width: 540px;">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeBulkWhatsappModal()">✕</button>
@@ -1784,54 +1773,35 @@
 
             <div id="bulkFeedbackBox" class="status-feedback-banner"></div>
 
-            <div id="bulkQueueStatusBanner" class="bulk-step-banner" style="display: none;"></div>
-
-            <div id="bulkSelectionStage">
-                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
-                    <span style="font-size: 0.86rem; font-weight: 800; color: var(--navy-800);">👥 اختر الطلاب المراد تبليغ أولياء أمورهم:</span>
-                    <div style="display: flex; gap: 6px;">
-                        <button type="button" class="template-chip-btn" onclick="toggleAllBulkSelection(true)">تحديد الكل</button>
-                        <button type="button" class="template-chip-btn" onclick="toggleAllBulkSelection(false)">إلغاء الكل</button>
-                    </div>
-                </div>
-
-                <div id="bulkStudentsChecklist" class="bulk-checklist-box"></div>
-
-                <div class="template-chips-row">
-                    <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('absence')">غياب اليوم</button>
-                    <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('meeting')">اجتماع أولياء الأمور</button>
-                    <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('exam')">تنبيه امتحانات</button>
-                </div>
-
-                <div class="input-group-box" style="margin-bottom: 14px;">
-                    <label>✍️ نص الرسالة الموحدة (بدون رقم المدير):</label>
-                    <textarea id="bulkMessageTextarea" class="ctrl-field" placeholder="اكتب نص التبليغ الجماعي هنا..."></textarea>
-                </div>
-
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="beginBulkSendQueue()">
-                        <span>🚀</span>
-                        <span>بدء الإرسال المتسلسل</span>
-                    </button>
-                    <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeBulkWhatsappModal()">
-                        إغلاق
-                    </button>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                <span style="font-size: 0.86rem; font-weight: 800; color: var(--navy-800);">👥 اختر الطلاب المراد تبليغ أولياء أمورهم:</span>
+                <div style="display: flex; gap: 6px;">
+                    <button type="button" class="template-chip-btn" onclick="toggleAllBulkSelection(true)">تحديد الكل</button>
+                    <button type="button" class="template-chip-btn" onclick="toggleAllBulkSelection(false)">إلغاء الكل</button>
                 </div>
             </div>
 
-            <div id="bulkQueueControlStage" style="display: none;">
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" id="bulkSendNextBtn" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="sendCurrentBulkQueueItem()">
-                        <span>📤</span>
-                        <span>إرسال للطالب الحالي</span>
-                    </button>
-                    <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="skipCurrentBulkQueueItem()">
-                        تخطي
-                    </button>
-                    <button type="button" class="mini-act-btn mini-delete" style="padding: 8px 14px;" onclick="resetBulkQueueToSelection()">
-                        رجوع للقائمة
-                    </button>
-                </div>
+            <div id="bulkStudentsChecklist" class="bulk-checklist-box"></div>
+
+            <div class="template-chips-row">
+                <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('absence')">غياب اليوم</button>
+                <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('meeting')">اجتماع أولياء الأمور</button>
+                <button type="button" class="template-chip-btn" onclick="applyBulkTemplate('exam')">تنبيه امتحانات</button>
+            </div>
+
+            <div class="input-group-box" style="margin-bottom: 14px;">
+                <label>✍️ نص الرسالة الموحدة (بدون رقم المدير):</label>
+                <textarea id="bulkMessageTextarea" class="ctrl-field" placeholder="اكتب نص التبليغ الجماعي هنا..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" id="bulkOpenAllBtn" class="btn-whatsapp-send" style="flex: 1; justify-content: center;" onclick="openAllSelectedWhatsappNow()">
+                    <span>🚀</span>
+                    <span>فتح روابط واتساب للمحددين</span>
+                </button>
+                <button type="button" class="btn-clear-search" style="padding: 8px 14px;" onclick="closeBulkWhatsappModal()">
+                    إغلاق
+                </button>
             </div>
         </div>
     </div>
@@ -1947,7 +1917,9 @@
             "mutafawiqeen_students_list_v23",
             "mutafawiqeen_students_list_v22",
             "mutafawiqeen_students_list_v21",
-            "mutafawiqeen_students_list_v20"
+            "mutafawiqeen_students_list_v20",
+            "mutafawiqeen_students_list_v19",
+            "mutafawiqeen_students_list_v18"
         ];
         const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v23";
         const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v23";
@@ -1955,7 +1927,8 @@
             "mutafawiqeen_secret_v23",
             "mutafawiqeen_secret_v22",
             "mutafawiqeen_secret_v21",
-            "mutafawiqeen_secret_v20"
+            "mutafawiqeen_secret_v20",
+            "mutafawiqeen_secret_v19"
         ];
         const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v23";
         const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v23";
@@ -1964,7 +1937,8 @@
         const ALL_PRINCIPAL_PHONE_KEYS = [
             "mutafawiqeen_principal_override_v23",
             "mutafawiqeen_principal_phone_v23",
-            "mutafawiqeen_principal_phone_v22"
+            "mutafawiqeen_principal_phone_v22",
+            "mutafawiqeen_principal_phone_v21"
         ];
         const STORAGE_PRINCIPAL_UPDATED_AT_KEY = "mutafawiqeen_principal_updated_at_v23";
         const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v23";
@@ -1977,7 +1951,8 @@
         const ALL_IDB_NAMES = [
             "MutafawiqeenSchoolDB_V22",
             "MutafawiqeenSchoolDB_V21",
-            "MutafawiqeenSchoolDB_V20"
+            "MutafawiqeenSchoolDB_V20",
+            "MutafawiqeenSchoolDB_V19"
         ];
 
         let isAdminSession = false;
@@ -1987,8 +1962,6 @@
         let pendingPinMode = "edit";
         let pendingAdminAction = null;
         let activeNotifyStudent = null;
-        let bulkQueue = [];
-        let bulkQueueIndex = 0;
 
         let selectedGrade = null;
         let selectedSection = null;
@@ -2013,6 +1986,25 @@
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
+
+        try {
+            history.replaceState({ platformRoot: true }, "", window.location.href);
+            history.pushState({ platformGuard: true }, "", window.location.href);
+        } catch (e) {}
+
+        window.addEventListener("popstate", () => {
+            try {
+                history.pushState({ platformGuard: true }, "", window.location.href);
+            } catch (e) {}
+
+            if (isRoomExpanded) {
+                setRoomExpandedState(false);
+                return;
+            }
+            if (isInsideRoom) {
+                window.backFromSectionRoom();
+            }
+        });
 
         function setFeedbackBanner(elId, message, type = "err") {
             const el = document.getElementById(elId);
@@ -2108,12 +2100,16 @@
             return `${headerLine}${bodyText}\n\nــــــــــــــــــــ\n${signature}`;
         }
 
-        function openWhatsappDirect(waNumber, fullText) {
+        function buildWhatsappUrl(waNumber, fullText) {
             const cleanNum = normalizePhoneToWhatsapp(waNumber);
             if (!cleanNum || cleanNum.length < 9) {
                 throw new Error("رقم واتساب ولي الأمر غير صالح.");
             }
-            const url = `https://wa.me/${cleanNum}?text=${encodeURIComponent(fullText)}`;
+            return `https://wa.me/${cleanNum}?text=${encodeURIComponent(fullText)}`;
+        }
+
+        function openWhatsappDirect(waNumber, fullText) {
+            const url = buildWhatsappUrl(waNumber, fullText);
             const win = window.open(url, "_blank", "noopener,noreferrer");
             if (!win) {
                 window.location.href = url;
@@ -2315,10 +2311,6 @@
             }
         }
 
-        function isOwnStudentRecord(id) {
-            return ownedStudentIds.includes(id);
-        }
-
         function getAllSectionStudents(grade, section) {
             return studentsList.filter(s => s.grade === grade && s.section === section);
         }
@@ -2353,8 +2345,19 @@
             (extraList || []).forEach(item => {
                 if (!item || !item.id) return;
                 const prev = map.get(item.id);
-                if (!prev || (item.updatedAt || item.createdAt || 0) >= (prev.updatedAt || prev.createdAt || 0)) {
-                    map.set(item.id, { ...prev, ...item });
+                if (!prev) {
+                    map.set(item.id, item);
+                } else {
+                    const prevTs = prev.updatedAt || prev.createdAt || 0;
+                    const nextTs = item.updatedAt || item.createdAt || 0;
+                    const mergedObj = nextTs >= prevTs ? { ...prev, ...item } : { ...item, ...prev };
+                    if (!mergedObj.editPin && (prev.editPin || item.editPin)) {
+                        mergedObj.editPin = prev.editPin || item.editPin;
+                    }
+                    if (!mergedObj.guardianPhone && (prev.guardianPhone || item.guardianPhone)) {
+                        mergedObj.guardianPhone = prev.guardianPhone || item.guardianPhone;
+                    }
+                    map.set(item.id, mergedObj);
                 }
             });
             return Array.from(map.values()).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
@@ -2371,6 +2374,14 @@
                     }
                 } catch (e) {}
             }
+            try {
+                const legacySaved = JSON.parse(localStorage.getItem(STORAGE_SAVED_SECTIONS_KEY) || "{}");
+                Object.values(legacySaved).forEach(secObj => {
+                    if (secObj && Array.isArray(secObj.students)) {
+                        combined = mergeStudentArrays(combined, secObj.students);
+                    }
+                });
+            } catch (e) {}
             return combined;
         }
 
@@ -2632,6 +2643,10 @@
             selectedSection = sec;
             isInsideRoom = true;
 
+            try {
+                history.pushState({ sectionRoom: true, grade, sec }, "", window.location.href);
+            } catch (e) {}
+
             document.getElementById("gradeField").value = grade;
             document.getElementById("sectionField").value = sec;
             document.getElementById("roomSearchInput").value = "";
@@ -2734,11 +2749,7 @@
             }
 
             tbody.innerHTML = filtered.map((st, idx) => {
-                const isMine = isOwnStudentRecord(st.id);
-                const canPreview = isMine || isAdminSession;
-                const previewBtnHtml = canPreview
-                    ? `<button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>`
-                    : "";
+                const previewBtnHtml = `<button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>`;
                 const editBtnHtml = `<button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>`;
                 const changePinBtnHtml = isAdminSession
                     ? ""
@@ -2750,9 +2761,7 @@
                     ? `<button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>`
                     : "";
 
-                const nameCellHtml = canPreview
-                    ? `<span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span>`
-                    : `<span>${highlightText(st.name, searchTerm)}</span>`;
+                const nameCellHtml = `<span class="student-link-name" onclick="showStudentCard('${st.id}')">${highlightText(st.name, searchTerm)}</span>`;
 
                 const phoneDisplay = st.guardianPhone ? highlightText(st.guardianPhone, searchTerm) : "—";
 
@@ -2888,7 +2897,6 @@
             document.getElementById("bulkMessageTextarea").value =
                 `السلام عليكم ورحمة الله وبركاته، ولي الأمر المحترم.\nنود إبلاغكم بمستجدات الدوام والمتابعة الدراسية في ثانوية المتفوقين الثانية للبنين - الأنبار.`;
 
-            resetBulkQueueToSelection();
             document.getElementById("bulkWhatsappModalLayer").style.display = "flex";
         }
 
@@ -2919,19 +2927,7 @@
             }
         };
 
-        function updateBulkQueueBanner() {
-            const banner = document.getElementById("bulkQueueStatusBanner");
-            if (bulkQueueIndex >= bulkQueue.length) {
-                banner.innerText = `✅ تم الانتهاء من قائمة التبليغ الجماعي (${bulkQueue.length} طالب).`;
-                document.getElementById("bulkSendNextBtn").style.display = "none";
-                return;
-            }
-            const item = bulkQueue[bulkQueueIndex];
-            banner.innerText = `الطالب (${bulkQueueIndex + 1} من ${bulkQueue.length}): ${item.student.name} | الرقم: ${item.student.guardianPhone || item.waNumber}`;
-            document.getElementById("bulkSendNextBtn").style.display = "inline-flex";
-        }
-
-        window.beginBulkSendQueue = function () {
+        window.openAllSelectedWhatsappNow = function () {
             setFeedbackBanner("bulkFeedbackBox", "");
 
             const activePrincipal = normalizePhoneToWhatsapp(getCurrentPrincipalPhone());
@@ -2952,79 +2948,54 @@
                 return;
             }
 
-            const queueItems = [];
+            const validTargets = [];
             const skippedNames = [];
             selectedIds.forEach(id => {
                 const st = studentsList.find(s => s.id === id);
                 if (!st) return;
                 const wa = normalizePhoneToWhatsapp(st.guardianPhone);
                 if (wa && wa.length >= 9) {
-                    queueItems.push({ student: st, waNumber: wa, body: msgBody });
+                    validTargets.push({ student: st, waNumber: wa, body: msgBody });
                 } else {
                     skippedNames.push(st.name);
                 }
             });
 
-            if (queueItems.length === 0) {
+            if (validTargets.length === 0) {
                 setFeedbackBanner("bulkFeedbackBox", "⚠️ لا يوجد رقم واتساب صالح لأي من الطلاب المحددين.", "err");
                 return;
             }
 
-            if (skippedNames.length > 0) {
-                setFeedbackBanner("bulkFeedbackBox", `ℹ️ تم تجاوز (${skippedNames.length}) طالب لعدم توفر رقم صالح: ${skippedNames.join("، ")}`, "err");
-            }
+            let openedCount = 0;
+            let blockedCount = 0;
 
-            bulkQueue = queueItems;
-            bulkQueueIndex = 0;
-            document.getElementById("bulkSelectionStage").style.display = "none";
-            document.getElementById("bulkQueueControlStage").style.display = "block";
-            document.getElementById("bulkQueueStatusBanner").style.display = "block";
-            updateBulkQueueBanner();
-        };
+            validTargets.forEach((item, idx) => {
+                const fullText = buildPrincipalMessage(item.student.name, item.body);
+                const url = buildWhatsappUrl(item.waNumber, fullText);
+                const win = window.open(url, "_blank", "noopener,noreferrer");
+                if (win) {
+                    openedCount += 1;
+                } else if (idx === 0 && validTargets.length === 1) {
+                    window.location.href = url;
+                    openedCount += 1;
+                } else {
+                    blockedCount += 1;
+                }
+            });
 
-        window.sendCurrentBulkQueueItem = function () {
-            if (bulkQueueIndex >= bulkQueue.length) return;
+            const statusParts = [];
+            if (openedCount > 0) statusParts.push(`✅ تم فتح (${openedCount}) رابط واتساب`);
+            if (blockedCount > 0) statusParts.push(`⚠️ حجب المتصفح (${blockedCount}) نافذة منبثقة؛ اسمح بالنوافذ المنبثقة لهذا الموقع وأعد المحاولة.`);
+            if (skippedNames.length > 0) statusParts.push(`ℹ️ تم تجاوز (${skippedNames.length}) بدون رقم صالح.`);
 
-            const current = bulkQueue[bulkQueueIndex];
-            const nextBtn = document.getElementById("bulkSendNextBtn");
-
-            const activePrincipal = normalizePhoneToWhatsapp(getCurrentPrincipalPhone());
-            if (!activePrincipal || activePrincipal.length < 9) {
-                setFeedbackBanner("bulkFeedbackBox", "⚠️ يرجى إضافة وحفظ رقم المدير أولاً من زر (إضافة رقم المدير).", "err");
-                return;
-            }
-
-            const fullText = buildPrincipalMessage(current.student.name, current.body);
-            nextBtn.disabled = true;
-
-            try {
-                openWhatsappDirect(current.waNumber, fullText);
-                setFeedbackBanner("bulkFeedbackBox", `✅ تم فتح واتساب للطالب (${current.student.name})؛ أرسل الرسالة ثم اضغط للمتابعة.`, "ok");
-                bulkQueueIndex += 1;
-                updateBulkQueueBanner();
-            } catch (err) {
-                setFeedbackBanner("bulkFeedbackBox", `❌ تعذر فتح واتساب للطالب (${current.student.name}): ${err.message}`, "err");
-            } finally {
-                nextBtn.disabled = false;
-            }
-        };
-
-        window.skipCurrentBulkQueueItem = function () {
-            if (bulkQueueIndex >= bulkQueue.length) return;
-            bulkQueueIndex += 1;
-            updateBulkQueueBanner();
-        };
-
-        window.resetBulkQueueToSelection = function () {
-            bulkQueue = [];
-            bulkQueueIndex = 0;
-            document.getElementById("bulkSelectionStage").style.display = "block";
-            document.getElementById("bulkQueueControlStage").style.display = "none";
-            document.getElementById("bulkQueueStatusBanner").style.display = "none";
+            setFeedbackBanner(
+                "bulkFeedbackBox",
+                statusParts.join(" | "),
+                blockedCount > 0 && openedCount === 0 ? "err" : "ok"
+            );
         };
 
         window.closeBulkWhatsappModal = function () {
-            resetBulkQueueToSelection();
             setFeedbackBanner("bulkFeedbackBox", "");
             hideModal("bulkWhatsappModalLayer");
         };
@@ -3304,9 +3275,6 @@
         };
 
         function openEditFormForStudent(st, asAdminMode = false) {
-            if (!asAdminMode) {
-                markStudentAsOwned(st.id);
-            }
             setRoomExpandedState(false);
             document.getElementById("editStudentIdField").value = st.id;
             document.getElementById("nameField").value = st.name;
@@ -3385,6 +3353,8 @@
                 }
             }
 
+            markStudentAsOwned(st.id);
+
             if (pendingPinMode === "preview") {
                 const targetStudent = studentsList.find(s => s.id === st.id) || st;
                 closeEditPinModal();
@@ -3402,7 +3372,6 @@
                 }
                 const updatedStudent = { ...st, editPin: nextPin };
                 await persistStudentRecord(updatedStudent, true);
-                markStudentAsOwned(st.id);
                 closeEditPinModal();
                 alert("✅ تم حفظ رمز الطالب الجديد بنجاح وسيُطلب في كل مرة.");
                 if (isInsideRoom) renderSectionRoomTable();
@@ -3471,11 +3440,6 @@
 
             if (isAdminSession) {
                 renderIdCardModal(st);
-                return;
-            }
-
-            if (!isOwnStudentRecord(id)) {
-                alert("⛔ لا يمكنك معاينة بيانات طالب آخر؛ يمكنك معاينة بياناتك الخاصة فقط.");
                 return;
             }
 
