@@ -2326,61 +2326,56 @@
             ];
             const SECTIONS = ["أ", "ب", "ج"];
 
-            const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v23";
+            const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v26";
             const ALL_STUDENT_STORAGE_KEYS = [
+                "mutafawiqeen_students_list_v26",
                 "mutafawiqeen_students_list_v25",
                 "mutafawiqeen_students_list_v23",
                 "mutafawiqeen_students_list_v22",
                 "mutafawiqeen_students_list_v21",
-                "mutafawiqeen_students_list_v20",
-                "mutafawiqeen_students_list_v19",
-                "mutafawiqeen_students_list_v18"
+                "mutafawiqeen_students_list_v20"
             ];
-            const STORAGE_DELETED_IDS_KEY = "mutafawiqeen_deleted_student_ids_v25";
-            const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v23";
-            const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v23";
+            const STORAGE_DELETED_IDS_KEY = "mutafawiqeen_deleted_student_ids_v26";
+            const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v26";
+            const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v26";
             const ALL_SECRET_KEYS = [
+                "mutafawiqeen_secret_v26",
                 "mutafawiqeen_secret_v25",
                 "mutafawiqeen_secret_v23",
-                "mutafawiqeen_secret_v22",
-                "mutafawiqeen_secret_v21",
-                "mutafawiqeen_secret_v20",
-                "mutafawiqeen_secret_v19"
+                "mutafawiqeen_secret_v22"
             ];
-            const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v23";
-            const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v25";
+            const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v26";
+            const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v26";
             const ALL_LOCKED_KEYS = [
+                "mutafawiqeen_locked_v26",
                 "mutafawiqeen_locked_v25",
                 "mutafawiqeen_locked_v23"
             ];
-            const STORAGE_PRINCIPAL_OVERRIDE_KEY = "mutafawiqeen_principal_override_v23";
-            const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v23";
+            const STORAGE_PRINCIPAL_OVERRIDE_KEY = "mutafawiqeen_principal_override_v26";
+            const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v26";
             const ALL_PRINCIPAL_PHONE_KEYS = [
+                "mutafawiqeen_principal_override_v26",
+                "mutafawiqeen_principal_phone_v26",
                 "mutafawiqeen_principal_override_v23",
-                "mutafawiqeen_principal_phone_v23",
-                "mutafawiqeen_principal_phone_v22",
-                "mutafawiqeen_principal_phone_v21"
+                "mutafawiqeen_principal_phone_v23"
             ];
-            const STORAGE_PRINCIPAL_UPDATED_AT_KEY = "mutafawiqeen_principal_updated_at_v23";
-            const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v23";
+            const STORAGE_PRINCIPAL_UPDATED_AT_KEY = "mutafawiqeen_principal_updated_at_v26";
+            const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v26";
             const ALL_OWNED_KEYS = [
+                "mutafawiqeen_owned_student_ids_v26",
                 "mutafawiqeen_owned_student_ids_v23",
-                "mutafawiqeen_owned_student_ids_v22",
-                "mutafawiqeen_owned_student_ids_v21",
-                "mutafawiqeen_owned_student_ids_v20"
+                "mutafawiqeen_owned_student_ids_v22"
             ];
             const ALL_IDB_NAMES = [
+                "MutafawiqeenSchoolDB_V26",
                 "MutafawiqeenSchoolDB_V23",
-                "MutafawiqeenSchoolDB_V22",
-                "MutafawiqeenSchoolDB_V21",
-                "MutafawiqeenSchoolDB_V20",
-                "MutafawiqeenSchoolDB_V19"
+                "MutafawiqeenSchoolDB_V22"
             ];
 
-            const STORAGE_SUBJECTS_KEY = "mutafawiqeen_subjects_v24";
-            const STORAGE_PASSMARK_KEY = "mutafawiqeen_passmark_v24";
-            const STORAGE_SCALE_KEY = "mutafawiqeen_grade_scale_v24";
-            const STORAGE_WEIGHTS_KEY = "mutafawiqeen_grade_weights_v24";
+            const STORAGE_SUBJECTS_KEY = "mutafawiqeen_subjects_v26";
+            const STORAGE_PASSMARK_KEY = "mutafawiqeen_passmark_v26";
+            const STORAGE_SCALE_KEY = "mutafawiqeen_grade_scale_v26";
+            const STORAGE_WEIGHTS_KEY = "mutafawiqeen_grade_weights_v26";
 
             const DEFAULT_SUBJECTS = [
                 "الحاسوب",
@@ -2472,8 +2467,6 @@
             let principalUpdatedAt = Number(safeStorageGet(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
             let isPlatformLocked = loadInitialLockState();
 
-            let useCloud = false;
-            let cloudApi = null;
             let localDb = null;
 
             const arabicCollator = new Intl.Collator(["ar", "ar-IQ"], {
@@ -2798,15 +2791,21 @@
             function normalizePhoneToWhatsapp(rawPhone) {
                 if (!rawPhone) return "";
                 const arabicMap = { "٠": "0", "١": "1", "٢": "2", "٣": "3", "٤": "4", "٥": "5", "٦": "6", "٧": "7", "٨": "8", "٩": "9" };
-                const converted = String(rawPhone).replace(/[٠-٩]/g, d => arabicMap[d] || d);
-                let digits = converted.replace(/\D/g, "");
+                const converted = String(rawPhone).replace(/[٠-٩]/g, function (d) {
+                    return arabicMap[d] || d;
+                });
+                let digits = "";
+                for (let i = 0; i < converted.length; i++) {
+                    const ch = converted.charAt(i);
+                    if (ch >= "0" && ch <= "9") digits += ch;
+                }
                 if (!digits) return "";
-                if (digits.startsWith("00")) {
+                if (digits.indexOf("00") === 0) {
                     digits = digits.slice(2);
                 }
-                if (digits.startsWith("07") && digits.length === 11) {
+                if (digits.indexOf("07") === 0 && digits.length === 11) {
                     digits = "964" + digits.slice(1);
-                } else if (/^7\d{9}$/.test(digits)) {
+                } else if (digits.length === 10 && digits.charAt(0) === "7") {
                     digits = "964" + digits;
                 }
                 return digits;
@@ -2867,7 +2866,7 @@
                 } catch (e) {}
             }
 
-            async function persistPrincipalPhone(nextPhone) {
+            function persistPrincipalPhone(nextPhone) {
                 const cleanPhone = String(nextPhone || "").trim() || DEFAULT_PRINCIPAL_PHONE;
                 const nowTs = Date.now();
                 principalPhone = cleanPhone;
@@ -2877,16 +2876,6 @@
                 ALL_PRINCIPAL_PHONE_KEYS.forEach(k => safeStorageSet(k, cleanPhone));
                 safeStorageSet(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(nowTs));
                 writePrincipalPhoneToIndexedDB(cleanPhone, nowTs);
-
-                if (useCloud && cloudApi && typeof cloudApi.saveSettings === "function") {
-                    try {
-                        await cloudApi.saveSettings({
-                            principalPhone: cleanPhone,
-                            principalOverride: cleanPhone,
-                            principalUpdatedAt: nowTs
-                        });
-                    } catch (err) {}
-                }
             }
 
             function showPrincipalPhoneModalNow() {
@@ -2908,7 +2897,7 @@
                 showPrincipalPhoneModalNow();
             };
 
-            window.savePrincipalPhoneDirect = async function () {
+            window.savePrincipalPhoneDirect = function () {
                 const phoneVal = document.getElementById("principalPhoneInputField").value.trim();
                 const errBox = document.getElementById("principalModalErrorBox");
                 const digitsOnly = normalizePhoneToWhatsapp(phoneVal);
@@ -2919,7 +2908,7 @@
                     return;
                 }
                 errBox.style.display = "none";
-                await persistPrincipalPhone(phoneVal);
+                persistPrincipalPhone(phoneVal);
                 const savedNow = getCurrentPrincipalPhone();
                 closePrincipalPhoneModal();
                 alert(`✅ تم حفظ واستبدال رقم المدير (${savedNow}) فوراً دون سؤال إضافي.`);
@@ -2937,7 +2926,7 @@
                 hideModal("principalPhoneModalLayer");
             };
 
-            async function persistAdminSecret(nextCode) {
+            function persistAdminSecret(nextCode) {
                 const cleanCode = String(nextCode).trim();
                 const nowTs = Date.now();
                 adminSecret = cleanCode;
@@ -2946,19 +2935,9 @@
                 ALL_SECRET_KEYS.forEach(k => safeStorageSet(k, cleanCode));
                 safeStorageSet(STORAGE_SECRET_UPDATED_AT_KEY, String(nowTs));
                 writeSecretToIndexedDB(cleanCode, nowTs);
-
-                if (useCloud && cloudApi && typeof cloudApi.saveSettings === "function") {
-                    try {
-                        await cloudApi.saveSettings({
-                            adminCode: cleanCode,
-                            secretUpdatedAt: nowTs,
-                            isLocked: isPlatformLocked
-                        });
-                    } catch (err) {}
-                }
             }
 
-            async function persistStudentRecord(fullRecord, isUpdate) {
+            function persistStudentRecord(fullRecord, isUpdate) {
                 unmarkIdAsDeleted(fullRecord.id);
                 const stampedRecord = Object.assign({}, fullRecord, {
                     id: String(fullRecord.id),
@@ -2978,12 +2957,6 @@
 
                 persistStudentsToLocalStorage(studentsList);
                 writeStudentToIndexedDB(stampedRecord);
-
-                if (useCloud && cloudApi && typeof cloudApi.upsertStudent === "function") {
-                    try {
-                        await cloudApi.upsertStudent(stampedRecord);
-                    } catch (err) {}
-                }
 
                 return stampedRecord;
             }
@@ -3129,18 +3102,18 @@
                 hideModal("confirmDeleteModalLayer");
             };
 
-            window.executePendingDeleteModal = async function () {
+            window.executePendingDeleteModal = function () {
                 const act = pendingDeleteAction ? Object.assign({}, pendingDeleteAction) : null;
                 closeConfirmDeleteModal();
                 if (!act) return;
                 if (act.type === "single") {
-                    await performSingleStudentDeletion(act.studentId);
+                    performSingleStudentDeletion(act.studentId);
                 } else if (act.type === "bulk") {
-                    await performBulkStudentDeletion(act.studentIds || []);
+                    performBulkStudentDeletion(act.studentIds || []);
                 }
             };
 
-            async function performSingleStudentDeletion(id) {
+            function performSingleStudentDeletion(id) {
                 const targetId = String(id || "");
                 if (!targetId) return;
 
@@ -3157,16 +3130,12 @@
                     resetStudentInquiryView();
                 }
 
-                if (useCloud && cloudApi && typeof cloudApi.removeStudent === "function") {
-                    try { await cloudApi.removeStudent(targetId); } catch (err) {}
-                }
-
                 if (isInsideRoom) {
                     renderActiveRoomView();
                 }
             }
 
-            async function performBulkStudentDeletion(ids) {
+            function performBulkStudentDeletion(ids) {
                 const idList = Array.from(new Set((ids || []).map(String).filter(Boolean)));
                 if (idList.length === 0) return;
 
@@ -3182,10 +3151,6 @@
 
                 if (verifiedInquiryStudentId && targetSet.has(String(verifiedInquiryStudentId))) {
                     resetStudentInquiryView();
-                }
-
-                if (useCloud && cloudApi && typeof cloudApi.batchDeleteStudents === "function") {
-                    try { await cloudApi.batchDeleteStudents(idList); } catch (err) {}
                 }
 
                 if (isInsideRoom) {
@@ -3446,8 +3411,6 @@
                 activeRoomMode = "info";
                 verifiedInquiryStudentId = null;
 
-                try { history.pushState({ inquiryRoom: true, grade }, "", window.location.href); } catch (e) {}
-
                 document.getElementById("roomSearchInput").value = "";
                 document.getElementById("clearSearchBtn").style.display = "none";
                 document.getElementById("sectionInnerSwitch").style.display = "none";
@@ -3479,8 +3442,6 @@
                 isInquiryMode = false;
                 isInsideRoom = true;
                 verifiedInquiryStudentId = null;
-
-                try { history.pushState({ sectionRoom: true, grade, sec }, "", window.location.href); } catch (e) {}
 
                 const gField = document.getElementById("gradeField");
                 const sField = document.getElementById("sectionField");
@@ -3568,7 +3529,7 @@
                 }
             }
 
-            window.addRoomSubject = async function () {
+            window.addRoomSubject = function () {
                 if (!hasStaffAccess()) {
                     requestAdminPinForAction(
                         { type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection },
@@ -3596,13 +3557,6 @@
                         })
                     );
                     persistStudentsToLocalStorage(studentsList);
-
-                    if (useCloud && cloudApi && typeof cloudApi.saveSettings === "function") {
-                        try { await cloudApi.saveSettings({ subjectsList }); } catch (err) {}
-                    }
-                    if (useCloud && cloudApi && typeof cloudApi.batchUpsertStudents === "function") {
-                        try { await cloudApi.batchUpsertStudents(studentsList); } catch (err) {}
-                    }
                 }
 
                 inp.value = "";
@@ -3611,7 +3565,7 @@
                 renderGradesRoomTable();
             };
 
-            window.teacherAddStudentAndGrade = async function () {
+            window.teacherAddStudentAndGrade = function () {
                 if (!selectedGrade || !selectedSection) return;
                 if (!hasStaffAccess()) {
                     requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "إضافة اسم ودرجة");
@@ -3662,7 +3616,7 @@
                 }
                 currentMap[subj] = prevSubj;
 
-                await persistStudentRecord(Object.assign({}, target, { gradesBySubject: currentMap }), isExistingStudent);
+                persistStudentRecord(Object.assign({}, target, { gradesBySubject: currentMap }), isExistingStudent);
                 nameInp.value = "";
                 scoreInp.value = "";
                 renderGradesRoomTable();
@@ -3726,7 +3680,7 @@
                 renderGradesRoomTable();
             };
 
-            window.updateStudentGradeField = async function (studentId, field, value) {
+            window.updateStudentGradeField = function (studentId, field, value) {
                 if (!hasStaffAccess()) {
                     requestAdminPinForAction({ type: "openSubjectsRoom", grade: selectedGrade, section: selectedSection }, "تعديل الدرجات");
                     return;
@@ -3745,7 +3699,7 @@
 
                 currentMap[subj] = prevSubj;
                 const updated = Object.assign({}, st, { gradesBySubject: currentMap });
-                await persistStudentRecord(updated, true);
+                persistStudentRecord(updated, true);
                 renderGradesRoomTable();
             };
 
@@ -4423,7 +4377,7 @@
                 reader.readAsDataURL(file);
             };
 
-            window.saveStudentEntry = async function (e) {
+            window.saveStudentEntry = function (e) {
                 if (e && typeof e.preventDefault === "function") e.preventDefault();
                 const editId = document.getElementById("editStudentIdField").value;
                 const existing = editId ? studentsList.find(s => String(s.id) === String(editId)) : null;
@@ -4455,7 +4409,7 @@
                 const finalId = String(editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`);
                 const fullRecord = Object.assign({ id: finalId }, record);
 
-                const savedRec = await persistStudentRecord(fullRecord, Boolean(editId));
+                const savedRec = persistStudentRecord(fullRecord, Boolean(editId));
 
                 if (!editId) {
                     markStudentAsOwned(savedRec.id);
@@ -4531,7 +4485,7 @@
                 hideModal("editPinModalLayer");
             };
 
-            window.confirmEditPinModal = async function () {
+            window.confirmEditPinModal = function () {
                 if (!pendingEditStudentId) return;
                 const st = studentsList.find(s => String(s.id) === String(pendingEditStudentId));
                 if (!st) {
@@ -4578,7 +4532,7 @@
                         return;
                     }
                     const updatedStudent = Object.assign({}, st, { editPin: nextPin });
-                    await persistStudentRecord(updatedStudent, true);
+                    persistStudentRecord(updatedStudent, true);
                     closeEditPinModal();
                     alert("✅ تم حفظ رمز الطالب الجديد بنجاح وسيُطلب في كل مرة.");
                     if (isInsideRoom) renderActiveRoomView();
@@ -4587,7 +4541,7 @@
 
                 if (!st.editPin) {
                     const updatedStudent = Object.assign({}, st, { editPin: cleanInput });
-                    await persistStudentRecord(updatedStudent, true);
+                    persistStudentRecord(updatedStudent, true);
                 }
 
                 const targetStudent = studentsList.find(s => String(s.id) === String(st.id)) || st;
@@ -4797,13 +4751,10 @@
                 executeDeleteAllInActiveSection();
             };
 
-            async function saveLockState(locked) {
+            function saveLockState(locked) {
                 isPlatformLocked = Boolean(locked);
                 ALL_LOCKED_KEYS.forEach(k => safeStorageSet(k, String(isPlatformLocked)));
                 applyLockUI();
-                if (useCloud && cloudApi && typeof cloudApi.saveSettings === "function") {
-                    try { await cloudApi.saveSettings({ isLocked: isPlatformLocked }); } catch (err) {}
-                }
             }
 
             function applyLockUI() {
@@ -4844,7 +4795,7 @@
                 }
             };
 
-            window.promptLockPlatform = async function () {
+            window.promptLockPlatform = function () {
                 if (isPlatformLocked) {
                     applyLockUI();
                     return;
@@ -4853,11 +4804,11 @@
                     requestAdminPinForAction({ type: "lockPlatform" }, "قفل المنصة");
                     return;
                 }
-                await saveLockState(true);
+                saveLockState(true);
                 if (isInsideRoom) renderActiveRoomView();
             };
 
-            window.unlockAction = async function () {
+            window.unlockAction = function () {
                 const inp = document.getElementById("unlockCodeField");
                 const errBox = document.getElementById("lockScreenErrorBox");
                 const code = inp ? inp.value.trim() : "";
@@ -4877,7 +4828,7 @@
                         errBox.style.display = "none";
                         errBox.innerText = "";
                     }
-                    await saveLockState(false);
+                    saveLockState(false);
                     renderGradesShelf();
                     if (isInsideRoom) renderActiveRoomView();
                 } else {
@@ -4947,12 +4898,12 @@
                 document.getElementById("adminChangeView").style.display = "block";
             };
 
-            window.toggleLockState = async function () {
-                await saveLockState(!isPlatformLocked);
+            window.toggleLockState = function () {
+                saveLockState(!isPlatformLocked);
                 hideModal("adminDialogLayer");
             };
 
-            window.updateAdminPasscode = async function () {
+            window.updateAdminPasscode = function () {
                 const oldCode = document.getElementById("oldCodeInput").value.trim();
                 const nextCode = document.getElementById("newCodeInput").value.trim();
                 if (oldCode !== getCurrentAdminSecret()) {
@@ -4963,7 +4914,7 @@
                     alert("⚠️ يرجى إدخال الرمز الجديد.");
                     return;
                 }
-                await persistAdminSecret(nextCode);
+                persistAdminSecret(nextCode);
                 alert("✅ تم تغيير رمز الأدمن وحفظه بنجاح.");
                 hideModal("adminDialogLayer");
             };
@@ -4990,34 +4941,10 @@
                 });
             }
 
-            function migrateFromLegacyIndexedDBs() {
-                if (!window.indexedDB) return;
-                ALL_IDB_NAMES.slice(1).forEach((legacyName) => {
-                    try {
-                        const req = window.indexedDB.open(legacyName);
-                        req.onsuccess = async (ev) => {
-                            const legDb = ev.target.result;
-                            const legStudents = filterOutDeletedStudents(await readStoreFromDb(legDb, "students"));
-                            const legOwned = await readStoreFromDb(legDb, "owned_records");
-                            if (legStudents.length > 0) {
-                                studentsList = mergeStudentArrays(studentsList, legStudents);
-                                persistStudentsToLocalStorage(studentsList);
-                                legStudents.forEach(st => writeStudentToIndexedDB(st));
-                                if (isInsideRoom) renderActiveRoomView();
-                            }
-                            if (legOwned.length > 0) {
-                                legOwned.forEach(o => markStudentAsOwned(o.id));
-                            }
-                            legDb.close();
-                        };
-                    } catch (e) {}
-                });
-            }
-
             function initIndexedDB() {
                 if (!window.indexedDB) return;
                 try {
-                    const req = window.indexedDB.open("MutafawiqeenSchoolDB_V23", 1);
+                    const req = window.indexedDB.open("MutafawiqeenSchoolDB_V26", 1);
                     req.onupgradeneeded = (e) => {
                         const database = e.target.result;
                         if (!database.objectStoreNames.contains("students")) {
@@ -5032,32 +4959,6 @@
                     };
                     req.onsuccess = async (e) => {
                         localDb = e.target.result;
-
-                        try {
-                            const metaTx = localDb.transaction("meta", "readonly");
-                            metaTx.objectStore("meta").get("adminSecret").onsuccess = (mev) => {
-                                const metaRec = mev.target.result;
-                                const lsUpdatedAt = Number(safeStorageGet(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
-                                if (metaRec && metaRec.value && (metaRec.updatedAt || 0) >= lsUpdatedAt) {
-                                    adminSecret = String(metaRec.value).trim();
-                                    secretUpdatedAt = Number(metaRec.updatedAt || 0);
-                                    ALL_SECRET_KEYS.forEach(k => safeStorageSet(k, adminSecret));
-                                    safeStorageSet(STORAGE_SECRET_UPDATED_AT_KEY, String(secretUpdatedAt));
-                                }
-                            };
-                            metaTx.objectStore("meta").get("principalPhone").onsuccess = (pev) => {
-                                const pRec = pev.target.result;
-                                const lsPUpdated = Number(safeStorageGet(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
-                                if (pRec && pRec.value && (pRec.updatedAt || 0) >= lsPUpdated) {
-                                    principalPhone = String(pRec.value).trim();
-                                    principalUpdatedAt = Number(pRec.updatedAt || 0);
-                                    safeStorageSet(STORAGE_PRINCIPAL_OVERRIDE_KEY, principalPhone);
-                                    ALL_PRINCIPAL_PHONE_KEYS.forEach(k => safeStorageSet(k, principalPhone));
-                                    safeStorageSet(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(principalUpdatedAt));
-                                }
-                            };
-                        } catch (err) {}
-
                         const savedOwned = await readStoreFromDb(localDb, "owned_records");
                         const ownedIdsFromDb = savedOwned.map(item => item.id);
                         ownedStudentIds = Array.from(new Set(ownedStudentIds.concat(ownedIdsFromDb)));
@@ -5068,25 +4969,9 @@
                         persistStudentsToLocalStorage(studentsList);
                         renderGradesShelf();
                         if (isInsideRoom) renderActiveRoomView();
-
-                        migrateFromLegacyIndexedDBs();
                     };
                 } catch (e) {}
             }
-
-            window.addEventListener("popstate", () => {
-                try {
-                    history.pushState({ platformGuard: true }, "", window.location.href);
-                } catch (e) {}
-
-                if (isRoomExpanded) {
-                    setRoomExpandedState(false);
-                    return;
-                }
-                if (isInsideRoom) {
-                    window.backFromSectionRoom();
-                }
-            });
 
             function bootstrapPlatform() {
                 try {
@@ -5094,11 +4979,6 @@
                     const cardLogoEl = document.getElementById("idCardLogoThumb");
                     if (logoEl) logoEl.src = SCHOOL_LOGO_URL;
                     if (cardLogoEl) cardLogoEl.src = SCHOOL_LOGO_URL;
-                } catch (e) {}
-
-                try {
-                    history.replaceState({ platformRoot: true }, "", window.location.href);
-                    history.pushState({ platformGuard: true }, "", window.location.href);
                 } catch (e) {}
 
                 try { initDateFields(); } catch (e) {}
@@ -5112,87 +4992,6 @@
                 }
 
                 try { initIndexedDB(); } catch (e) {}
-
-                window.__platformSyncHooks = {
-                    setCloudBridge(api) {
-                        cloudApi = api;
-                        useCloud = Boolean(api);
-                    },
-                    getSnapshot() {
-                        return {
-                            studentsList,
-                            subjectsList,
-                            isPlatformLocked,
-                            adminSecret: getCurrentAdminSecret(),
-                            secretUpdatedAt,
-                            principalPhone: getCurrentPrincipalPhone(),
-                            principalUpdatedAt
-                        };
-                    },
-                    applyCloudSettings(data) {
-                        if (!data) return;
-                        if (typeof data.isLocked === "boolean") {
-                            isPlatformLocked = data.isLocked;
-                            ALL_LOCKED_KEYS.forEach(k => safeStorageSet(k, String(isPlatformLocked)));
-                        }
-
-                        if (Array.isArray(data.subjectsList) && data.subjectsList.length > 0) {
-                            subjectsList = sortSubjectsAlphabetically(Array.from(new Set(subjectsList.concat(data.subjectsList))));
-                            saveSubjectsToStorage();
-                            populateRoomSubjectSelect();
-                            if (isInsideRoom) renderActiveRoomView();
-                        }
-
-                        const remoteUpdatedAt = Number(data.secretUpdatedAt || 0);
-                        const localUpdatedAt = Number(safeStorageGet(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
-                        const recentLocalWrite = (Date.now() - localUpdatedAt) < 10000;
-
-                        if (data.adminCode && !recentLocalWrite && remoteUpdatedAt >= localUpdatedAt) {
-                            adminSecret = String(data.adminCode).trim();
-                            secretUpdatedAt = remoteUpdatedAt;
-                            ALL_SECRET_KEYS.forEach(k => safeStorageSet(k, adminSecret));
-                            safeStorageSet(STORAGE_SECRET_UPDATED_AT_KEY, String(remoteUpdatedAt));
-                            writeSecretToIndexedDB(adminSecret, remoteUpdatedAt);
-                        }
-
-                        const remotePhoneCandidate = data.principalOverride || data.principalPhone;
-                        const remotePUpdated = Number(data.principalUpdatedAt || 0);
-                        const localPUpdated = Number(safeStorageGet(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
-                        const recentPrincipalWrite = (Date.now() - localPUpdated) < 15000;
-                        if (remotePhoneCandidate && !recentPrincipalWrite && remotePUpdated > localPUpdated) {
-                            principalPhone = String(remotePhoneCandidate).trim();
-                            principalUpdatedAt = remotePUpdated;
-                            safeStorageSet(STORAGE_PRINCIPAL_OVERRIDE_KEY, principalPhone);
-                            ALL_PRINCIPAL_PHONE_KEYS.forEach(k => safeStorageSet(k, principalPhone));
-                            safeStorageSet(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(remotePUpdated));
-                            writePrincipalPhoneToIndexedDB(principalPhone, remotePUpdated);
-                        }
-                        renderGradesShelf();
-                        applyLockUI();
-                    },
-                    applyCloudStudents(cloudDocs) {
-                        const cleanCloudDocs = filterOutDeletedStudents(cloudDocs || []);
-                        const localSnapshot = mergeStudentArrays(studentsList, loadStudentsFromLocalStorage());
-                        const merged = mergeStudentArrays(cleanCloudDocs, localSnapshot);
-                        studentsList = merged;
-                        persistStudentsToLocalStorage(studentsList);
-                        if (localDb) {
-                            merged.forEach(item => writeStudentToIndexedDB(item));
-                        }
-                        renderGradesShelf();
-                        if (isInsideRoom) renderActiveRoomView();
-                    },
-                    getLocalSnapshotForUpload() {
-                        return mergeStudentArrays(studentsList, loadStudentsFromLocalStorage());
-                    },
-                    getDeletedIdsSnapshot() {
-                        return deletedStudentIds.slice();
-                    }
-                };
-
-                if (navigator.storage && typeof navigator.storage.persist === "function") {
-                    navigator.storage.persist().catch(() => {});
-                }
             }
 
             if (document.readyState === "loading") {
@@ -5201,115 +5000,6 @@
                 bootstrapPlatform();
             }
         })();
-    </script>
-
-    <script type="module">
-        const firebaseConfig = {
-            apiKey: "AIzaSyDV8xl6gEF6eHvcA8Rut8INisrNuBciZcY",
-            authDomain: "std-information.firebaseapp.com",
-            projectId: "std-information",
-            storageBucket: "std-information.firebasestorage.app",
-            messagingSenderId: "25696034333",
-            appId: "1:25696034333:web:8d919984461f86503c30f4",
-            measurementId: "G-9NTNFXBE94"
-        };
-
-        async function connectFirebaseSafely() {
-            const hooks = window.__platformSyncHooks;
-            if (!hooks || !firebaseConfig.apiKey || !firebaseConfig.projectId) return;
-
-            try {
-                const appMod = await import("https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js");
-                const fsMod = await import("https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js");
-
-                const app = appMod.initializeApp(firebaseConfig);
-                const db = fsMod.getFirestore(app);
-                const studentsCol = fsMod.collection(db, "students");
-                const settingsDoc = fsMod.doc(db, "config", "platform");
-
-                hooks.setCloudBridge({
-                    async saveSettings(payload) {
-                        await fsMod.setDoc(settingsDoc, payload, { merge: true });
-                    },
-                    async upsertStudent(rec) {
-                        await fsMod.setDoc(fsMod.doc(db, "students", String(rec.id)), rec, { merge: true });
-                    },
-                    async removeStudent(id) {
-                        await fsMod.deleteDoc(fsMod.doc(db, "students", String(id)));
-                    },
-                    async batchUpsertStudents(list) {
-                        const batch = fsMod.writeBatch(db);
-                        (list || []).forEach(st => {
-                            batch.set(fsMod.doc(db, "students", String(st.id)), st, { merge: true });
-                        });
-                        await batch.commit();
-                    },
-                    async batchDeleteStudents(ids) {
-                        const batch = fsMod.writeBatch(db);
-                        (ids || []).forEach(id => {
-                            batch.delete(fsMod.doc(db, "students", String(id)));
-                        });
-                        await batch.commit();
-                    }
-                });
-
-                fsMod.onSnapshot(settingsDoc, async (snap) => {
-                    try {
-                        const snapData = hooks.getSnapshot();
-                        if (!snap.exists()) {
-                            await fsMod.setDoc(settingsDoc, {
-                                isLocked: snapData.isPlatformLocked,
-                                adminCode: snapData.adminSecret,
-                                secretUpdatedAt: snapData.secretUpdatedAt || Date.now(),
-                                principalPhone: snapData.principalPhone,
-                                principalOverride: snapData.principalPhone,
-                                principalUpdatedAt: snapData.principalUpdatedAt || Date.now(),
-                                subjectsList: snapData.subjectsList
-                            });
-                        } else {
-                            hooks.applyCloudSettings(snap.data());
-                        }
-                    } catch (err) {}
-                });
-
-                fsMod.onSnapshot(fsMod.query(studentsCol, fsMod.orderBy("createdAt", "asc")), async (snapshot) => {
-                    try {
-                        const deletedSet = new Set(
-                            typeof hooks.getDeletedIdsSnapshot === "function"
-                                ? hooks.getDeletedIdsSnapshot().map(String)
-                                : []
-                        );
-
-                        for (const docSnap of snapshot.docs) {
-                            if (deletedSet.has(String(docSnap.id))) {
-                                try {
-                                    await fsMod.deleteDoc(fsMod.doc(db, "students", String(docSnap.id)));
-                                } catch (e) {}
-                            }
-                        }
-
-                        const cloudDocs = snapshot.docs
-                            .filter(d => !deletedSet.has(String(d.id)))
-                            .map(d => Object.assign({ id: String(d.id) }, d.data()));
-
-                        const localSnapshot = hooks.getLocalSnapshotForUpload();
-                        const cloudIdSet = new Set(cloudDocs.map(c => String(c.id)));
-
-                        for (const locItem of localSnapshot) {
-                            if (!cloudIdSet.has(String(locItem.id)) && !deletedSet.has(String(locItem.id))) {
-                                try {
-                                    await fsMod.setDoc(fsMod.doc(db, "students", String(locItem.id)), locItem, { merge: true });
-                                } catch (e) {}
-                            }
-                        }
-
-                        hooks.applyCloudStudents(cloudDocs);
-                    } catch (err) {}
-                });
-            } catch (err) {}
-        }
-
-        connectFirebaseSafely();
     </script>
 </body>
 </html>
