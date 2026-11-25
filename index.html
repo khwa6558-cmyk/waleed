@@ -1016,6 +1016,7 @@
 
         .mini-preview { background: linear-gradient(180deg, #2563eb, #1d4ed8); }
         .mini-edit { background: linear-gradient(180deg, #16a34a, #15803d); }
+        .mini-pin-change { background: linear-gradient(180deg, #0284c7, #0369a1); }
         .mini-admin-edit { background: linear-gradient(180deg, #0f4282, #061f42); border: 1px solid var(--gold-300); }
         .mini-delete { background: linear-gradient(180deg, #dc2626, #b91c1c); }
 
@@ -1331,7 +1332,7 @@
 
                         <div class="input-group-box">
                             <label>🔑 رمز تعديلي</label>
-                            <input type="password" id="studentPinField" class="ctrl-field" placeholder="اختياري" maxlength="20" autocomplete="new-password">
+                            <input type="password" id="studentPinField" class="ctrl-field" placeholder="رمز جديد أو اتركه كما هو" maxlength="20" autocomplete="new-password">
                         </div>
 
                         <div class="input-group-box">
@@ -1465,22 +1466,27 @@
     <!-- Printable Section Sheet Container -->
     <div id="printableSectionSheet"></div>
 
-    <!-- Student Edit PIN Verification Modal -->
+    <!-- Student Edit PIN Verification & Change Modal -->
     <div id="editPinModalLayer" class="modal-layer" onclick="if(event.target===this) closeEditPinModal()">
         <div class="dialog-card">
             <button type="button" style="position: absolute; left: 14px; top: 14px; background: transparent; border: none; font-size: 1.2rem; font-weight: 900; cursor: pointer;" onclick="closeEditPinModal()">✕</button>
-            <h3 style="color: #0b2e5e; margin-bottom: 6px;">🔑 التحقق من رمز التعديل</h3>
+            <h3 id="editPinModalHeading" style="color: #0b2e5e; margin-bottom: 6px;">🔑 التحقق من رمز التعديل</h3>
             <p id="editPinTargetLabel" style="color: #475569; font-size: 0.88rem; font-weight: 800; margin-bottom: 12px;"></p>
 
             <div id="editPinErrorBox" class="pin-error-msg"></div>
 
-            <div class="input-group-box" style="margin-bottom: 14px;">
-                <label id="editPinFieldLabel">أدخل رمز التعديل:</label>
+            <div class="input-group-box" style="margin-bottom: 12px;">
+                <label id="editPinFieldLabel">أدخل رمز التعديل الحالي:</label>
                 <input type="password" id="editPinVerifyInput" class="ctrl-field" placeholder="أدخل رمز التعديل..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmEditPinModal();}">
             </div>
 
+            <div id="newStudentPinBox" class="input-group-box" style="display: none; margin-bottom: 14px;">
+                <label>أدخل رمز التعديل الجديد (سيتم حفظه دائماً):</label>
+                <input type="password" id="newStudentPinInput" class="ctrl-field" placeholder="أدخل الرمز الجديد..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmEditPinModal();}">
+            </div>
+
             <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmEditPinModal()">
+                <button type="button" id="confirmStudentPinBtn" class="btn-submit-student" style="flex: 1; justify-content: center; padding: 8px 16px;" onclick="confirmEditPinModal()">
                     <span>✅</span>
                     <span>تأكيد ومتابعة التعديل</span>
                 </button>
@@ -1594,7 +1600,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
         import {
-            getFirestore, collection, doc, addDoc, setDoc, updateDoc, deleteDoc,
+            getFirestore, collection, doc, addDoc, setDoc, deleteDoc,
             onSnapshot, query, orderBy, writeBatch
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
@@ -1621,16 +1627,18 @@
         ];
         const SECTIONS = ["أ", "ب", "ج"];
 
-        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v20";
-        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v20";
-        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v20";
-        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v20";
-        const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v20";
+        const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v21";
+        const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v21";
+        const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v21";
+        const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v21";
+        const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v21";
+        const STORAGE_OWNED_IDS_KEY = "mutafawiqeen_owned_student_ids_v21";
 
         let ownedStudentIds = loadOwnedStudentIds();
         let studentsList = loadStudentsFromLocalStorage();
         let isAdminLoggedIn = false;
         let pendingEditStudentId = null;
+        let pendingPinMode = "edit";
         let pendingAdminAction = null;
 
         let selectedGrade = null;
@@ -1641,6 +1649,7 @@
 
         let savedSectionTables = JSON.parse(localStorage.getItem(STORAGE_SAVED_SECTIONS_KEY)) || {};
         let adminSecret = localStorage.getItem(STORAGE_SECRET_KEY) || DEFAULT_SECRET_CODE;
+        let secretUpdatedAt = Number(localStorage.getItem(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
         let isPlatformLocked = localStorage.getItem(STORAGE_LOCKED_KEY) === "true";
 
         let useCloud = false;
@@ -1653,6 +1662,108 @@
 
         document.getElementById("bannerSchoolLogo").src = SCHOOL_LOGO_URL;
         document.getElementById("idCardLogoThumb").src = SCHOOL_LOGO_URL;
+
+        function getCurrentAdminSecret() {
+            const latestStored = localStorage.getItem(STORAGE_SECRET_KEY);
+            if (latestStored && latestStored.trim()) {
+                adminSecret = latestStored.trim();
+            }
+            return adminSecret;
+        }
+
+        function writeSecretToIndexedDB(codeValue, updatedTs) {
+            if (!localDb) return;
+            try {
+                const tx = localDb.transaction("meta", "readwrite");
+                tx.objectStore("meta").put({ key: "adminSecret", value: codeValue, updatedAt: updatedTs });
+            } catch (e) {}
+        }
+
+        function writeStudentToIndexedDB(rec) {
+            if (!localDb || !rec || !rec.id) return;
+            try {
+                const tx = localDb.transaction("students", "readwrite");
+                tx.objectStore("students").put(rec);
+            } catch (e) {}
+        }
+
+        function deleteStudentFromIndexedDB(id) {
+            if (!localDb || !id) return;
+            try {
+                const tx = localDb.transaction("students", "readwrite");
+                tx.objectStore("students").delete(id);
+            } catch (e) {}
+        }
+
+        async function persistAdminSecret(nextCode) {
+            const cleanCode = String(nextCode).trim();
+            const nowTs = Date.now();
+            adminSecret = cleanCode;
+            secretUpdatedAt = nowTs;
+
+            try {
+                localStorage.setItem(STORAGE_SECRET_KEY, cleanCode);
+                localStorage.setItem(STORAGE_SECRET_UPDATED_AT_KEY, String(nowTs));
+            } catch (e) {}
+
+            writeSecretToIndexedDB(cleanCode, nowTs);
+
+            if (useCloud && settingsDoc) {
+                try {
+                    await setDoc(settingsDoc, {
+                        adminCode: cleanCode,
+                        secretUpdatedAt: nowTs,
+                        isLocked: isPlatformLocked
+                    }, { merge: true });
+                } catch (err) {
+                    console.warn("تعذر تحديث رمز الأدمن سحابياً، تم الحفظ محلياً:", err);
+                }
+            }
+        }
+
+        async function persistStudentRecord(fullRecord, isUpdate = false) {
+            const stampedRecord = {
+                ...fullRecord,
+                updatedAt: Date.now()
+            };
+
+            if (isUpdate) {
+                studentsList = studentsList.map(s => s.id === stampedRecord.id ? stampedRecord : s);
+            } else {
+                const exists = studentsList.some(s => s.id === stampedRecord.id);
+                studentsList = exists
+                    ? studentsList.map(s => s.id === stampedRecord.id ? stampedRecord : s)
+                    : [...studentsList, stampedRecord];
+            }
+            studentsList.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+
+            persistStudentsToLocalStorage(studentsList);
+            writeStudentToIndexedDB(stampedRecord);
+
+            if (useCloud && studentsCol) {
+                try {
+                    if (isUpdate) {
+                        await setDoc(doc(db, "students", stampedRecord.id), stampedRecord, { merge: true });
+                    } else {
+                        const { id, ...docPayload } = stampedRecord;
+                        const docRef = await addDoc(studentsCol, docPayload);
+                        const cloudRecord = { id: docRef.id, ...docPayload };
+                        studentsList = studentsList.map(s => s.id === stampedRecord.id ? cloudRecord : s);
+                        if (isOwnStudentRecord(stampedRecord.id)) {
+                            ownedStudentIds = ownedStudentIds.filter(x => x !== stampedRecord.id);
+                            markStudentAsOwned(docRef.id);
+                        }
+                        persistStudentsToLocalStorage(studentsList);
+                        writeStudentToIndexedDB(cloudRecord);
+                        return cloudRecord;
+                    }
+                } catch (err) {
+                    console.warn("تعذر المزامنة السحابية الفورية، تم الحفظ محلياً:", err);
+                }
+            }
+
+            return stampedRecord;
+        }
 
         function generateStudentPin() {
             return String(Math.floor(1000 + Math.random() * 9000));
@@ -1758,20 +1869,43 @@
                 onSnapshot(settingsDoc, async (snap) => {
                     try {
                         if (!snap.exists()) {
-                            await setDoc(settingsDoc, { isLocked: isPlatformLocked, adminCode: adminSecret });
+                            await setDoc(settingsDoc, {
+                                isLocked: isPlatformLocked,
+                                adminCode: getCurrentAdminSecret(),
+                                secretUpdatedAt: secretUpdatedAt || Date.now()
+                            });
                         } else {
                             const data = snap.data();
                             isPlatformLocked = Boolean(data.isLocked);
-                            adminSecret = data.adminCode || DEFAULT_SECRET_CODE;
                             localStorage.setItem(STORAGE_LOCKED_KEY, String(isPlatformLocked));
-                            localStorage.setItem(STORAGE_SECRET_KEY, adminSecret);
+
+                            const remoteUpdatedAt = Number(data.secretUpdatedAt || 0);
+                            const localUpdatedAt = Number(localStorage.getItem(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
+                            const recentLocalWrite = (Date.now() - localUpdatedAt) < 10000;
+
+                            if (data.adminCode && !recentLocalWrite && remoteUpdatedAt >= localUpdatedAt) {
+                                adminSecret = String(data.adminCode).trim();
+                                secretUpdatedAt = remoteUpdatedAt;
+                                localStorage.setItem(STORAGE_SECRET_KEY, adminSecret);
+                                localStorage.setItem(STORAGE_SECRET_UPDATED_AT_KEY, String(remoteUpdatedAt));
+                                writeSecretToIndexedDB(adminSecret, remoteUpdatedAt);
+                            }
                             applyLockUI();
                         }
                     } catch (err) {}
                 });
 
                 onSnapshot(query(studentsCol, orderBy("createdAt", "asc")), (snapshot) => {
-                    studentsList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    const cloudDocs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    const localMap = new Map(loadStudentsFromLocalStorage().map(item => [item.id, item]));
+                    const merged = cloudDocs.map(cItem => {
+                        const lItem = localMap.get(cItem.id);
+                        if (lItem && (lItem.updatedAt || 0) > (cItem.updatedAt || 0)) {
+                            return lItem;
+                        }
+                        return cItem;
+                    });
+                    studentsList = merged.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
                     persistStudentsToLocalStorage(studentsList);
                     if (isInsideRoom) renderSectionRoomTable();
                 });
@@ -1781,7 +1915,7 @@
         }
 
         function initIndexedDB() {
-            const req = indexedDB.open("MutafawiqeenSchoolDB_V20", 1);
+            const req = indexedDB.open("MutafawiqeenSchoolDB_V21", 1);
             req.onupgradeneeded = (e) => {
                 const database = e.target.result;
                 if (!database.objectStoreNames.contains("students")) {
@@ -1790,9 +1924,27 @@
                 if (!database.objectStoreNames.contains("owned_records")) {
                     database.createObjectStore("owned_records", { keyPath: "id" });
                 }
+                if (!database.objectStoreNames.contains("meta")) {
+                    database.createObjectStore("meta", { keyPath: "key" });
+                }
             };
             req.onsuccess = (e) => {
                 localDb = e.target.result;
+
+                try {
+                    const metaTx = localDb.transaction("meta", "readonly");
+                    metaTx.objectStore("meta").get("adminSecret").onsuccess = (mev) => {
+                        const metaRec = mev.target.result;
+                        const lsUpdatedAt = Number(localStorage.getItem(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
+                        if (metaRec && metaRec.value && (metaRec.updatedAt || 0) >= lsUpdatedAt) {
+                            adminSecret = String(metaRec.value).trim();
+                            secretUpdatedAt = Number(metaRec.updatedAt || 0);
+                            localStorage.setItem(STORAGE_SECRET_KEY, adminSecret);
+                            localStorage.setItem(STORAGE_SECRET_UPDATED_AT_KEY, String(secretUpdatedAt));
+                        }
+                    };
+                } catch (err) {}
+
                 const tx = localDb.transaction("owned_records", "readonly");
                 tx.objectStore("owned_records").getAll().onsuccess = (ev) => {
                     const savedOwned = (ev.target.result || []).map(item => item.id);
@@ -1821,7 +1973,12 @@
                 const idbList = e.target.result || [];
                 const mergedMap = new Map();
                 lsList.forEach(item => mergedMap.set(item.id, item));
-                idbList.forEach(item => mergedMap.set(item.id, item));
+                idbList.forEach(item => {
+                    const prev = mergedMap.get(item.id);
+                    if (!prev || (item.updatedAt || 0) >= (prev.updatedAt || 0)) {
+                        mergedMap.set(item.id, item);
+                    }
+                });
                 studentsList = Array.from(mergedMap.values()).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
                 persistStudentsToLocalStorage(studentsList);
                 if (isInsideRoom) renderSectionRoomTable();
@@ -2004,6 +2161,7 @@
                     ? `<button type="button" class="mini-act-btn mini-preview" onclick="showStudentCard('${st.id}')">👁️ معاينة</button>`
                     : "";
                 const editBtnHtml = `<button type="button" class="mini-act-btn mini-edit" onclick="startEditStudent('${st.id}')">✏️ تعديل</button>`;
+                const changePinBtnHtml = `<button type="button" class="mini-act-btn mini-pin-change" onclick="startChangeStudentPin('${st.id}')">🔑 تغيير رمز الطالب</button>`;
                 const adminEditBtnHtml = `<button type="button" class="mini-act-btn mini-admin-edit" onclick="startAdminEditStudent('${st.id}')">🛡️ تعديل (أدمن)</button>`;
                 const deleteBtnHtml = isAdminLoggedIn
                     ? `<button type="button" class="mini-act-btn mini-delete" onclick="removeStudent('${st.id}')">🗑️ حذف</button>`
@@ -2028,6 +2186,7 @@
                             <div class="cell-actions">
                                 ${previewBtnHtml}
                                 ${editBtnHtml}
+                                ${changePinBtnHtml}
                                 ${adminEditBtnHtml}
                                 ${deleteBtnHtml}
                             </div>
@@ -2266,46 +2425,21 @@
                 name, grade, section, day, month, year,
                 dob: dobFormatted,
                 mother,
-                editPin: finalPin,
+                editPin: String(finalPin).trim(),
                 photo: currentPhotoBase64 || (existing ? existing.photo : defaultAvatar),
                 createdAt: existing ? existing.createdAt : Date.now()
             };
 
-            let finalId = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-            let fullRecord = { id: finalId, ...record };
+            const finalId = editId || `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+            const fullRecord = { id: finalId, ...record };
 
-            if (editId) {
-                studentsList = studentsList.map(s => s.id === editId ? fullRecord : s);
-            } else {
-                studentsList = [...studentsList, fullRecord].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-            }
-            persistStudentsToLocalStorage(studentsList);
-
-            if (useCloud && studentsCol) {
-                try {
-                    if (editId) {
-                        await updateDoc(doc(db, "students", editId), record);
-                    } else {
-                        const docRef = await addDoc(studentsCol, record);
-                        finalId = docRef.id;
-                        fullRecord = { id: finalId, ...record };
-                        studentsList = studentsList.map(s => s.id === fullRecord.id ? fullRecord : s);
-                        persistStudentsToLocalStorage(studentsList);
-                    }
-                } catch (err) {
-                    console.warn("تعذر المزامنة السحابية الفورية، تم الحفظ محلياً:", err);
-                }
-            } else if (localDb) {
-                const tx = localDb.transaction("students", "readwrite");
-                tx.objectStore("students").put(fullRecord);
-                await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
-            }
+            const savedRec = await persistStudentRecord(fullRecord, Boolean(editId));
 
             if (!editId) {
-                markStudentAsOwned(finalId);
+                markStudentAsOwned(savedRec.id);
                 alert("✅ تم حفظ بيانات الطالب بنجاح.");
             } else {
-                alert("✅ تم حفظ التعديلات بنجاح.");
+                alert("✅ تم حفظ التعديلات والرمز بنجاح.");
             }
 
             resetStudentFormState();
@@ -2357,14 +2491,17 @@
 
         window.closeEditPinModal = function () {
             pendingEditStudentId = null;
+            pendingPinMode = "edit";
             document.getElementById("editPinVerifyInput").value = "";
+            document.getElementById("newStudentPinInput").value = "";
+            document.getElementById("newStudentPinBox").style.display = "none";
             const errBox = document.getElementById("editPinErrorBox");
             errBox.style.display = "none";
             errBox.innerText = "";
             hideModal("editPinModalLayer");
         };
 
-        window.confirmEditPinModal = function () {
+        window.confirmEditPinModal = async function () {
             if (!pendingEditStudentId) return;
             const st = studentsList.find(s => s.id === pendingEditStudentId);
             if (!st) {
@@ -2373,6 +2510,7 @@
             }
 
             const inputEl = document.getElementById("editPinVerifyInput");
+            const newPinEl = document.getElementById("newStudentPinInput");
             const errBox = document.getElementById("editPinErrorBox");
             const cleanInput = inputEl.value.trim();
 
@@ -2390,17 +2528,33 @@
                     inputEl.focus();
                     return;
                 }
-                const targetStudent = st;
-                closeEditPinModal();
-                openEditFormForStudent(targetStudent, false);
-            } else {
-                st.editPin = cleanInput;
-                studentsList = studentsList.map(item => item.id === st.id ? st : item);
-                persistStudentsToLocalStorage(studentsList);
-                const targetStudent = st;
-                closeEditPinModal();
-                openEditFormForStudent(targetStudent, false);
             }
+
+            if (pendingPinMode === "changePin") {
+                const nextPin = newPinEl.value.trim();
+                if (!nextPin) {
+                    errBox.innerText = "⚠️ يرجى إدخال رمز التعديل الجديد.";
+                    errBox.style.display = "block";
+                    newPinEl.focus();
+                    return;
+                }
+                const updatedStudent = { ...st, editPin: nextPin };
+                await persistStudentRecord(updatedStudent, true);
+                markStudentAsOwned(st.id);
+                closeEditPinModal();
+                alert("✅ تم حفظ رمز الطالب الجديد بنجاح وسيبقى محفوظاً عند إعادة التحميل.");
+                if (isInsideRoom) renderSectionRoomTable();
+                return;
+            }
+
+            if (!st.editPin) {
+                const updatedStudent = { ...st, editPin: cleanInput };
+                await persistStudentRecord(updatedStudent, true);
+            }
+
+            const targetStudent = studentsList.find(s => s.id === st.id) || st;
+            closeEditPinModal();
+            openEditFormForStudent(targetStudent, false);
         };
 
         window.startEditStudent = function (id) {
@@ -2413,9 +2567,34 @@
             }
 
             pendingEditStudentId = st.id;
+            pendingPinMode = "edit";
+            document.getElementById("editPinModalHeading").innerText = "🔑 التحقق من رمز التعديل";
             document.getElementById("editPinTargetLabel").innerText = `الطالب: ${st.name}`;
             document.getElementById("editPinFieldLabel").innerText = "أدخل رمز التعديل:";
+            document.getElementById("newStudentPinBox").style.display = "none";
+            document.getElementById("confirmStudentPinBtn").innerHTML = `<span>✅</span><span>تأكيد ومتابعة التعديل</span>`;
             document.getElementById("editPinVerifyInput").value = "";
+            const errBox = document.getElementById("editPinErrorBox");
+            errBox.style.display = "none";
+            errBox.innerText = "";
+
+            document.getElementById("editPinModalLayer").style.display = "flex";
+            setTimeout(() => document.getElementById("editPinVerifyInput").focus(), 60);
+        };
+
+        window.startChangeStudentPin = function (id) {
+            const st = studentsList.find(s => s.id === id);
+            if (!st) return;
+
+            pendingEditStudentId = st.id;
+            pendingPinMode = "changePin";
+            document.getElementById("editPinModalHeading").innerText = "🔑 تغيير وحفظ رمز الطالب";
+            document.getElementById("editPinTargetLabel").innerText = `الطالب: ${st.name}`;
+            document.getElementById("editPinFieldLabel").innerText = "أدخل رمز التعديل الحالي:";
+            document.getElementById("newStudentPinBox").style.display = "flex";
+            document.getElementById("confirmStudentPinBtn").innerHTML = `<span>💾</span><span>حفظ الرمز الجديد</span>`;
+            document.getElementById("editPinVerifyInput").value = "";
+            document.getElementById("newStudentPinInput").value = "";
             const errBox = document.getElementById("editPinErrorBox");
             errBox.style.display = "none";
             errBox.innerText = "";
@@ -2482,7 +2661,7 @@
                 return;
             }
 
-            if (cleanCode !== adminSecret) {
+            if (cleanCode !== getCurrentAdminSecret()) {
                 errBox.innerText = "❌ رمز الأدمن غير صحيح.";
                 errBox.style.display = "block";
                 inputEl.focus();
@@ -2513,15 +2692,12 @@
 
             studentsList = studentsList.filter(s => s.id !== id);
             persistStudentsToLocalStorage(studentsList);
+            deleteStudentFromIndexedDB(id);
 
             if (useCloud && studentsCol) {
                 try {
                     await deleteDoc(doc(db, "students", id));
                 } catch (err) {}
-            } else if (localDb) {
-                const tx = localDb.transaction("students", "readwrite");
-                tx.objectStore("students").delete(id);
-                await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
             }
             if (isInsideRoom) renderSectionRoomTable();
         };
@@ -2537,6 +2713,7 @@
 
             studentsList = studentsList.filter(s => !(s.grade === selectedGrade && s.section === selectedSection));
             persistStudentsToLocalStorage(studentsList);
+            rows.forEach(r => deleteStudentFromIndexedDB(r.id));
 
             if (useCloud && studentsCol) {
                 try {
@@ -2544,11 +2721,6 @@
                     rows.forEach(r => batch.delete(doc(db, "students", r.id)));
                     await batch.commit();
                 } catch (err) {}
-            } else if (localDb) {
-                const tx = localDb.transaction("students", "readwrite");
-                const store = tx.objectStore("students");
-                rows.forEach(r => store.delete(r.id));
-                await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
             }
             if (isInsideRoom) renderSectionRoomTable();
         }
@@ -2580,7 +2752,7 @@
             applyLockUI();
             if (useCloud && settingsDoc) {
                 try {
-                    await updateDoc(settingsDoc, { isLocked: locked });
+                    await setDoc(settingsDoc, { isLocked: locked }, { merge: true });
                 } catch (err) {}
             }
         }
@@ -2608,7 +2780,7 @@
             }
             const code = prompt("أدخل رمز الأدمن لقفل المنصة:");
             if (code === null) return;
-            if (code.trim() === adminSecret) {
+            if (code.trim() === getCurrentAdminSecret()) {
                 isAdminLoggedIn = true;
                 updateAdminBadgeUI();
                 await saveLockState(true);
@@ -2620,7 +2792,7 @@
 
         window.unlockAction = async function () {
             const code = document.getElementById("unlockCodeField").value.trim();
-            if (code === adminSecret) {
+            if (code === getCurrentAdminSecret()) {
                 isAdminLoggedIn = true;
                 updateAdminBadgeUI();
                 document.getElementById("unlockCodeField").value = "";
@@ -2654,7 +2826,7 @@
 
         window.confirmAdminLogin = function () {
             const code = document.getElementById("adminAuthInput").value.trim();
-            if (code === adminSecret) {
+            if (code === getCurrentAdminSecret()) {
                 isAdminLoggedIn = true;
                 updateAdminBadgeUI();
                 document.getElementById("adminAuthView").style.display = "none";
@@ -2685,7 +2857,7 @@
         window.updateAdminPasscode = async function () {
             const oldCode = document.getElementById("oldCodeInput").value.trim();
             const nextCode = document.getElementById("newCodeInput").value.trim();
-            if (oldCode !== adminSecret) {
+            if (oldCode !== getCurrentAdminSecret()) {
                 alert("❌ الرمز الحالي غير صحيح.");
                 return;
             }
@@ -2693,14 +2865,8 @@
                 alert("يرجى إدخال الرمز الجديد.");
                 return;
             }
-            adminSecret = nextCode;
-            localStorage.setItem(STORAGE_SECRET_KEY, nextCode);
-            if (useCloud && settingsDoc) {
-                try {
-                    await updateDoc(settingsDoc, { adminCode: nextCode });
-                } catch (err) {}
-            }
-            alert("✅ تم تغيير رمز الأدمن بنجاح.");
+            await persistAdminSecret(nextCode);
+            alert("✅ تم تغيير وحفظ رمز الأدمن بنجاح.");
             hideModal("adminDialogLayer");
         };
 
