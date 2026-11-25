@@ -667,7 +667,7 @@
             </p>
             <div class="form-group" style="text-align: right; margin-bottom: 15px;">
                 <label>دخول الأدمن لفتح المنصة:</label>
-                <input type="password" id="unlockCodeInput" class="form-control" placeholder="أدخل رمز الأدمن...">
+                <input type="password" id="unlockCodeInput" class="form-control" placeholder="أدخل رمز الأدمن (وليد)...">
             </div>
             <button onclick="unlockPlatform()" class="btn btn-success" style="width: 100%;">فتح المنصة الآن</button>
         </div>
@@ -818,9 +818,7 @@
 
                     <div class="table-responsive">
                         <table id="studentsTable" class="school-data-table">
-                            <thead id="studentsTableHead">
-                                <!-- Rendered dynamically based on global table template -->
-                            </thead>
+                            <thead id="studentsTableHead"></thead>
                             <tbody id="studentsTableBody"></tbody>
                         </table>
                     </div>
@@ -969,7 +967,7 @@
             <div id="adminAuthSection">
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label>أدخل رمز الأدمن للمتابعة:</label>
-                    <input type="password" id="adminAuthInput" class="form-control" placeholder="الرمز الافتراضي: AA">
+                    <input type="password" id="adminAuthInput" class="form-control" placeholder="أدخل الرمز العربي (وليد)">
                 </div>
                 <button class="btn btn-primary" style="width: 100%;" onclick="verifyAdmin()">دخول</button>
             </div>
@@ -1012,6 +1010,7 @@
             appId: "YOUR_APP_ID"
         };
 
+        const DEFAULT_ADMIN_CODE = 'وليد';
         const GRADES = ['الصف الاول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس', 'الصف السادس'];
         const SECTIONS = ['أ', 'ب', 'ج'];
         const PAGE_SIZE = 50;
@@ -1042,8 +1041,8 @@
         let currentPage = 1;
         let activeSearchQuery = '';
 
-        let adminCode = localStorage.getItem('mutafawiqeen_admin_code_v2') || 'AA';
-        let isLocked = localStorage.getItem('mutafawiqeen_locked_v2') === 'true';
+        let adminCode = localStorage.getItem('mutafawiqeen_admin_code_v3') || DEFAULT_ADMIN_CODE;
+        let isLocked = localStorage.getItem('mutafawiqeen_locked_v3') === 'true';
         let currentPhotoBase64 = '';
 
         let useCloud = false;
@@ -1077,11 +1076,11 @@
 
             onSnapshot(settingsDocRef, async (snap) => {
                 if (!snap.exists()) {
-                    await setDoc(settingsDocRef, { isLocked, adminCode, tableConfig });
+                    await setDoc(settingsDocRef, { isLocked, adminCode: DEFAULT_ADMIN_CODE, tableConfig });
                 } else {
                     const data = snap.data();
                     isLocked = Boolean(data.isLocked);
-                    adminCode = data.adminCode || "AA";
+                    adminCode = data.adminCode || DEFAULT_ADMIN_CODE;
                     if (data.tableConfig) {
                         tableConfig = { ...DEFAULT_TABLE_CONFIG, ...data.tableConfig, columns: { ...DEFAULT_TABLE_CONFIG.columns, ...(data.tableConfig.columns || {}) } };
                         localStorage.setItem('mutafawiqeen_global_table_cfg_v1', JSON.stringify(tableConfig));
@@ -1126,8 +1125,6 @@
                 renderTableAndCounts();
             };
         }
-
-        // ================= SAVE TABLE & APPLY TO ALL TABLES =================
 
         function applyGlobalTableStylesToDOM() {
             const root = document.documentElement;
@@ -1246,8 +1243,6 @@
             closeModal('tableSettingsModal');
             alert('✅ تمت استعادة الإعدادات الافتراضية وتطبيقها على كل الجداول.');
         };
-
-        // =========================================================================
 
         function populateDateSelects() {
             const daySelect = document.getElementById('dobDay');
@@ -1687,7 +1682,7 @@
 
         async function setLockState(nextLocked) {
             isLocked = nextLocked;
-            localStorage.setItem('mutafawiqeen_locked_v2', String(nextLocked));
+            localStorage.setItem('mutafawiqeen_locked_v3', String(nextLocked));
             updateLockUI();
             if (useCloud && settingsDocRef) {
                 await updateDoc(settingsDocRef, { isLocked: nextLocked });
@@ -1696,7 +1691,7 @@
 
         async function setAdminCodeState(nextCode) {
             adminCode = nextCode;
-            localStorage.setItem('mutafawiqeen_admin_code_v2', nextCode);
+            localStorage.setItem('mutafawiqeen_admin_code_v3', nextCode);
             if (useCloud && settingsDocRef) {
                 await updateDoc(settingsDocRef, { adminCode: nextCode });
             }
@@ -1704,9 +1699,9 @@
 
         window.handleStatusClick = async function () {
             if (!isLocked) {
-                const enteredCode = prompt('لقفل المنصة، يرجى إدخال رمز الأدمن:');
+                const enteredCode = prompt('لقفل المنصة، يرجى إدخال رمز الأدمن (وليد):');
                 if (enteredCode === null) return;
-                if (enteredCode === adminCode) {
+                if (enteredCode.trim() === adminCode) {
                     await setLockState(true);
                 } else {
                     alert('❌ رمز الأدمن غير صحيح!');
@@ -1715,7 +1710,7 @@
         };
 
         window.unlockPlatform = async function () {
-            const entered = document.getElementById('unlockCodeInput').value;
+            const entered = document.getElementById('unlockCodeInput').value.trim();
             if (entered === adminCode) {
                 await setLockState(false);
                 document.getElementById('unlockCodeInput').value = '';
@@ -1761,7 +1756,7 @@
         };
 
         window.verifyAdmin = function () {
-            const input = document.getElementById('adminAuthInput').value;
+            const input = document.getElementById('adminAuthInput').value.trim();
             if (input === adminCode) {
                 document.getElementById('adminAuthSection').style.display = 'none';
                 document.getElementById('adminActionsSection').style.display = 'block';
