@@ -530,6 +530,8 @@
             border-radius: 18px;
             padding: 12px 16px 18px;
             box-shadow: var(--shadow-md);
+            display: block;
+            visibility: visible;
         }
 
         .shelf-top-badge {
@@ -1523,10 +1525,11 @@
         <div class="dialog-card" style="text-align: center;">
             <div style="font-size: 3rem; margin-bottom: 8px;">🔒</div>
             <h3 style="color: #dc2626; margin-bottom: 8px;">المنصة مقفلة حالياً</h3>
-            <p style="color: #475569; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px;">
+            <p style="color: #475569; font-size: 0.9rem; font-weight: 700; margin-bottom: 12px;">
                 تم قفل المنصة مؤقتاً في ثانوية المتفوقين الثانية للبنين - الأنبار.
             </p>
-            <input type="password" id="unlockCodeField" class="ctrl-field" style="margin-bottom: 12px;" placeholder="أدخل رمز الأدمن لفتح المنصة..." onkeydown="if(event.key==='Enter'){event.preventDefault();unlockAction();}">
+            <div id="lockScreenErrorBox" class="pin-error-msg"></div>
+            <input type="password" id="unlockCodeField" class="ctrl-field" style="margin-bottom: 12px;" placeholder="أدخل رمز الأدمن لفتح المنصة..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();unlockAction();}">
             <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="unlockAction()">🔓 فتح المنصة</button>
         </div>
     </div>
@@ -1542,7 +1545,7 @@
             </div>
 
             <div class="school-logo-circle" title="شعار ثانوية المتفوقين الثانية للبنين - الأنبار">
-                <img id="bannerSchoolLogo" src="" alt="شعار المدرسة">
+                <img id="bannerSchoolLogo" src="logo.PNG" alt="شعار المدرسة" onerror="this.style.display='none'">
             </div>
 
             <div class="hero-center">
@@ -1555,7 +1558,7 @@
     <nav class="admin-strip">
         <div class="admin-strip-inner">
             <div class="admin-actions-left">
-                <button type="button" id="statusTogglePill" class="top-pill-btn btn-open-state" onclick="promptLockPlatform()">
+                <button type="button" id="statusTogglePill" class="top-pill-btn btn-open-state" onclick="handleStatusPillClick()">
                     <span>🔓</span>
                     <span id="statusToggleText">المنصة مفتوحة</span>
                 </button>
@@ -1696,7 +1699,7 @@
                 </form>
             </section>
 
-            <section class="grades-shelf-box">
+            <section id="gradesShelfSection" class="grades-shelf-box">
                 <div class="shelf-top-badge">
                     <div class="shelf-title-pill">
                         <span>⭐</span>
@@ -1704,7 +1707,14 @@
                     </div>
                 </div>
 
-                <div class="grades-six-row" id="gradesSixShelf"></div>
+                <div class="grades-six-row" id="gradesSixShelf">
+                    <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('الصف الاول')"><span>🎓 الصف الاول</span><span>&lt;</span></button>
+                    <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('الصف الثاني')"><span>🎓 الصف الثاني</span><span>&lt;</span></button>
+                    <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('الصف الثالث')"><span>🎓 الصف الثالث</span><span>&lt;</span></button>
+                    <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('الصف الرابع')"><span>🎓 الصف الرابع</span><span>&lt;</span></button>
+                    <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('الصف الخامس')"><span>🎓 الصف الخامس</span><span>&lt;</span></button>
+                    <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('الصف السادس')"><span>🎓 الصف السادس</span><span>&lt;</span></button>
+                </div>
             </section>
 
         </div>
@@ -2230,7 +2240,7 @@
         <div id="printableIdCard" class="id-card-box">
             <div class="id-card-head">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <img id="idCardLogoThumb" class="id-head-logo" src="" alt="شعار المدرسة">
+                    <img id="idCardLogoThumb" class="id-head-logo" src="logo.PNG" alt="شعار المدرسة" onerror="this.style.display='none'">
                     <span style="font-weight: 900; font-size: 1.05rem;">بطاقة تعريف الطالب</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;" class="no-print">
@@ -2267,7 +2277,7 @@
             <div id="adminAuthView">
                 <div class="input-group-box" style="margin-bottom: 12px;">
                     <label>أدخل رمز الأدمن:</label>
-                    <input type="password" id="adminAuthInput" class="ctrl-field" placeholder="أدخل الرمز..." onkeydown="if(event.key==='Enter'){event.preventDefault();confirmAdminLogin();}">
+                    <input type="password" id="adminAuthInput" class="ctrl-field" placeholder="أدخل الرمز..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmAdminLogin();}">
                 </div>
                 <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="confirmAdminLogin()">تأكيد الدخول</button>
             </div>
@@ -2275,11 +2285,11 @@
             <div id="adminChangeView" style="display: none;">
                 <div class="input-group-box" style="margin-bottom: 10px;">
                     <label>الرمز الحالي:</label>
-                    <input type="password" id="oldCodeInput" class="ctrl-field" placeholder="أدخل الرمز الحالي...">
+                    <input type="password" id="oldCodeInput" class="ctrl-field" placeholder="أدخل الرمز الحالي..." autocomplete="off">
                 </div>
                 <div class="input-group-box" style="margin-bottom: 14px;">
                     <label>الرمز الجديد:</label>
-                    <input type="password" id="newCodeInput" class="ctrl-field" placeholder="أدخل الرمز الجديد..." onkeydown="if(event.key==='Enter'){event.preventDefault();updateAdminPasscode();}">
+                    <input type="password" id="newCodeInput" class="ctrl-field" placeholder="أدخل الرمز الجديد..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();updateAdminPasscode();}">
                 </div>
                 <button type="button" class="btn-submit-student" style="width: 100%; justify-content: center;" onclick="updateAdminPasscode()">حفظ الرمز</button>
             </div>
@@ -2304,8 +2314,8 @@
             const SCHOOL_LOGO_URL = "logo.PNG";
             const DEFAULT_PRINCIPAL_PHONE = "07734579286";
             const TEACHER_PIN_CODE = "A";
-
             const DEFAULT_SECRET_CODE = "وليد";
+
             const GRADES = [
                 "الصف الاول",
                 "الصف الثاني",
@@ -2318,6 +2328,7 @@
 
             const STORAGE_STUDENTS_KEY = "mutafawiqeen_students_list_v23";
             const ALL_STUDENT_STORAGE_KEYS = [
+                "mutafawiqeen_students_list_v25",
                 "mutafawiqeen_students_list_v23",
                 "mutafawiqeen_students_list_v22",
                 "mutafawiqeen_students_list_v21",
@@ -2325,10 +2336,11 @@
                 "mutafawiqeen_students_list_v19",
                 "mutafawiqeen_students_list_v18"
             ];
-            const STORAGE_DELETED_IDS_KEY = "mutafawiqeen_deleted_student_ids_v24";
+            const STORAGE_DELETED_IDS_KEY = "mutafawiqeen_deleted_student_ids_v25";
             const STORAGE_SAVED_SECTIONS_KEY = "mutafawiqeen_saved_sections_v23";
             const STORAGE_SECRET_KEY = "mutafawiqeen_secret_v23";
             const ALL_SECRET_KEYS = [
+                "mutafawiqeen_secret_v25",
                 "mutafawiqeen_secret_v23",
                 "mutafawiqeen_secret_v22",
                 "mutafawiqeen_secret_v21",
@@ -2336,7 +2348,11 @@
                 "mutafawiqeen_secret_v19"
             ];
             const STORAGE_SECRET_UPDATED_AT_KEY = "mutafawiqeen_secret_updated_at_v23";
-            const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v23";
+            const STORAGE_LOCKED_KEY = "mutafawiqeen_locked_v25";
+            const ALL_LOCKED_KEYS = [
+                "mutafawiqeen_locked_v25",
+                "mutafawiqeen_locked_v23"
+            ];
             const STORAGE_PRINCIPAL_OVERRIDE_KEY = "mutafawiqeen_principal_override_v23";
             const STORAGE_PRINCIPAL_PHONE_KEY = "mutafawiqeen_principal_phone_v23";
             const ALL_PRINCIPAL_PHONE_KEYS = [
@@ -2354,6 +2370,7 @@
                 "mutafawiqeen_owned_student_ids_v20"
             ];
             const ALL_IDB_NAMES = [
+                "MutafawiqeenSchoolDB_V23",
                 "MutafawiqeenSchoolDB_V22",
                 "MutafawiqeenSchoolDB_V21",
                 "MutafawiqeenSchoolDB_V20",
@@ -2386,18 +2403,32 @@
 
             const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='165' viewBox='0 0 140 165'><rect width='140' height='165' fill='%23ffffff'/><circle cx='70' cy='56' r='26' fill='%2394a3b8'/><path d='M24 148 C24 108, 116 108, 116 148 Z' fill='%2394a3b8'/></svg>";
 
+            const memoryFallbackStore = {};
+
             function safeStorageGet(key) {
                 try {
-                    return window.localStorage ? window.localStorage.getItem(key) : null;
-                } catch (e) {
-                    return null;
-                }
+                    if (window.localStorage) {
+                        const v = window.localStorage.getItem(key);
+                        if (v !== null && v !== undefined) return v;
+                    }
+                } catch (e) {}
+                return Object.prototype.hasOwnProperty.call(memoryFallbackStore, key) ? memoryFallbackStore[key] : null;
             }
 
             function safeStorageSet(key, val) {
+                memoryFallbackStore[key] = String(val);
                 try {
-                    if (window.localStorage) window.localStorage.setItem(key, val);
+                    if (window.localStorage) window.localStorage.setItem(key, String(val));
                 } catch (e) {}
+            }
+
+            function loadInitialLockState() {
+                for (let i = 0; i < ALL_LOCKED_KEYS.length; i++) {
+                    const v = safeStorageGet(ALL_LOCKED_KEYS[i]);
+                    if (v === "true") return true;
+                    if (v === "false") return false;
+                }
+                return false;
             }
 
             let deletedStudentIds = loadDeletedStudentIds();
@@ -2439,7 +2470,7 @@
             let secretUpdatedAt = Number(safeStorageGet(STORAGE_SECRET_UPDATED_AT_KEY) || 0);
             let principalPhone = loadInitialPrincipalPhone();
             let principalUpdatedAt = Number(safeStorageGet(STORAGE_PRINCIPAL_UPDATED_AT_KEY) || 0);
-            let isPlatformLocked = safeStorageGet(STORAGE_LOCKED_KEY) === "true";
+            let isPlatformLocked = loadInitialLockState();
 
             let useCloud = false;
             let cloudApi = null;
@@ -3083,6 +3114,7 @@
             function persistStudentsToLocalStorage(list) {
                 const sorted = sortStudentsAlphabetically(list);
                 ALL_STUDENT_STORAGE_KEYS.forEach(k => safeStorageSet(k, JSON.stringify(sorted)));
+                safeStorageSet(STORAGE_STUDENTS_KEY, JSON.stringify(sorted));
             }
 
             function openConfirmDeleteModal(titleText, messageText, actionObj) {
@@ -3318,7 +3350,11 @@
             }
 
             function renderGradesShelf() {
+                const shelfSection = document.getElementById("gradesShelfSection");
                 const container = document.getElementById("gradesSixShelf");
+                if (shelfSection) {
+                    shelfSection.style.display = "block";
+                }
                 if (!container) return;
                 container.innerHTML = GRADES.map(grade => `
                     <button type="button" class="grade-open-btn" onclick="openGradeRoomsModal('${grade}')">
@@ -3330,7 +3366,8 @@
 
             window.openGradeRoomsModal = function (grade) {
                 pickerGrade = grade;
-                document.getElementById("gradeField").value = grade;
+                const gField = document.getElementById("gradeField");
+                if (gField) gField.value = grade;
                 document.getElementById("gradePickerHeading").innerText = `🎓 ${grade}`;
                 document.getElementById("gradeRoomsModalLayer").style.display = "flex";
             };
@@ -3365,8 +3402,10 @@
             window.openSectionTwoRoomsModal = function (grade, sec) {
                 pickerGrade = grade;
                 pickerSection = sec;
-                document.getElementById("gradeField").value = grade;
-                document.getElementById("sectionField").value = sec;
+                const gField = document.getElementById("gradeField");
+                const sField = document.getElementById("sectionField");
+                if (gField) gField.value = grade;
+                if (sField) sField.value = sec;
                 closeSectionsPickerModal();
                 document.getElementById("sectionTwoRoomsHeading").innerText = `👥 ${grade} - شعبة (${sec})`;
                 document.getElementById("sectionTwoRoomsModalLayer").style.display = "flex";
@@ -3443,8 +3482,10 @@
 
                 try { history.pushState({ sectionRoom: true, grade, sec }, "", window.location.href); } catch (e) {}
 
-                document.getElementById("gradeField").value = grade;
-                document.getElementById("sectionField").value = sec;
+                const gField = document.getElementById("gradeField");
+                const sField = document.getElementById("sectionField");
+                if (gField) gField.value = grade;
+                if (sField) sField.value = sec;
                 document.getElementById("roomSearchInput").value = "";
                 document.getElementById("clearSearchBtn").style.display = "none";
                 document.getElementById("sectionInnerSwitch").style.display = "inline-flex";
@@ -4462,6 +4503,7 @@
                 document.getElementById("sectionRoomView").style.display = "none";
                 document.getElementById("mainLobbyContainer").style.display = "flex";
                 document.getElementById("welcomeRibbonBanner").style.display = "block";
+                renderGradesShelf();
                 isInsideRoom = false;
                 window.scrollTo({ top: 120, behavior: "smooth" });
             }
@@ -4756,11 +4798,11 @@
             };
 
             async function saveLockState(locked) {
-                isPlatformLocked = locked;
-                safeStorageSet(STORAGE_LOCKED_KEY, String(locked));
+                isPlatformLocked = Boolean(locked);
+                ALL_LOCKED_KEYS.forEach(k => safeStorageSet(k, String(isPlatformLocked)));
                 applyLockUI();
                 if (useCloud && cloudApi && typeof cloudApi.saveSettings === "function") {
-                    try { await cloudApi.saveSettings({ isLocked: locked }); } catch (err) {}
+                    try { await cloudApi.saveSettings({ isLocked: isPlatformLocked }); } catch (err) {}
                 }
             }
 
@@ -4768,11 +4810,20 @@
                 const btn = document.getElementById("statusTogglePill");
                 const txt = document.getElementById("statusToggleText");
                 const overlay = document.getElementById("lockScreenLayer");
+                const errBox = document.getElementById("lockScreenErrorBox");
                 if (!btn || !txt || !overlay) return;
                 if (isPlatformLocked) {
                     btn.className = "top-pill-btn btn-locked-state";
                     txt.innerText = "المنصة مقفلة";
                     overlay.style.display = "flex";
+                    if (errBox) {
+                        errBox.style.display = "none";
+                        errBox.innerText = "";
+                    }
+                    setTimeout(() => {
+                        const inp = document.getElementById("unlockCodeField");
+                        if (inp) inp.focus();
+                    }, 60);
                 } else {
                     btn.className = "top-pill-btn btn-open-state";
                     txt.innerText = "المنصة مفتوحة";
@@ -4780,8 +4831,24 @@
                 }
             }
 
+            window.handleStatusPillClick = function () {
+                if (isPlatformLocked) {
+                    const overlay = document.getElementById("lockScreenLayer");
+                    if (overlay) overlay.style.display = "flex";
+                    setTimeout(() => {
+                        const inp = document.getElementById("unlockCodeField");
+                        if (inp) inp.focus();
+                    }, 60);
+                } else {
+                    window.promptLockPlatform();
+                }
+            };
+
             window.promptLockPlatform = async function () {
-                if (isPlatformLocked) return;
+                if (isPlatformLocked) {
+                    applyLockUI();
+                    return;
+                }
                 if (!isAdminSession) {
                     requestAdminPinForAction({ type: "lockPlatform" }, "قفل المنصة");
                     return;
@@ -4791,15 +4858,34 @@
             };
 
             window.unlockAction = async function () {
-                const code = document.getElementById("unlockCodeField").value.trim();
+                const inp = document.getElementById("unlockCodeField");
+                const errBox = document.getElementById("lockScreenErrorBox");
+                const code = inp ? inp.value.trim() : "";
+                if (!code) {
+                    if (errBox) {
+                        errBox.innerText = "⚠️ يرجى إدخال رمز الأدمن لفتح المنصة.";
+                        errBox.style.display = "block";
+                    }
+                    if (inp) inp.focus();
+                    return;
+                }
                 if (code === getCurrentAdminSecret()) {
                     isAdminSession = true;
                     updateAdminBadgeUI();
-                    document.getElementById("unlockCodeField").value = "";
+                    if (inp) inp.value = "";
+                    if (errBox) {
+                        errBox.style.display = "none";
+                        errBox.innerText = "";
+                    }
                     await saveLockState(false);
+                    renderGradesShelf();
                     if (isInsideRoom) renderActiveRoomView();
                 } else {
-                    alert("❌ رمز الأدمن غير صحيح.");
+                    if (errBox) {
+                        errBox.innerText = "❌ رمز الأدمن غير صحيح.";
+                        errBox.style.display = "block";
+                    }
+                    if (inp) inp.focus();
                 }
             };
 
@@ -4906,7 +4992,7 @@
 
             function migrateFromLegacyIndexedDBs() {
                 if (!window.indexedDB) return;
-                ALL_IDB_NAMES.forEach((legacyName) => {
+                ALL_IDB_NAMES.slice(1).forEach((legacyName) => {
                     try {
                         const req = window.indexedDB.open(legacyName);
                         req.onsuccess = async (ev) => {
@@ -4980,6 +5066,7 @@
                         const idbStudents = filterOutDeletedStudents(await readStoreFromDb(localDb, "students"));
                         studentsList = mergeStudentArrays(studentsList, idbStudents);
                         persistStudentsToLocalStorage(studentsList);
+                        renderGradesShelf();
                         if (isInsideRoom) renderActiveRoomView();
 
                         migrateFromLegacyIndexedDBs();
@@ -5002,27 +5089,29 @@
             });
 
             function bootstrapPlatform() {
-                const logoEl = document.getElementById("bannerSchoolLogo");
-                const cardLogoEl = document.getElementById("idCardLogoThumb");
-                if (logoEl) logoEl.src = SCHOOL_LOGO_URL;
-                if (cardLogoEl) cardLogoEl.src = SCHOOL_LOGO_URL;
+                try {
+                    const logoEl = document.getElementById("bannerSchoolLogo");
+                    const cardLogoEl = document.getElementById("idCardLogoThumb");
+                    if (logoEl) logoEl.src = SCHOOL_LOGO_URL;
+                    if (cardLogoEl) cardLogoEl.src = SCHOOL_LOGO_URL;
+                } catch (e) {}
 
                 try {
                     history.replaceState({ platformRoot: true }, "", window.location.href);
                     history.pushState({ platformGuard: true }, "", window.location.href);
                 } catch (e) {}
 
-                initDateFields();
-                renderGradesShelf();
-                applyLockUI();
-                updateAdminBadgeUI();
+                try { initDateFields(); } catch (e) {}
+                try { renderGradesShelf(); } catch (e) {}
+                try { applyLockUI(); } catch (e) {}
+                try { updateAdminBadgeUI(); } catch (e) {}
 
                 if (studentsList.length > 0) {
                     studentsList = sortStudentsAlphabetically(studentsList);
                     persistStudentsToLocalStorage(studentsList);
                 }
 
-                initIndexedDB();
+                try { initIndexedDB(); } catch (e) {}
 
                 window.__platformSyncHooks = {
                     setCloudBridge(api) {
@@ -5042,8 +5131,10 @@
                     },
                     applyCloudSettings(data) {
                         if (!data) return;
-                        isPlatformLocked = Boolean(data.isLocked);
-                        safeStorageSet(STORAGE_LOCKED_KEY, String(isPlatformLocked));
+                        if (typeof data.isLocked === "boolean") {
+                            isPlatformLocked = data.isLocked;
+                            ALL_LOCKED_KEYS.forEach(k => safeStorageSet(k, String(isPlatformLocked)));
+                        }
 
                         if (Array.isArray(data.subjectsList) && data.subjectsList.length > 0) {
                             subjectsList = sortSubjectsAlphabetically(Array.from(new Set(subjectsList.concat(data.subjectsList))));
@@ -5076,6 +5167,7 @@
                             safeStorageSet(STORAGE_PRINCIPAL_UPDATED_AT_KEY, String(remotePUpdated));
                             writePrincipalPhoneToIndexedDB(principalPhone, remotePUpdated);
                         }
+                        renderGradesShelf();
                         applyLockUI();
                     },
                     applyCloudStudents(cloudDocs) {
@@ -5087,6 +5179,7 @@
                         if (localDb) {
                             merged.forEach(item => writeStudentToIndexedDB(item));
                         }
+                        renderGradesShelf();
                         if (isInsideRoom) renderActiveRoomView();
                     },
                     getLocalSnapshotForUpload() {
